@@ -1,0 +1,107 @@
+name: proweb_student_app
+description: "PROWEB STUDENT APP"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  get_it: ^8.2.0
+  injectable: ^2.5.1
+  dio: ^5.9.0
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  flutter_bloc: ^9.1.1
+  bloc: ^9.0.0
+  shared_preferences: ^2.5.3
+  queue: ^3.4.0
+  fast_cached_network_image: ^1.3.3+5
+  intl: ^0.20.2
+  permission_handler: ^12.0.1
+  mime: ^2.0.0
+  lottie: ^3.3.1
+  url_launcher: ^6.3.2
+  share_plus: ^11.1.0
+  open_file: ^3.5.10
+  google_fonts: ^6.3.0
+  dartz: ^0.10.1
+  phone_numbers_parser: ^9.0.3
+  firebase_core: ^4.0.0
+  firebase_messaging: ^16.0.0
+  fluttertoast: ^8.2.12
+  easy_localization: ^3.0.8
+  file_picker: ^10.3.2
+  device_info_plus: ^11.5.0
+  auto_route: ^10.1.2
+  flex_color_scheme: ^8.3.0
+  flutter_svg: ^2.2.0
+  adaptive_theme: ^3.7.1+2
+  flutter_local_notifications: ^19.4.0
+  uuid: ^4.5.1
+  talker_logger: ^5.0.0
+  web_socket_channel: ^3.0.3
+  drift: ^2.28.1
+  drift_flutter: ^0.2.5
+  path_provider: ^2.1.5
+  shelf_router: ^1.1.4
+  shelf: ^1.4.2
+  connectivity_plus: ^6.1.5
+  dio_cache_interceptor: ^4.0.3
+  http_cache_drift_store: ^7.0.0
+  sms_autofill: ^2.4.1
+  icons_plus: ^5.0.0
+  provider: ^6.1.5+1
+  auto_size_text: ^3.0.0
+  hexcolor: ^3.0.1
+  flutter_story_presenter: ^1.0.6
+  cached_network_image: ^3.4.1
+  material_table_view: ^5.5.2
+  flutter_map: ^8.2.1
+  latlong2: ^0.9.1
+  flutter_staggered_grid_view: ^0.7.0
+  very_good_infinite_list: ^0.9.0
+  screen_protector: ^1.4.2+1
+  media_kit: ^1.2.0
+  media_kit_video: ^1.3.0
+  media_kit_libs_video: ^1.0.6
+  better_player_plus: ^1.0.8
+  screen_brightness: ^2.0.0
+  volume_controller: ^3.0.2
+  flutter_linkify: ^6.0.0
+  pager: ^0.0.6
+  fl_chart: ^1.0.0
+  maps_launcher: ^3.0.0+1
+  app_links: ^6.4.1
+  code_text_field: ^1.1.0
+  highlight: ^0.7.0
+  flutter_markdown: ^0.7.7+1
+  flutter_html: ^3.0.0
+  flutter_highlight: ^0.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.7.0
+  freezed: ^3.2.0
+  json_serializable: ^6.10.0
+  injectable_generator: ^2.8.1
+  auto_route_generator: ^10.2.4
+  lean_builder: ^0.1.1
+  drift_dev: ^2.28.1
+  flutter_lints: ^6.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/translations/
+    - assets/images/
+    - assets/lottie/
+    - assets/ext/
