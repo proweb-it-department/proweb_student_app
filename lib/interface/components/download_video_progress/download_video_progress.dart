@@ -19,7 +19,6 @@ class DownloadVideoProgress extends StatelessWidget {
     final int? size = video.size;
     final progress = (video.progress / 100);
     final customColors = Theme.of(context).extension<CustomColors>();
-    TalkerLogger().error(preview);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

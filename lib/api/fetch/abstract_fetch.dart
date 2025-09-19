@@ -1,5 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:proweb_student_app/bloc/auth/auth_bloc.dart';
+import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/global_context/global_context.dart';
 
 abstract class MainFetch {
   String get main;
@@ -124,8 +129,8 @@ class ErrorRequest implements AbstractErrorRequest {
     }
   }
   static Future<void> logOut() async {
-    // await sl<NavigationService>().context?.router.replaceAll([HomeMainRoute()]);
-    // final bloc = sl<AuthBloc>();
-    // bloc.add(AuthEvent.logOut());
+    sl<NavigationService>().context?.router.popUntilRoot();
+    final bloc = sl<AuthBloc>();
+    bloc.add(AuthEvent.logOut());
   }
 }

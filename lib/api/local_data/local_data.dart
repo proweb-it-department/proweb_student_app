@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:io';
 // import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -20,11 +21,13 @@ import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/session_response/session_response.dart';
 import 'package:proweb_student_app/models/session_token/session_token.dart';
 import 'package:proweb_student_app/models/user/user.dart';
+import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/global_context/global_context.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:talker_logger/talker_logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
@@ -420,21 +423,20 @@ class LocalData {
 
   Future<void> localLogOut() async {
     try {
-      await FirebaseMessaging.instance.deleteToken();
-      String? token = sl<SharedPreferences>().getString('tokenFirebase');
-      if (token != null) {
-        await sl<SharedPreferences>().remove('tokenFirebase');
-      }
+      // await FirebaseMessaging.instance.deleteToken();
+      // String? token = sl<SharedPreferences>().getString('tokenFirebase');
+      // if (token != null) {
+      //   await sl<SharedPreferences>().remove('tokenFirebase');
+      // }
       await _removeProfile();
       await _deleteAuth();
       sl<AuthBloc>().add(AuthEvent.logOut());
       final context = sl<NavigationService>().context;
-      if (context != null && context.mounted) {
-        // context.router.replaceAll([AuthRoute()]);
+      if (context != null && context.mounted && !context.router.isRoot) {
+        context.router.popUntilRoot();
       }
     } catch (e) {
-      // ignore: avoid_print
-      print(e);
+      TalkerLogger().error(e);
     }
   }
 
