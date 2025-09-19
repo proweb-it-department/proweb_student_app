@@ -10,6 +10,7 @@ import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -59,158 +60,31 @@ class ProfileDialog extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: EdgeInsets.only(top: 10),
-                  color: customColor?.containerColor,
-                  child: Material(
-                    color: Colors.transparent,
-                    child: Column(
-                      children: [
-                        profileBloc.state.when(
-                          view: (profile) {
-                            return ListTile(
-                              leading: Avatar(profile: profile),
-                              title: Text(
-                                sl<LocalData>().nameMyProfile(profile),
-                              ),
-                              subtitle: Text(
-                                sl<LocalData>().getContryCode(
-                                  phone: profile.phone,
-                                ),
-                              ),
-                            );
-                          },
-                          initial: () => CircularProgressIndicator(),
+              child: Column(
+                spacing: 2,
+                children: [
+                  profileBloc.state.when(
+                    view: (profile) {
+                      return ListTile(
+                        leading: Avatar(profile: profile),
+                        title: Text(sl<LocalData>().nameMyProfile(profile)),
+                        subtitle: Text(
+                          sl<LocalData>().getContryCode(phone: profile.phone),
                         ),
-                        Divider(),
-                        ...balanceBloc.state.when(
-                          initial: () => [
-                            Center(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                          ],
-                          balance: (balance) {
-                            return [
-                              ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pop('balance');
-                                },
-                                splashColor:
-                                    double.parse(balance.mainBalance) < 0
-                                    ? customColor?.errorFillOp
-                                    : customColor?.primaryTextColorOp,
-                                leading: Icon(
-                                  Icons.wallet,
-                                  color: double.parse(balance.mainBalance) < 0
-                                      ? customColor?.errorFill
-                                      : customColor?.primaryTextColor,
-                                ),
-                                tileColor: double.parse(balance.mainBalance) < 0
-                                    ? customColor?.errorFillOp
-                                    : Colors.transparent,
-                                title: Text(
-                                  'profile_dialog.balance'.tr(),
-                                  style: TextStyle(
-                                    color: double.parse(balance.mainBalance) < 0
-                                        ? customColor?.errorFill
-                                        : customColor?.primaryTextColor,
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  'global_data.sum'.tr(
-                                    namedArgs: {
-                                      'money': NumberFormat('#,##0', 'ru_RU')
-                                          .format(
-                                            double.parse(balance.mainBalance),
-                                          ),
-                                    },
-                                  ),
-                                  style: TextStyle(
-                                    color: double.parse(balance.mainBalance) < 0
-                                        ? customColor?.errorFill
-                                        : customColor?.primaryTextColor,
-                                  ),
-                                ),
-                                trailing: Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: double.parse(balance.mainBalance) < 0
-                                      ? customColor?.errorFill
-                                      : customColor?.primaryTextColor,
-                                ),
-                              ),
-                              ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pop('balance');
-                                },
-                                splashColor: customColor?.primaryBgOp,
-                                leading: Icon(
-                                  Icons.confirmation_number,
-                                  color: customColor?.primaryTextColor,
-                                ),
-                                title: Text(
-                                  'profile_dialog.voucher_balance'.tr(),
-                                ),
-                                subtitle: Text(
-                                  'global_data.sum'.tr(
-                                    namedArgs: {
-                                      'money': NumberFormat('#,##0', 'ru_RU')
-                                          .format(
-                                            double.parse(
-                                              balance.voucherBalance,
-                                            ),
-                                          ),
-                                    },
-                                  ),
-                                ),
-                                trailing: Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: customColor?.primaryTextColor,
-                                ),
-                              ),
-                              ListTile(
-                                onTap: () {
-                                  Navigator.of(context).pop('balance');
-                                },
-                                splashColor: customColor?.primaryBgOp,
-                                leading: SvgPicture.asset(
-                                  'assets/images/procoin.svg',
-                                  width: 25,
-                                ),
-                                title: Text('PROCOIN'),
-                                subtitle: Text(
-                                  NumberFormat('#,##0', 'ru_RU').format(
-                                    double.parse(balance.procoin ?? '0'),
-                                  ),
-                                ),
-                                trailing: Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: customColor?.primaryTextColor,
-                                ),
-                              ),
-                            ];
-                          },
-                          error: () => [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ErrorLoad(
-                                color: customColor?.primaryBg,
-                                action: FilledButton(
-                                  onPressed: () {
-                                    balanceBloc.add(BalanceEvent.started());
-                                  },
-                                  child: Text('global_data.try_again'.tr()),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Divider(height: 1),
-                        ListTile(
+                      );
+                    },
+                    initial: () => CircularProgressIndicator(),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsGeometry.only(top: 10),
+                    child: ListTileBuilder(
+                      isStart: true,
+                      isEnd: false,
+                      builder: (shape, contentPadding, isThreeLine) {
+                        return ListTile(
+                          shape: shape,
+                          contentPadding: contentPadding,
+                          tileColor: customColor?.containerColor,
                           onTap: () {
                             Navigator.of(context).pop('download');
                           },
@@ -223,25 +97,34 @@ class ProfileDialog extends StatelessWidget {
                             Icons.keyboard_arrow_right,
                             color: customColor?.primaryTextColor,
                           ),
-                        ),
-                        ListTile(
-                          onTap: () {
-                            Navigator.of(context).pop('files');
-                          },
-                          leading: Icon(
-                            color: customColor?.primaryTextColor,
-                            Icons.file_open_outlined,
-                          ),
-                          title: Text('profile_dialog.download_files'.tr()),
-                          trailing: Icon(
-                            Icons.keyboard_arrow_right,
-                            color: customColor?.primaryTextColor,
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ),
-                ),
+                  ListTileBuilder(
+                    isStart: false,
+                    isEnd: true,
+                    builder: (shape, contentPadding, isThreeLine) {
+                      return ListTile(
+                        shape: shape,
+                        contentPadding: contentPadding,
+                        tileColor: customColor?.containerColor,
+                        onTap: () {
+                          Navigator.of(context).pop('files');
+                        },
+                        leading: Icon(
+                          color: customColor?.primaryTextColor,
+                          Icons.file_open_outlined,
+                        ),
+                        title: Text('profile_dialog.download_files'.tr()),
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right,
+                          color: customColor?.primaryTextColor,
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
             Padding(

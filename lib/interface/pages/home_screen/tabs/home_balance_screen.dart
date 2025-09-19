@@ -241,6 +241,7 @@ class TransactionItem extends StatelessWidget {
               isThreeLine: isThreeLine,
               selectedColor: customColors?.primaryTextColor,
               selectedTileColor: customColors?.primaryBg,
+              minTileHeight: 30,
               selected: true,
               shape: shape,
               onTap: () {

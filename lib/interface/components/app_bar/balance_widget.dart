@@ -6,12 +6,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/models/balance/balance.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class BalanceWidget extends StatefulWidget {
   const BalanceWidget({super.key});
@@ -26,7 +26,6 @@ class _BalanceWidgetState extends State<BalanceWidget>
   final GlobalKey _contentKey = GlobalKey();
   late AnimationController _controller;
   late Animation<Rect?> _rectAnimation;
-  late Animation<double> _opacityAnimation;
   OverlayEntry? _overlayEntry;
   bool _showContent = false;
 
@@ -35,13 +34,8 @@ class _BalanceWidgetState extends State<BalanceWidget>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 150),
     );
-
-    _opacityAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -77,9 +71,9 @@ class _BalanceWidgetState extends State<BalanceWidget>
     final screenSize = MediaQuery.of(context).size;
 
     final endRect = Rect.fromLTWH(
-      screenSize.width * 0.05,
+      screenSize.width * 0.02,
       startOffset.dy,
-      screenSize.width * 0.9,
+      screenSize.width * 0.96,
       renderBox.size.height,
     );
 
@@ -110,7 +104,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
                   Positioned.fill(
                     child: GestureDetector(
                       onTap: _hideOverlay,
-                      child: Container(color: Colors.transparent),
+                      child: Container(color: Colors.black.withAlpha(70)),
                     ),
                   ),
                   Positioned(
@@ -119,7 +113,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
                     width: rect.width,
                     child: Material(
                       borderRadius: BorderRadius.circular(20),
-                      elevation: 8,
+
                       color: customColor?.containerColor,
                       clipBehavior: Clip.antiAlias,
                       child: SizeTransition(
@@ -127,7 +121,12 @@ class _BalanceWidgetState extends State<BalanceWidget>
                         axisAlignment: -1.0,
                         child: Padding(
                           key: _contentKey,
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.only(
+                            top: 5,
+                            left: 10,
+                            right: 10,
+                            bottom: 10,
+                          ),
                           child: Opacity(
                             opacity: _showContent ? 1 : 0,
                             child: BlocBuilder<BalanceBloc, BalanceState>(
@@ -165,195 +164,9 @@ class _BalanceWidgetState extends State<BalanceWidget>
                                         );
                                       },
                                       balance: (balance) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          spacing: 2,
-                                          children: [
-                                            ListTileBuilder(
-                                              isStart: true,
-                                              isEnd: false,
-                                              builder: (shape, contentPadding, isThreeLine) {
-                                                return ListTile(
-                                                  shape: shape,
-                                                  contentPadding:
-                                                      contentPadding,
-
-                                                  onTap: () {
-                                                    _hideOverlay();
-                                                    context.router.navigate(
-                                                      HomeBalanceRoute(),
-                                                    );
-                                                  },
-                                                  splashColor:
-                                                      double.parse(
-                                                            balance.mainBalance,
-                                                          ) <
-                                                          0
-                                                      ? customColor?.errorFillOp
-                                                      : customColor
-                                                            ?.primaryTextColorOp,
-                                                  leading: Icon(
-                                                    Icons.wallet,
-                                                    color:
-                                                        double.parse(
-                                                              balance
-                                                                  .mainBalance,
-                                                            ) <
-                                                            0
-                                                        ? customColor?.errorFill
-                                                        : customColor
-                                                              ?.primaryTextColor,
-                                                  ),
-                                                  tileColor:
-                                                      double.parse(
-                                                            balance.mainBalance,
-                                                          ) <
-                                                          0
-                                                      ? customColor?.errorFillOp
-                                                      : customColor?.primaryBg,
-                                                  title: Text(
-                                                    'profile_dialog.balance'
-                                                        .tr(),
-                                                    style: TextStyle(
-                                                      color:
-                                                          double.parse(
-                                                                balance
-                                                                    .mainBalance,
-                                                              ) <
-                                                              0
-                                                          ? customColor
-                                                                ?.errorFill
-                                                          : customColor
-                                                                ?.primaryTextColor,
-                                                    ),
-                                                  ),
-                                                  subtitle: Text(
-                                                    'global_data.sum'.tr(
-                                                      namedArgs: {
-                                                        'money':
-                                                            NumberFormat(
-                                                              '#,##0',
-                                                              'ru_RU',
-                                                            ).format(
-                                                              double.parse(
-                                                                balance
-                                                                    .mainBalance,
-                                                              ),
-                                                            ),
-                                                      },
-                                                    ),
-                                                    style: TextStyle(
-                                                      color:
-                                                          double.parse(
-                                                                balance
-                                                                    .mainBalance,
-                                                              ) <
-                                                              0
-                                                          ? customColor
-                                                                ?.errorFill
-                                                          : customColor
-                                                                ?.primaryTextColor,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                            ListTileBuilder(
-                                              isStart: false,
-                                              isEnd: false,
-                                              builder:
-                                                  (
-                                                    shape,
-                                                    contentPadding,
-                                                    isThreeLine,
-                                                  ) {
-                                                    return ListTile(
-                                                      tileColor: customColor
-                                                          ?.primaryBg,
-                                                      shape: shape,
-                                                      contentPadding:
-                                                          contentPadding,
-                                                      onTap: () {
-                                                        _hideOverlay();
-                                                        context.router.navigate(
-                                                          HomeBalanceRoute(),
-                                                        );
-                                                      },
-                                                      splashColor: customColor
-                                                          ?.primaryBgOp,
-                                                      leading: Icon(
-                                                        Icons
-                                                            .confirmation_number,
-                                                        color: customColor
-                                                            ?.primaryTextColor,
-                                                      ),
-                                                      title: Text(
-                                                        'profile_dialog.voucher_balance'
-                                                            .tr(),
-                                                      ),
-                                                      subtitle: Text(
-                                                        'global_data.sum'.tr(
-                                                          namedArgs: {
-                                                            'money':
-                                                                NumberFormat(
-                                                                  '#,##0',
-                                                                  'ru_RU',
-                                                                ).format(
-                                                                  double.parse(
-                                                                    balance
-                                                                        .voucherBalance,
-                                                                  ),
-                                                                ),
-                                                          },
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                            ),
-                                            ListTileBuilder(
-                                              isStart: false,
-                                              isEnd: true,
-
-                                              builder:
-                                                  (
-                                                    shape,
-                                                    contentPadding,
-                                                    isThreeLine,
-                                                  ) {
-                                                    return ListTile(
-                                                      shape: shape,
-                                                      contentPadding:
-                                                          contentPadding,
-                                                      tileColor: customColor
-                                                          ?.primaryBg,
-                                                      onTap: () {
-                                                        _hideOverlay();
-                                                        context.router.navigate(
-                                                          HomeBalanceRoute(),
-                                                        );
-                                                      },
-                                                      splashColor: customColor
-                                                          ?.primaryBgOp,
-                                                      leading: SvgPicture.asset(
-                                                        'assets/images/procoin.svg',
-                                                        width: 25,
-                                                      ),
-                                                      title: Text('PROCOIN'),
-                                                      subtitle: Text(
-                                                        NumberFormat(
-                                                          '#,##0',
-                                                          'ru_RU',
-                                                        ).format(
-                                                          double.parse(
-                                                            balance.procoin ??
-                                                                '0',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                            ),
-                                          ],
+                                        return BalanceView(
+                                          balance: balance,
+                                          onTap: onTap,
                                         );
                                       },
                                     ),
@@ -377,6 +190,11 @@ class _BalanceWidgetState extends State<BalanceWidget>
     Overlay.of(context).insert(_overlayEntry!);
     await Future.delayed(const Duration(milliseconds: 16));
     _controller.forward(from: 0);
+  }
+
+  void onTap() {
+    _hideOverlay();
+    context.router.navigate(HomeBalanceRoute());
   }
 
   @override
@@ -418,6 +236,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
                 }
                 return InkWell(
                   onTap: _showOverlay,
+                  onLongPress: _showOverlay,
                   borderRadius: BorderRadius.circular(40),
                   child: Ink(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -503,6 +322,120 @@ class _BalanceWidgetState extends State<BalanceWidget>
           },
         ),
       ),
+    );
+  }
+}
+
+class BalanceView extends StatelessWidget {
+  final Balance balance;
+  final Function() onTap;
+  const BalanceView({super.key, required this.balance, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 2,
+      children: [
+        ListTileBuilder(
+          isStart: true,
+          isEnd: false,
+          builder: (shape, contentPadding, isThreeLine) {
+            return ListTile(
+              shape: shape,
+              contentPadding: contentPadding,
+
+              onTap: onTap,
+              splashColor: double.parse(balance.mainBalance) < 0
+                  ? customColors?.errorFillOp
+                  : customColors?.primaryTextColorOp,
+              leading: Icon(
+                Icons.wallet,
+                color: double.parse(balance.mainBalance) < 0
+                    ? customColors?.errorFill
+                    : customColors?.primaryTextColor,
+              ),
+              tileColor: double.parse(balance.mainBalance) < 0
+                  ? customColors?.errorFillOp
+                  : customColors?.primaryBg,
+              title: Text(
+                'profile_dialog.balance'.tr(),
+                style: TextStyle(
+                  color: double.parse(balance.mainBalance) < 0
+                      ? customColors?.errorFill
+                      : customColors?.primaryTextColor,
+                ),
+              ),
+              subtitle: Text(
+                'global_data.sum'.tr(
+                  namedArgs: {
+                    'money': NumberFormat(
+                      '#,##0',
+                      'ru_RU',
+                    ).format(double.parse(balance.mainBalance)),
+                  },
+                ),
+                style: TextStyle(
+                  color: double.parse(balance.mainBalance) < 0
+                      ? customColors?.errorFill
+                      : customColors?.primaryTextColor,
+                ),
+              ),
+            );
+          },
+        ),
+        ListTileBuilder(
+          isStart: false,
+          isEnd: false,
+          builder: (shape, contentPadding, isThreeLine) {
+            return ListTile(
+              tileColor: customColors?.primaryBg,
+              shape: shape,
+              contentPadding: contentPadding,
+              onTap: onTap,
+              splashColor: customColors?.primaryBgOp,
+              leading: Icon(
+                Icons.confirmation_number,
+                color: customColors?.primaryTextColor,
+              ),
+              title: Text('profile_dialog.voucher_balance'.tr()),
+              subtitle: Text(
+                'global_data.sum'.tr(
+                  namedArgs: {
+                    'money': NumberFormat(
+                      '#,##0',
+                      'ru_RU',
+                    ).format(double.parse(balance.voucherBalance)),
+                  },
+                ),
+              ),
+            );
+          },
+        ),
+        ListTileBuilder(
+          isStart: false,
+          isEnd: true,
+
+          builder: (shape, contentPadding, isThreeLine) {
+            return ListTile(
+              shape: shape,
+              contentPadding: contentPadding,
+              tileColor: customColors?.primaryBg,
+              onTap: onTap,
+              splashColor: customColors?.primaryBgOp,
+              leading: SvgPicture.asset('assets/images/procoin.svg', width: 25),
+              title: Text('PROCOIN'),
+              subtitle: Text(
+                NumberFormat(
+                  '#,##0',
+                  'ru_RU',
+                ).format(double.parse(balance.procoin ?? '0')),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
