@@ -5,7 +5,6 @@ import 'package:proweb_student_app/bloc/auth/auth_bloc.dart';
 import 'package:proweb_student_app/interface/components/anamated_logo_features/anamated_logo.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
 import 'package:proweb_student_app/interface/pages/auth/auth_screen/auth_screen.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class AppScreen extends StatelessWidget {

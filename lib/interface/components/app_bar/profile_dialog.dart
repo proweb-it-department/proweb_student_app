@@ -2,14 +2,11 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proweb_student_app/api/language/language.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
-import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
-import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -23,7 +20,6 @@ class ProfileDialog extends StatelessWidget {
     final list = serviceLocal.loadloadCachedLangList();
     CustomColors? customColor = Theme.of(context).extension<CustomColors>();
     final profileBloc = context.watch<ProfileDataBloc>();
-    final balanceBloc = context.watch<BalanceBloc>();
     return Dialog(
       insetPadding: EdgeInsets.all(12),
       clipBehavior: Clip.antiAliasWithSaveLayer,

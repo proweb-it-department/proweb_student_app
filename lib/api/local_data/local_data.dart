@@ -21,7 +21,6 @@ import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/session_response/session_response.dart';
 import 'package:proweb_student_app/models/session_token/session_token.dart';
 import 'package:proweb_student_app/models/user/user.dart';
-import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/global_context/global_context.dart';

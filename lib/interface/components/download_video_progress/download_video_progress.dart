@@ -6,7 +6,6 @@ import 'package:proweb_student_app/models/video_sendet_model/video_sendet_model.
 import 'package:proweb_student_app/utils/download_manager/video_download_manager.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class DownloadVideoProgress extends StatelessWidget {
   final VideoSendetModel video;
