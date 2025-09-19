@@ -171,5 +171,6 @@ class LimitRequest {
   static final int products = 100;
   static final int services = 100;
   static final int tarif = 100;
+  static final int purchasesTarif = 100;
   static final int purchasesService = 100;
 }

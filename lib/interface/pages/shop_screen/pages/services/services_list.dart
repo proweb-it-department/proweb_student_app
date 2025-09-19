@@ -346,7 +346,7 @@ class _ServiceItemState extends State<ServiceItem> {
                           color: customColors?.primaryTextColor,
                         ),
                       ),
-                      trailing: month != null
+                      trailing: month != null && month != 0
                           ? Row(
                               spacing: 5,
                               mainAxisSize: MainAxisSize.min,

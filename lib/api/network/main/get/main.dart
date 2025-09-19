@@ -25,6 +25,7 @@ import 'package:proweb_student_app/models/module_material/module_material.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_purchases/my_purchases.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
+import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/product_module_access.dart';
 import 'package:proweb_student_app/models/products/products.dart';
 import 'package:proweb_student_app/models/products_modules/products_modules.dart';
@@ -1172,6 +1173,27 @@ class GetResponsesMain {
       return response.whenOrNull(
         lazylist: (count, list) {
           return ResponseLazeList<MyPurchasesService>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<ResponseLazeList<MyPurchasesTarif>?> myPurchasesTarif(
+    int offset,
+    int limit,
+  ) async {
+    String path =
+        '/api/v1/packages/purchased/my-purchases/?offset=$offset&$limit';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MyPurchasesTarif>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MyPurchasesTarif>.fromJson(
+        r,
+        (data) => MyPurchasesTarif.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<MyPurchasesTarif>(count: count, list: list);
         },
       );
     });
