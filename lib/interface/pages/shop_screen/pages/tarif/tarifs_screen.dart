@@ -18,6 +18,7 @@ import 'package:proweb_student_app/interface/components/course_avatar/course_ava
 import 'package:proweb_student_app/interface/components/gradient_text/gradient_text.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/tarif_model/tarif_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -115,9 +116,10 @@ class TarifList extends StatelessWidget {
 }
 
 class TarifItem extends StatefulWidget {
-  final TarifForSale tarif;
+  final TarifForSale? tarif;
+  final MyPurchasesTarif? purchased;
   final int? tarifId;
-  const TarifItem({super.key, required this.tarif, this.tarifId});
+  const TarifItem({super.key, this.tarif, this.tarifId, this.purchased});
 
   @override
   State<TarifItem> createState() => _TarifItemState();
@@ -127,10 +129,12 @@ class _TarifItemState extends State<TarifItem> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.tarifId == null || widget.tarifId != widget.tarif.id) {
+      if ((widget.tarifId == null || widget.tarifId != widget.tarif?.id)) {
         return;
       }
       if (!mounted) return;
+      if (widget.purchased != null) return;
+
       _showBottomSheet(context, 0);
     });
     super.initState();
@@ -140,7 +144,10 @@ class _TarifItemState extends State<TarifItem> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final width = MediaQuery.of(context).size.width * .9;
-
+    final products = widget.tarif?.products;
+    final productsPurchase = widget.purchased?.products;
+    final services = widget.tarif?.services;
+    final servicesPurchase = widget.purchased?.services;
     return ClipRRect(
       borderRadius: BorderRadius.circular(22),
       child: Container(
@@ -161,27 +168,38 @@ class _TarifItemState extends State<TarifItem> {
               children: [
                 TarifInfoHeader(
                   tarif: widget.tarif,
+                  purchased: widget.purchased,
                   callback: _showBottomSheet,
                 ),
-                if (widget.tarif.products != null &&
-                    widget.tarif.products!.isNotEmpty)
+                if (widget.tarif?.products != null &&
+                    widget.tarif?.products?.isNotEmpty == true)
                   Padding(
                     padding: EdgeInsetsGeometry.only(top: 10),
                     child: Divider(),
                   ),
-                if (widget.tarif.products != null &&
-                    widget.tarif.products!.isNotEmpty)
+                if (productsPurchase != null &&
+                    productsPurchase.isNotEmpty == true)
                   TarifProductList(
-                    products: widget.tarif.products!,
+                    productsPurchased: productsPurchase,
                     startIndex: 1,
                     callback: _showBottomSheet,
                   ),
-                if (widget.tarif.services != null &&
-                    widget.tarif.services!.isNotEmpty)
+                if (products != null && products.isNotEmpty == true)
+                  TarifProductList(
+                    products: products,
+                    startIndex: 1,
+                    callback: _showBottomSheet,
+                  ),
+                if (servicesPurchase != null && servicesPurchase.isNotEmpty)
                   TarifServiceList(
-                    services: widget.tarif.services!,
-                    startIndex: (1 + (widget.tarif.products?.length ?? 0))
-                        .toInt(),
+                    servicesPurchase: servicesPurchase,
+                    startIndex: (1 + (productsPurchase?.length ?? 0)).toInt(),
+                    callback: _showBottomSheet,
+                  ),
+                if (services != null && services.isNotEmpty)
+                  TarifServiceList(
+                    services: services,
+                    startIndex: (1 + (products?.length ?? 0)).toInt(),
                     callback: _showBottomSheet,
                   ),
               ],
@@ -202,14 +220,20 @@ class _TarifItemState extends State<TarifItem> {
       backgroundColor: Colors.transparent,
 
       builder: (_) {
-        return DraggableModalWithAppBar(tarif: widget.tarif, index: index);
+        return DraggableModalWithAppBar(
+          tarif: widget.tarif,
+          index: index,
+          purchase: widget.purchased,
+        );
       },
     );
   }
 
   Widget? _backgroundTarif(BuildContext context) {
-    final courceIcon = widget.tarif.course?.icon;
-    final courceColor = widget.tarif.course?.color;
+    final courceIcon =
+        widget.tarif?.course?.icon ?? widget.purchased?.course?.icon;
+    final courceColor =
+        widget.tarif?.course?.color ?? widget.purchased?.course?.color;
     if (courceIcon != null && courceColor != null) {
       final customColors = Theme.of(context).extension<CustomColors>();
       final width = MediaQuery.of(context).size.width * .9;
@@ -248,8 +272,10 @@ class _TarifItemState extends State<TarifItem> {
   }
 
   Widget? _iconTarif(BuildContext context) {
-    final courceIcon = widget.tarif.course?.icon;
-    final courceColor = widget.tarif.course?.color;
+    final courceIcon =
+        widget.tarif?.course?.icon ?? widget.purchased?.course?.icon;
+    final courceColor =
+        widget.tarif?.course?.color ?? widget.purchased?.course?.color;
     if (courceIcon != null && courceColor != null) {
       final width = MediaQuery.of(context).size.width * .9;
 
@@ -275,12 +301,14 @@ class _TarifItemState extends State<TarifItem> {
 }
 
 class DraggableModalWithAppBar extends StatefulWidget {
-  final TarifForSale tarif;
+  final TarifForSale? tarif;
+  final MyPurchasesTarif? purchase;
   final int index;
   const DraggableModalWithAppBar({
     super.key,
-    required this.tarif,
+    this.tarif,
     required this.index,
+    this.purchase,
   });
 
   @override
@@ -305,6 +333,10 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
 
   @override
   Widget build(BuildContext context) {
+    final products = widget.tarif?.products;
+    final productsPurchase = widget.purchase?.products;
+    final services = widget.tarif?.products;
+    final servicesPurchase = widget.purchase?.services;
     final statusBarHeight = MediaQueryData.fromView(
       View.of(context),
     ).padding.top;
@@ -314,13 +346,11 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
     final customColors = Theme.of(context).extension<CustomColors>();
     final int countPage =
         1 +
-        (widget.tarif.products?.length ?? 0) +
-        (widget.tarif.services?.length ?? 0);
+        ((products ?? productsPurchase)?.length ?? 0) +
+        ((services ?? servicesPurchase)?.length ?? 0);
     return NotificationListener<DraggableScrollableNotification>(
       onNotification: (notification) {
         setState(() => _extent = notification.extent);
-
-        // 👇 проверяем после скролла
         if (notification.extent < closeThreshold) {
           Navigator.of(context).pop();
         }
@@ -333,7 +363,20 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
         maxChildSize: 1.0,
         builder: (context, scrollController) {
           final isFullScreen = _extent >= 0.99;
-
+          final products = widget.tarif?.products;
+          final productsPurchase = widget.purchase?.products;
+          final services = widget.tarif?.services;
+          final servicesPurchase = widget.purchase?.services;
+          final paidTarif = double.parse(widget.purchase?.paid ?? '0');
+          final priceTarif = double.parse(widget.purchase?.price ?? '0');
+          String priceFormater = NumberFormat(
+            '#,##0',
+            'ru_RU',
+          ).format(double.parse(widget.purchase?.price ?? '0'));
+          String paidFormater = NumberFormat(
+            '#,##0',
+            'ru_RU',
+          ).format(double.parse(widget.purchase?.paid ?? '0'));
           return ClipRRect(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(isFullScreen ? 0 : 22),
@@ -362,17 +405,14 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
                       TarifInforamtion(
                         isFullScreen: isFullScreen,
                         tarif: widget.tarif,
+                        purchase: widget.purchase,
                         scrollController: _currentPage == 0
                             ? scrollController
                             : null,
                       ),
-                      if (widget.tarif.products?.isNotEmpty == true)
-                        ...List.generate(widget.tarif.products!.length, (
-                          index,
-                        ) {
-                          final product = widget.tarif.products!.elementAt(
-                            index,
-                          );
+                      if (products?.isNotEmpty == true)
+                        ...List.generate(products!.length, (index) {
+                          final product = products.elementAt(index);
                           return TarifInforamtionProduct(
                             isFullScreen: isFullScreen,
                             scrollController: _currentPage == (index + 1)
@@ -381,23 +421,41 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
                             product: product,
                           );
                         }),
-                      if (widget.tarif.services?.isNotEmpty == true)
-                        ...List.generate(widget.tarif.services!.length, (
-                          index,
-                        ) {
-                          final service = widget.tarif.services!.elementAt(
-                            index,
+                      if (productsPurchase?.isNotEmpty == true)
+                        ...List.generate(productsPurchase!.length, (index) {
+                          final product = productsPurchase.elementAt(index);
+                          return TarifInforamtionProduct(
+                            isFullScreen: isFullScreen,
+                            scrollController: _currentPage == (index + 1)
+                                ? scrollController
+                                : null,
+                            productPurchased: product,
                           );
+                        }),
+                      if (services?.isNotEmpty == true)
+                        ...List.generate(services!.length, (index) {
+                          final service = services.elementAt(index);
                           return TarifInforamtionService(
                             isFullScreen: isFullScreen,
                             scrollController:
                                 _currentPage ==
-                                    (index +
-                                        (widget.tarif.products?.length ?? 0) +
-                                        1)
+                                    (index + (products?.length ?? 0) + 1)
                                 ? scrollController
                                 : null,
                             service: service,
+                          );
+                        }),
+                      if (servicesPurchase?.isNotEmpty == true)
+                        ...List.generate(servicesPurchase!.length, (index) {
+                          final service = servicesPurchase.elementAt(index);
+                          return TarifInforamtionService(
+                            isFullScreen: isFullScreen,
+                            scrollController:
+                                _currentPage ==
+                                    (index + (products?.length ?? 0) + 1)
+                                ? scrollController
+                                : null,
+                            servicePurchase: service,
                           );
                         }),
                     ],
@@ -442,45 +500,82 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
                                 );
                               }),
                             ),
-                            Text('Для покупки тарифа свяжитесь с менеджером'),
-                            Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(10),
-                                onTap: () {
-                                  sl<LocalData>().openLink(
-                                    url: 'tel:+998712036060',
-                                  );
-                                },
-                                child: Ink(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 16,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment(-0.766, -1.0),
-                                      end: Alignment(1.0, 0.5),
-                                      colors: [
-                                        Color(0xFF5296FD),
-                                        Color(0xFFBF57FF),
-                                      ],
-                                      stops: [0.28, 1.0],
+                            if (widget.purchase == null)
+                              Text('Для покупки тарифа свяжитесь с менеджером'),
+                            if (widget.purchase == null)
+                              Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(10),
+                                  onTap: () {
+                                    sl<LocalData>().openLink(
+                                      url: 'tel:+998712036060',
+                                    );
+                                  },
+                                  child: Ink(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 16,
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'Связаться',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment(-0.766, -1.0),
+                                        end: Alignment(1.0, 0.5),
+                                        colors: [
+                                          Color(0xFF5296FD),
+                                          Color(0xFFBF57FF),
+                                        ],
+                                        stops: [0.28, 1.0],
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        'Связаться',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
+                            if (widget.purchase != null && priceTarif > 0)
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 5,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'global_data.sum'.tr(
+                                          namedArgs: {'money': paidFormater},
+                                        ),
+                                      ),
+                                      Text(
+                                        'global_data.sum'.tr(
+                                          namedArgs: {'money': priceFormater},
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  if (priceTarif > 0)
+                                    LinearProgressIndicator(
+                                      backgroundColor:
+                                          customColors?.containerColor,
+                                      color: Color(0xFF5296FD),
+                                      stopIndicatorColor: Color(0xFF5296FD),
+                                      minHeight: 10,
+                                      value: paidTarif == 0
+                                          ? 0
+                                          : paidTarif / priceTarif,
+                                      year2023: false,
+                                    ),
+                                ],
+                              ),
                           ],
                         ),
                       ),
@@ -631,14 +726,16 @@ class _BaseHeaderTarifDitailState extends State<BaseHeaderTarifDitail>
 }
 
 class TarifInforamtion extends StatelessWidget {
-  final TarifForSale tarif;
+  final TarifForSale? tarif;
+  final MyPurchasesTarif? purchase;
   final bool isFullScreen;
   final ScrollController? scrollController;
   const TarifInforamtion({
     super.key,
-    required this.tarif,
+    this.tarif,
     required this.isFullScreen,
     this.scrollController,
+    this.purchase,
   });
 
   @override
@@ -649,8 +746,12 @@ class TarifInforamtion extends StatelessWidget {
     String priceFormater = NumberFormat(
       '#,##0',
       'ru_RU',
-    ).format(double.parse(tarif.price ?? '0'));
+    ).format(double.parse(tarif?.price ?? purchase?.price ?? '0'));
     final customColors = Theme.of(context).extension<CustomColors>();
+    final services = tarif?.services;
+    final servicesPurchase = purchase?.services;
+    final products = tarif?.products;
+    final productsPurchase = purchase?.products;
     return ListView(
       padding: EdgeInsets.only(bottom: 150),
       controller: scrollController,
@@ -678,21 +779,22 @@ class TarifInforamtion extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    tarif.name ?? '',
+                    tarif?.name ?? purchase?.name ?? '',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  Text(
-                    'global_data.sum'.tr(namedArgs: {'money': priceFormater}),
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                  if (purchase == null)
+                    Text(
+                      'global_data.sum'.tr(namedArgs: {'money': priceFormater}),
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -711,31 +813,32 @@ class TarifInforamtion extends StatelessWidget {
             isStart: true,
             isEnd: true,
             builder: (shape, contentPadding, isThreeLine) {
+              String? icon = tarif?.course?.icon ?? purchase?.course?.icon;
+              String? color = tarif?.course?.color ?? purchase?.course?.color;
               return ListTile(
                 shape: shape,
                 contentPadding: contentPadding,
                 tileColor: customColors?.containerColor,
-                leading: CourseAvatar(
-                  icon: tarif.course!.icon!,
-                  color: HexColor(tarif.course!.color!),
-                ),
+                leading: icon != null && color != null
+                    ? CourseAvatar(icon: icon, color: HexColor(color))
+                    : Icon(Icons.play_lesson),
                 title: Text(
-                  tarif.course?.name ?? '',
+                  tarif?.course?.name ?? purchase?.course?.name ?? '',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: Text(
-                  tarif.course?.language == 'ru' ? 'Русский' : 'O`zbek',
+                  tarif?.course?.language == 'ru' ? 'Русский' : 'O`zbek',
                 ),
               );
             },
           ),
         ),
-        if (tarif.services?.isNotEmpty == true ||
-            tarif.products?.isNotEmpty == true)
+        if ((services ?? servicesPurchase)?.isNotEmpty == true ||
+            (productsPurchase ?? products)?.isNotEmpty == true)
           Divider(height: 30),
-        if (tarif.services?.isNotEmpty == true ||
-            tarif.products?.isNotEmpty == true)
+        if ((services ?? servicesPurchase)?.isNotEmpty == true ||
+            (productsPurchase ?? products)?.isNotEmpty == true)
           Padding(
             padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
             child: Text(
@@ -744,20 +847,21 @@ class TarifInforamtion extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
           ),
-        if (tarif.services?.isNotEmpty == true ||
-            tarif.products?.isNotEmpty == true)
+        if ((services ?? servicesPurchase)?.isNotEmpty == true ||
+            (productsPurchase ?? products)?.isNotEmpty == true)
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 10,
             ).add(EdgeInsetsGeometry.only(top: 10)),
             child: Column(
               children: [
-                if (tarif.products?.isNotEmpty == true)
+                if ((productsPurchase ?? products)?.isNotEmpty == true)
                   Padding(
                     padding: EdgeInsetsGeometry.only(bottom: 2),
                     child: ListTileBuilder(
                       isStart: true,
-                      isEnd: tarif.services?.isNotEmpty == false,
+                      isEnd:
+                          (services ?? servicesPurchase)?.isNotEmpty == false,
                       builder: (shape, contentPadding, isThreeLine) {
                         return ListTile(
                           shape: shape,
@@ -769,14 +873,17 @@ class TarifInforamtion extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          trailing: Text('${tarif.products?.length ?? 0}'),
+                          trailing: Text(
+                            '${(productsPurchase ?? products)?.length ?? 0}',
+                          ),
                         );
                       },
                     ),
                   ),
-                if (tarif.services?.isNotEmpty == true)
+                if ((services ?? servicesPurchase)?.isNotEmpty == true)
                   ListTileBuilder(
-                    isStart: tarif.products?.isNotEmpty == false,
+                    isStart:
+                        (productsPurchase ?? products)?.isNotEmpty == false,
                     isEnd: true,
                     builder: (shape, contentPadding, isThreeLine) {
                       return ListTile(
@@ -789,60 +896,66 @@ class TarifInforamtion extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Text('${tarif.services?.length ?? 0}'),
+                        trailing: Text(
+                          '${(services ?? servicesPurchase)?.length ?? 0}',
+                        ),
                       );
                     },
                   ),
               ],
             ),
           ),
-        Divider(height: 30),
-        Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
-          child: Text(
-            'Доступные способы оплаты',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 18),
+        if (purchase == null) Divider(height: 30),
+        if (purchase == null)
+          Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+            child: Text(
+              'Доступные способы оплаты',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10),
-          child: ListTileBuilder(
-            isStart: true,
-            isEnd: true,
-            builder: (shape, contentPadding, isThreeLine) {
-              return ListTile(
-                shape: shape,
-                contentPadding: contentPadding,
-                tileColor: customColors?.containerColor,
-                leading: Icon(Icons.info),
-                isThreeLine: true,
-                title: Text(
-                  'Рассрочка',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text(
-                  'Оплата тарифа обучения предоставляется в рассрочку без процентов. Списание средств производится после каждого урока. Сумма списания зависит от номера урока, на котором был активирован тариф.',
-                ),
-              );
-            },
+        if (purchase == null)
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListTileBuilder(
+              isStart: true,
+              isEnd: true,
+              builder: (shape, contentPadding, isThreeLine) {
+                return ListTile(
+                  shape: shape,
+                  contentPadding: contentPadding,
+                  tileColor: customColors?.containerColor,
+                  leading: Icon(Icons.info),
+                  isThreeLine: true,
+                  title: Text(
+                    'Рассрочка',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    'Оплата тарифа обучения предоставляется в рассрочку без процентов. Списание средств производится после каждого урока. Сумма списания зависит от номера урока, на котором был активирован тариф.',
+                  ),
+                );
+              },
+            ),
           ),
-        ),
       ],
     );
   }
 }
 
 class TarifInforamtionProduct extends StatelessWidget {
-  final ProductsinTarif product;
+  final ProductsinTarif? product;
+  final ProductsTarif? productPurchased;
   final bool isFullScreen;
   final ScrollController? scrollController;
   const TarifInforamtionProduct({
     super.key,
-    required this.product,
+    this.product,
     required this.isFullScreen,
     this.scrollController,
+    this.productPurchased,
   });
   String secondToTime(double seconds) {
     final nulNumber = sl<LocalData>().nulNumber;
@@ -936,11 +1049,17 @@ class TarifInforamtionProduct extends StatelessWidget {
                                   'shop_app.countModule'.tr(
                                     namedArgs: {
                                       'count':
-                                          (product.product?.moduleCount ?? 0)
+                                          (product?.product?.moduleCount ??
+                                                  productPurchased
+                                                      ?.product
+                                                      ?.moduleCount ??
+                                                  0)
                                               .toString(),
                                     },
                                   ),
-                                  product.product?.moduleCount ?? 0,
+                                  product?.product?.moduleCount ??
+                                      productPurchased?.product?.moduleCount ??
+                                      0,
                                 ),
                               ),
                             ],
@@ -951,7 +1070,11 @@ class TarifInforamtionProduct extends StatelessWidget {
                               Icon(Icons.access_time),
                               Text(
                                 secondToTime(
-                                  (product.product?.totalCountTime ?? 0)
+                                  (product?.product?.totalCountTime ??
+                                          productPurchased
+                                              ?.product
+                                              ?.totalCountTime ??
+                                          0)
                                       .toDouble(),
                                 ),
                               ),
@@ -971,7 +1094,9 @@ class TarifInforamtionProduct extends StatelessWidget {
                           image: DecorationImage(
                             fit: BoxFit.cover,
                             image: CachedNetworkImageProvider(
-                              product.product?.cover ?? '',
+                              product?.product?.cover ??
+                                  productPurchased?.product?.cover ??
+                                  '',
                             ),
                           ),
                           border: Border(
@@ -1001,11 +1126,13 @@ class TarifInforamtionProduct extends StatelessWidget {
             spacing: 10,
             children: [
               Text(
-                product.product?.name ?? '',
+                product?.product?.name ?? productPurchased?.product?.name ?? '',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                product.product?.description ?? '',
+                product?.product?.description ??
+                    productPurchased?.product?.description ??
+                    '',
                 style: TextStyle(
                   color: customColors?.primaryTextColor.withAlpha(
                     (255 * 0.7).toInt(),
@@ -1021,14 +1148,16 @@ class TarifInforamtionProduct extends StatelessWidget {
 }
 
 class TarifInforamtionService extends StatelessWidget {
-  final Services service;
+  final Services? service;
+  final ServicesTarif? servicePurchase;
   final bool isFullScreen;
   final ScrollController? scrollController;
   const TarifInforamtionService({
     super.key,
-    required this.service,
+    this.service,
     required this.isFullScreen,
     this.scrollController,
+    this.servicePurchase,
   });
 
   @override
@@ -1055,7 +1184,11 @@ class TarifInforamtionService extends StatelessWidget {
             height: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: CachedNetworkImageProvider(service.service?.cover ?? ''),
+                image: CachedNetworkImageProvider(
+                  service?.service?.cover ??
+                      servicePurchase?.service?.cover ??
+                      '',
+                ),
                 fit: BoxFit.cover,
               ),
             ),
@@ -1070,11 +1203,13 @@ class TarifInforamtionService extends StatelessWidget {
             spacing: 10,
             children: [
               Text(
-                service.service?.name ?? '',
+                service?.service?.name ?? servicePurchase?.service?.name ?? '',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               Text(
-                service.service?.description ?? '',
+                service?.service?.description ??
+                    servicePurchase?.service?.description ??
+                    '',
                 style: TextStyle(
                   color: customColors?.primaryTextColor.withAlpha(
                     (255 * 0.7).toInt(),
@@ -1090,17 +1225,19 @@ class TarifInforamtionService extends StatelessWidget {
 }
 
 class TarifInfoHeader extends StatelessWidget {
-  final TarifForSale tarif;
+  final TarifForSale? tarif;
+  final MyPurchasesTarif? purchased;
   final Function(BuildContext context, int index) callback;
   const TarifInfoHeader({
     super.key,
-    required this.tarif,
+    this.tarif,
     required this.callback,
+    this.purchased,
   });
 
   @override
   Widget build(BuildContext context) {
-    final tarifPrice = tarif.price;
+    final tarifPrice = tarif?.price;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -1114,7 +1251,7 @@ class TarifInfoHeader extends StatelessWidget {
             bottom: 5,
           ),
           child: AutoSizeText(
-            tarif.name ?? '',
+            tarif?.name ?? purchased?.name ?? '',
             maxLines: 2,
             minFontSize: 30,
             maxFontSize: 30,
@@ -1128,7 +1265,7 @@ class TarifInfoHeader extends StatelessWidget {
             horizontal: 10,
           ).add(EdgeInsetsGeometry.only(bottom: 20)),
           child: AutoSizeText(
-            tarif.course?.name ?? '',
+            tarif?.course?.name ?? purchased?.course?.name ?? '',
             maxLines: 2,
             minFontSize: 20,
             maxFontSize: 30,
@@ -1201,14 +1338,17 @@ class TarifInfoHeader extends StatelessWidget {
 }
 
 class TarifProductList extends StatelessWidget {
-  final List<ProductsinTarif> products;
+  final List<ProductsinTarif>? products;
+  final List<ProductsTarif>? productsPurchased;
+
   final int startIndex;
   final Function(BuildContext context, int index) callback;
   const TarifProductList({
     super.key,
-    required this.products,
+    this.products,
     required this.callback,
     required this.startIndex,
+    this.productsPurchased,
   });
 
   @override
@@ -1245,15 +1385,24 @@ class TarifProductList extends StatelessWidget {
                   ),
                 ),
               ),
-              ...List.generate(products.length, (index) {
-                final item = products.elementAt(index);
+              ...List.generate((products ?? productsPurchased ?? []).length, (
+                index,
+              ) {
+                final item = products?.elementAtOrNull(index);
+                final itemPurchase = productsPurchased?.elementAtOrNull(index);
                 return Padding(
                   padding: EdgeInsetsGeometry.only(
-                    bottom: (products.length - 1) == index ? 0 : 2,
+                    bottom:
+                        ((products ?? productsPurchased ?? []).length - 1) ==
+                            index
+                        ? 0
+                        : 2,
                   ),
                   child: ListTileBuilder(
                     isStart: index == 0,
-                    isEnd: (products.length - 1) == index,
+                    isEnd:
+                        ((products ?? productsPurchased ?? []).length - 1) ==
+                        index,
                     builder: (shape, contentPadding, isThreeLine) {
                       return ListTile(
                         shape: shape,
@@ -1264,7 +1413,9 @@ class TarifProductList extends StatelessWidget {
                         },
                         leading: Icon(Icons.school_outlined),
                         title: Text(
-                          item.product?.name ?? '',
+                          item?.product?.name ??
+                              itemPurchase?.product?.name ??
+                              '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -1273,11 +1424,18 @@ class TarifProductList extends StatelessWidget {
                           sl<LocalData>().plural(
                             'shop_app.countModule'.tr(
                               namedArgs: {
-                                'count': (item.product?.moduleCount ?? 0)
-                                    .toString(),
+                                'count':
+                                    (item?.product?.moduleCount ??
+                                            itemPurchase
+                                                ?.product
+                                                ?.moduleCount ??
+                                            0)
+                                        .toString(),
                               },
                             ),
-                            item.product?.moduleCount ?? 0,
+                            item?.product?.moduleCount ??
+                                itemPurchase?.product?.moduleCount ??
+                                0,
                           ),
                         ),
                       );
@@ -1294,14 +1452,16 @@ class TarifProductList extends StatelessWidget {
 }
 
 class TarifServiceList extends StatelessWidget {
-  final List<Services> services;
+  final List<Services>? services;
+  final List<ServicesTarif>? servicesPurchase;
   final int startIndex;
   final Function(BuildContext context, int index) callback;
   const TarifServiceList({
     super.key,
-    required this.services,
+    this.services,
     required this.startIndex,
     required this.callback,
+    this.servicesPurchase,
   });
 
   @override
@@ -1313,17 +1473,25 @@ class TarifServiceList extends StatelessWidget {
         color: Colors.transparent,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(services.length, (index) {
-            final item = services.elementAt(index);
+          children: List.generate((services ?? servicesPurchase ?? []).length, (
+            index,
+          ) {
+            final item = services?.elementAtOrNull(index);
+            final itemPurchase = servicesPurchase?.elementAtOrNull(index);
             return Padding(
               padding: EdgeInsetsGeometry.only(
-                bottom: (services.length - 1) == index ? 0 : 2,
+                bottom:
+                    ((services ?? servicesPurchase ?? []).length - 1) == index
+                    ? 0
+                    : 2,
               ),
               child: ListTileBuilder(
                 isStart: index == 0,
-                isEnd: (services.length - 1) == index,
+                isEnd:
+                    ((services ?? servicesPurchase ?? []).length - 1) == index,
                 builder: (shape, contentPadding, isThreeLine) {
-                  final type = item.service?.type;
+                  final type =
+                      item?.service?.type ?? itemPurchase?.service?.type;
                   return ListTile(
                     shape: shape,
                     contentPadding: contentPadding,
@@ -1332,7 +1500,7 @@ class TarifServiceList extends StatelessWidget {
                       callback(context, index + startIndex);
                     },
                     title: Text(
-                      item.service?.name ?? '',
+                      item?.service?.name ?? itemPurchase?.service?.name ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -1355,7 +1523,9 @@ class TarifServiceList extends StatelessWidget {
                         : null,
                     trailing: Icon(Icons.chevron_right_rounded),
                     subtitle: Text(
-                      item.service?.description ?? '- - -',
+                      item?.service?.description ??
+                          itemPurchase?.service?.description ??
+                          '- - -',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

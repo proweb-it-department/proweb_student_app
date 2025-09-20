@@ -1025,7 +1025,7 @@ class _ServiceBuyDataState extends State<ServiceBuyData> {
     String priceFormater = NumberFormat('#,##0', 'ru_RU').format(price);
     final isBuy = balance >= price;
     return Scaffold(
-      appBar: MainAppBar(),
+      appBar: MainAppBar(isLinkMainPage: false),
       body: ListView(
         padding: EdgeInsets.all(10),
         children: [

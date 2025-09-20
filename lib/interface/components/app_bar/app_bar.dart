@@ -15,8 +15,14 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? tab;
   final bool isBorder;
+  final bool isLinkMainPage;
   final double height = 56;
-  const MainAppBar({super.key, this.tab, this.isBorder = true});
+  const MainAppBar({
+    super.key,
+    this.tab,
+    this.isBorder = true,
+    this.isLinkMainPage = true,
+  });
 
   @override
   Size get preferredSize => Size.fromHeight(tab == null ? height : height * 2);
@@ -33,9 +39,11 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: [
           Flexible(
             child: GestureDetector(
-              onTap: () {
-                context.router.navigate(const HomeRoute());
-              },
+              onTap: isLinkMainPage
+                  ? () {
+                      context.router.navigate(const HomeRoute());
+                    }
+                  : null,
               child: AutoSizeText(
                 'PROWEB',
                 maxLines: 1,

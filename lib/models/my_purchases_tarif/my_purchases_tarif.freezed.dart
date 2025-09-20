@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MyPurchasesTarif implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by_id') int? get createdById;@JsonKey(name: 'updated_by_id') int? get updatedById;@JsonKey(name: 'course') Course? get course;@JsonKey(name: 'services') List<Services>? get services;@JsonKey(name: 'products') List<ProductsTarif>? get products;@JsonKey(name: 'student') Student? get student;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'price') String? get price;@JsonKey(name: 'paid') String? get paid;@JsonKey(name: 'status') String? get status;@JsonKey(name: 'main_id') int? get mainId;@JsonKey(name: 'access') bool? get access;@JsonKey(name: 'frozen') bool? get frozen;@JsonKey(name: 'installment') bool? get installment;
+@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by_id') int? get createdById;@JsonKey(name: 'updated_by_id') int? get updatedById;@JsonKey(name: 'course') Course? get course;@JsonKey(name: 'services') List<ServicesTarif>? get services;@JsonKey(name: 'products') List<ProductsTarif>? get products;@JsonKey(name: 'student') Student? get student;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'price') String? get price;@JsonKey(name: 'paid') String? get paid;@JsonKey(name: 'status') String? get status;@JsonKey(name: 'main_id') int? get mainId;@JsonKey(name: 'access') bool? get access;@JsonKey(name: 'frozen') bool? get frozen;@JsonKey(name: 'installment') bool? get installment;
 /// Create a copy of MyPurchasesTarif
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $MyPurchasesTarifCopyWith<$Res>  {
   factory $MyPurchasesTarifCopyWith(MyPurchasesTarif value, $Res Function(MyPurchasesTarif) _then) = _$MyPurchasesTarifCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'course') Course? course,@JsonKey(name: 'services') List<Services>? services,@JsonKey(name: 'products') List<ProductsTarif>? products,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'price') String? price,@JsonKey(name: 'paid') String? paid,@JsonKey(name: 'status') String? status,@JsonKey(name: 'main_id') int? mainId,@JsonKey(name: 'access') bool? access,@JsonKey(name: 'frozen') bool? frozen,@JsonKey(name: 'installment') bool? installment
+@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'course') Course? course,@JsonKey(name: 'services') List<ServicesTarif>? services,@JsonKey(name: 'products') List<ProductsTarif>? products,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'price') String? price,@JsonKey(name: 'paid') String? paid,@JsonKey(name: 'status') String? status,@JsonKey(name: 'main_id') int? mainId,@JsonKey(name: 'access') bool? access,@JsonKey(name: 'frozen') bool? frozen,@JsonKey(name: 'installment') bool? installment
 });
 
 
@@ -79,7 +79,7 @@ as String?,createdById: freezed == createdById ? _self.createdById : createdById
 as int?,updatedById: freezed == updatedById ? _self.updatedById : updatedById // ignore: cast_nullable_to_non_nullable
 as int?,course: freezed == course ? _self.course : course // ignore: cast_nullable_to_non_nullable
 as Course?,services: freezed == services ? _self.services : services // ignore: cast_nullable_to_non_nullable
-as List<Services>?,products: freezed == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
+as List<ServicesTarif>?,products: freezed == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
 as List<ProductsTarif>?,student: freezed == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
 as Student?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -199,7 +199,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<Services>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<ServicesTarif>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MyPurchasesTarif() when $default != null:
 return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.course,_that.services,_that.products,_that.student,_that.id,_that.name,_that.price,_that.paid,_that.status,_that.mainId,_that.access,_that.frozen,_that.installment);case _:
@@ -220,7 +220,7 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedB
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<Services>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<ServicesTarif>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)  $default,) {final _that = this;
 switch (_that) {
 case _MyPurchasesTarif():
 return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.course,_that.services,_that.products,_that.student,_that.id,_that.name,_that.price,_that.paid,_that.status,_that.mainId,_that.access,_that.frozen,_that.installment);case _:
@@ -240,7 +240,7 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedB
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<Services>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'course')  Course? course, @JsonKey(name: 'services')  List<ServicesTarif>? services, @JsonKey(name: 'products')  List<ProductsTarif>? products, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'price')  String? price, @JsonKey(name: 'paid')  String? paid, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'main_id')  int? mainId, @JsonKey(name: 'access')  bool? access, @JsonKey(name: 'frozen')  bool? frozen, @JsonKey(name: 'installment')  bool? installment)?  $default,) {final _that = this;
 switch (_that) {
 case _MyPurchasesTarif() when $default != null:
 return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.course,_that.services,_that.products,_that.student,_that.id,_that.name,_that.price,_that.paid,_that.status,_that.mainId,_that.access,_that.frozen,_that.installment);case _:
@@ -255,7 +255,7 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedB
 @JsonSerializable()
 
 class _MyPurchasesTarif with DiagnosticableTreeMixin implements MyPurchasesTarif {
-  const _MyPurchasesTarif({@JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, @JsonKey(name: 'created_by_id') this.createdById, @JsonKey(name: 'updated_by_id') this.updatedById, @JsonKey(name: 'course') this.course, @JsonKey(name: 'services') final  List<Services>? services, @JsonKey(name: 'products') final  List<ProductsTarif>? products, @JsonKey(name: 'student') this.student, @JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'price') this.price, @JsonKey(name: 'paid') this.paid, @JsonKey(name: 'status') this.status, @JsonKey(name: 'main_id') this.mainId, @JsonKey(name: 'access') this.access, @JsonKey(name: 'frozen') this.frozen, @JsonKey(name: 'installment') this.installment}): _services = services,_products = products;
+  const _MyPurchasesTarif({@JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, @JsonKey(name: 'created_by_id') this.createdById, @JsonKey(name: 'updated_by_id') this.updatedById, @JsonKey(name: 'course') this.course, @JsonKey(name: 'services') final  List<ServicesTarif>? services, @JsonKey(name: 'products') final  List<ProductsTarif>? products, @JsonKey(name: 'student') this.student, @JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'price') this.price, @JsonKey(name: 'paid') this.paid, @JsonKey(name: 'status') this.status, @JsonKey(name: 'main_id') this.mainId, @JsonKey(name: 'access') this.access, @JsonKey(name: 'frozen') this.frozen, @JsonKey(name: 'installment') this.installment}): _services = services,_products = products;
   factory _MyPurchasesTarif.fromJson(Map<String, dynamic> json) => _$MyPurchasesTarifFromJson(json);
 
 @override@JsonKey(name: 'created_at') final  String? createdAt;
@@ -263,8 +263,8 @@ class _MyPurchasesTarif with DiagnosticableTreeMixin implements MyPurchasesTarif
 @override@JsonKey(name: 'created_by_id') final  int? createdById;
 @override@JsonKey(name: 'updated_by_id') final  int? updatedById;
 @override@JsonKey(name: 'course') final  Course? course;
- final  List<Services>? _services;
-@override@JsonKey(name: 'services') List<Services>? get services {
+ final  List<ServicesTarif>? _services;
+@override@JsonKey(name: 'services') List<ServicesTarif>? get services {
   final value = _services;
   if (value == null) return null;
   if (_services is EqualUnmodifiableListView) return _services;
@@ -331,7 +331,7 @@ abstract mixin class _$MyPurchasesTarifCopyWith<$Res> implements $MyPurchasesTar
   factory _$MyPurchasesTarifCopyWith(_MyPurchasesTarif value, $Res Function(_MyPurchasesTarif) _then) = __$MyPurchasesTarifCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'course') Course? course,@JsonKey(name: 'services') List<Services>? services,@JsonKey(name: 'products') List<ProductsTarif>? products,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'price') String? price,@JsonKey(name: 'paid') String? paid,@JsonKey(name: 'status') String? status,@JsonKey(name: 'main_id') int? mainId,@JsonKey(name: 'access') bool? access,@JsonKey(name: 'frozen') bool? frozen,@JsonKey(name: 'installment') bool? installment
+@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'course') Course? course,@JsonKey(name: 'services') List<ServicesTarif>? services,@JsonKey(name: 'products') List<ProductsTarif>? products,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'price') String? price,@JsonKey(name: 'paid') String? paid,@JsonKey(name: 'status') String? status,@JsonKey(name: 'main_id') int? mainId,@JsonKey(name: 'access') bool? access,@JsonKey(name: 'frozen') bool? frozen,@JsonKey(name: 'installment') bool? installment
 });
 
 
@@ -356,7 +356,7 @@ as String?,createdById: freezed == createdById ? _self.createdById : createdById
 as int?,updatedById: freezed == updatedById ? _self.updatedById : updatedById // ignore: cast_nullable_to_non_nullable
 as int?,course: freezed == course ? _self.course : course // ignore: cast_nullable_to_non_nullable
 as Course?,services: freezed == services ? _self._services : services // ignore: cast_nullable_to_non_nullable
-as List<Services>?,products: freezed == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
+as List<ServicesTarif>?,products: freezed == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
 as List<ProductsTarif>?,student: freezed == student ? _self.student : student // ignore: cast_nullable_to_non_nullable
 as Student?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -696,28 +696,28 @@ as String?,
 
 
 /// @nodoc
-mixin _$Services implements DiagnosticableTreeMixin {
+mixin _$ServicesTarif implements DiagnosticableTreeMixin {
 
 @JsonKey(name: 'service') Service? get service;@JsonKey(name: 'id') int? get id;
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$ServicesCopyWith<Services> get copyWith => _$ServicesCopyWithImpl<Services>(this as Services, _$identity);
+$ServicesTarifCopyWith<ServicesTarif> get copyWith => _$ServicesTarifCopyWithImpl<ServicesTarif>(this as ServicesTarif, _$identity);
 
-  /// Serializes this Services to a JSON map.
+  /// Serializes this ServicesTarif to a JSON map.
   Map<String, dynamic> toJson();
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'Services'))
+    ..add(DiagnosticsProperty('type', 'ServicesTarif'))
     ..add(DiagnosticsProperty('service', service))..add(DiagnosticsProperty('id', id));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Services&&(identical(other.service, service) || other.service == service)&&(identical(other.id, id) || other.id == id));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServicesTarif&&(identical(other.service, service) || other.service == service)&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -726,15 +726,15 @@ int get hashCode => Object.hash(runtimeType,service,id);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'Services(service: $service, id: $id)';
+  return 'ServicesTarif(service: $service, id: $id)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $ServicesCopyWith<$Res>  {
-  factory $ServicesCopyWith(Services value, $Res Function(Services) _then) = _$ServicesCopyWithImpl;
+abstract mixin class $ServicesTarifCopyWith<$Res>  {
+  factory $ServicesTarifCopyWith(ServicesTarif value, $Res Function(ServicesTarif) _then) = _$ServicesTarifCopyWithImpl;
 @useResult
 $Res call({
 @JsonKey(name: 'service') Service? service,@JsonKey(name: 'id') int? id
@@ -745,14 +745,14 @@ $ServiceCopyWith<$Res>? get service;
 
 }
 /// @nodoc
-class _$ServicesCopyWithImpl<$Res>
-    implements $ServicesCopyWith<$Res> {
-  _$ServicesCopyWithImpl(this._self, this._then);
+class _$ServicesTarifCopyWithImpl<$Res>
+    implements $ServicesTarifCopyWith<$Res> {
+  _$ServicesTarifCopyWithImpl(this._self, this._then);
 
-  final Services _self;
-  final $Res Function(Services) _then;
+  final ServicesTarif _self;
+  final $Res Function(ServicesTarif) _then;
 
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? service = freezed,Object? id = freezed,}) {
   return _then(_self.copyWith(
@@ -761,7 +761,7 @@ as Service?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nu
 as int?,
   ));
 }
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -777,8 +777,8 @@ $ServiceCopyWith<$Res>? get service {
 }
 
 
-/// Adds pattern-matching-related methods to [Services].
-extension ServicesPatterns on Services {
+/// Adds pattern-matching-related methods to [ServicesTarif].
+extension ServicesTarifPatterns on ServicesTarif {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -791,10 +791,10 @@ extension ServicesPatterns on Services {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Services value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ServicesTarif value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Services() when $default != null:
+case _ServicesTarif() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -813,10 +813,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Services value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ServicesTarif value)  $default,){
 final _that = this;
 switch (_that) {
-case _Services():
+case _ServicesTarif():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -834,10 +834,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Services value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ServicesTarif value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Services() when $default != null:
+case _ServicesTarif() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -857,7 +857,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'service')  Service? service, @JsonKey(name: 'id')  int? id)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Services() when $default != null:
+case _ServicesTarif() when $default != null:
 return $default(_that.service,_that.id);case _:
   return orElse();
 
@@ -878,7 +878,7 @@ return $default(_that.service,_that.id);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'service')  Service? service, @JsonKey(name: 'id')  int? id)  $default,) {final _that = this;
 switch (_that) {
-case _Services():
+case _ServicesTarif():
 return $default(_that.service,_that.id);case _:
   throw StateError('Unexpected subclass');
 
@@ -898,7 +898,7 @@ return $default(_that.service,_that.id);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'service')  Service? service, @JsonKey(name: 'id')  int? id)?  $default,) {final _that = this;
 switch (_that) {
-case _Services() when $default != null:
+case _ServicesTarif() when $default != null:
 return $default(_that.service,_that.id);case _:
   return null;
 
@@ -910,33 +910,33 @@ return $default(_that.service,_that.id);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _Services with DiagnosticableTreeMixin implements Services {
-  const _Services({@JsonKey(name: 'service') this.service, @JsonKey(name: 'id') this.id});
-  factory _Services.fromJson(Map<String, dynamic> json) => _$ServicesFromJson(json);
+class _ServicesTarif with DiagnosticableTreeMixin implements ServicesTarif {
+  const _ServicesTarif({@JsonKey(name: 'service') this.service, @JsonKey(name: 'id') this.id});
+  factory _ServicesTarif.fromJson(Map<String, dynamic> json) => _$ServicesTarifFromJson(json);
 
 @override@JsonKey(name: 'service') final  Service? service;
 @override@JsonKey(name: 'id') final  int? id;
 
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$ServicesCopyWith<_Services> get copyWith => __$ServicesCopyWithImpl<_Services>(this, _$identity);
+_$ServicesTarifCopyWith<_ServicesTarif> get copyWith => __$ServicesTarifCopyWithImpl<_ServicesTarif>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$ServicesToJson(this, );
+  return _$ServicesTarifToJson(this, );
 }
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'Services'))
+    ..add(DiagnosticsProperty('type', 'ServicesTarif'))
     ..add(DiagnosticsProperty('service', service))..add(DiagnosticsProperty('id', id));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Services&&(identical(other.service, service) || other.service == service)&&(identical(other.id, id) || other.id == id));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ServicesTarif&&(identical(other.service, service) || other.service == service)&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -945,15 +945,15 @@ int get hashCode => Object.hash(runtimeType,service,id);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'Services(service: $service, id: $id)';
+  return 'ServicesTarif(service: $service, id: $id)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$ServicesCopyWith<$Res> implements $ServicesCopyWith<$Res> {
-  factory _$ServicesCopyWith(_Services value, $Res Function(_Services) _then) = __$ServicesCopyWithImpl;
+abstract mixin class _$ServicesTarifCopyWith<$Res> implements $ServicesTarifCopyWith<$Res> {
+  factory _$ServicesTarifCopyWith(_ServicesTarif value, $Res Function(_ServicesTarif) _then) = __$ServicesTarifCopyWithImpl;
 @override @useResult
 $Res call({
 @JsonKey(name: 'service') Service? service,@JsonKey(name: 'id') int? id
@@ -964,24 +964,24 @@ $Res call({
 
 }
 /// @nodoc
-class __$ServicesCopyWithImpl<$Res>
-    implements _$ServicesCopyWith<$Res> {
-  __$ServicesCopyWithImpl(this._self, this._then);
+class __$ServicesTarifCopyWithImpl<$Res>
+    implements _$ServicesTarifCopyWith<$Res> {
+  __$ServicesTarifCopyWithImpl(this._self, this._then);
 
-  final _Services _self;
-  final $Res Function(_Services) _then;
+  final _ServicesTarif _self;
+  final $Res Function(_ServicesTarif) _then;
 
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? service = freezed,Object? id = freezed,}) {
-  return _then(_Services(
+  return _then(_ServicesTarif(
 service: freezed == service ? _self.service : service // ignore: cast_nullable_to_non_nullable
 as Service?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,
   ));
 }
 
-/// Create a copy of Services
+/// Create a copy of ServicesTarif
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -1000,7 +1000,7 @@ $ServiceCopyWith<$Res>? get service {
 /// @nodoc
 mixin _$Service implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'description') String? get description;@JsonKey(name: 'days') int? get days;@JsonKey(name: 'type') String? get type;@JsonKey(name: 'status') String? get status;@JsonKey(name: 'cover') String? get cover;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'description') String? get description;@JsonKey(name: 'days') int? get days;@JsonKey(name: 'type') ServiceType? get type;@JsonKey(name: 'status') String? get status;@JsonKey(name: 'cover') String? get cover;
 /// Create a copy of Service
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1039,7 +1039,7 @@ abstract mixin class $ServiceCopyWith<$Res>  {
   factory $ServiceCopyWith(Service value, $Res Function(Service) _then) = _$ServiceCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'days') int? days,@JsonKey(name: 'type') String? type,@JsonKey(name: 'status') String? status,@JsonKey(name: 'cover') String? cover
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'days') int? days,@JsonKey(name: 'type') ServiceType? type,@JsonKey(name: 'status') String? status,@JsonKey(name: 'cover') String? cover
 });
 
 
@@ -1063,7 +1063,7 @@ as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_no
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,days: freezed == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as int?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as ServiceType?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
@@ -1150,7 +1150,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  String? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  ServiceType? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Service() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.days,_that.type,_that.status,_that.cover);case _:
@@ -1171,7 +1171,7 @@ return $default(_that.id,_that.name,_that.description,_that.days,_that.type,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  String? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  ServiceType? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)  $default,) {final _that = this;
 switch (_that) {
 case _Service():
 return $default(_that.id,_that.name,_that.description,_that.days,_that.type,_that.status,_that.cover);case _:
@@ -1191,7 +1191,7 @@ return $default(_that.id,_that.name,_that.description,_that.days,_that.type,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  String? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'days')  int? days, @JsonKey(name: 'type')  ServiceType? type, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'cover')  String? cover)?  $default,) {final _that = this;
 switch (_that) {
 case _Service() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.days,_that.type,_that.status,_that.cover);case _:
@@ -1213,7 +1213,7 @@ class _Service with DiagnosticableTreeMixin implements Service {
 @override@JsonKey(name: 'name') final  String? name;
 @override@JsonKey(name: 'description') final  String? description;
 @override@JsonKey(name: 'days') final  int? days;
-@override@JsonKey(name: 'type') final  String? type;
+@override@JsonKey(name: 'type') final  ServiceType? type;
 @override@JsonKey(name: 'status') final  String? status;
 @override@JsonKey(name: 'cover') final  String? cover;
 
@@ -1256,7 +1256,7 @@ abstract mixin class _$ServiceCopyWith<$Res> implements $ServiceCopyWith<$Res> {
   factory _$ServiceCopyWith(_Service value, $Res Function(_Service) _then) = __$ServiceCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'days') int? days,@JsonKey(name: 'type') String? type,@JsonKey(name: 'status') String? status,@JsonKey(name: 'cover') String? cover
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'days') int? days,@JsonKey(name: 'type') ServiceType? type,@JsonKey(name: 'status') String? status,@JsonKey(name: 'cover') String? cover
 });
 
 
@@ -1280,7 +1280,7 @@ as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_no
 as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String?,days: freezed == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as int?,type: freezed == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as String?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as ServiceType?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String?,cover: freezed == cover ? _self.cover : cover // ignore: cast_nullable_to_non_nullable
 as String?,
   ));

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proweb_student_app/utils/enum/base_enum.dart';
 part 'my_purchases_tarif.freezed.dart';
 part 'my_purchases_tarif.g.dart';
 
@@ -11,7 +12,7 @@ abstract class MyPurchasesTarif with _$MyPurchasesTarif {
     @JsonKey(name: 'created_by_id') int? createdById,
     @JsonKey(name: 'updated_by_id') int? updatedById,
     @JsonKey(name: 'course') Course? course,
-    @JsonKey(name: 'services') List<Services>? services,
+    @JsonKey(name: 'services') List<ServicesTarif>? services,
     @JsonKey(name: 'products') List<ProductsTarif>? products,
     @JsonKey(name: 'student') Student? student,
     @JsonKey(name: 'id') int? id,
@@ -46,14 +47,14 @@ abstract class Course with _$Course {
 }
 
 @freezed
-abstract class Services with _$Services {
-  const factory Services({
+abstract class ServicesTarif with _$ServicesTarif {
+  const factory ServicesTarif({
     @JsonKey(name: 'service') Service? service,
     @JsonKey(name: 'id') int? id,
-  }) = _Services;
+  }) = _ServicesTarif;
 
-  factory Services.fromJson(Map<String, Object?> json) =>
-      _$ServicesFromJson(json);
+  factory ServicesTarif.fromJson(Map<String, Object?> json) =>
+      _$ServicesTarifFromJson(json);
 }
 
 @freezed
@@ -63,7 +64,7 @@ abstract class Service with _$Service {
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'description') String? description,
     @JsonKey(name: 'days') int? days,
-    @JsonKey(name: 'type') String? type,
+    @JsonKey(name: 'type') ServiceType? type,
     @JsonKey(name: 'status') String? status,
     @JsonKey(name: 'cover') String? cover,
   }) = _Service;

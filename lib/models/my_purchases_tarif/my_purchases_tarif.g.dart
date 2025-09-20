@@ -16,7 +16,7 @@ _MyPurchasesTarif _$MyPurchasesTarifFromJson(Map<String, dynamic> json) =>
           ? null
           : Course.fromJson(json['course'] as Map<String, dynamic>),
       services: (json['services'] as List<dynamic>?)
-          ?.map((e) => Services.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ServicesTarif.fromJson(e as Map<String, dynamic>))
           .toList(),
       products: (json['products'] as List<dynamic>?)
           ?.map((e) => ProductsTarif.fromJson(e as Map<String, dynamic>))
@@ -78,24 +78,23 @@ Map<String, dynamic> _$CourseToJson(_Course instance) => <String, dynamic>{
   'language': instance.language,
 };
 
-_Services _$ServicesFromJson(Map<String, dynamic> json) => _Services(
-  service: json['service'] == null
-      ? null
-      : Service.fromJson(json['service'] as Map<String, dynamic>),
-  id: (json['id'] as num?)?.toInt(),
-);
+_ServicesTarif _$ServicesTarifFromJson(Map<String, dynamic> json) =>
+    _ServicesTarif(
+      service: json['service'] == null
+          ? null
+          : Service.fromJson(json['service'] as Map<String, dynamic>),
+      id: (json['id'] as num?)?.toInt(),
+    );
 
-Map<String, dynamic> _$ServicesToJson(_Services instance) => <String, dynamic>{
-  'service': instance.service,
-  'id': instance.id,
-};
+Map<String, dynamic> _$ServicesTarifToJson(_ServicesTarif instance) =>
+    <String, dynamic>{'service': instance.service, 'id': instance.id};
 
 _Service _$ServiceFromJson(Map<String, dynamic> json) => _Service(
   id: (json['id'] as num?)?.toInt(),
   name: json['name'] as String?,
   description: json['description'] as String?,
   days: (json['days'] as num?)?.toInt(),
-  type: json['type'] as String?,
+  type: $enumDecodeNullable(_$ServiceTypeEnumMap, json['type']),
   status: json['status'] as String?,
   cover: json['cover'] as String?,
 );
@@ -105,9 +104,15 @@ Map<String, dynamic> _$ServiceToJson(_Service instance) => <String, dynamic>{
   'name': instance.name,
   'description': instance.description,
   'days': instance.days,
-  'type': instance.type,
+  'type': _$ServiceTypeEnumMap[instance.type],
   'status': instance.status,
   'cover': instance.cover,
+};
+
+const _$ServiceTypeEnumMap = {
+  ServiceType.video: 'video',
+  ServiceType.coworking: 'coworking',
+  ServiceType.text: 'text',
 };
 
 _ProductsTarif _$ProductsTarifFromJson(Map<String, dynamic> json) =>
