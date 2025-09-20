@@ -92,9 +92,9 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
       if (result == 0) {
         context.router.pushPath('/group/$groupId/lessons/');
       } else if (result == 1) {
-        context.router.pushPath('/group/$groupId/homeworks/');
-      } else if (result == 2) {
         context.router.pushPath('/group/$groupId/attendancebook/');
+      } else if (result == 2) {
+        context.router.pushPath('/group/$groupId/homeworks/');
       }
     }
   }

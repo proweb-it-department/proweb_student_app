@@ -34,7 +34,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 150),
+      duration: const Duration(milliseconds: 250),
     );
   }
 
@@ -74,12 +74,12 @@ class _BalanceWidgetState extends State<BalanceWidget>
       screenSize.width * 0.02,
       startOffset.dy,
       screenSize.width * 0.96,
-      renderBox.size.height,
+      screenSize.height * 0.6,
     );
 
     _rectAnimation =
         RectTween(begin: startRect, end: endRect).animate(
-          CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+          CurvedAnimation(parent: _controller, curve: Curves.easeInQuad),
         )..addListener(() {
           if (_rectAnimation.isCompleted && mounted) {
             setState(() {
@@ -98,13 +98,27 @@ class _BalanceWidgetState extends State<BalanceWidget>
           child: AnimatedBuilder(
             animation: _controller,
             builder: (context, child) {
-              final rect = _rectAnimation.value!;
+              final Rect rect = _rectAnimation.value!;
+              final end = endRect.width;
+              final person = rect.width / end;
               return Stack(
                 children: [
                   Positioned.fill(
                     child: GestureDetector(
                       onTap: _hideOverlay,
-                      child: Container(color: Colors.black.withAlpha(70)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.black.withAlpha((255 * person).toInt()),
+                              Colors.transparent,
+                            ],
+                            begin: AlignmentGeometry.topCenter,
+                            end: AlignmentGeometry.bottomCenter,
+                            stops: [0, 1],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                   Positioned(
@@ -113,7 +127,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
                     width: rect.width,
                     child: Material(
                       borderRadius: BorderRadius.circular(20),
-
+                      elevation: 0,
                       color: customColor?.containerColor,
                       clipBehavior: Clip.antiAlias,
                       child: SizeTransition(
@@ -202,13 +216,13 @@ class _BalanceWidgetState extends State<BalanceWidget>
     final customTheme = Theme.of(context).extension<CustomColors>();
     return Material(
       color: Colors.transparent,
-      borderRadius: BorderRadius.circular(20),
+      // borderRadius: BorderRadius.circular(20),
+      elevation: 0,
       child: Ink(
         key: _key,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 5)],
         ),
         child: BlocBuilder<BalanceBloc, BalanceState>(
           bloc: context.read<BalanceBloc>()..add(BalanceEvent.started()),
@@ -236,7 +250,9 @@ class _BalanceWidgetState extends State<BalanceWidget>
                 }
                 return InkWell(
                   onTap: _showOverlay,
-                  onLongPress: _showOverlay,
+                  onLongPress: () {
+                    context.router.navigate(HomeBalanceRoute());
+                  },
                   borderRadius: BorderRadius.circular(40),
                   child: Ink(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
@@ -244,7 +260,7 @@ class _BalanceWidgetState extends State<BalanceWidget>
                       color: validBalance
                           ? customTheme?.errorFillOp
                           : customTheme?.containerColor,
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
                       children: [
@@ -345,7 +361,8 @@ class BalanceView extends StatelessWidget {
             return ListTile(
               shape: shape,
               contentPadding: contentPadding,
-
+              isThreeLine: isThreeLine,
+              minTileHeight: 30,
               onTap: onTap,
               splashColor: double.parse(balance.mainBalance) < 0
                   ? customColors?.errorFillOp
@@ -382,6 +399,7 @@ class BalanceView extends StatelessWidget {
                       : customColors?.primaryTextColor,
                 ),
               ),
+              trailing: Icon(Icons.chevron_right),
             );
           },
         ),
@@ -390,6 +408,8 @@ class BalanceView extends StatelessWidget {
           isEnd: false,
           builder: (shape, contentPadding, isThreeLine) {
             return ListTile(
+              isThreeLine: isThreeLine,
+              minTileHeight: 30,
               tileColor: customColors?.primaryBg,
               shape: shape,
               contentPadding: contentPadding,
@@ -410,6 +430,7 @@ class BalanceView extends StatelessWidget {
                   },
                 ),
               ),
+              trailing: Icon(Icons.chevron_right),
             );
           },
         ),
@@ -420,6 +441,8 @@ class BalanceView extends StatelessWidget {
           builder: (shape, contentPadding, isThreeLine) {
             return ListTile(
               shape: shape,
+              isThreeLine: isThreeLine,
+              minTileHeight: 30,
               contentPadding: contentPadding,
               tileColor: customColors?.primaryBg,
               onTap: onTap,
@@ -432,6 +455,7 @@ class BalanceView extends StatelessWidget {
                   'ru_RU',
                 ).format(double.parse(balance.procoin ?? '0')),
               ),
+              trailing: Icon(Icons.chevron_right),
             );
           },
         ),

@@ -16,6 +16,7 @@ import 'package:proweb_student_app/interface/components/course_avatar/course_ava
 import 'package:proweb_student_app/interface/components/gradient_text/gradient_text.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/interface/pages/shop_screen/pages/services/dialog_my_group_select_video.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
@@ -378,7 +379,13 @@ class _ServiceItemState extends State<ServiceItem> {
                           : null,
                       subtitle:
                           (widget.service?.price ?? widget.purchased?.price) !=
-                              null
+                                  null &&
+                              double.parse(
+                                    (widget.service?.price ??
+                                            widget.purchased?.price) ??
+                                        '0',
+                                  ) !=
+                                  0
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
 
@@ -412,6 +419,15 @@ class _ServiceItemState extends State<ServiceItem> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
+                                ),
+                              ],
+                            )
+                          : widget.purchased?.packageId != null
+                          ? Row(
+                              children: [
+                                PremiumContainer(
+                                  text: 'transactions_balance.tarif_transaction'
+                                      .tr(),
                                 ),
                               ],
                             )

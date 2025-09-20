@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:proweb_student_app/interface/components/more_nav_bar/more_nav_bar.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
+import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -36,7 +37,7 @@ class BottomNavBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(60),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
+                      color: Colors.black.withAlpha((255 * 0.3).toInt()),
                       blurRadius: 6,
                       offset: const Offset(0, 3),
                     ),
@@ -53,7 +54,7 @@ class BottomNavBar extends StatelessWidget {
                             : customTheme?.primaryTextColor,
                       ),
                       onPressed: () {
-                        tabsRouter.setActiveIndex(0);
+                        context.router.navigate(HomeMainRoute());
                       },
                       selectedIcon: Icon(
                         Icons.home,

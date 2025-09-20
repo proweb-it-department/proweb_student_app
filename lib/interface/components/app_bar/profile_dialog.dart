@@ -131,39 +131,83 @@ class ProfileDialog extends StatelessWidget {
                     title: Text('profile_dialog.colors'.tr()),
                     leading: Icon(Icons.color_lens),
                     children: [
-                      Divider(height: 1, indent: 0, endIndent: 0, thickness: 0),
-                      ListTile(
-                        onTap: () {
-                          AdaptiveTheme.of(context).setLight();
-                        },
-                        leading:
-                            AdaptiveTheme.of(context).mode ==
-                                AdaptiveThemeMode.light
-                            ? Icon(Icons.check)
-                            : null,
-                        title: Text('profile_dialog.colors_light'.tr()),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          AdaptiveTheme.of(context).setDark();
-                        },
-                        leading:
-                            AdaptiveTheme.of(context).mode ==
-                                AdaptiveThemeMode.dark
-                            ? Icon(Icons.check)
-                            : null,
-                        title: Text('profile_dialog.colors_dark'.tr()),
-                      ),
-                      ListTile(
-                        onTap: () {
-                          AdaptiveTheme.of(context).setSystem();
-                        },
-                        leading:
-                            AdaptiveTheme.of(context).mode ==
-                                AdaptiveThemeMode.system
-                            ? Icon(Icons.check)
-                            : null,
-                        title: Text('profile_dialog.colors_system'.tr()),
+                      Material(
+                        color: Colors.transparent,
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.all(10),
+                          child: Column(
+                            spacing: 2,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTileBuilder(
+                                isStart: true,
+                                isEnd: false,
+                                builder: (shape, contentPadding, isThreeLine) {
+                                  return ListTile(
+                                    shape: shape,
+                                    contentPadding: contentPadding,
+                                    tileColor: customColor?.primaryBg,
+                                    onTap: () {
+                                      AdaptiveTheme.of(context).setLight();
+                                    },
+                                    leading:
+                                        AdaptiveTheme.of(context).mode ==
+                                            AdaptiveThemeMode.light
+                                        ? Icon(Icons.check)
+                                        : null,
+                                    title: Text(
+                                      'profile_dialog.colors_light'.tr(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              ListTileBuilder(
+                                isStart: false,
+                                isEnd: false,
+                                builder: (shape, contentPadding, isThreeLine) {
+                                  return ListTile(
+                                    shape: shape,
+                                    contentPadding: contentPadding,
+                                    tileColor: customColor?.primaryBg,
+                                    onTap: () {
+                                      AdaptiveTheme.of(context).setDark();
+                                    },
+                                    leading:
+                                        AdaptiveTheme.of(context).mode ==
+                                            AdaptiveThemeMode.dark
+                                        ? Icon(Icons.check)
+                                        : null,
+                                    title: Text(
+                                      'profile_dialog.colors_dark'.tr(),
+                                    ),
+                                  );
+                                },
+                              ),
+                              ListTileBuilder(
+                                isStart: false,
+                                isEnd: true,
+                                builder: (shape, contentPadding, isThreeLine) {
+                                  return ListTile(
+                                    shape: shape,
+                                    contentPadding: contentPadding,
+                                    tileColor: customColor?.primaryBg,
+                                    onTap: () {
+                                      AdaptiveTheme.of(context).setSystem();
+                                    },
+                                    leading:
+                                        AdaptiveTheme.of(context).mode ==
+                                            AdaptiveThemeMode.system
+                                        ? Icon(Icons.check)
+                                        : null,
+                                    title: Text(
+                                      'profile_dialog.colors_system'.tr(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -172,20 +216,43 @@ class ProfileDialog extends StatelessWidget {
                     title: Text('profile_dialog.language'.tr()),
                     leading: Icon(Icons.translate),
                     children: [
-                      Divider(height: 1, indent: 0, endIndent: 0, thickness: 0),
-                      for (final indexLocal in list)
-                        ListTile(
-                          onTap: () {
-                            context.setLocale(Locale(indexLocal.shortName!));
-                          },
-                          leading:
-                              context.locale.toString() == indexLocal.shortName
-                              ? Icon(Icons.check)
-                              : null,
-                          title: Text(indexLocal.name!),
+                      Padding(
+                        padding: EdgeInsetsGeometry.all(10),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Column(
+                            spacing: 2,
+                            children: List.generate(list.length, (index) {
+                              final indexLocal = list.elementAt(index);
+                              return ListTileBuilder(
+                                isStart: index == 0,
+                                isEnd: index == (list.length - 1),
+                                builder: (shape, contentPadding, isThreeLine) {
+                                  return ListTile(
+                                    shape: shape,
+                                    contentPadding: contentPadding,
+                                    tileColor: customColor?.primaryBg,
+                                    onTap: () {
+                                      context.setLocale(
+                                        Locale(indexLocal.shortName!),
+                                      );
+                                    },
+                                    leading:
+                                        context.locale.toString() ==
+                                            indexLocal.shortName
+                                        ? Icon(Icons.check)
+                                        : null,
+                                    title: Text(indexLocal.name!),
+                                  );
+                                },
+                              );
+                            }),
+                          ),
                         ),
+                      ),
                     ],
                   ),
+
                   Divider(),
                   ListTile(
                     onTap: () {
