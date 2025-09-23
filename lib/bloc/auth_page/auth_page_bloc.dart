@@ -8,7 +8,6 @@ import 'package:proweb_student_app/bloc/auth/auth_bloc.dart';
 import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/session_response/session_response.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 part 'auth_page_event.dart';
 part 'auth_page_state.dart';

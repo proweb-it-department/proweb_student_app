@@ -6,7 +6,6 @@ import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

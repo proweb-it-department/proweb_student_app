@@ -42,7 +42,7 @@ void main() async {
     if (Platform.isAndroid || Platform.isIOS) {
       appLinks.uriLinkStream.listen((Uri? uri) {
         if (uri != null) {
-          appRouter.pushNamed(uri.path);
+          appRouter.pushPath(uri.path);
         }
       });
     }
