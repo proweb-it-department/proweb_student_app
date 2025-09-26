@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -112,8 +110,6 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
       url = widget.myGroup.group?.course?.posters?.first.image;
     }
     final double width = MediaQuery.sizeOf(context).width;
-    var random = Random();
-    var randomShape = random.nextInt(PathSvgShape.values.length);
     return GestureDetector(
       onTapDown: block ? null : _getTapPosition,
       onTap: block
