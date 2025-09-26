@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -5,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
+import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class MyGroupsItemWidgets extends StatefulWidget {
@@ -108,6 +112,8 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
       url = widget.myGroup.group?.course?.posters?.first.image;
     }
     final double width = MediaQuery.sizeOf(context).width;
+    var random = Random();
+    var randomShape = random.nextInt(PathSvgShape.values.length);
     return GestureDetector(
       onTapDown: block ? null : _getTapPosition,
       onTap: block
@@ -201,9 +207,16 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
               top: 0,
               child: Padding(
                 padding: const EdgeInsets.only(right: 30, top: 20),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white.withAlpha(200),
-                  child: Icon(Icons.keyboard_arrow_right, color: Colors.black),
+                child: ClipPath(
+                  clipper: SvgClipper(PathSvgShape.pill),
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    color: Colors.white.withAlpha(200),
+                    child: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
             ),

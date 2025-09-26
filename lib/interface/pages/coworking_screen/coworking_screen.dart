@@ -14,6 +14,7 @@ import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
@@ -355,7 +356,10 @@ class _CoworkingListViewState extends State<CoworkingListView> {
                                 );
                               }
                             },
-                            leading: IconAvatar(icon: Icons.event),
+                            leading: IconAvatar(
+                              icon: Icons.event,
+                              clipPath: PathSvgShape.sunny,
+                            ),
                             title: Text(
                               'coworing_mobile.Coworking_registration_time'
                                   .tr(),

@@ -8,6 +8,8 @@ import 'package:proweb_student_app/interface/components/error_load/error_load.da
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_groups_widgets.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
+import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/global_context/global_context.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
@@ -15,6 +17,9 @@ class HomeMainTab extends StatelessWidget {
   const HomeMainTab({super.key});
   @override
   Widget build(BuildContext context) {
+    if (sl<NavigationService>().context == null) {
+      sl<NavigationService>().setContext(context);
+    }
     final customColors = Theme.of(context).extension<CustomColors>();
     return RefreshIndicator(
       color: customColors?.primaryTextColor,

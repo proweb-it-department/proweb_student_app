@@ -20,6 +20,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         if (hasAuth == false) {
           return emit(AuthState.login());
         } else {
+          final error = await sl<LocalData>().requestMyProfile(
+            GetMyProfileEnum.network,
+          );
+          if (error.runtimeType == ErrorUser) {
+            await sl<LocalData>().localLogOut();
+            return;
+          }
           emit(AuthState.app());
           await sl<Channel>().wsConnect();
           return;

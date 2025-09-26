@@ -34,7 +34,7 @@ void notificationTapBackground(
     final payload = notificationResponse.payload;
     if (payload != null) {
       if (payload == 'coworking') {
-        appRouter.navigateNamed('/coworking');
+        appRouter.pushPath('/coworking');
         return;
       }
       final RegExp regex = RegExp(r'^/group/\d+/homeworks/\d+/comment$');
@@ -43,7 +43,7 @@ void notificationTapBackground(
       if (regex.hasMatch(payload) ||
           regextest.hasMatch(payload) ||
           regexhomeworkassign.hasMatch(payload)) {
-        appRouter.navigateNamed(payload);
+        appRouter.pushPath(payload);
       }
     }
   });
@@ -53,11 +53,11 @@ void tapNotificationResponse(NotificationResponse notificationResponse) async {
   final payload = notificationResponse.payload;
   if (payload != null) {
     if (payload == 'coworking') {
-      appRouter.navigateNamed('/coworking');
+      appRouter.pushPath('/coworking');
       return;
     }
     // if (payload == '/balance') {
-    //   appRouter.navigateNamed(payload);
+    //   appRouter.pushPath(payload);
     //   return;
     // }
     final RegExp regex = RegExp(r'^/group/\d+/homeworks/\d+/comment$');
@@ -66,7 +66,7 @@ void tapNotificationResponse(NotificationResponse notificationResponse) async {
     if (regex.hasMatch(payload) ||
         regextest.hasMatch(payload) ||
         regexhomeworkassign.hasMatch(payload)) {
-      appRouter.navigateNamed(payload);
+      appRouter.pushPath(payload);
     }
   }
 }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
+import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 
 class IconAvatar extends StatelessWidget {
   final IconData icon;
   final double size;
+  final PathSvgShape? clipPath;
   final LinearGradient? gradient;
 
   const IconAvatar({
     super.key,
     required this.icon,
-    this.size = 40,
+    this.size = 35,
     this.gradient,
+    this.clipPath,
   });
 
   static final List<Color> _colors = [
@@ -41,17 +45,27 @@ class IconAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (gradient != null) {
-      return Ink(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, gradient: gradient!),
-        child: Icon(icon, color: Colors.white, size: size * 0.6),
+      return ClipPath(
+        clipper: clipPath != null ? SvgClipper(clipPath!) : null,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(gradient: gradient!),
+          child: Icon(icon, color: Colors.white, size: size * 0.6),
+        ),
       );
     }
-    return CircleAvatar(
-      radius: size / 2,
-      backgroundColor: _getColorForIcon(icon),
-      child: Icon(icon, color: Colors.white, size: size * 0.6),
+    return ClipPath(
+      clipper: clipPath != null ? SvgClipper(clipPath!) : null,
+      child: Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          color: _getColorForIcon(icon),
+          borderRadius: clipPath != null ? null : BorderRadius.circular(size),
+        ),
+        child: Icon(icon, color: Colors.white, size: size * 0.6),
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
+import 'package:proweb_student_app/interface/components/poll_dialog/poll_dialog.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/content_relation_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/footer_relation_homework.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/hand_in_the_work.dart';
@@ -81,6 +82,7 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
                         ),
                       );
                       await bloc.stream.first;
+                      PollDialog().showGlobalDialog();
                     },
                   )
                 else

@@ -67,34 +67,53 @@ class _HomeworkInfoBodyState extends State<HomeworkInfoBody> {
           await bloc.stream.first;
         }
       },
-      child: InfiniteList(
-        isLoading: _isLoading,
-        centerLoading: true,
-        emptyBuilder: (context) {
-          return NoData(
-            text: 'group_homework.not_found_homework'.tr(),
-            icon: Icons.file_present,
-          );
-        },
-        hasReachedMax: widget.data.count == widget.data.list.length,
-        onFetchData: () => _fetchData(context),
-        loadingBuilder: (context) => Center(
-          child: Container(
-            width: 50,
-            height: 50,
-            padding: EdgeInsets.all(10),
-            child: CircularProgressIndicator(),
+      child: ClipRRect(
+        borderRadius: BorderRadiusGeometry.only(
+          topLeft: Radius.circular(22),
+          topRight: Radius.circular(22),
+        ),
+        child: Container(
+          decoration: BoxDecoration(color: customColors?.containerColor),
+          child: InfiniteList(
+            isLoading: _isLoading,
+            centerLoading: true,
+            emptyBuilder: (context) {
+              return NoData(
+                text: 'group_homework.not_found_homework'.tr(),
+                icon: Icons.file_present,
+              );
+            },
+            hasReachedMax: widget.data.count == widget.data.list.length,
+            onFetchData: () => _fetchData(context),
+            loadingBuilder: (context) => Center(
+              child: Container(
+                width: 50,
+                height: 50,
+                padding: EdgeInsets.all(10),
+                child: CircularProgressIndicator(),
+              ),
+            ),
+            padding: EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: bottom + 10,
+              top: 10,
+            ),
+            itemCount: widget.data.list.length,
+            itemBuilder: (context, index) {
+              final item = widget.data.list[index];
+              return HomeworkInfoItem(
+                item: item,
+                group: widget.group,
+                isStart: index == 0,
+                isEnd: index == (widget.data.list.length) - 1,
+              );
+            },
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 2);
+            },
           ),
         ),
-        padding: EdgeInsets.only(left: 10, right: 10, bottom: bottom + 10),
-        itemCount: widget.data.list.length,
-        itemBuilder: (context, index) {
-          final item = widget.data.list[index];
-          return HomeworkInfoItem(item: item, group: widget.group);
-        },
-        separatorBuilder: (context, index) {
-          return SizedBox(height: 10);
-        },
       ),
     );
   }

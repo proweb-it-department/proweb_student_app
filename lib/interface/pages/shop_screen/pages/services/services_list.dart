@@ -24,6 +24,7 @@ import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/models/servise_for_sale/servise_for_sale.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
@@ -321,6 +322,7 @@ class _ServiceItemState extends State<ServiceItem> {
                       contentPadding: contentPadding,
                       leading: type != null
                           ? IconAvatar(
+                              clipPath: PathSvgShape.pill,
                               gradient: LinearGradient(
                                 begin: Alignment(-0.766, -1.0),
                                 end: Alignment(1.0, 0.5),
@@ -745,6 +747,7 @@ class ServiceAppBar extends StatelessWidget {
                         children: [
                           if (type != null)
                             IconAvatar(
+                              clipPath: PathSvgShape.pill,
                               gradient: LinearGradient(
                                 begin: Alignment(-0.766, -1.0),
                                 end: Alignment(1.0, 0.5),
@@ -890,7 +893,10 @@ class ServiceBodyInfo extends StatelessWidget {
                           selected: true,
                           selectedTileColor: customColor?.containerColor,
                           selectedColor: customColor?.primaryTextColor,
-                          leading: IconAvatar(icon: Icons.attach_money),
+                          leading: IconAvatar(
+                            icon: Icons.attach_money,
+                            clipPath: PathSvgShape.diamond,
+                          ),
                           title: Text('Стоимость услуги'),
                           subtitle: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -1041,7 +1047,10 @@ class _ServiceBuyDataState extends State<ServiceBuyData> {
                   isThreeLine: isThreeLine,
                   tileColor: customColors?.containerColor,
                   minTileHeight: 30,
-                  leading: IconAvatar(icon: Icons.attach_money_rounded),
+                  leading: IconAvatar(
+                    icon: Icons.attach_money_rounded,
+                    clipPath: PathSvgShape.ghostIsh,
+                  ),
                   title: Text('Стоимость услуги'),
                   subtitle: Text(
                     'global_data.sum'.tr(namedArgs: {'money': priceFormater}),
@@ -1062,7 +1071,10 @@ class _ServiceBuyDataState extends State<ServiceBuyData> {
                   isThreeLine: isThreeLine,
                   tileColor: customColors?.containerColor,
                   minTileHeight: 30,
-                  leading: IconAvatar(icon: Icons.wallet),
+                  leading: IconAvatar(
+                    icon: Icons.wallet,
+                    clipPath: PathSvgShape.leaf12Cookie,
+                  ),
                   title: Text('shop_app.Your_main_balance'.tr()),
                   subtitle: Text(
                     'global_data.sum'.tr(namedArgs: {'money': balanceFormater}),
@@ -1105,7 +1117,10 @@ class _ServiceBuyDataState extends State<ServiceBuyData> {
                     minTileHeight: 30,
                     trailing: stateBuy.group == null ? null : Icon(Icons.clear),
                     leading: stateBuy.group == null
-                        ? IconAvatar(icon: Icons.groups)
+                        ? IconAvatar(
+                            icon: Icons.groups,
+                            clipPath: PathSvgShape.fan,
+                          )
                         : CourseAvatar(
                             icon: stateBuy.group!.group!.course!.icon!,
                             color: HexColor(

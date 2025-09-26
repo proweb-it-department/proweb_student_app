@@ -6,6 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/language/language.dart';
+import 'package:proweb_student_app/bloc/all_poll_nps/all_poll_nps_bloc.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/branch_room_holiday/branch_room_holiday_bloc.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:proweb_student_app/router/auto_router.dart';
 import 'package:proweb_student_app/utils/download_manager/file_download_manager.dart';
 import 'package:proweb_student_app/utils/download_manager/video_download_manager.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/global_context/global_context.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/AppThemeData.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/dark_ui.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/light_ui.dart';
@@ -64,6 +66,13 @@ class MainProviderApp extends StatelessWidget {
         BlocProvider(create: (context) => BranchRoomHolidayBloc()),
         BlocProvider(create: (context) => StoryGroupsBloc()),
         BlocProvider(create: (context) => MyGroupsBloc()),
+        BlocProvider(
+          create: (context) {
+            final bloc = AllPollNpsBloc();
+            bloc.add(AllPollNpsEvent.started());
+            return bloc;
+          },
+        ),
       ],
       child: BlocBuilder<DownloadVideoBloc, DownloadVideoState>(
         builder: (context, state) {
@@ -102,6 +111,7 @@ class MyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final observers = sl<AutoRouteObserver>();
+    sl<NavigationService>().setContext(context);
     return MaterialApp.router(
       theme: light,
       darkTheme: dark,
@@ -112,6 +122,10 @@ class MyWidget extends StatelessWidget {
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
+      onGenerateTitle: (context) {
+        sl<NavigationService>().setContext(context);
+        return 'MY PROWEB';
+      },
     );
   }
 }
