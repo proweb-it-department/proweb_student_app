@@ -5,6 +5,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
+import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'dart:math' as math;
 
@@ -52,20 +54,23 @@ class StoreScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             spacing: 10,
                             children: [
-                              OneUiIconShape(
-                                size: 80,
-                                color: LinearGradient(
-                                  colors: [
-                                    HexColor('#8264f5'),
-                                    HexColor('#8264f5'),
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                child: Transform.scale(
-                                  scale: 1.5,
-                                  child: Lottie.asset(
-                                    'assets/lottie/cart_shop.json',
+                              ClipPath(
+                                clipper: SvgClipper(PathSvgShape.pill),
+                                child: OneUiIconShape(
+                                  size: 80,
+                                  color: LinearGradient(
+                                    colors: [
+                                      HexColor('#8264f5'),
+                                      HexColor('#8264f5'),
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  child: Transform.scale(
+                                    scale: 1.5,
+                                    child: Lottie.asset(
+                                      'assets/lottie/cart_shop.json',
+                                    ),
                                   ),
                                 ),
                               ),
@@ -104,18 +109,21 @@ class StoreScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             spacing: 10,
                             children: [
-                              OneUiIconShape(
-                                size: 80,
-                                color: LinearGradient(
-                                  colors: [
-                                    Colors.red.shade400,
-                                    Colors.red.shade900,
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                child: Lottie.asset(
-                                  'assets/lottie/playpause.json',
+                              ClipPath(
+                                clipper: SvgClipper(PathSvgShape.bun),
+                                child: OneUiIconShape(
+                                  size: 80,
+                                  color: LinearGradient(
+                                    colors: [
+                                      Colors.red.shade400,
+                                      Colors.red.shade900,
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  child: Lottie.asset(
+                                    'assets/lottie/playpause.json',
+                                  ),
                                 ),
                               ),
                               Text(
@@ -154,20 +162,23 @@ class StoreScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             spacing: 10,
                             children: [
-                              OneUiIconShape(
-                                size: 80,
-                                color: LinearGradient(
-                                  colors: [
-                                    Colors.orange.shade400,
-                                    Colors.orange.shade900,
-                                  ],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                                child: Transform.scale(
-                                  scale: 1.5,
-                                  child: Lottie.asset(
-                                    'assets/lottie/servises2.json',
+                              ClipPath(
+                                clipper: SvgClipper(PathSvgShape.arrow),
+                                child: OneUiIconShape(
+                                  size: 80,
+                                  color: LinearGradient(
+                                    colors: [
+                                      Colors.orange.shade400,
+                                      Colors.orange.shade900,
+                                    ],
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                  ),
+                                  child: Transform.scale(
+                                    scale: 1.5,
+                                    child: Lottie.asset(
+                                      'assets/lottie/servises2.json',
+                                    ),
                                   ),
                                 ),
                               ),
@@ -206,13 +217,16 @@ class StoreScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             spacing: 10,
                             children: [
-                              OneUiIconShapeTarif(
-                                size: 80,
-                                child: Text(
-                                  'PREMIUM',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                              ClipPath(
+                                clipper: SvgClipper(PathSvgShape.leaf12Cookie),
+                                child: OneUiIconShapeTarif(
+                                  size: 80,
+                                  child: Text(
+                                    'PREMIUM',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -272,27 +286,24 @@ class _OneUiIconShapeTarifState extends State<OneUiIconShapeTarif>
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: OneUiClipper(),
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return Container(
-            alignment: Alignment.center,
-            width: widget.size,
-            height: widget.size,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
-                stops: [0.28, 1.0],
-                transform: GradientRotation(_controller.value * 2 * math.pi),
-              ),
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Container(
+          alignment: Alignment.center,
+          width: widget.size,
+          height: widget.size,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
+              stops: [0.28, 1.0],
+              transform: GradientRotation(_controller.value * 2 * math.pi),
             ),
-            child: child,
-          );
-        },
-        child: widget.child,
-      ),
+          ),
+          child: child,
+        );
+      },
+      child: widget.child,
     );
   }
 }
@@ -311,15 +322,12 @@ class OneUiIconShape extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: OneUiClipper(),
-      child: Material(
-        child: Ink(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(gradient: color),
-          child: Center(child: child),
-        ),
+    return Material(
+      child: Ink(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(gradient: color),
+        child: Center(child: child),
       ),
     );
   }

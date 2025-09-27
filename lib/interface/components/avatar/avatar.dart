@@ -70,13 +70,25 @@ class Avatar extends StatelessWidget {
   final MyProfile? profile;
   final User? user;
   final double size;
+  final double circular;
   final Color? textColor;
   final Color? backgroundColor;
   final double? fontSize;
   final FontWeight? fontWeight;
   final String? fontFamily;
 
-  const Avatar({super.key, this.profile, this.size = 40, this.textColor, this.backgroundColor, this.fontWeight = FontWeight.bold, this.fontFamily, this.fontSize = 16, this.user});
+  const Avatar({
+    super.key,
+    this.profile,
+    this.size = 40,
+    this.textColor,
+    this.backgroundColor,
+    this.fontWeight = FontWeight.bold,
+    this.fontFamily,
+    this.fontSize = 16,
+    this.user,
+    this.circular = 40,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +103,7 @@ class Avatar extends StatelessWidget {
       return _textAvatar(customTheme);
     } else {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(40),
+        borderRadius: BorderRadius.circular(circular),
         child: CachedNetworkImage(
           imageUrl: image,
           height: size,
@@ -117,15 +129,21 @@ class Avatar extends StatelessWidget {
   }
 
   Color? _colorBackgroundConfig() {
-    if (RegExp(r'[A-Z]|').hasMatch(_textConfiguration()) && backgroundColor == null) {
+    if (RegExp(r'[A-Z]|').hasMatch(_textConfiguration()) &&
+        backgroundColor == null) {
       return colorData[_textConfiguration()[0].toLowerCase().toString()];
     }
     return backgroundColor;
   }
 
   String _textConfiguration() {
-    if ((profile?.lastName ?? user?.lastName) != null || (profile?.firstName ?? user?.firstName) != null) {
-      var newText = _toString(value: '${((profile)?.lastName ?? user?.lastName) ?? ''} ${(profile?.firstName ?? user?.firstName) ?? ''}'.trim());
+    if ((profile?.lastName ?? user?.lastName) != null ||
+        (profile?.firstName ?? user?.firstName) != null) {
+      var newText = _toString(
+        value:
+            '${((profile)?.lastName ?? user?.lastName) ?? ''} ${(profile?.firstName ?? user?.firstName) ?? ''}'
+                .trim(),
+      );
       newText = newText.toUpperCase();
       var arrayLeeters = newText.trim().split(' ');
 
@@ -147,7 +165,7 @@ class Avatar extends StatelessWidget {
 
   Widget _textDisplay() {
     return Material(
-      shape: _buildTextType(),
+      shape: circular == 0 ? null : _buildTextType(),
       color: _colorBackgroundConfig(),
       child: SizedBox(
         height: size,
@@ -158,13 +176,20 @@ class Avatar extends StatelessWidget {
   }
 
   RoundedRectangleBorder _buildTextType() {
-    return RoundedRectangleBorder(borderRadius: BorderRadius.circular(size / 2));
+    return RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(size / 2),
+    );
   }
 
   Widget _buildText() {
     return Text(
       _textConfiguration(),
-      style: TextStyle(color: textColor ?? Colors.white, fontSize: fontSize, fontWeight: fontWeight, fontFamily: fontFamily),
+      style: TextStyle(
+        color: textColor ?? Colors.white,
+        fontSize: fontSize,
+        fontWeight: fontWeight,
+        fontFamily: fontFamily,
+      ),
     );
   }
 }

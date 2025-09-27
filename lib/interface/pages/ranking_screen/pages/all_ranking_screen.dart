@@ -16,6 +16,8 @@ import 'package:proweb_student_app/models/user_total_position/user_total_positio
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
+import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
@@ -253,6 +255,7 @@ class RankingTopWinners extends StatelessWidget {
         children: List.generate(3, (index) {
           final winner = winners.elementAt(index);
           final id = winner.user?.id;
+          final width = MediaQuery.of(context).size.width * 0.19;
           return Flexible(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -266,7 +269,20 @@ class RankingTopWinners extends StatelessWidget {
                         : () {
                             context.router.push(UserRoute(id: id));
                           },
-                    child: Avatar(user: winner.user, size: 50),
+                    child: ClipPath(
+                      clipper: SvgClipper(
+                        winner.position == 3
+                            ? PathSvgShape.leaf9Cookie
+                            : winner.position == 2
+                            ? PathSvgShape.leaf6Cookie
+                            : PathSvgShape.leaf12Cookie,
+                      ),
+                      child: Avatar(
+                        user: winner.user,
+                        size: width,
+                        circular: 0,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 5),
                   Padding(
@@ -471,7 +487,26 @@ class RankingTileUser extends StatelessWidget {
                           ),
                       ],
                     ),
-                  if (item.user != null) Avatar(user: item.user!),
+                  if (item.user != null)
+                    ClipPath(
+                      clipper:
+                          (item.position ?? 0) > 0 && (item.position ?? 0) < 4
+                          ? SvgClipper(
+                              item.position == 3
+                                  ? PathSvgShape.leaf9Cookie
+                                  : item.position == 2
+                                  ? PathSvgShape.leaf6Cookie
+                                  : PathSvgShape.leaf12Cookie,
+                            )
+                          : null,
+                      child: Avatar(
+                        user: item.user!,
+                        circular:
+                            (item.position ?? 0) > 0 && (item.position ?? 0) < 4
+                            ? 0
+                            : 40,
+                      ),
+                    ),
                 ],
               ),
               title: Text(
