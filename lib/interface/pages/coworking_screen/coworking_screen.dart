@@ -8,6 +8,7 @@ import 'package:proweb_student_app/bloc/coworking_list_reserve/coworking_list_re
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
@@ -149,7 +150,7 @@ class CoworkingScaffold extends StatelessWidget {
           appBar: MainAppBar(isBorder: false),
           body: state.when(
             initial: () {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Md3CirculeIndicator());
             },
             list: (count, list, reservate) {
               return CoworkingListView(count: count, list: list);
@@ -288,7 +289,7 @@ class _CoworkingListViewState extends State<CoworkingListView> {
                 width: 50,
                 height: 50,
                 padding: EdgeInsets.all(10),
-                child: CircularProgressIndicator(),
+                child: Md3CirculeIndicator(),
               ),
             ),
             padding: EdgeInsets.only(top: 15, bottom: bottom + 10 + 100),

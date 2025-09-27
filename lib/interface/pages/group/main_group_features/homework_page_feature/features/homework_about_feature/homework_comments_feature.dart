@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/homework_comments_content.dart';
 
@@ -22,8 +23,8 @@ class HomeworkStudentCommentsScreen extends StatelessWidget {
     return BlocBuilder<HomeworkRelationBloc, HomeworkRelationState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () => Center(
             child: ErrorLoad(
               action: FilledButton(

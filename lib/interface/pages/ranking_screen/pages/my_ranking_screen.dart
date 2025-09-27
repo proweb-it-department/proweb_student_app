@@ -11,6 +11,7 @@ import 'package:proweb_student_app/bloc/ranking_user/ranking_user_bloc.dart';
 import 'package:proweb_student_app/bloc/ranking_user/ranking_user_state_data.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_groups_item_widgets.dart';
 import 'package:proweb_student_app/models/user_skill/user_skill.dart';
@@ -65,7 +66,7 @@ class MyRankingBody extends StatelessWidget {
       builder: (context, state) {
         final bottom = MediaQuery.of(context).viewPadding.bottom;
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
           complited: (ranking, skills, userId) {
             return ListView(
               padding: EdgeInsets.only(bottom: bottom + 120),
@@ -110,7 +111,7 @@ class RankingColumn extends StatelessWidget {
             ),
           ),
           if (ranking.loadState == LoadState.loading)
-            Center(child: CircularProgressIndicator())
+            Center(child: Md3CirculeIndicator())
           else if (ranking.loadState == LoadState.errorLoading)
             Center(child: ErrorLoad())
           else ...{
@@ -224,7 +225,7 @@ class SkillColumn extends StatelessWidget {
           ),
         ),
         if (skills.loadState == LoadState.loading)
-          Center(child: CircularProgressIndicator())
+          Center(child: Md3CirculeIndicator())
         else if (skills.loadState == LoadState.errorLoading)
           Center(child: ErrorLoad())
         else if (skills.skills.isNotEmpty) ...{

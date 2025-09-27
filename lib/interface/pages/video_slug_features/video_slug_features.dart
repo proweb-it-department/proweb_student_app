@@ -11,6 +11,7 @@ import 'package:proweb_student_app/api/video_repository/video_repository.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/db/db.dart';
 import 'package:proweb_student_app/models/video_model/video_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
@@ -69,7 +70,7 @@ class _VideoSlugScreenState extends State<VideoSlugScreen> {
           future: getModel(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Md3CirculeIndicator());
             } else if (snapshot.data == null) {
               return Center(child: ErrorLoad());
             } else if (snapshot.data != null) {
@@ -153,7 +154,7 @@ class _VideoSlugScreenState extends State<VideoSlugScreen> {
                 ],
               );
             }
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
         ),
       ),

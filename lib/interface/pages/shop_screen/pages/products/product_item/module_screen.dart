@@ -10,6 +10,7 @@ import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/module_material/module_material.dart';
 import 'package:proweb_student_app/models/products/products.dart';
@@ -100,8 +101,8 @@ class ModuleMaterialBody extends StatelessWidget {
     return BlocBuilder<ModuleMaterialsBloc, ModuleMaterialsState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () => Center(
             child: ErrorLoad(
               action: FilledButton(

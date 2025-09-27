@@ -7,6 +7,7 @@ import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
@@ -84,11 +85,11 @@ class _DialogMyGroupSelectState extends State<DialogMyGroupSelect> {
                 return state.when(
                   initial: () => Padding(
                     padding: EdgeInsets.all(8),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: Md3CirculeIndicator()),
                   ),
                   loading: () => Padding(
                     padding: EdgeInsets.all(8),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: Md3CirculeIndicator()),
                   ),
                   notFound: () => Padding(
                     padding: EdgeInsets.all(8),

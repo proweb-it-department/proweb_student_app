@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:proweb_student_app/bloc/room_seat/room_seat_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/seat_item/seat_item.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -70,10 +71,10 @@ class _DialogSeatsSelectState extends State<DialogSeatsSelect> {
                   ),
                   ...state.when(
                     initial: () {
-                      return [Center(child: CircularProgressIndicator())];
+                      return [Center(child: Md3CirculeIndicator())];
                     },
                     load: () {
-                      return [Center(child: CircularProgressIndicator())];
+                      return [Center(child: Md3CirculeIndicator())];
                     },
                     error: () {
                       return [

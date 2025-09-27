@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 
 class AnimatedLogo extends StatefulWidget {
   const AnimatedLogo({super.key});
@@ -117,7 +118,9 @@ class AnimatedLogoState extends State<AnimatedLogo> {
 
   @override
   Widget build(BuildContext context) {
-    final double navigationBarHeight = MediaQuery.of(context).viewPadding.bottom;
+    final double navigationBarHeight = MediaQuery.of(
+      context,
+    ).viewPadding.bottom;
     return AnnotatedRegion(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
@@ -139,7 +142,9 @@ class AnimatedLogoState extends State<AnimatedLogo> {
           child: SizedBox(
             height: 50 + navigationBarHeight + 10,
             child: Center(
-              child: isLoading == false ? CircularProgressIndicator() : Text('© PROWEB. Since 2010'),
+              child: isLoading == false
+                  ? Md3CirculeIndicator(size: 45)
+                  : Text('© PROWEB. Since 2010'),
             ),
           ),
         ),

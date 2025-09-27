@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/my_purchases_service/my_purchases_service_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/shop_screen/pages/services/services_list.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -46,7 +47,7 @@ class MyPurchaseServiceList extends StatelessWidget {
           builder: (context, state) {
             return state.when(
               load: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               complited: (services, load) {
                 return ListView(

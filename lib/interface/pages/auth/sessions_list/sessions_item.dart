@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:proweb_student_app/bloc/sessions/sessions_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/sessions_list_item/sessions_list_item.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -11,7 +12,12 @@ class SessionItemView extends StatelessWidget {
   final SessionsListItemModel session;
   final String login;
   final String password;
-  const SessionItemView({super.key, required this.session, required this.login, required this.password});
+  const SessionItemView({
+    super.key,
+    required this.session,
+    required this.login,
+    required this.password,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +29,18 @@ class SessionItemView extends StatelessWidget {
       subtitle: Text(session.deviceType),
       children: [
         Divider(endIndent: 0, height: 1, indent: 0, thickness: 0),
-        if (flag != null) ListTile(leading: flag, title: Text('auth.sessionslimited_location'.tr()), subtitle: Text(session.location!)),
-        if (session.ipAddr != null) ListTile(leading: Icon(Icons.dns), title: Text('auth.sessionslimited_ip'.tr()), subtitle: Text(session.ipAddr!)),
+        if (flag != null)
+          ListTile(
+            leading: flag,
+            title: Text('auth.sessionslimited_location'.tr()),
+            subtitle: Text(session.location!),
+          ),
+        if (session.ipAddr != null)
+          ListTile(
+            leading: Icon(Icons.dns),
+            title: Text('auth.sessionslimited_ip'.tr()),
+            subtitle: Text(session.ipAddr!),
+          ),
         Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: bloc.state.when(
@@ -40,15 +56,26 @@ class SessionItemView extends StatelessWidget {
             sessionsNoAuth: (list, load, error) {
               if (load != null) {
                 if (load) {
-                  return CircularProgressIndicator();
+                  return Md3CirculeIndicator();
                 }
               }
               return FilledButton.icon(
                 onPressed: () async {
-                  bloc.add(SessionsEvent.sessionCloseCredential(login: login, password: password, sessionId: session.sessionId, context: context, list: list));
+                  bloc.add(
+                    SessionsEvent.sessionCloseCredential(
+                      login: login,
+                      password: password,
+                      sessionId: session.sessionId,
+                      context: context,
+                      list: list,
+                    ),
+                  );
                 },
                 icon: Icon(Icons.pause),
-                label: Text('auth.sessionslimited_close'.tr(), style: TextStyle(color: customColors?.primaryTextColor)),
+                label: Text(
+                  'auth.sessionslimited_close'.tr(),
+                  style: TextStyle(color: customColors?.primaryTextColor),
+                ),
               );
             },
           ),

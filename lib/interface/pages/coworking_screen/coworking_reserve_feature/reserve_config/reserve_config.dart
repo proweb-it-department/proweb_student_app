@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/branch_room_holiday/branch_room_holiday_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_reserve_feature/provider/coworking_provider.dart';
 import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_reserve_feature/reserve_config/components/branch_room_reserve.dart';
 import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_reserve_feature/reserve_config/components/date_reserve.dart';
@@ -27,10 +28,10 @@ class ReserveConfig extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           load: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           complited: (branch, room, holiday) {
             final double currentTime = localData.getTime();

@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/material_group/material_group_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/material_info_item/material_info_item.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -82,7 +83,7 @@ class _MaterialInfoBodyState extends State<MaterialInfoBody> {
             width: 50,
             height: 50,
             padding: EdgeInsets.all(10),
-            child: CircularProgressIndicator(),
+            child: Md3CirculeIndicator(),
           ),
         ),
         padding: EdgeInsets.only(left: 10, right: 10, bottom: bottom + 10),

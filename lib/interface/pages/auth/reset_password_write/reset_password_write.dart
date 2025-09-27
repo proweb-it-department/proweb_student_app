@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -9,7 +10,12 @@ class ResetPasswordWrite extends StatefulWidget {
   final String login;
   final bool? load;
   final LoginType? type;
-  const ResetPasswordWrite({super.key, this.load, this.type, required this.login});
+  const ResetPasswordWrite({
+    super.key,
+    this.load,
+    this.type,
+    required this.login,
+  });
 
   @override
   State<ResetPasswordWrite> createState() => _ResetPasswordWriteState();
@@ -49,14 +55,20 @@ class _ResetPasswordWriteState extends State<ResetPasswordWrite> {
             LogoAuthView(),
             SizedBox(height: 15),
             Center(
-              child: Text('auth.recover'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+              child: Text(
+                'auth.recover'.tr(),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+              ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'auth.recover_description'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: customColor?.filledButtonDisableColor,
+                ),
               ),
             ),
             SizedBox(height: 50),
@@ -71,13 +83,21 @@ class _ResetPasswordWriteState extends State<ResetPasswordWrite> {
                 return TextField(
                   controller: _controller,
                   onChanged: (value) {
-                    state.didChange(value.replaceAll(' ', '').replaceAll('+', ''));
+                    state.didChange(
+                      value.replaceAll(' ', '').replaceAll('+', ''),
+                    );
                     setState(() {
                       _isValid = _formKey.currentState?.validate() ?? false;
                     });
                   },
 
-                  decoration: InputDecoration(labelText: 'auth.entry_label'.tr(), errorText: widget.type == LoginType.error ? 'auth.recover_error'.tr() : state.errorText, helperText: 'auth.entry_example'.tr()),
+                  decoration: InputDecoration(
+                    labelText: 'auth.entry_label'.tr(),
+                    errorText: widget.type == LoginType.error
+                        ? 'auth.recover_error'.tr()
+                        : state.errorText,
+                    helperText: 'auth.entry_example'.tr(),
+                  ),
                   cursorColor: customColor?.primaryTextColor,
                   onSubmitted: (value) {
                     _formKey.currentState?.save();
@@ -106,13 +126,23 @@ class _ResetPasswordWriteState extends State<ResetPasswordWrite> {
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 200),
                   child: widget.load == true
-                      ? Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), child: CircularProgressIndicator())
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 5,
+                          ),
+                          child: Md3CirculeIndicator(),
+                        )
                       : TextButton.icon(
                           onPressed: _isValid
                               ? () {
                                   _formKey.currentState?.save();
                                   if (_isValid && _savedValue != null) {
-                                    bloc.add(AuthPageEvent.sendedCode(login: _savedValue ?? ''));
+                                    bloc.add(
+                                      AuthPageEvent.sendedCode(
+                                        login: _savedValue ?? '',
+                                      ),
+                                    );
                                   }
                                 }
                               : null,
@@ -138,7 +168,9 @@ class _ResetPasswordWriteState extends State<ResetPasswordWrite> {
       return null;
     }
 
-    final emailRegex = RegExp(r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+    final emailRegex = RegExp(
+      r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+    );
     if (emailRegex.hasMatch(value)) {
       return null;
     }

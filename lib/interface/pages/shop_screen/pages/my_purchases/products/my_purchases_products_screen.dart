@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/my_purchases_product/my_purchases_product_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/components/products/chip_categories.dart';
 import 'package:proweb_student_app/interface/components/products/product_item_card.dart';
@@ -39,7 +40,7 @@ class _MyPurchasesProductsScafoldState
     return BlocBuilder<MyPurchasesProductBloc, MyPurchasesProductState>(
       builder: (context, state) {
         return state.when(
-          load: () => Center(child: CircularProgressIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           complited: (categories, products, load) {
             return ListView(
               children: [

@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/my_purchases_tarif/my_purchases_tarif_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/shop_screen/pages/tarif/tarifs_screen.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -46,7 +47,7 @@ class MyPurchasesTarifBody extends StatelessWidget {
           builder: (context, state) {
             return state.when(
               load: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               complited: (purchases, load) {
                 return ListView(
@@ -68,7 +69,7 @@ class MyPurchasesTarifBody extends StatelessWidget {
                     if (load)
                       SizedBox(
                         width: MediaQuery.of(context).size.width * .9,
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(child: Md3CirculeIndicator()),
                       ),
                   ],
                 );

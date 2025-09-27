@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
 import 'package:proweb_student_app/bloc/sessions/sessions_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/interface/pages/auth/sessions_list/sessions_item.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -13,7 +14,13 @@ class SessionsLimitedList extends StatelessWidget {
   final String password;
   final bool? load;
   final LoginType? type;
-  const SessionsLimitedList({super.key, this.load, this.type, required this.login, required this.password});
+  const SessionsLimitedList({
+    super.key,
+    this.load,
+    this.type,
+    required this.login,
+    required this.password,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +35,25 @@ class SessionsLimitedList extends StatelessWidget {
           LogoAuthView(),
           SizedBox(height: 15),
           Center(
-            child: Text('auth.sessionslimited'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            child: Text(
+              'auth.sessionslimited'.tr(),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+            ),
           ),
           SizedBox(height: 10),
           Center(
             child: Text(
               'auth.sessionslimited_description'.tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+              style: TextStyle(
+                fontSize: 16,
+                color: customColor?.filledButtonDisableColor,
+              ),
             ),
           ),
           SizedBox(height: 50),
           if (load == true)
-            Center(child: CircularProgressIndicator())
+            Center(child: Md3CirculeIndicator())
           else
             BlocBuilder<SessionsBloc, SessionsState>(
               builder: (context, state) {
@@ -52,10 +65,13 @@ class SessionsLimitedList extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ...state.when(
-                        initial: () => [Center(child: CircularProgressIndicator())],
+                        initial: () => [Center(child: Md3CirculeIndicator())],
                         sessionsLoad: () => [
                           Center(
-                            child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()),
+                            child: Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Md3CirculeIndicator(),
+                            ),
                           ),
                         ],
                         sessionsNoAuth: (list, _, __) {
@@ -65,7 +81,11 @@ class SessionsLimitedList extends StatelessWidget {
                               value: context.read<AuthPageBloc>(),
                               child: Padding(
                                 padding: const EdgeInsets.only(bottom: 10),
-                                child: SessionItemView(session: item, login: login, password: password),
+                                child: SessionItemView(
+                                  session: item,
+                                  login: login,
+                                  password: password,
+                                ),
                               ),
                             );
                           });

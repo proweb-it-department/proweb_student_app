@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/bloc/story_groups/story_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_groups_widgets.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
@@ -51,11 +52,11 @@ class HomeMainTab extends StatelessWidget {
               return state.when(
                 initial: () => Padding(
                   padding: EdgeInsets.all(8),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: Md3CirculeIndicator()),
                 ),
                 loading: () => Padding(
                   padding: EdgeInsets.all(8),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: Md3CirculeIndicator()),
                 ),
                 notFound: () => Padding(
                   padding: EdgeInsets.all(8),

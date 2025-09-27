@@ -10,6 +10,7 @@ import 'package:media_kit_video/media_kit_video.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/test_relation/test_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/test_student_relation/test_student_relation.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -32,10 +33,10 @@ class TestingGroupScreen extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           load: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           error: () {
             return Center(
@@ -209,7 +210,7 @@ class TestingFeature extends StatelessWidget {
             isLoadAnswers: isLoadAnswers,
             relationId: relationId,
           ),
-        if (isLoadAnswers == true) Center(child: CircularProgressIndicator()),
+        if (isLoadAnswers == true) Center(child: Md3CirculeIndicator()),
         if (questions == null)
           NoData(
             text: 'group_homework.questions_test_not_found'.tr(),
@@ -803,7 +804,7 @@ class _QuestionsState extends State<Questions> {
             ),
           )
         else if (widget.jsonAnswer == null)
-          Center(child: CircularProgressIndicator()),
+          Center(child: Md3CirculeIndicator()),
         if (widget.jsonAnswer != null)
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),

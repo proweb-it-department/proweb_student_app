@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/interface/components/download_file_item/download_file_item.dart';
 import 'package:proweb_student_app/interface/components/download_file_progress/download_file_progress.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/download_file/downloader_files_bloc.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -19,7 +20,7 @@ class DownloadFilesScreen extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           download: (download, downloaders) {
             return ListView(

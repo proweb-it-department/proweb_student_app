@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -169,12 +170,12 @@ class _BalanceWidgetState extends State<BalanceWidget>
                                     state.when(
                                       initial: () {
                                         return Center(
-                                          child: CircularProgressIndicator(),
+                                          child: Md3CirculeIndicator(size: 15),
                                         );
                                       },
                                       error: () {
                                         return Center(
-                                          child: CircularProgressIndicator(),
+                                          child: Md3CirculeIndicator(size: 15),
                                         );
                                       },
                                       balance: (balance) {
@@ -328,7 +329,10 @@ class _BalanceWidgetState extends State<BalanceWidget>
                       SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: Md3CirculeIndicator(
+                          size: 25,
+                          background: customTheme?.primaryBg,
+                        ),
                       ),
                     ],
                   ),

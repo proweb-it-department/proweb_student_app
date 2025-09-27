@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -41,14 +42,20 @@ class _LoginWriteState extends State<LoginWrite> {
             LogoAuthView(),
             SizedBox(height: 15),
             Center(
-              child: Text('auth.entry'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+              child: Text(
+                'auth.entry'.tr(),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+              ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'auth.entry_descruotuin'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: customColor?.filledButtonDisableColor,
+                ),
               ),
             ),
             SizedBox(height: 50),
@@ -63,7 +70,9 @@ class _LoginWriteState extends State<LoginWrite> {
                   return null;
                 }
 
-                final emailRegex = RegExp(r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$');
+                final emailRegex = RegExp(
+                  r'^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+                );
                 if (emailRegex.hasMatch(value)) {
                   return null;
                 }
@@ -75,12 +84,20 @@ class _LoginWriteState extends State<LoginWrite> {
               builder: (FormFieldState<String> state) {
                 return TextField(
                   onChanged: (value) {
-                    state.didChange(value.replaceAll(' ', '').replaceAll('+', ''));
+                    state.didChange(
+                      value.replaceAll(' ', '').replaceAll('+', ''),
+                    );
                     setState(() {
                       _isValid = _formKey.currentState?.validate() ?? false;
                     });
                   },
-                  decoration: InputDecoration(labelText: 'auth.entry_label'.tr(), errorText: widget.type == LoginType.error ? 'auth.entry_error_data'.tr() : state.errorText, helperText: 'auth.entry_example'.tr()),
+                  decoration: InputDecoration(
+                    labelText: 'auth.entry_label'.tr(),
+                    errorText: widget.type == LoginType.error
+                        ? 'auth.entry_error_data'.tr()
+                        : state.errorText,
+                    helperText: 'auth.entry_example'.tr(),
+                  ),
                   cursorColor: customColor?.primaryTextColor,
                   onSubmitted: (value) {
                     _formKey.currentState?.save();
@@ -99,13 +116,23 @@ class _LoginWriteState extends State<LoginWrite> {
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),
                 child: widget.load == true
-                    ? Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), child: CircularProgressIndicator())
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        child: Md3CirculeIndicator(),
+                      )
                     : TextButton.icon(
                         onPressed: _isValid
                             ? () {
                                 _formKey.currentState?.save();
                                 if (_isValid && _savedValue != null) {
-                                  bloc.add(AuthPageEvent.login(login: _savedValue ?? ''));
+                                  bloc.add(
+                                    AuthPageEvent.login(
+                                      login: _savedValue ?? '',
+                                    ),
+                                  );
                                 }
                               }
                             : null,

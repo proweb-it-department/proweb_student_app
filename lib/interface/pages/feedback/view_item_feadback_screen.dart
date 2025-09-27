@@ -10,6 +10,7 @@ import 'package:proweb_student_app/bloc/feadback_manage/feadback_manage_bloc.dar
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/comment_body.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/comment_footer.dart';
 import 'package:proweb_student_app/models/global_comment/global_comment.dart';
@@ -54,7 +55,7 @@ class ViewItemFeadbackBody extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           error: () {
             return Center(child: ErrorLoad());
@@ -195,7 +196,7 @@ class _TicketContentState extends State<TicketContent> {
             trailing:
                 offer == null && widget.ticket.status == FeadbackStatus.open
                 ? widget.loadClosed
-                      ? CircularProgressIndicator()
+                      ? Md3CirculeIndicator()
                       : FilledButton.icon(
                           onPressed: () {
                             final bloc = context.read<FeadbackManageBloc>();
@@ -291,7 +292,7 @@ class _TicketContentState extends State<TicketContent> {
                       ],
                     )
                   else
-                    Center(child: CircularProgressIndicator()),
+                    Center(child: Md3CirculeIndicator()),
                 ],
               ),
             ),

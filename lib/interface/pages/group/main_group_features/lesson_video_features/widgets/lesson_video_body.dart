@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/lesson_video/lesson_video_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_video_features/widgets/lesson_video_content.dart';
 
@@ -21,8 +22,8 @@ class LessonVideoBody extends StatelessWidget {
     return BlocBuilder<LessonVideoBloc, LessonVideoState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () {
             return Center(
               child: ErrorLoad(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/course_version/course_version_bloc.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/admin_notification.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/branch_group.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/course_version_group.dart';
@@ -29,8 +30,8 @@ class GroupGroupInfoScreen extends StatelessWidget {
     final groupDetail = context.read<GroupDetailBloc>();
 
     return groupDetail.state.when(
-      initial: () => Center(child: CircularProgressIndicator()),
-      loadGroupDetail: () => Center(child: CircularProgressIndicator()),
+      initial: () => Center(child: Md3CirculeIndicator()),
+      loadGroupDetail: () => Center(child: Md3CirculeIndicator()),
       errorGroupDetail: () => Center(child: ErrorLoad()),
       complited: (group, groupUser) {
         return GroupInfoContent(group: group, groupUser: groupUser);

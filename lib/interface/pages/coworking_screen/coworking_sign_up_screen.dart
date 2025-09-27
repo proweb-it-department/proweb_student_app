@@ -12,6 +12,7 @@ import 'package:proweb_student_app/bloc/coworking_list_reserve/coworking_list_re
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_reserve_feature/dialogs/dialog_seats_select.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
@@ -241,7 +242,7 @@ class CoworkingSignUpBody extends StatelessWidget {
                       ),
                     ],
                   )
-                : Center(child: CircularProgressIndicator()),
+                : Center(child: Md3CirculeIndicator()),
           ),
         if (data.status == StatusCoworkingReserve.reserve) divider,
         if (data.id != null)

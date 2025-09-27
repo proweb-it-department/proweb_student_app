@@ -7,6 +7,8 @@ import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
+import 'package:proweb_student_app/interface/components/icon_avatar.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/file_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/link_work.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
@@ -187,61 +189,75 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
         if (widget.relation.createdBy?.user != null ||
             widget.relation.createdAt != null ||
             widget.work.level != null)
-          Container(
-            decoration: BoxDecoration(
-              color: customColors?.containerColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: customColors?.borderColor ?? Colors.black,
-              ),
-            ),
-            child: Column(
-              children: [
-                if (widget.relation.createdBy?.user != null)
-                  ListTile(
-                    leading: Avatar(user: widget.relation.createdBy?.user),
-                    title: Text('education.course_teacher'.tr()),
-                    subtitle: Text(
-                      sl<LocalData>().nameUser(
-                        widget.relation.createdBy!.user!,
-                      ),
-                    ),
+          Column(
+            spacing: 2,
+            children: [
+              if (widget.relation.createdBy?.user != null)
+                Material(
+                  color: Colors.transparent,
+                  child: ListTileBuilder(
+                    isStart: true,
+                    isEnd: false,
+                    builder: (shape, contentPadding, isThreeLine) {
+                      return ListTile(
+                        shape: shape,
+                        contentPadding: contentPadding,
+                        tileColor: customColors?.containerColor,
+                        leading: Avatar(user: widget.relation.createdBy?.user),
+                        title: Text('education.course_teacher'.tr()),
+                        subtitle: Text(
+                          sl<LocalData>().nameUser(
+                            widget.relation.createdBy!.user!,
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                if (widget.relation.createdAt != null)
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: customColors?.primaryBg,
-                      child: Icon(
-                        Icons.event,
-                        color: customColors?.primaryTextColor,
-                        size: 20,
-                      ),
-                    ),
-                    title: Text('group_homework.destination_data'.tr()),
-                    subtitle: Text(
-                      sl<LocalData>().getDateString(
-                        date: DateTime.parse(widget.relation.createdAt!),
-                      ),
-                    ),
+                ),
+              if (widget.relation.createdAt != null)
+                Material(
+                  color: Colors.transparent,
+                  child: ListTileBuilder(
+                    isStart: false,
+                    isEnd: false,
+                    builder: (shape, contentPadding, isThreeLine) {
+                      return ListTile(
+                        shape: shape,
+                        contentPadding: contentPadding,
+                        tileColor: customColors?.containerColor,
+                        leading: IconAvatar(icon: Icons.event),
+                        title: Text('group_homework.destination_data'.tr()),
+                        subtitle: Text(
+                          sl<LocalData>().getDateString(
+                            date: DateTime.parse(widget.relation.createdAt!),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                if (widget.work.level != null)
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: customColors?.primaryBg,
-                      child: Icon(
-                        Icons.signal_cellular_alt,
-                        color: customColors?.primaryTextColor,
-                        size: 20,
-                      ),
-                    ),
-                    title: Text('group_homework.difficulty_level'.tr()),
-                    subtitle: Text(
-                      'group_homework.difficulty_level_${widget.work.level}'
-                          .tr(),
-                    ),
+                ),
+              if (widget.work.level != null)
+                Material(
+                  color: Colors.transparent,
+                  child: ListTileBuilder(
+                    isStart: false,
+                    isEnd: true,
+                    builder: (shape, contentPadding, isThreeLine) {
+                      return ListTile(
+                        shape: shape,
+                        contentPadding: contentPadding,
+                        tileColor: customColors?.containerColor,
+                        leading: IconAvatar(icon: Icons.signal_cellular_alt),
+                        title: Text('group_homework.difficulty_level'.tr()),
+                        subtitle: Text(
+                          'group_homework.difficulty_level_${widget.work.level}'
+                              .tr(),
+                        ),
+                      );
+                    },
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
       ],
     );

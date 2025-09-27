@@ -18,6 +18,7 @@ import 'package:proweb_student_app/interface/components/course_avatar/course_ava
 import 'package:proweb_student_app/interface/components/gradient_text/gradient_text.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/tarif_model/tarif_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
@@ -76,7 +77,7 @@ class TarifList extends StatelessWidget {
     return BlocBuilder<TarifForSaleBloc, TarifForSaleState>(
       builder: (context, state) {
         return state.when(
-          load: () => Center(child: CircularProgressIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           complited: (tarifs, load) {
             return ClipRRect(
               borderRadius: BorderRadiusGeometry.only(
@@ -102,7 +103,7 @@ class TarifList extends StatelessWidget {
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
                         alignment: Alignment.center,
-                        child: CircularProgressIndicator(),
+                        child: Md3CirculeIndicator(),
                       ),
                   ],
                 ),

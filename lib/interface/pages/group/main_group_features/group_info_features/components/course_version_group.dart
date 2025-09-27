@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/course_version/course_version_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/course_version_modal/course_version_model.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -19,8 +20,8 @@ class CourseVersionGroup extends StatelessWidget {
         ..add(CourseVersionEvent.started(versionId: versionId)),
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () {
             return ErrorLoad(
               action: FilledButton(

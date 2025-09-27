@@ -11,6 +11,7 @@ import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/app_bar/balance_widget.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/components/tab_bar_pop_scope/tab_bar_pop_scope.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -64,7 +65,7 @@ class MainGroupLoad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
+    return Scaffold(body: Center(child: Md3CirculeIndicator()));
   }
 }
 
@@ -127,28 +128,22 @@ class GroupDetailPages extends StatelessWidget {
           status == MyGroupStatus.graduaded) {
         routers.addAll([
           LessonGroupInfoRoute(),
-          AttendanceGroupInfoRoute(),
           HomeworkGroupInfoRoute(),
+          AttendanceGroupInfoRoute(),
           GradeBookRoute(),
           GroupRankingRoute(),
-          // BonuceGroupInfoRoute(),
         ]);
         tabs.addAll([
           Tab(text: 'group.group_tab_lesson'.tr()),
-          Tab(text: 'group.group_tab_attendance'.tr()),
           Tab(text: 'group.group_tab_homework'.tr()),
+          Tab(text: 'group.group_tab_attendance'.tr()),
           Tab(text: 'group.group_tab_gradebook'.tr()),
           Tab(text: 'group.group_tab_ranking'.tr()),
-          // Tab(text: 'group.group_tab_bonuce'.tr()),
         ]);
       }
     }
     return AutoTabsRouter.tabBar(
-      routes: [
-        GroupGroupInfoRoute(),
-        ...routers,
-        // NewsGroupInfoRoute(),
-      ],
+      routes: [GroupGroupInfoRoute(), ...routers],
       animatePageTransition: true,
       key: ValueKey<String>('tabs_group_page'),
       builder: (context, child, tabController) {
@@ -165,7 +160,6 @@ class GroupDetailPages extends StatelessWidget {
                 tabs: [
                   Tab(text: 'group.group_tab_about'.tr()),
                   ...tabs,
-                  // Tab(text: 'group.group_tab_news'.tr()),
                 ],
               ),
             ),

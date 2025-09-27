@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/feadback_list/feadback_list_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/feedback/widgets/feadback_infinity_list.dart';
 
 class FeadbackListViewState extends StatelessWidget {
@@ -21,7 +22,7 @@ class FeadbackListView extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           complited: (count, feadbacks, created) {
             return FeadbackInfinitiList(count: count, feadbacks: feadbacks);

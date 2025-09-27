@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -54,14 +55,20 @@ class _CodeWriteState extends State<CodeWrite> {
           LogoAuthView(),
           SizedBox(height: 15),
           Center(
-            child: Text('auth.code'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+            child: Text(
+              'auth.code'.tr(),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+            ),
           ),
           SizedBox(height: 10),
           Center(
             child: Text(
               'auth.code_description'.tr(),
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+              style: TextStyle(
+                fontSize: 16,
+                color: customColor?.filledButtonDisableColor,
+              ),
             ),
           ),
           SizedBox(height: 50),
@@ -70,10 +77,17 @@ class _CodeWriteState extends State<CodeWrite> {
             autoFocus: true,
             enabled: widget.load != true,
             decoration: BoxLooseDecoration(
-              strokeColorBuilder: FixedColorBuilder(customColor?.primaryTextColor ?? Colors.black),
-              textStyle: TextStyle(fontSize: 20, color: customColor?.primaryTextColor),
+              strokeColorBuilder: FixedColorBuilder(
+                customColor?.primaryTextColor ?? Colors.black,
+              ),
+              textStyle: TextStyle(
+                fontSize: 20,
+                color: customColor?.primaryTextColor,
+              ),
               gapSpace: 10,
-              errorText: widget.type == LoginType.error ? 'auth.code_error'.tr() : null,
+              errorText: widget.type == LoginType.error
+                  ? 'auth.code_error'.tr()
+                  : null,
               errorTextStyle: TextStyle(color: customColor?.errorFill),
             ),
             currentCode: _code,
@@ -83,7 +97,12 @@ class _CodeWriteState extends State<CodeWrite> {
                 setState(() {
                   _code = code!;
                 });
-                bloc.add(AuthPageEvent.verificationCode(login: widget.login, verificationCode: int.parse(code ?? _code)));
+                bloc.add(
+                  AuthPageEvent.verificationCode(
+                    login: widget.login,
+                    verificationCode: int.parse(code ?? _code),
+                  ),
+                );
               }
             },
             onCodeSubmitted: (code) {},
@@ -97,11 +116,22 @@ class _CodeWriteState extends State<CodeWrite> {
               AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),
                 child: widget.load == true
-                    ? Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), child: CircularProgressIndicator())
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        child: Md3CirculeIndicator(),
+                      )
                     : TextButton.icon(
                         onPressed: _code.length == 5
                             ? () {
-                                bloc.add(AuthPageEvent.verificationCode(login: widget.login, verificationCode: int.parse(_code)));
+                                bloc.add(
+                                  AuthPageEvent.verificationCode(
+                                    login: widget.login,
+                                    verificationCode: int.parse(_code),
+                                  ),
+                                );
                               }
                             : null,
                         icon: Icon(Icons.arrow_forward),

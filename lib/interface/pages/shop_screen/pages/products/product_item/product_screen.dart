@@ -11,6 +11,7 @@ import 'package:proweb_student_app/bloc/product_ditail/product_ditail_bloc.dart'
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/products/category_product_view.dart';
 import 'package:proweb_student_app/interface/components/products/price_product.dart';
 import 'package:proweb_student_app/models/products/products.dart';
@@ -53,10 +54,10 @@ class _ProductScreenState extends State<ProductScreen> {
           builder: (context, state) {
             return state.when(
               initial: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               load: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               error: () {
                 return Center(child: ErrorLoad());

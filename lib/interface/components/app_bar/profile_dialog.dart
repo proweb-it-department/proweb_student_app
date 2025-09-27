@@ -8,6 +8,7 @@ import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -69,7 +70,7 @@ class ProfileDialog extends StatelessWidget {
                         ),
                       );
                     },
-                    initial: () => CircularProgressIndicator(),
+                    initial: () => Md3CirculeIndicator(),
                   ),
                   Padding(
                     padding: EdgeInsetsGeometry.only(top: 10),

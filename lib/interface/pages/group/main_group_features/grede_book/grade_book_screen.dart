@@ -7,6 +7,7 @@ import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/grade_book/grade_book_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/grade_book_model/grade_book_model.dart';
 import 'package:proweb_student_app/models/group_user/group_user.dart';
 import 'package:proweb_student_app/models/user/user.dart';
@@ -31,13 +32,13 @@ class GradeBookScreen extends StatelessWidget {
         builder: (context, state) {
           return state.when(
             initial: () {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Md3CirculeIndicator());
             },
             error: () {
               return Center(child: ErrorLoad());
             },
             load: () {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Md3CirculeIndicator());
             },
             complited: (groupUsers, works, studentsWork) {
               return TableViewGrade(

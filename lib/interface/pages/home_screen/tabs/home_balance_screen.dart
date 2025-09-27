@@ -8,6 +8,7 @@ import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/transactions_student/transactions_student_bloc.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/balance_widget/page_view_balance.dart';
 import 'package:proweb_student_app/models/transactions_student/transactions_student.dart';
@@ -125,9 +126,7 @@ class _ListViewContentState extends State<ListViewContent> {
                       ),
                     ),
                     ...state.when(
-                      initial: () => [
-                        Center(child: CircularProgressIndicator()),
-                      ],
+                      initial: () => [Center(child: Md3CirculeIndicator())],
                       lazylist: (list, count) {
                         if (list.length == count) {
                           _isFinished = true;
@@ -142,9 +141,7 @@ class _ListViewContentState extends State<ListViewContent> {
                             if (_isLoading) {
                               return Padding(
                                 padding: EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: CircularProgressIndicator(),
-                                ),
+                                child: Center(child: Md3CirculeIndicator()),
                               );
                             }
                           }

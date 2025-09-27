@@ -5,11 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_story_presenter/flutter_story_presenter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/bloc/story_groups/story_groups_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/story/view_story_model.dart';
 import 'package:proweb_student_app/models/story_groups_for_student/story_groups_for_student.dart';
 import 'package:proweb_student_app/utils/enum/story_enums.dart';
 
-List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, String hero, StoryGroupsBloc bloc) {
+List<ViewStoryModel> storyListGenerate(
+  List<StoryGroupsForStudent> stories,
+  String hero,
+  StoryGroupsBloc bloc,
+) {
   if (stories.isEmpty) return [];
   final story = stories.map(((story) {
     final storyPreview = story.preview;
@@ -32,7 +37,7 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
-            loadingWidget: Center(child: CircularProgressIndicator()),
+            loadingWidget: Center(child: Md3CirculeIndicator()),
           );
         } else if (storyItem.contentType == SoryContentType.photo) {
           storyItemType = StoryItemType.image;
@@ -40,7 +45,7 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
           imageConfig = StoryViewImageConfig(
             width: double.infinity,
             progressIndicatorBuilder: (p0, p1, p2) {
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Md3CirculeIndicator());
             },
           );
         }
@@ -59,7 +64,14 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
-              image: storyPreview != null ? DecorationImage(image: CachedNetworkImageProvider(thumbnailImage ?? storyPreview), fit: BoxFit.cover) : null,
+              image: storyPreview != null
+                  ? DecorationImage(
+                      image: CachedNetworkImageProvider(
+                        thumbnailImage ?? storyPreview,
+                      ),
+                      fit: BoxFit.cover,
+                    )
+                  : null,
             ),
             child: Stack(
               children: [
@@ -82,9 +94,13 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
           imageConfig: imageConfig,
           duration: Duration(seconds: storyItem.duration ?? 15),
           customWidget: (p0, audioPlayer) {
-            final question = storyItem.question != null && storyItem.question?.isNotEmpty == true;
+            final question =
+                storyItem.question != null &&
+                storyItem.question?.isNotEmpty == true;
             Widget? custom;
-            if (question && storyItem.poll == true && storyItem.pollOptions?.isNotEmpty == true) {
+            if (question &&
+                storyItem.poll == true &&
+                storyItem.pollOptions?.isNotEmpty == true) {
               final action = storyItem.actions?.firstOrNull;
               final options = [...(storyItem.pollOptions!)];
               options.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
@@ -95,7 +111,14 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [BoxShadow(color: Colors.black.withAlpha((255 * 0.2).round()), blurRadius: 4, spreadRadius: 1, offset: Offset(0, 2))],
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withAlpha((255 * 0.2).round()),
+                            blurRadius: 4,
+                            spreadRadius: 1,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
@@ -106,7 +129,10 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
                             children: [
                               Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 16,
+                                ),
                                 color: HexColor('#121212'),
                                 child: Text(
                                   storyItem.question!,
@@ -117,24 +143,54 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
                               ...options.map((option) {
                                 return Material(
                                   child: ListTile(
-                                    shape: Border(bottom: BorderSide(color: Colors.grey.shade100, width: 1)),
+                                    shape: Border(
+                                      bottom: BorderSide(
+                                        color: Colors.grey.shade100,
+                                        width: 1,
+                                      ),
+                                    ),
                                     onTap: action?.optionId == null
                                         ? () {
-                                            bloc.add(StoryGroupsEvent.action(storyId: storyItem.id ?? 0, groupId: story.id!, optionId: option.id));
+                                            bloc.add(
+                                              StoryGroupsEvent.action(
+                                                storyId: storyItem.id ?? 0,
+                                                groupId: story.id!,
+                                                optionId: option.id,
+                                              ),
+                                            );
                                           }
                                         : null,
-                                    tileColor: action?.optionId == option.id ? Colors.grey.shade100.withAlpha(200) : Colors.white,
+                                    tileColor: action?.optionId == option.id
+                                        ? Colors.grey.shade100.withAlpha(200)
+                                        : Colors.white,
                                     leading: Container(
                                       width: 20,
                                       height: 20,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(50),
-                                        border: Border.all(color: action?.optionId == option.id ? Colors.green : HexColor('#121212'), width: 2),
+                                        border: Border.all(
+                                          color: action?.optionId == option.id
+                                              ? Colors.green
+                                              : HexColor('#121212'),
+                                          width: 2,
+                                        ),
                                       ),
-                                      child: action?.optionId == option.id ? Icon(Icons.check, size: 12, color: Colors.green) : null,
+                                      child: action?.optionId == option.id
+                                          ? Icon(
+                                              Icons.check,
+                                              size: 12,
+                                              color: Colors.green,
+                                            )
+                                          : null,
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-                                    title: Text(option.text ?? '', style: TextStyle(color: Colors.black)),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 0,
+                                    ),
+                                    title: Text(
+                                      option.text ?? '',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
                                   ),
                                 );
                               }),
@@ -151,14 +207,27 @@ List<ViewStoryModel> storyListGenerate(List<StoryGroupsForStudent> stories, Stri
               custom = FractionallySizedBox(
                 widthFactor: 1,
                 heightFactor: 1,
-                child: Container(width: double.infinity, height: double.infinity, color: storyItem.backgroundColor != null ? HexColor(storyItem.backgroundColor!) : null, child: custom),
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: storyItem.backgroundColor != null
+                      ? HexColor(storyItem.backgroundColor!)
+                      : null,
+                  child: custom,
+                ),
               );
             }
             return custom;
           },
           thumbnail: thumbnail,
         );
-        return ViewStoryItemModel(story: storyItemWidget, storyId: storyItem.id ?? 0, buttonText: storyItem.buttonText, buttonUrl: storyItem.buttonUrl, action: (storyItem.actions ?? []));
+        return ViewStoryItemModel(
+          story: storyItemWidget,
+          storyId: storyItem.id ?? 0,
+          buttonText: storyItem.buttonText,
+          buttonUrl: storyItem.buttonUrl,
+          action: (storyItem.actions ?? []),
+        );
       }).toList(),
     );
   })).toList();

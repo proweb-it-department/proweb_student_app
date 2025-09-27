@@ -8,6 +8,7 @@ import 'package:proweb_student_app/bloc/product_ditail/product_ditail_bloc.dart'
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/products/products.dart';
 import 'package:proweb_student_app/models/products_modules/products_modules.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -63,10 +64,10 @@ class ModuleProductBody extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           load: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           error: () {
             return Center(child: ErrorLoad());

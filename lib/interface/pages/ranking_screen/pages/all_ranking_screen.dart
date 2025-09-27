@@ -10,6 +10,7 @@ import 'package:proweb_student_app/bloc/ranking_list/ranking_list_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/user_total_position/user_total_position.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -61,7 +62,7 @@ class AllRanking extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           initial: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           complited: (winners, userList, myRanking, load, offset) {
             int? winnerPoint;
@@ -121,7 +122,7 @@ class AllRanking extends StatelessWidget {
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(),
+                      child: Md3CirculeIndicator(),
                     ),
                   )
                 else if (load == LoadState.errorLoading)
@@ -432,7 +433,6 @@ class RankingTileUser extends StatelessWidget {
           isStart: isStart,
           builder: (shape, contentPadding, isThreeLine) {
             return ListTile(
-              isThreeLine: isThreeLine,
               selectedColor: customColors?.primaryTextColor,
               selectedTileColor: color,
               selected: true,

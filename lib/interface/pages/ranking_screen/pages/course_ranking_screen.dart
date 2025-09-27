@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/course_list/course_list_bloc.dart';
 import 'package:proweb_student_app/interface/components/course_card/course_card.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -42,10 +43,10 @@ class CoursesView extends StatelessWidget {
             ),
             state.when(
               initial: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               loading: () {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: Md3CirculeIndicator());
               },
               complited: (courses) {
                 return Expanded(

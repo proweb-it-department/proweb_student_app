@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/pass_work/pass_work.dart';
 import 'package:proweb_student_app/utils/file_icon_manager/file_icon_manager.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -274,7 +275,7 @@ class _HandInTheWorkState extends State<HandInTheWork> {
                 },
                 child: Text('group_homework.submit_for_review_homework'.tr()),
               )
-            : Center(child: CircularProgressIndicator()),
+            : Center(child: Md3CirculeIndicator()),
       ],
     );
   }

@@ -16,6 +16,7 @@ import 'package:proweb_student_app/interface/components/course_avatar/course_ava
 import 'package:proweb_student_app/interface/components/gradient_text/gradient_text.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/interface/pages/shop_screen/pages/services/dialog_my_group_select_video.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
@@ -97,7 +98,7 @@ class ServiceBlocView extends StatelessWidget {
       builder: (context, state) {
         return state.when(
           load: () {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Md3CirculeIndicator());
           },
           complited: (services, load) {
             return ServiceListView(
@@ -193,7 +194,7 @@ class _ServiceListViewState extends State<ServiceListView> {
             serviceId: widget.serviceId,
           );
         }),
-        if (widget.load) Center(child: CircularProgressIndicator()),
+        if (widget.load) Center(child: Md3CirculeIndicator()),
       ],
     );
   }

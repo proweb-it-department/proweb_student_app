@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -43,14 +44,20 @@ class _PasswordWriteState extends State<PasswordWrite> {
             LogoAuthView(),
             SizedBox(height: 15),
             Center(
-              child: Text('auth.password'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+              child: Text(
+                'auth.password'.tr(),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+              ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'auth.password_description'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: customColor?.filledButtonDisableColor,
+                ),
               ),
             ),
             SizedBox(height: 50),
@@ -71,7 +78,9 @@ class _PasswordWriteState extends State<PasswordWrite> {
                 return TextField(
                   obscureText: _isView,
                   onChanged: (value) {
-                    state.didChange(value.replaceAll(' ', '').replaceAll('+', ''));
+                    state.didChange(
+                      value.replaceAll(' ', '').replaceAll('+', ''),
+                    );
                     setState(() {
                       _isValid = _formKey.currentState?.validate() ?? false;
                     });
@@ -85,14 +94,21 @@ class _PasswordWriteState extends State<PasswordWrite> {
                           _isView = !_isView;
                         });
                       },
-                      icon: _isView ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                      icon: _isView
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
                     ),
                   ),
                   cursorColor: customColor?.primaryTextColor,
                   onSubmitted: (value) {
                     _formKey.currentState?.save();
                     if (_isValid && _savedValue != null) {
-                      bloc.add(AuthPageEvent.signin(login: widget.login, password: _savedValue ?? ''));
+                      bloc.add(
+                        AuthPageEvent.signin(
+                          login: widget.login,
+                          password: _savedValue ?? '',
+                        ),
+                      );
                     }
                   },
                   textInputAction: TextInputAction.next,
@@ -115,13 +131,24 @@ class _PasswordWriteState extends State<PasswordWrite> {
               child: AnimatedSwitcher(
                 duration: Duration(milliseconds: 200),
                 child: widget.load == true
-                    ? Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), child: CircularProgressIndicator())
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        child: Md3CirculeIndicator(),
+                      )
                     : TextButton.icon(
                         onPressed: _isValid
                             ? () {
                                 _formKey.currentState?.save();
                                 if (_isValid && _savedValue != null) {
-                                  bloc.add(AuthPageEvent.signin(login: widget.login, password: _savedValue ?? ''));
+                                  bloc.add(
+                                    AuthPageEvent.signin(
+                                      login: widget.login,
+                                      password: _savedValue ?? '',
+                                    ),
+                                  );
                                 }
                               }
                             : null,

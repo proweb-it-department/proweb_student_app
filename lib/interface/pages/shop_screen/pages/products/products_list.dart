@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/shop_product/shop_product_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/components/products/chip_categories.dart';
 import 'package:proweb_student_app/interface/components/products/product_item_card.dart';
@@ -102,7 +103,7 @@ class _ProductsListBodyState extends State<ProductsListBody> {
     return BlocBuilder<ShopProductBloc, ShopProductState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
           list: (products, categories, myPurchased, isError, isLoad) {
             if (products.list.length == products.count) {
               _isFinished = true;
@@ -182,7 +183,7 @@ class _ProductsListBodyState extends State<ProductsListBody> {
                 if (_isLoading || isLoad)
                   Padding(
                     padding: EdgeInsets.all(16.0),
-                    child: Center(child: CircularProgressIndicator()),
+                    child: Center(child: Md3CirculeIndicator()),
                   ),
                 if (!isLoad && products.list.isEmpty)
                   NoData(text: 'shop_app.No_products'.tr(), icon: Icons.shop),

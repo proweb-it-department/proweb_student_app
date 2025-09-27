@@ -11,6 +11,7 @@ import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart'
 import 'package:proweb_student_app/bloc/material_module_view/material_module_view_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_video_features/widgets/lesson_video_content.dart';
 import 'package:proweb_student_app/models/db/db.dart';
@@ -122,7 +123,7 @@ class MaterialBody extends StatelessWidget {
   }
 
   Widget _baseLoad() {
-    return Center(child: CircularProgressIndicator());
+    return Center(child: Md3CirculeIndicator());
   }
 }
 

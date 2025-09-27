@@ -8,6 +8,7 @@ import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart'
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/download_video_item/download_video_item.dart';
 import 'package:proweb_student_app/interface/components/download_video_progress/download_video_progress.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/components/tab_bar_pop_scope/tab_bar_pop_scope.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -61,7 +62,7 @@ class DownloadBody extends StatelessWidget {
     return BlocBuilder<DownloadVideoBloc, DownloadVideoState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
           download: (download, downloaders) {
             return ListView(
               children: [

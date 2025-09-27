@@ -7,6 +7,7 @@ import 'package:proweb_student_app/bloc/homework_group/homework_group_bloc.dart'
 import 'package:proweb_student_app/bloc/material_group/material_group_bloc.dart';
 import 'package:proweb_student_app/bloc/test_group/test_group_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_body/homework_info_body.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/material_info_body/material_info_body.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/test_info_body/test_info_body.dart';
@@ -30,8 +31,8 @@ class HomeworkGroupInfoScreen extends StatelessWidget {
     final groupDetail = context.read<GroupDetailBloc>();
 
     return groupDetail.state.when(
-      initial: () => Center(child: CircularProgressIndicator()),
-      loadGroupDetail: () => Center(child: CircularProgressIndicator()),
+      initial: () => Center(child: Md3CirculeIndicator()),
+      loadGroupDetail: () => Center(child: Md3CirculeIndicator()),
       errorGroupDetail: () => Center(child: ErrorLoad()),
       complited: (group, groupUser) {
         return HomeworkInfoFeatures(
@@ -228,8 +229,8 @@ class SelectedHomework extends StatelessWidget {
     return BlocBuilder<HomeworkGroupBloc, HomeworkGroupState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () => Center(
             child: ErrorLoad(
               action: FilledButton(
@@ -272,8 +273,8 @@ class SelectedMaterial extends StatelessWidget {
     return BlocBuilder<MaterialGroupBloc, MaterialGroupState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () => Center(
             child: ErrorLoad(
               action: FilledButton(
@@ -316,8 +317,8 @@ class SelectedTest extends StatelessWidget {
     return BlocBuilder<TestGroupBloc, TestGroupState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
-          load: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
+          load: () => Center(child: Md3CirculeIndicator()),
           error: () => Center(
             child: ErrorLoad(
               action: FilledButton(

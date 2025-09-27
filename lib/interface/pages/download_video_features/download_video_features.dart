@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
 import 'package:proweb_student_app/interface/components/download_video_item/download_video_item.dart';
 import 'package:proweb_student_app/interface/components/download_video_progress/download_video_progress.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/download_video_features/downloads_exclusive_product_video/downloads_exclusive_product_video.dart';
 import 'package:proweb_student_app/interface/pages/download_video_features/downloads_group_video/downloads_group_video.dart';
@@ -21,7 +22,7 @@ class DownloadVideosScreen extends StatelessWidget {
     return BlocBuilder<DownloadVideoBloc, DownloadVideoState>(
       builder: (context, state) {
         return state.when(
-          initial: () => Center(child: CircularProgressIndicator()),
+          initial: () => Center(child: Md3CirculeIndicator()),
           download: (download, downloaders) {
             return ListView(
               children: [

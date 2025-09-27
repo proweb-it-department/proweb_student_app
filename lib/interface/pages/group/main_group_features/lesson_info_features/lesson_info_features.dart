@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/lessons_group/lessons_group_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_info_features/components/current_lesson.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_info_features/components/lessons_list.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -25,8 +26,8 @@ class LessonGroupInfoScreen extends StatelessWidget {
     final groupDetail = context.read<GroupDetailBloc>();
 
     return groupDetail.state.when(
-      initial: () => Center(child: CircularProgressIndicator()),
-      loadGroupDetail: () => Center(child: CircularProgressIndicator()),
+      initial: () => Center(child: Md3CirculeIndicator()),
+      loadGroupDetail: () => Center(child: Md3CirculeIndicator()),
       errorGroupDetail: () => Center(child: ErrorLoad()),
       complited: (group, groupUser) {
         return GroupLessonLoadContent(
@@ -64,8 +65,8 @@ class GroupLessonLoadContent extends StatelessWidget {
       child: BlocBuilder<LessonsGroupBloc, LessonsGroupState>(
         builder: (context, state) {
           return state.when(
-            initial: () => Center(child: CircularProgressIndicator()),
-            load: () => Center(child: CircularProgressIndicator()),
+            initial: () => Center(child: Md3CirculeIndicator()),
+            load: () => Center(child: Md3CirculeIndicator()),
             error: () => Center(child: ErrorLoad()),
             complited: (lessons, currentLesson) {
               return GroupLessonContent(

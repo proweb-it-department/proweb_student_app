@@ -41,19 +41,38 @@ class ShadeColors {
 
   ColorCreater? theme(
     BuildContext context, {
-    required int light,
-    required int dark,
+    required ShadeNumber light,
+    required ShadeNumber dark,
   }) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final brightness = customColors?.brightness;
     if (brightness != null && _value.isNotEmpty) {
       if (brightness == Brightness.dark) {
-        return _value['shade$dark'];
+        return _value[dark.shade];
       }
       if (brightness == Brightness.light) {
-        return _value['shade$light'];
+        return _value[light.shade];
       }
     }
     return null;
   }
+}
+
+enum ShadeNumber {
+  shade50('shade50'),
+  shade100('shade100'),
+  shade200('shade200'),
+  shade300('shade300'),
+  shade400('shade400'),
+  shade500('shade500'),
+  shade600('shade600'),
+  shade700('shade700'),
+  shade800('shade800'),
+  shade900('shade900'),
+  shade1000('shade1000'),
+  shade1100('shade1100'),
+  shade1200('shade1200');
+
+  final String shade;
+  const ShadeNumber(this.shade);
 }

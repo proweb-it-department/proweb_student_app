@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/downloads_exclusive_product_video/downloads_exclusive_product_video_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/db/db.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -41,7 +42,7 @@ class DownloadsExclusiveProductVideoBody extends StatelessWidget {
           load: () {
             return Padding(
               padding: const EdgeInsets.all(10),
-              child: Center(child: CircularProgressIndicator()),
+              child: Center(child: Md3CirculeIndicator()),
             );
           },
           error: () {

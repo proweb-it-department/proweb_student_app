@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/feadback_list/feadback_list_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/feedback/widgets/feadback_list_view_item.dart';
 import 'package:proweb_student_app/models/feadbacks_page_item/feadbacks_page_item.dart';
@@ -75,7 +76,7 @@ class _FeadbackInfinitiListState extends State<FeadbackInfinitiList> {
                 width: 50,
                 height: 50,
                 padding: EdgeInsets.all(10),
-                child: CircularProgressIndicator(),
+                child: Md3CirculeIndicator(),
               ),
             ),
             padding: EdgeInsets.only(top: 10, bottom: bottom + 10 + 100),

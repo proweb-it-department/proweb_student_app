@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth_page/auth_page_bloc.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/auth/logo_view/logo_view.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -9,7 +10,12 @@ class NewPasswordWrite extends StatefulWidget {
   final String login;
   final bool? load;
   final LoginType? type;
-  const NewPasswordWrite({super.key, this.load, this.type, required this.login});
+  const NewPasswordWrite({
+    super.key,
+    this.load,
+    this.type,
+    required this.login,
+  });
 
   @override
   State<NewPasswordWrite> createState() => _NewPasswordWriteState();
@@ -52,14 +58,20 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
             LogoAuthView(),
             SizedBox(height: 15),
             Center(
-              child: Text('auth.newpassword'.tr(), style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400)),
+              child: Text(
+                'auth.newpassword'.tr(),
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
+              ),
             ),
             SizedBox(height: 10),
             Center(
               child: Text(
                 'auth.newpassword_description'.tr(),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: customColor?.filledButtonDisableColor),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: customColor?.filledButtonDisableColor,
+                ),
               ),
             ),
             SizedBox(height: 50),
@@ -80,7 +92,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                 return TextField(
                   obscureText: _isView,
                   onChanged: (value) {
-                    state.didChange(value.replaceAll(' ', '').replaceAll('+', ''));
+                    state.didChange(
+                      value.replaceAll(' ', '').replaceAll('+', ''),
+                    );
                     setState(() {
                       _isValid = _formKey.currentState?.validate() ?? false;
                     });
@@ -94,7 +108,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                           _isView = !_isView;
                         });
                       },
-                      icon: _isView ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                      icon: _isView
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
                     ),
                   ),
                   cursorColor: customColor?.primaryTextColor,
@@ -130,7 +146,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                 return TextField(
                   obscureText: _isViewConfirm,
                   onChanged: (value) {
-                    state.didChange(value.replaceAll(' ', '').replaceAll('+', ''));
+                    state.didChange(
+                      value.replaceAll(' ', '').replaceAll('+', ''),
+                    );
                     setState(() {
                       _isValid = _formKey.currentState?.validate() ?? false;
                     });
@@ -145,7 +163,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                           _isViewConfirm = !_isViewConfirm;
                         });
                       },
-                      icon: _isViewConfirm ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                      icon: _isViewConfirm
+                          ? Icon(Icons.visibility)
+                          : Icon(Icons.visibility_off),
                     ),
                   ),
                   cursorColor: customColor?.primaryTextColor,
@@ -194,13 +214,27 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 200),
                   child: widget.load == true
-                      ? Padding(padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5), child: CircularProgressIndicator())
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 5,
+                          ),
+                          child: Md3CirculeIndicator(),
+                        )
                       : TextButton.icon(
                           onPressed: _isValid && _isCheck
                               ? () {
                                   _formKey.currentState?.save();
-                                  if (_isValid && _savedPassword != null && _savedPasswordConfirm != null && _savedPassword == _savedPasswordConfirm) {
-                                    bloc.add(AuthPageEvent.newPassword(login: widget.login, password: _savedPassword ?? ''));
+                                  if (_isValid &&
+                                      _savedPassword != null &&
+                                      _savedPasswordConfirm != null &&
+                                      _savedPassword == _savedPasswordConfirm) {
+                                    bloc.add(
+                                      AuthPageEvent.newPassword(
+                                        login: widget.login,
+                                        password: _savedPassword ?? '',
+                                      ),
+                                    );
                                   }
                                 }
                               : null,
