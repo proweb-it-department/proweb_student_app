@@ -9,6 +9,7 @@ import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
@@ -263,13 +264,11 @@ class _CoworkingListViewState extends State<CoworkingListView> {
       child: Container(
         padding: EdgeInsets.only(top: 0, right: 7, left: 7),
         color: customColors?.containerColor,
-        child: RefreshIndicator(
-          color: customColors?.primaryTextColor,
-          backgroundColor: customColors?.primaryBg,
-          triggerMode: RefreshIndicatorTriggerMode.anywhere,
+        child: Md3RefreshIndicator(
           onRefresh: () async {
             final bloc = context.read<CoworkingListReserveBloc>();
             bloc.add(CoworkingListReserveEvent.started(offset: 0));
+            await bloc.stream.first;
           },
           child: InfiniteList(
             isLoading: _isLoading,

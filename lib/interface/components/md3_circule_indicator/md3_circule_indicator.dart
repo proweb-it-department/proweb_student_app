@@ -160,7 +160,7 @@ class _ShapeMd3CirculeIndicator extends StatelessWidget {
     final customColros = Theme.of(context).extension<CustomColors>();
     PathSvgShape clipper = PathSvgShape.sunny;
     if (score == 1) {
-      clipper = PathSvgShape.leaf4Cookie;
+      clipper = PathSvgShape.leaf12Cookie;
     } else if (score == 2) {
       clipper = PathSvgShape.oval;
     } else if (score == 3) {
@@ -168,7 +168,7 @@ class _ShapeMd3CirculeIndicator extends StatelessWidget {
     } else if (score == 4) {
       clipper = PathSvgShape.pill;
     } else if (score == 0) {
-      clipper = PathSvgShape.leaf12Cookie;
+      clipper = PathSvgShape.leaf4Cookie;
     }
     return ClipPath(
       clipper: SvgClipper(clipper),

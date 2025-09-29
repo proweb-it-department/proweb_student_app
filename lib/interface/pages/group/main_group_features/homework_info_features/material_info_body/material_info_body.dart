@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/material_group/material_group_bloc.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/material_info_item/material_info_item.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -48,11 +49,8 @@ class _MaterialInfoBodyState extends State<MaterialInfoBody> {
 
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>();
     final bottom = MediaQuery.of(context).viewPadding.bottom;
-    return RefreshIndicator(
-      color: customColors?.primaryTextColor,
-      backgroundColor: customColors?.containerColor,
+    return Md3RefreshIndicator(
       onRefresh: () async {
         final groupId = widget.group.id;
         if (groupId != null) {

@@ -6,6 +6,7 @@ import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/lessons_group/lessons_group_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_info_features/components/current_lesson.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_info_features/components/lessons_list.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -95,10 +96,7 @@ class GroupLessonContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>();
-    return RefreshIndicator(
-      color: customColors?.primaryTextColor,
-      backgroundColor: customColors?.containerColor,
+    return Md3RefreshIndicator(
       onRefresh: () async {
         final groupId = group.id;
         if (groupId != null) {

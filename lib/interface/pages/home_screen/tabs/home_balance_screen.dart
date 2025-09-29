@@ -9,6 +9,7 @@ import 'package:proweb_student_app/bloc/transactions_student/transactions_studen
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/balance_widget/page_view_balance.dart';
 import 'package:proweb_student_app/models/transactions_student/transactions_student.dart';
@@ -21,18 +22,18 @@ class HomeBalanceTab extends StatelessWidget {
   const HomeBalanceTab({super.key});
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>();
     return MediaQuery.removePadding(
       removeBottom: true,
       context: context,
-      child: RefreshIndicator(
-        color: customColors?.primaryTextColor,
-        backgroundColor: customColors?.containerColor,
+      child: Md3RefreshIndicator(
         onRefresh: () async {
           final balanceBloc = context.read<BalanceBloc>();
           balanceBloc.add(BalanceEvent.update());
           final transactionsBloc = context.read<TransactionsStudentBloc>();
           transactionsBloc.add(TransactionsStudentEvent.started(offset: 0));
+          await balanceBloc.stream.first;
+          await transactionsBloc.stream.first;
+          await Future.delayed(Duration(seconds: 1, milliseconds: 500));
         },
         child: ListViewContent(),
       ),

@@ -6,6 +6,7 @@ import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/bloc/story_groups/story_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_groups_widgets.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
@@ -21,15 +22,17 @@ class HomeMainTab extends StatelessWidget {
     if (sl<NavigationService>().context == null) {
       sl<NavigationService>().setContext(context);
     }
-    final customColors = Theme.of(context).extension<CustomColors>();
-    return RefreshIndicator(
-      color: customColors?.primaryTextColor,
-      backgroundColor: customColors?.containerColor,
+    return Md3RefreshIndicator(
       onRefresh: () async {
-        context.read<StoryGroupsBloc>().add(
+        final blocstory = context.read<StoryGroupsBloc>();
+        final blocgroups = context.read<MyGroupsBloc>();
+        blocstory.add(
           StoryGroupsEvent.started(languageCode: context.locale.languageCode),
         );
-        context.read<MyGroupsBloc>().add(MyGroupsEvent.started());
+        await blocstory.stream.first;
+        blocgroups.add(MyGroupsEvent.started());
+        await blocgroups.stream.first;
+        await Future.delayed(Duration(seconds: 1, milliseconds: 500));
       },
       child: ListView(
         children: [
