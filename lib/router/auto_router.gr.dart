@@ -10,16 +10,18 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i60;
-import 'package:collection/collection.dart' as _i67;
+import 'package:collection/collection.dart' as _i68;
 import 'package:flutter/material.dart' as _i61;
 import 'package:proweb_student_app/bloc/coworking_list_reserve/coworking_list_reserve_bloc.dart'
     as _i62;
 import 'package:proweb_student_app/bloc/feadback_list/feadback_list_bloc.dart'
     as _i63;
+import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart'
+    as _i64;
 import 'package:proweb_student_app/interface/components/story/story_features.dart'
     as _i51;
 import 'package:proweb_student_app/interface/components/story/view_story_model.dart'
-    as _i66;
+    as _i67;
 import 'package:proweb_student_app/interface/pages/app_screen.dart' as _i2;
 import 'package:proweb_student_app/interface/pages/auth/auth_screen/auth_screen.dart'
     as _i4;
@@ -135,11 +137,11 @@ import 'package:proweb_student_app/interface/pages/user_screen/user_screen.dart'
     as _i57;
 import 'package:proweb_student_app/interface/pages/video_slug_features/video_slug_features.dart'
     as _i58;
-import 'package:proweb_student_app/models/products/products.dart' as _i65;
+import 'package:proweb_student_app/models/products/products.dart' as _i66;
 import 'package:proweb_student_app/models/products_modules/products_modules.dart'
-    as _i64;
+    as _i65;
 import 'package:proweb_student_app/models/transactions_student/transactions_student.dart'
-    as _i68;
+    as _i69;
 
 /// generated route for
 /// [_i1.AllRankingScreen]
@@ -1096,12 +1098,15 @@ class HomeRoute extends _i60.PageRouteInfo<void> {
 /// generated route for
 /// [_i27.HomeworkAboutScreen]
 class HomeworkAboutRoute extends _i60.PageRouteInfo<HomeworkAboutRouteArgs> {
-  HomeworkAboutRoute({_i61.Key? key, List<_i60.PageRouteInfo>? children})
-    : super(
-        HomeworkAboutRoute.name,
-        args: HomeworkAboutRouteArgs(key: key),
-        initialChildren: children,
-      );
+  HomeworkAboutRoute({
+    _i61.Key? key,
+    _i64.GroupDetailBloc? bloc,
+    List<_i60.PageRouteInfo>? children,
+  }) : super(
+         HomeworkAboutRoute.name,
+         args: HomeworkAboutRouteArgs(key: key, bloc: bloc),
+         initialChildren: children,
+       );
 
   static const String name = 'HomeworkAboutRoute';
 
@@ -1116,30 +1121,33 @@ class HomeworkAboutRoute extends _i60.PageRouteInfo<HomeworkAboutRouteArgs> {
         key: args.key,
         groupId: pathParams.getInt('id'),
         relationId: pathParams.getInt('relationId'),
+        bloc: args.bloc,
       );
     },
   );
 }
 
 class HomeworkAboutRouteArgs {
-  const HomeworkAboutRouteArgs({this.key});
+  const HomeworkAboutRouteArgs({this.key, this.bloc});
 
   final _i61.Key? key;
 
+  final _i64.GroupDetailBloc? bloc;
+
   @override
   String toString() {
-    return 'HomeworkAboutRouteArgs{key: $key}';
+    return 'HomeworkAboutRouteArgs{key: $key, bloc: $bloc}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! HomeworkAboutRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && bloc == other.bloc;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ bloc.hashCode;
 }
 
 /// generated route for
@@ -1198,6 +1206,7 @@ class HomeworkRouteRoute extends _i60.PageRouteInfo<HomeworkRouteRouteArgs> {
     _i61.Key? key,
     required int relationId,
     required int groupId,
+    _i64.GroupDetailBloc? bloc,
     List<_i60.PageRouteInfo>? children,
   }) : super(
          HomeworkRouteRoute.name,
@@ -1205,6 +1214,7 @@ class HomeworkRouteRoute extends _i60.PageRouteInfo<HomeworkRouteRouteArgs> {
            key: key,
            relationId: relationId,
            groupId: groupId,
+           bloc: bloc,
          ),
          rawPathParams: {'relationId': relationId, 'id': groupId},
          initialChildren: children,
@@ -1226,6 +1236,7 @@ class HomeworkRouteRoute extends _i60.PageRouteInfo<HomeworkRouteRouteArgs> {
         key: args.key,
         relationId: args.relationId,
         groupId: args.groupId,
+        bloc: args.bloc,
       );
     },
   );
@@ -1236,6 +1247,7 @@ class HomeworkRouteRouteArgs {
     this.key,
     required this.relationId,
     required this.groupId,
+    this.bloc,
   });
 
   final _i61.Key? key;
@@ -1244,9 +1256,11 @@ class HomeworkRouteRouteArgs {
 
   final int groupId;
 
+  final _i64.GroupDetailBloc? bloc;
+
   @override
   String toString() {
-    return 'HomeworkRouteRouteArgs{key: $key, relationId: $relationId, groupId: $groupId}';
+    return 'HomeworkRouteRouteArgs{key: $key, relationId: $relationId, groupId: $groupId, bloc: $bloc}';
   }
 
   @override
@@ -1255,11 +1269,13 @@ class HomeworkRouteRouteArgs {
     if (other is! HomeworkRouteRouteArgs) return false;
     return key == other.key &&
         relationId == other.relationId &&
-        groupId == other.groupId;
+        groupId == other.groupId &&
+        bloc == other.bloc;
   }
 
   @override
-  int get hashCode => key.hashCode ^ relationId.hashCode ^ groupId.hashCode;
+  int get hashCode =>
+      key.hashCode ^ relationId.hashCode ^ groupId.hashCode ^ bloc.hashCode;
 }
 
 /// generated route for
@@ -1542,8 +1558,8 @@ class MaterialProductRoute
   MaterialProductRoute({
     _i61.Key? key,
     required int materialId,
-    required _i64.ProductsModules module,
-    required _i65.Products product,
+    required _i65.ProductsModules module,
+    required _i66.Products product,
     List<_i60.PageRouteInfo>? children,
   }) : super(
          MaterialProductRoute.name,
@@ -1584,9 +1600,9 @@ class MaterialProductRouteArgs {
 
   final int materialId;
 
-  final _i64.ProductsModules module;
+  final _i65.ProductsModules module;
 
-  final _i65.Products product;
+  final _i66.Products product;
 
   @override
   String toString() {
@@ -1734,8 +1750,8 @@ class ModuleRoute extends _i60.PageRouteInfo<ModuleRouteArgs> {
     _i61.Key? key,
     required int id,
     required int moduleId,
-    required _i64.ProductsModules module,
-    required _i65.Products product,
+    required _i65.ProductsModules module,
+    required _i66.Products product,
     List<_i60.PageRouteInfo>? children,
   }) : super(
          ModuleRoute.name,
@@ -1781,9 +1797,9 @@ class ModuleRouteArgs {
 
   final int moduleId;
 
-  final _i64.ProductsModules module;
+  final _i65.ProductsModules module;
 
-  final _i65.Products product;
+  final _i66.Products product;
 
   @override
   String toString() {
@@ -2140,7 +2156,7 @@ class StoryRoute extends _i60.PageRouteInfo<StoryRouteArgs> {
   StoryRoute({
     _i61.Key? key,
     required int initialGroup,
-    required List<_i66.ViewStoryModel> groups,
+    required List<_i67.ViewStoryModel> groups,
     required String hero,
     List<_i60.PageRouteInfo>? children,
   }) : super(
@@ -2182,7 +2198,7 @@ class StoryRouteArgs {
 
   final int initialGroup;
 
-  final List<_i66.ViewStoryModel> groups;
+  final List<_i67.ViewStoryModel> groups;
 
   final String hero;
 
@@ -2197,7 +2213,7 @@ class StoryRouteArgs {
     if (other is! StoryRouteArgs) return false;
     return key == other.key &&
         initialGroup == other.initialGroup &&
-        const _i67.ListEquality().equals(groups, other.groups) &&
+        const _i68.ListEquality().equals(groups, other.groups) &&
         hero == other.hero;
   }
 
@@ -2205,7 +2221,7 @@ class StoryRouteArgs {
   int get hashCode =>
       key.hashCode ^
       initialGroup.hashCode ^
-      const _i67.ListEquality().hash(groups) ^
+      const _i68.ListEquality().hash(groups) ^
       hero.hashCode;
 }
 
@@ -2432,7 +2448,7 @@ class TransactionViewRoute
     extends _i60.PageRouteInfo<TransactionViewRouteArgs> {
   TransactionViewRoute({
     _i61.Key? key,
-    required _i68.TransactionsStudent transaction,
+    required _i69.TransactionsStudent transaction,
     List<_i60.PageRouteInfo>? children,
   }) : super(
          TransactionViewRoute.name,
@@ -2459,7 +2475,7 @@ class TransactionViewRouteArgs {
 
   final _i61.Key? key;
 
-  final _i68.TransactionsStudent transaction;
+  final _i69.TransactionsStudent transaction;
 
   @override
   String toString() {

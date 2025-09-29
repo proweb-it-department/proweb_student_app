@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/homework_list_group/homework_list_group.dart';
@@ -47,6 +49,7 @@ class _HomeworkInfoItemState extends State<HomeworkInfoItem> {
                 HomeworkRouteRoute(
                   relationId: widget.item.id ?? 0,
                   groupId: widget.group.id ?? 0,
+                  bloc: context.read<GroupDetailBloc>(),
                 ),
               );
             },
@@ -139,11 +142,7 @@ class ScoreIcon extends StatelessWidget {
     } else if (score == 0) {
       clipper = PathSvgShape.pill;
     }
-    return ClipPath(
-      clipper: SvgClipper(clipper),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: child,
-    );
+    return ClipPath(clipper: SvgClipper(clipper), child: child);
   }
 }
 

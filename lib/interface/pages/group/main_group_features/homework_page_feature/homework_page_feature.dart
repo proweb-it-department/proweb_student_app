@@ -4,6 +4,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/tab_bar_pop_scope/tab_bar_pop_scope.dart';
@@ -13,10 +14,12 @@ import 'package:proweb_student_app/router/auto_router.gr.dart';
 class HomeworkPageScreen extends StatelessWidget {
   final int relationId;
   final int groupId;
+  final GroupDetailBloc? bloc;
   const HomeworkPageScreen({
     super.key,
     @PathParam('relationId') required this.relationId,
     @PathParam('id') required this.groupId,
+    this.bloc,
   });
 
   @override
@@ -32,7 +35,7 @@ class HomeworkPageScreen extends StatelessWidget {
               ..add(HomeworkRelationEvent.started(relationId: relationId)),
         child: AutoTabsRouter.tabBar(
           routes: [
-            HomeworkAboutRoute(),
+            HomeworkAboutRoute(bloc: bloc),
             HomeworkStudentWorkRoute(),
             HomeworkStudentCommentsRoute(),
           ],

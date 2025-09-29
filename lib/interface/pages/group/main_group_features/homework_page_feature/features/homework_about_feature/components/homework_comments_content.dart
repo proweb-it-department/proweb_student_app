@@ -53,9 +53,11 @@ class _HomeworkCommentsFeatureState extends State<HomeworkCommentsFeature> {
       if (tabsRouter.currentChild?.name != HomeworkStudentCommentsRoute.name) {
         if (idSubscribe != null) {
           sl<Channel>().connect.unsubscribe(uuid: idSubscribe!);
-          setState(() {
-            idSubscribe = null;
-          });
+          if (mounted) {
+            setState(() {
+              idSubscribe = null;
+            });
+          }
         }
       } else {
         if (idSubscribe == null) {

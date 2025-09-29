@@ -99,7 +99,6 @@ class GroupDetailPages extends StatelessWidget {
       error: () => null,
     );
     final mainBalance = double.parse(balanceState?.mainBalance ?? '0');
-    print(groupUser.paymentType);
     final balanceMin =
         mainBalance < -4999 &&
         groupUser.paymentType != StudentPaymentType.paymentAfter;

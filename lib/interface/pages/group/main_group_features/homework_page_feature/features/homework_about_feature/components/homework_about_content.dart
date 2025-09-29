@@ -2,29 +2,37 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
+import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_item/homework_info_item.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/file_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/link_work.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
+import 'package:proweb_student_app/utils/color_helper/color_helper.dart';
+import 'package:proweb_student_app/utils/color_helper/shade_colors.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class HomeworkAboutContent extends StatefulWidget {
   final HomeworkStudentRelationGroup relation;
   final HomeworkGroup work;
+  final GroupDetailBloc? bloc;
   const HomeworkAboutContent({
     super.key,
     required this.relation,
     required this.work,
+    this.bloc,
   });
 
   @override
@@ -65,6 +73,20 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+    final groupBloc = context.read<GroupDetailBloc>();
+    final color = groupBloc.state.whenOrNull(
+      complited: (group, groupUser) => group.course?.color,
+    );
+    ShadeColors? shadeColor;
+    ColorCreater? theme;
+    if (color != null) {
+      shadeColor = ShadeColors(color)..generate();
+      theme = shadeColor.theme(
+        context,
+        light: ShadeNumber.shade100,
+        dark: ShadeNumber.shade1100,
+      );
+    }
     return ListView(
       padding: EdgeInsets.only(
         bottom: bottomPadding + 10,
@@ -146,34 +168,46 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
               if (widget.relation.score != null && widget.relation.score! > 0)
                 SizedBox(height: 15),
               if (widget.relation.score != null && widget.relation.score! > 0)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    if (widget.relation.score! <= 3)
-                      Lottie.asset(
-                        'assets/lottie/Angry.json',
-                        width: 30,
-                        height: 30,
-                      )
-                    else if (widget.relation.score! == 4)
-                      Lottie.asset(
-                        'assets/lottie/Slightly-frowning.json',
-                        width: 30,
-                        height: 30,
-                      )
-                    else
-                      Lottie.asset(
-                        'assets/lottie/Slightly-happy.json',
-                        width: 30,
-                        height: 30,
+                Center(
+                  child: IntrinsicWidth(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 10,
                       ),
-                    Text(
-                      'group_homework.scrore_relation'.tr(
-                        namedArgs: {'score': widget.relation.score!.toString()},
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color:
+                              customColors?.borderColors ?? Colors.transparent,
+                        ),
+                        color: HexColor(theme?.hexString() ?? '#ffffff'),
+                      ),
+                      child: Row(
+                        spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(5, (index) {
+                          return Opacity(
+                            opacity:
+                                widget.relation.score != null &&
+                                    widget.relation.score! <= index
+                                ? 0.2
+                                : 1,
+                            child: ScoreIcon(
+                              key: ValueKey('key_int_score_${index + 1}'),
+                              score: index + 1,
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                color: HexColor(color ?? '#ffffff'),
+                                child: Center(child: Text('${index + 1}')),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
                     ),
-                  ],
+                  ),
                 ),
             ],
           ),
