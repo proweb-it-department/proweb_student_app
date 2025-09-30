@@ -24,6 +24,13 @@ abstract class HomeworkStudentRelationGroup
     @JsonKey(name: 'homework') Homework? homework,
     @JsonKey(name: 'homework_materials')
     List<HomeworkMaterials>? homeworkMaterials,
+    @JsonKey(name: 'deadline_expired') bool? deadlineExpired,
+    @JsonKey(name: 'check_expired') bool? checkExpired,
+    @JsonKey(name: 'retake_check_expired') bool? retakeCheckExpired,
+    @JsonKey(name: 'last_lesson_number') int? lastLessonNumber,
+    @JsonKey(name: 'check_deadline_lesson_number')
+    int? checkDeadlineLessonNumber,
+    @JsonKey(name: 'checked_retaken_at') String? checkedRetakenAt,
   }) = _HomeworkStudentRelationGroup;
 
   factory HomeworkStudentRelationGroup.fromJson(Map<String, Object?> json) =>

@@ -27,7 +27,7 @@ class ContentRelationWork extends StatelessWidget {
       return element.link != null;
     }).toList();
     final customColors = Theme.of(context).extension<CustomColors>();
-
+    final deadlineExpired = relation.deadlineExpired;
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -35,80 +35,81 @@ class ContentRelationWork extends StatelessWidget {
       spacing: 10,
       children: [
         Divider(),
-        FilledButton(
-          onPressed: () {
-            showDialog(
-              useSafeArea: false,
-              context: context,
-              builder: (contextDialog) {
-                final bottomPadding = MediaQuery.of(
-                  contextDialog,
-                ).viewPadding.bottom;
-                final topPadding = MediaQuery.of(contextDialog).padding.top;
-
-                return Dialog.fullscreen(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                      bottom: bottomPadding + 10,
-                      top: topPadding + 5,
-                      left: 10,
-                      right: 10,
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          child: Stack(
-                            alignment: Alignment.centerLeft,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                icon: Icon(Icons.close),
-                              ),
-                              Center(
-                                child: Text(
-                                  'PROWEB',
-                                  style: GoogleFonts.roboto(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
+        if ((relation.checkedRetakenAt == null && (relation.score ?? 0) == 0) &&
+            deadlineExpired == false)
+          FilledButton(
+            onPressed: () {
+              showDialog(
+                useSafeArea: false,
+                context: context,
+                builder: (contextDialog) {
+                  final bottomPadding = MediaQuery.of(
+                    contextDialog,
+                  ).viewPadding.bottom;
+                  final topPadding = MediaQuery.of(contextDialog).padding.top;
+                  return Dialog.fullscreen(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                        bottom: bottomPadding + 10,
+                        top: topPadding + 5,
+                        left: 10,
+                        right: 10,
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            child: Stack(
+                              alignment: Alignment.centerLeft,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  icon: Icon(Icons.close),
+                                ),
+                                Center(
+                                  child: Text(
+                                    'PROWEB',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        HandInTheWork(
-                          collback: (files, links, nots) async {
-                            final bloc = context.read<HomeworkRelationBloc>();
-                            List<String> correctLinks = _listLinks(links);
-                            if (files.isEmpty && correctLinks.isEmpty) {
-                              _showToast(customColors);
-                              return;
-                            }
-                            bloc.add(
-                              HomeworkRelationEvent.pass(
-                                files: files,
-                                links: correctLinks,
-                                note: nots.text.trim(),
-                              ),
-                            );
-                            await bloc.stream.first;
-                            if (contextDialog.mounted) {
-                              Navigator.of(contextDialog).pop();
-                            }
-                          },
-                        ),
-                      ],
+                          HandInTheWork(
+                            collback: (files, links, nots) async {
+                              final bloc = context.read<HomeworkRelationBloc>();
+                              List<String> correctLinks = _listLinks(links);
+                              if (files.isEmpty && correctLinks.isEmpty) {
+                                _showToast(customColors);
+                                return;
+                              }
+                              bloc.add(
+                                HomeworkRelationEvent.pass(
+                                  files: files,
+                                  links: correctLinks,
+                                  note: nots.text.trim(),
+                                ),
+                              );
+                              await bloc.stream.first;
+                              if (contextDialog.mounted) {
+                                Navigator.of(contextDialog).pop();
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-          child: Text('group_homework.attach_more_works'.tr()),
-        ),
+                  );
+                },
+              );
+            },
+            child: Text('group_homework.attach_more_works'.tr()),
+          ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(

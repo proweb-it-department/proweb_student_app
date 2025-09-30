@@ -8,6 +8,7 @@ import 'package:proweb_student_app/interface/components/poll_dialog/poll_dialog.
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/content_relation_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/footer_relation_homework.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/hand_in_the_work.dart';
+import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/homework_about_content.dart';
 import 'package:proweb_student_app/models/global_comment/global_comment.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
@@ -29,6 +30,9 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     final customColors = Theme.of(context).extension<CustomColors>();
+    final deadlineLessonNumber = relation.deadlineLessonNumber;
+    final lastLessonNumber = relation.lastLessonNumber;
+    final deadlineExpired = relation.deadlineExpired;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -65,7 +69,12 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                if (relation.homeworkMaterials?.isEmpty == true)
+                InfoDedlineWork(
+                  relation: relation,
+                  padding: EdgeInsetsGeometry.only(bottom: 10),
+                ),
+                if (relation.homeworkMaterials?.isEmpty == true &&
+                    deadlineExpired == false)
                   HandInTheWork(
                     collback: (files, links, nots) async {
                       final bloc = context.read<HomeworkRelationBloc>();

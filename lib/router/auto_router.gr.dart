@@ -1284,10 +1284,11 @@ class HomeworkStudentCommentsRoute
     extends _i60.PageRouteInfo<HomeworkStudentCommentsRouteArgs> {
   HomeworkStudentCommentsRoute({
     _i61.Key? key,
+    _i64.GroupDetailBloc? bloc,
     List<_i60.PageRouteInfo>? children,
   }) : super(
          HomeworkStudentCommentsRoute.name,
-         args: HomeworkStudentCommentsRouteArgs(key: key),
+         args: HomeworkStudentCommentsRouteArgs(key: key, bloc: bloc),
          initialChildren: children,
        );
 
@@ -1304,42 +1305,48 @@ class HomeworkStudentCommentsRoute
         key: args.key,
         groupId: pathParams.getInt('id'),
         relationId: pathParams.getInt('relationId'),
+        bloc: args.bloc,
       );
     },
   );
 }
 
 class HomeworkStudentCommentsRouteArgs {
-  const HomeworkStudentCommentsRouteArgs({this.key});
+  const HomeworkStudentCommentsRouteArgs({this.key, this.bloc});
 
   final _i61.Key? key;
 
+  final _i64.GroupDetailBloc? bloc;
+
   @override
   String toString() {
-    return 'HomeworkStudentCommentsRouteArgs{key: $key}';
+    return 'HomeworkStudentCommentsRouteArgs{key: $key, bloc: $bloc}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! HomeworkStudentCommentsRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && bloc == other.bloc;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ bloc.hashCode;
 }
 
 /// generated route for
 /// [_i31.HomeworkStudentWorkScreen]
 class HomeworkStudentWorkRoute
     extends _i60.PageRouteInfo<HomeworkStudentWorkRouteArgs> {
-  HomeworkStudentWorkRoute({_i61.Key? key, List<_i60.PageRouteInfo>? children})
-    : super(
-        HomeworkStudentWorkRoute.name,
-        args: HomeworkStudentWorkRouteArgs(key: key),
-        initialChildren: children,
-      );
+  HomeworkStudentWorkRoute({
+    _i61.Key? key,
+    _i64.GroupDetailBloc? bloc,
+    List<_i60.PageRouteInfo>? children,
+  }) : super(
+         HomeworkStudentWorkRoute.name,
+         args: HomeworkStudentWorkRouteArgs(key: key, bloc: bloc),
+         initialChildren: children,
+       );
 
   static const String name = 'HomeworkStudentWorkRoute';
 
@@ -1354,30 +1361,33 @@ class HomeworkStudentWorkRoute
         key: args.key,
         groupId: pathParams.getInt('id'),
         relationId: pathParams.getInt('relationId'),
+        bloc: args.bloc,
       );
     },
   );
 }
 
 class HomeworkStudentWorkRouteArgs {
-  const HomeworkStudentWorkRouteArgs({this.key});
+  const HomeworkStudentWorkRouteArgs({this.key, this.bloc});
 
   final _i61.Key? key;
 
+  final _i64.GroupDetailBloc? bloc;
+
   @override
   String toString() {
-    return 'HomeworkStudentWorkRouteArgs{key: $key}';
+    return 'HomeworkStudentWorkRouteArgs{key: $key, bloc: $bloc}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! HomeworkStudentWorkRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && bloc == other.bloc;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ bloc.hashCode;
 }
 
 /// generated route for

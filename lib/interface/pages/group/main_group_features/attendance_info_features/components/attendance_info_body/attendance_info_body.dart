@@ -11,7 +11,6 @@ import 'package:proweb_student_app/interface/pages/group/main_group_features/att
 import 'package:proweb_student_app/models/attendance_lesson/attendance_lesson_bloc.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/group_lesson_info/group_lesson_info.dart';
-import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class AttendanceInfoBody extends StatelessWidget {
   final List<GroupLessonInfo> lessons;

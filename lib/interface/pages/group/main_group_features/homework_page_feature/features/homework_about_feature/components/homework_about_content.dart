@@ -20,6 +20,7 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class HomeworkAboutContent extends StatefulWidget {
   final HomeworkStudentRelationGroup relation;
@@ -69,6 +70,9 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
+    final deadlineLessonNumber = widget.relation.deadlineLessonNumber;
+    final lastLessonNumber = widget.relation.lastLessonNumber;
+    final deadlineExpired = widget.relation.deadlineExpired;
     final groupBloc = context.read<GroupDetailBloc>();
     final color = groupBloc.state.whenOrNull(
       complited: (group, groupUser) => group.course?.color,
@@ -94,6 +98,10 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
         child: ListView(
           padding: EdgeInsets.only(bottom: bottomPadding + 10, top: 10),
           children: [
+            InfoDedlineWork(
+              relation: widget.relation,
+              padding: EdgeInsetsGeometry.only(bottom: 10, left: 10, right: 10),
+            ),
             Padding(
               padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
               child: Container(
@@ -160,9 +168,9 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
                           color: customColors?.primaryTextColor.withAlpha(150),
                         ),
                       ),
-                    if (widget.relation.materialDeleted == false)
+                    if (widget.relation.materialDeleted == false &&
+                        deadlineExpired == false) ...{
                       SizedBox(height: 15),
-                    if (widget.relation.materialDeleted == false)
                       Row(
                         spacing: 0,
                         children: [
@@ -225,11 +233,11 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
                             ),
                         ],
                       ),
+                    },
+
                     if (widget.relation.score != null &&
-                        widget.relation.score! > 0)
+                        widget.relation.score! > 0) ...{
                       SizedBox(height: 15),
-                    if (widget.relation.score != null &&
-                        widget.relation.score! > 0)
                       Center(
                         child: IntrinsicWidth(
                           child: Container(
@@ -273,8 +281,8 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
                             ),
                           ),
                         ),
-                      )
-                    else if (homeworkMaterial == true)
+                      ),
+                    } else if (homeworkMaterial == true)
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -595,5 +603,106 @@ class _AttachedLinksState extends State<AttachedLinks> {
         ),
       ],
     );
+  }
+}
+
+class InfoDedlineWork extends StatelessWidget {
+  final HomeworkStudentRelationGroup relation;
+  final EdgeInsetsGeometry padding;
+  const InfoDedlineWork({
+    super.key,
+    required this.relation,
+    this.padding = EdgeInsetsGeometry.zero,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    final deadlineLessonNumber = relation.deadlineLessonNumber;
+    final lastLessonNumber = relation.lastLessonNumber;
+    final deadlineExpired = relation.deadlineExpired;
+    final checkedRetakenAt = relation.checkedRetakenAt;
+    final score = relation.score;
+
+    if (deadlineLessonNumber != null && deadlineLessonNumber != 0) {
+      if (deadlineExpired == false &&
+          !(checkedRetakenAt != null && score != null && score > 0)) {
+        return Padding(
+          padding: padding,
+          child: Material(
+            color: Colors.transparent,
+            child: ListTile(
+              contentPadding: EdgeInsets.all(10),
+              tileColor: customColors?.warningFillOp,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(22),
+              ),
+              leading: CircleAvatar(
+                backgroundColor: customColors?.warningFillOp,
+                child: Icon(Icons.alarm, color: customColors?.warningFill),
+              ),
+              title: Text(
+                'Срок выполнения домашнего задания - до окончания $deadlineLessonNumber-го урока. С начала обучения пройдено $lastLessonNumber уроков.',
+                style: TextStyle(
+                  color: customColors?.warningFill.withAlpha(150),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else if (checkedRetakenAt != null && score != null && score > 0) {
+        return Padding(
+          padding: padding,
+          child: Material(
+            color: Colors.transparent,
+            child: ListTile(
+              contentPadding: EdgeInsets.all(10),
+              tileColor: customColors?.errorFillOp,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(22),
+              ),
+              leading: CircleAvatar(
+                backgroundColor: customColors?.errorFillOp,
+                child: Icon(
+                  Icons.cancel_outlined,
+                  color: customColors?.errorFill,
+                ),
+              ),
+              title: Text(
+                'Вы истратили все свои попытки для сдачи работы. Пересдать работу больше нельзя!',
+                style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
+              ),
+            ),
+          ),
+        );
+      } else {
+        return Padding(
+          padding: padding,
+          child: Material(
+            color: Colors.transparent,
+            child: ListTile(
+              contentPadding: EdgeInsets.all(10),
+              tileColor: customColors?.errorFillOp,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(22),
+              ),
+              leading: CircleAvatar(
+                backgroundColor: customColors?.errorFillOp,
+                child: Icon(
+                  Icons.cancel_outlined,
+                  color: customColors?.errorFill,
+                ),
+              ),
+              title: Text(
+                'Срок сдачи работы истёк. Повторная сдача теперь невозможна.',
+                style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
+              ),
+            ),
+          ),
+        );
+      }
+    }
+
+    return SizedBox();
   }
 }

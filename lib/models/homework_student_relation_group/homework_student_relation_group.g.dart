@@ -33,6 +33,13 @@ _HomeworkStudentRelationGroup _$HomeworkStudentRelationGroupFromJson(
   homeworkMaterials: (json['homework_materials'] as List<dynamic>?)
       ?.map((e) => HomeworkMaterials.fromJson(e as Map<String, dynamic>))
       .toList(),
+  deadlineExpired: json['deadline_expired'] as bool?,
+  checkExpired: json['check_expired'] as bool?,
+  retakeCheckExpired: json['retake_check_expired'] as bool?,
+  lastLessonNumber: (json['last_lesson_number'] as num?)?.toInt(),
+  checkDeadlineLessonNumber: (json['check_deadline_lesson_number'] as num?)
+      ?.toInt(),
+  checkedRetakenAt: json['checked_retaken_at'] as String?,
 );
 
 Map<String, dynamic> _$HomeworkStudentRelationGroupToJson(
@@ -52,6 +59,12 @@ Map<String, dynamic> _$HomeworkStudentRelationGroupToJson(
   'student': instance.student,
   'homework': instance.homework,
   'homework_materials': instance.homeworkMaterials,
+  'deadline_expired': instance.deadlineExpired,
+  'check_expired': instance.checkExpired,
+  'retake_check_expired': instance.retakeCheckExpired,
+  'last_lesson_number': instance.lastLessonNumber,
+  'check_deadline_lesson_number': instance.checkDeadlineLessonNumber,
+  'checked_retaken_at': instance.checkedRetakenAt,
 };
 
 _Student _$StudentFromJson(Map<String, dynamic> json) => _Student(

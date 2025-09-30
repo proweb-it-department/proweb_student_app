@@ -12,7 +12,6 @@ import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_g
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/global_context/global_context.dart';
-import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
 class HomeMainTab extends StatelessWidget {
