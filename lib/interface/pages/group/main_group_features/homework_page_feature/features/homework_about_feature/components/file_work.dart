@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/models/db/db.dart';
 import 'package:proweb_student_app/models/download_file/downloader_files_bloc.dart';
@@ -25,60 +26,76 @@ class _FileWorkState extends State<FileWork> {
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
-    final shape = RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10),
-      side: BorderSide(
-        color: customColors?.borderColor ?? Colors.transparent,
-        width: 1,
-      ),
-    );
     final files = widget.attachFile
         .where((element) => element.file is String)
         .toList();
     bool isFiles = false;
     if (files.isNotEmpty) isFiles = true;
-    return ExpansionTile(
-      backgroundColor: customColors?.containerColor,
-      collapsedBackgroundColor: customColors?.containerColor,
-      collapsedShape: shape,
-      shape: shape,
-      leading: Icon(Icons.insert_drive_file_sharp),
-      initiallyExpanded: isFiles,
-      title: Text('group_homework.file_to_work'.tr()),
-      children: [
-        Divider(height: 1),
-        if (!isFiles)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: NoData(
-              text: 'group_homework.file_to_work_not_found'.tr(),
-              icon: Icons.insert_drive_file_sharp,
-              color: customColors?.primaryBg,
-            ),
-          )
-        else
-          ...List.generate(files.length, (index) {
-            final item = files[index];
-            final filePath = item.file;
-            if (filePath == null) return SizedBox();
-            String downloadPath = filePath;
-            if (!downloadPath.contains('http')) {
-              downloadPath = '${GlobalPath.main}${item.file!}';
-            }
-
-            return ListTile(
-              leading: item.file != null
-                  ? FileIconManager().getIconPath(filePath: downloadPath)
-                  : null,
-              title: Text(
-                item.displayName ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+    return Container(
+      decoration: BoxDecoration(
+        color: customColors?.primaryBg,
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: ListView(
+        padding: EdgeInsets.all(10),
+        shrinkWrap: true,
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          Text('group_homework.file_to_work'.tr()),
+          SizedBox(height: 10),
+          if (!isFiles)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: NoData(
+                text: 'group_homework.file_to_work_not_found'.tr(),
+                icon: Icons.insert_drive_file_sharp,
+                color: customColors?.containerColor,
               ),
-              trailing: TrailingFileButton(item: item),
-            );
-          }),
-      ],
+            )
+          else
+            ...List.generate(files.length, (index) {
+              final item = files[index];
+              final filePath = item.file;
+              if (filePath == null) return SizedBox();
+              String downloadPath = filePath;
+              if (!downloadPath.contains('http')) {
+                downloadPath = '${GlobalPath.main}${item.file!}';
+              }
+
+              return Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTileBuilder(
+                      isStart: index == 0,
+                      isEnd: (files.length - 1) == index,
+                      builder: (shape, contentPadding, isThreeLine) {
+                        return ListTile(
+                          shape: shape,
+                          contentPadding: contentPadding,
+                          tileColor: customColors?.containerColor,
+                          leading: item.file != null
+                              ? FileIconManager().getIconPath(
+                                  filePath: downloadPath,
+                                )
+                              : null,
+                          title: Text(
+                            item.displayName ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: TrailingFileButton(item: item),
+                        );
+                      },
+                    ),
+                    if ((files.length - 1) != index) SizedBox(height: 2),
+                  ],
+                ),
+              );
+            }),
+        ],
+      ),
     );
   }
 }

@@ -10,7 +10,6 @@ import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/material_list_group/material_list_group.dart';
 import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
-import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:very_good_infinite_list/very_good_infinite_list.dart';
 
 class MaterialInfoBody extends StatefulWidget {

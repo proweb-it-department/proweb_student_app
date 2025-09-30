@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
@@ -28,7 +27,10 @@ class Md3RefreshIndicator extends StatefulWidget {
 class _Md3RefreshIndicatorState extends State<Md3RefreshIndicator>
     with TickerProviderStateMixin {
   late AnimationController _scaleController;
-  late _Color colorScheme;
+  _Color colorScheme = _Color(
+    background: Colors.blue.shade200,
+    shape: Colors.blue.shade900,
+  );
   double _dragOffset = 0.0;
   bool _isRefreshing = false;
   bool _isReverse = false;
@@ -36,21 +38,10 @@ class _Md3RefreshIndicatorState extends State<Md3RefreshIndicator>
   @override
   void initState() {
     super.initState();
-    final List<_Color> colors = [
-      _Color(background: Colors.blue.shade200, shape: Colors.blue.shade900),
-      _Color(background: Colors.orange.shade200, shape: Colors.orange.shade900),
-      _Color(
-        background: Colors.deepPurple.shade200,
-        shape: Colors.deepPurple.shade900,
-      ),
-      _Color(background: Colors.green.shade200, shape: Colors.green.shade900),
-      _Color(background: Colors.red.shade200, shape: Colors.red.shade900),
-      _Color(background: Colors.teal.shade200, shape: Colors.teal.shade900),
-      _Color(background: Colors.amber.shade200, shape: Colors.amber.shade900),
-    ];
-    final random = Random();
-    final randomIndex = random.nextInt(colors.length);
-    colorScheme = colors.elementAt(randomIndex);
+    colorScheme = _Color(
+      background: Colors.blue.shade200,
+      shape: Colors.blue.shade900,
+    );
     _scaleController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 200),
@@ -73,7 +64,11 @@ class _Md3RefreshIndicatorState extends State<Md3RefreshIndicator>
           _dragOffset += (-notification.overscroll) / 2;
         });
       } else if (notification is ScrollEndNotification) {
-        if (_dragOffset >= widget.triggerDistance) {
+        final triggerDistance = widget.triggerDistance;
+        final dy = notification.dragDetails?.localPosition.dy;
+        if (_dragOffset >= triggerDistance &&
+            dy != null &&
+            dy > triggerDistance) {
           _startRefresh();
         } else {
           _reset();
@@ -95,33 +90,12 @@ class _Md3RefreshIndicatorState extends State<Md3RefreshIndicator>
     });
     await _scaleController.reverse();
     _reset();
-    changeColor();
   }
 
   void _reset() {
     setState(() {
       _dragOffset = 0.0;
       _isRefreshing = false;
-    });
-  }
-
-  void changeColor() {
-    final List<_Color> colors = [
-      _Color(background: Colors.blue.shade200, shape: Colors.blue.shade900),
-      _Color(background: Colors.orange.shade200, shape: Colors.orange.shade900),
-      _Color(
-        background: Colors.deepPurple.shade200,
-        shape: Colors.deepPurple.shade900,
-      ),
-      _Color(background: Colors.green.shade200, shape: Colors.green.shade900),
-      _Color(background: Colors.red.shade200, shape: Colors.red.shade900),
-      _Color(background: Colors.teal.shade200, shape: Colors.teal.shade900),
-      _Color(background: Colors.amber.shade200, shape: Colors.amber.shade900),
-    ];
-    final random = Random();
-    final randomIndex = random.nextInt(colors.length);
-    setState(() {
-      colorScheme = colors.elementAt(randomIndex);
     });
   }
 

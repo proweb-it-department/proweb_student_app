@@ -1,16 +1,14 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:lottie/lottie.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc.dart';
-import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
-import 'package:proweb_student_app/interface/components/icon_avatar.dart';
-import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_item/homework_info_item.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/file_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/link_work.dart';
@@ -22,7 +20,6 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class HomeworkAboutContent extends StatefulWidget {
   final HomeworkStudentRelationGroup relation;
@@ -62,7 +59,6 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     if (idSubscribe != null) {
       sl<Channel>().connect.unsubscribe(uuid: idSubscribe!);
     }
@@ -87,212 +83,516 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
         dark: ShadeNumber.shade1100,
       );
     }
-    return ListView(
-      padding: EdgeInsets.only(
-        bottom: bottomPadding + 10,
-        left: 10,
-        right: 10,
-        top: 10,
+    final homeworkMaterial = widget.relation.homeworkMaterials?.isNotEmpty;
+    return ClipRRect(
+      borderRadius: BorderRadiusGeometry.only(
+        topLeft: Radius.circular(22),
+        topRight: Radius.circular(22),
       ),
-      children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: customColors?.containerColor,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: customColors?.borderColor ?? Colors.black,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'group_homework.homework_about_max'.tr(),
-                style: TextStyle(
-                  color: customColors?.primaryTextColor.withAlpha(150),
+      child: Container(
+        decoration: BoxDecoration(color: customColors?.containerColor),
+        child: ListView(
+          padding: EdgeInsets.only(bottom: bottomPadding + 10, top: 10),
+          children: [
+            Padding(
+              padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: customColors?.primaryBg,
+                  borderRadius: BorderRadius.circular(22),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(widget.work.name ?? '', style: TextStyle(fontSize: 22)),
-              SizedBox(height: 10),
-              if (widget.work.description != null)
-                Text(
-                  sl<LocalData>().removeHtmlTags(widget.work.description!),
-                  style: TextStyle(
-                    color: customColors?.primaryTextColor.withAlpha(150),
-                  ),
-                ),
-              if (widget.relation.materialDeleted == false)
-                SizedBox(height: 15),
-              if (widget.relation.materialDeleted == false)
-                Row(
-                  spacing: 10,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      child: FilledButton.icon(
-                        style: FilledButton.styleFrom(
-                          backgroundColor: customColors?.additionalTwo,
-                          textStyle: TextStyle(
-                            color: customColors?.primaryTextColor,
-                          ),
-                        ),
-                        iconAlignment: IconAlignment.end,
-                        icon: Icon(
-                          Icons.keyboard_arrow_right_outlined,
-                          color: customColors?.primaryTextColor,
-                        ),
-                        onPressed: () {
-                          final tabsRouter = AutoTabsRouter.of(context);
-                          tabsRouter.setActiveIndex(1);
-                        },
-                        label: Text(
-                          'group_homework.go_to_student_work'.tr(),
-                          style: TextStyle(
-                            color: customColors?.primaryTextColor,
-                          ),
+                    Text(
+                      widget.work.name ?? '',
+                      style: TextStyle(fontSize: 22),
+                    ),
+                    SizedBox(height: 10),
+                    if (widget.relation.createdAt != null ||
+                        widget.work.level != null)
+                      Opacity(
+                        opacity: 0.7,
+                        child: Wrap(
+                          spacing: 10,
+                          children: [
+                            if (widget.relation.createdAt != null)
+                              Row(
+                                spacing: 5,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.event),
+                                  Text(
+                                    sl<LocalData>().getDateString(
+                                      date: DateTime.parse(
+                                        widget.relation.createdAt!,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            if (widget.work.level != null)
+                              Row(
+                                spacing: 5,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.signal_cellular_alt),
+                                  Text(
+                                    'group_homework.difficulty_level_${widget.work.level}'
+                                        .tr(),
+                                  ),
+                                ],
+                              ),
+                          ],
                         ),
                       ),
-                    ),
-                    if (widget.relation.homeworkMaterials?.isNotEmpty == true)
-                      IconButton(
-                        onPressed: () {
-                          final tabsRouter = AutoTabsRouter.of(context);
-                          tabsRouter.setActiveIndex(2);
-                        },
-                        icon: Icon(Icons.comment),
+                    if (widget.relation.createdAt != null ||
+                        widget.work.level != null)
+                      SizedBox(height: 10),
+                    if (widget.work.description != null)
+                      Text(
+                        sl<LocalData>().removeHtmlTags(
+                          widget.work.description!,
+                        ),
+                        style: TextStyle(
+                          color: customColors?.primaryTextColor.withAlpha(150),
+                        ),
+                      ),
+                    if (widget.relation.materialDeleted == false)
+                      SizedBox(height: 15),
+                    if (widget.relation.materialDeleted == false)
+                      Row(
+                        spacing: 0,
+                        children: [
+                          Expanded(
+                            child: FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: customColors?.additionalTwo,
+                                textStyle: TextStyle(
+                                  color: customColors?.primaryTextColor,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: homeworkMaterial == false
+                                      ? BorderRadiusGeometry.circular(22)
+                                      : BorderRadiusGeometry.only(
+                                          topLeft: Radius.circular(22),
+                                          topRight: Radius.circular(6),
+                                          bottomLeft: Radius.circular(22),
+                                          bottomRight: Radius.circular(6),
+                                        ),
+                                ),
+                              ),
+
+                              iconAlignment: IconAlignment.end,
+                              icon: Icon(
+                                Icons.keyboard_arrow_right_outlined,
+                                color: customColors?.primaryTextColor,
+                              ),
+                              onPressed: () {
+                                final tabsRouter = AutoTabsRouter.of(context);
+                                tabsRouter.setActiveIndex(1);
+                              },
+                              label: Text(
+                                'group_homework.go_to_student_work'.tr(),
+                                style: TextStyle(
+                                  color: customColors?.primaryTextColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          if (widget.relation.homeworkMaterials?.isNotEmpty ==
+                              true)
+                            IconButton(
+                              onPressed: () {
+                                final tabsRouter = AutoTabsRouter.of(context);
+                                tabsRouter.setActiveIndex(2);
+                              },
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusGeometry.only(
+                                    topLeft: Radius.circular(6),
+                                    topRight: Radius.circular(22),
+                                    bottomLeft: Radius.circular(6),
+                                    bottomRight: Radius.circular(22),
+                                  ),
+                                ),
+                                backgroundColor: customColors?.additionalTwo,
+                                padding: EdgeInsets.only(right: 10, left: 7),
+                              ),
+                              icon: Icon(Icons.comment),
+                            ),
+                        ],
+                      ),
+                    if (widget.relation.score != null &&
+                        widget.relation.score! > 0)
+                      SizedBox(height: 15),
+                    if (widget.relation.score != null &&
+                        widget.relation.score! > 0)
+                      Center(
+                        child: IntrinsicWidth(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 15,
+                              vertical: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(
+                                color:
+                                    customColors?.borderColors ??
+                                    Colors.transparent,
+                              ),
+                              color: HexColor(theme?.hexString() ?? '#ffffff'),
+                            ),
+                            child: Row(
+                              spacing: 5,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(5, (index) {
+                                return Opacity(
+                                  opacity:
+                                      widget.relation.score != null &&
+                                          widget.relation.score! <= index
+                                      ? 0.2
+                                      : 1,
+                                  child: ScoreIcon(
+                                    key: ValueKey('key_int_score_${index + 1}'),
+                                    score: index + 1,
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      color: HexColor(color ?? '#ffffff'),
+                                      child: Center(
+                                        child: Text('${index + 1}'),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ),
+                      )
+                    else if (homeworkMaterial == true)
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: 15),
+                          Center(
+                            child: ScoreFadeShow(
+                              backgroundColor: HexColor(
+                                theme?.hexString() ?? '#ffffff',
+                              ),
+                              color: HexColor(color ?? '#ffffff'),
+                            ),
+                          ),
+                        ],
                       ),
                   ],
                 ),
-              if (widget.relation.score != null && widget.relation.score! > 0)
-                SizedBox(height: 15),
-              if (widget.relation.score != null && widget.relation.score! > 0)
-                Center(
-                  child: IntrinsicWidth(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 10,
+              ),
+            ),
+            SizedBox(height: 15),
+            AttachedLinks(work: widget.work),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ScoreFadeShow extends StatefulWidget {
+  final Color backgroundColor;
+  final Color color;
+  const ScoreFadeShow({
+    super.key,
+    required this.backgroundColor,
+    required this.color,
+  });
+
+  @override
+  State<ScoreFadeShow> createState() => _ScoreFadeShowState();
+}
+
+class _ScoreFadeShowState extends State<ScoreFadeShow>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnim;
+  int _currentIndex = 0;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300), // плавность перехода
+    );
+
+    _fadeAnim = Tween<double>(
+      begin: 0.2,
+      end: 1,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+
+    _controller.forward();
+
+    // каждые 800 мс переключаем активный item
+    _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      setState(() {
+        _currentIndex = (_currentIndex + 1) % 5;
+      });
+      _controller
+        ..reset()
+        ..forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return IntrinsicWidth(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(
+            color: customColors?.borderColors ?? Colors.transparent,
+          ),
+          color: widget.backgroundColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 5,
+          children: List.generate(5, (index) {
+            final isActive = index == _currentIndex;
+            return ScoreIcon(
+              score: index + 1,
+              child: AnimatedBuilder(
+                animation: _fadeAnim,
+                builder: (context, child) {
+                  return Opacity(
+                    opacity: isActive ? _fadeAnim.value : 0.2,
+                    child: child,
+                  );
+                },
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  color: widget.color,
+                  child: Center(child: Text('${index + 1}')),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+class AttachedLinks extends StatefulWidget {
+  final HomeworkGroup work;
+  const AttachedLinks({super.key, required this.work});
+
+  @override
+  State<AttachedLinks> createState() => _AttachedLinksState();
+}
+
+class _AttachedLinksState extends State<AttachedLinks> {
+  int _currentIndex = 0;
+  final PageController _controller = PageController();
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      spacing: 0,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                spacing: 4,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: _currentIndex == 0
+                          ? null
+                          : () {
+                              _controller.animateToPage(
+                                0,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                              setState(() {
+                                _currentIndex = 0;
+                              });
+                            },
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(22),
+                        topLeft: Radius.circular(22),
+                        bottomRight: Radius.circular(4),
+                        topRight: Radius.circular(4),
                       ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(
-                          color:
-                              customColors?.borderColors ?? Colors.transparent,
-                        ),
-                        color: HexColor(theme?.hexString() ?? '#ffffff'),
-                      ),
-                      child: Row(
-                        spacing: 5,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(5, (index) {
-                          return Opacity(
-                            opacity:
-                                widget.relation.score != null &&
-                                    widget.relation.score! <= index
-                                ? 0.2
-                                : 1,
-                            child: ScoreIcon(
-                              key: ValueKey('key_int_score_${index + 1}'),
-                              score: index + 1,
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                color: HexColor(color ?? '#ffffff'),
-                                child: Center(child: Text('${index + 1}')),
-                              ),
+                      child: IntrinsicWidth(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(22),
+                              topLeft: Radius.circular(22),
+                              bottomRight: Radius.circular(4),
+                              topRight: Radius.circular(4),
                             ),
-                          );
-                        }),
+                            color: _currentIndex == 0
+                                ? customColors?.primaryTextColor
+                                : customColors?.primaryBg,
+                          ),
+                          child: Text(
+                            'Ссылки',
+                            style: TextStyle(
+                              color: _currentIndex == 0
+                                  ? customColors?.primaryBg
+                                  : customColors?.primaryTextColor,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: _currentIndex == 1
+                          ? null
+                          : () {
+                              _controller.animateToPage(
+                                1,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                              setState(() {
+                                _currentIndex = 1;
+                              });
+                            },
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(4),
+                        topLeft: Radius.circular(4),
+                        bottomRight: Radius.circular(22),
+                        topRight: Radius.circular(22),
+                      ),
+                      child: IntrinsicWidth(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 200),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(4),
+                              topLeft: Radius.circular(4),
+                              bottomRight: Radius.circular(22),
+                              topRight: Radius.circular(22),
+                            ),
+                            color: _currentIndex == 1
+                                ? customColors?.primaryTextColor
+                                : customColors?.primaryBg,
+                          ),
+                          child: Text(
+                            'Файлы',
+                            style: TextStyle(
+                              color: _currentIndex == 1
+                                  ? customColors?.primaryBg
+                                  : customColors?.primaryTextColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                spacing: 4,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: _currentIndex == 0
+                        ? null
+                        : () {
+                            _controller.animateToPage(
+                              0,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                            setState(() {
+                              _currentIndex = 0;
+                            });
+                          },
+                    icon: Icon(Icons.chevron_left),
+                  ),
+                  IconButton(
+                    onPressed: _currentIndex == 1
+                        ? null
+                        : () {
+                            _controller.animateToPage(
+                              1,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                            setState(() {
+                              _currentIndex = 1;
+                            });
+                          },
+                    icon: Icon(Icons.chevron_right),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
-        SizedBox(height: 15),
-        LinksWork(attachFile: widget.work.attachedData ?? []),
-        SizedBox(height: 15),
-        FileWork(attachFile: widget.work.attachedData ?? []),
-        if (widget.relation.createdBy?.user != null ||
-            widget.relation.createdAt != null ||
-            widget.work.level != null)
-          SizedBox(height: 15),
-        if (widget.relation.createdBy?.user != null ||
-            widget.relation.createdAt != null ||
-            widget.work.level != null)
-          Column(
-            spacing: 2,
+        SizedBox(
+          height: 200,
+          child: PageView(
+            pageSnapping: true,
+            controller: _controller,
+            onPageChanged: (value) {
+              setState(() {
+                _currentIndex = value;
+              });
+            },
             children: [
-              if (widget.relation.createdBy?.user != null)
-                Material(
-                  color: Colors.transparent,
-                  child: ListTileBuilder(
-                    isStart: true,
-                    isEnd: false,
-                    builder: (shape, contentPadding, isThreeLine) {
-                      return ListTile(
-                        shape: shape,
-                        contentPadding: contentPadding,
-                        tileColor: customColors?.containerColor,
-                        leading: Avatar(user: widget.relation.createdBy?.user),
-                        title: Text('education.course_teacher'.tr()),
-                        subtitle: Text(
-                          sl<LocalData>().nameUser(
-                            widget.relation.createdBy!.user!,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              if (widget.relation.createdAt != null)
-                Material(
-                  color: Colors.transparent,
-                  child: ListTileBuilder(
-                    isStart: false,
-                    isEnd: false,
-                    builder: (shape, contentPadding, isThreeLine) {
-                      return ListTile(
-                        shape: shape,
-                        contentPadding: contentPadding,
-                        tileColor: customColors?.containerColor,
-                        leading: IconAvatar(icon: Icons.event),
-                        title: Text('group_homework.destination_data'.tr()),
-                        subtitle: Text(
-                          sl<LocalData>().getDateString(
-                            date: DateTime.parse(widget.relation.createdAt!),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              if (widget.work.level != null)
-                Material(
-                  color: Colors.transparent,
-                  child: ListTileBuilder(
-                    isStart: false,
-                    isEnd: true,
-                    builder: (shape, contentPadding, isThreeLine) {
-                      return ListTile(
-                        shape: shape,
-                        contentPadding: contentPadding,
-                        tileColor: customColors?.containerColor,
-                        leading: IconAvatar(icon: Icons.signal_cellular_alt),
-                        title: Text('group_homework.difficulty_level'.tr()),
-                        subtitle: Text(
-                          'group_homework.difficulty_level_${widget.work.level}'
-                              .tr(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+                child: LinksWork(attachFile: widget.work.attachedData ?? []),
+              ),
+              Padding(
+                padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+                child: FileWork(attachFile: widget.work.attachedData ?? []),
+              ),
             ],
           ),
+        ),
       ],
     );
   }

@@ -49,12 +49,14 @@ class HomeworkPageScreen extends StatelessWidget {
                 mainPage: HomeworkAboutRoute(),
                 child: Scaffold(
                   appBar: MainAppBar(
+                    isBorder: false,
                     tab: TabBar(
                       controller: tabController,
                       isScrollable: true,
                       tabAlignment: TabAlignment.start,
                       indicatorWeight: 4,
                       dragStartBehavior: DragStartBehavior.down,
+                      dividerColor: Colors.transparent,
                       tabs: [
                         Tab(text: 'group_homework.homework_about'.tr()),
                         Tab(text: 'group_homework.homework_student_work'.tr()),
