@@ -30,8 +30,6 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     final customColors = Theme.of(context).extension<CustomColors>();
-    final deadlineLessonNumber = relation.deadlineLessonNumber;
-    final lastLessonNumber = relation.lastLessonNumber;
     final deadlineExpired = relation.deadlineExpired;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,

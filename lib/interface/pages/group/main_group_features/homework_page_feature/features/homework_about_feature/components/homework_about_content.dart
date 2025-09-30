@@ -20,7 +20,6 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class HomeworkAboutContent extends StatefulWidget {
   final HomeworkStudentRelationGroup relation;
@@ -70,8 +69,6 @@ class _HomeworkAboutContentState extends State<HomeworkAboutContent> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
-    final deadlineLessonNumber = widget.relation.deadlineLessonNumber;
-    final lastLessonNumber = widget.relation.lastLessonNumber;
     final deadlineExpired = widget.relation.deadlineExpired;
     final groupBloc = context.read<GroupDetailBloc>();
     final color = groupBloc.state.whenOrNull(
