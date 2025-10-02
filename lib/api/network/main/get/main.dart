@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
@@ -46,6 +47,7 @@ import 'package:proweb_student_app/models/user_total_position/user_total_positio
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class GetResponsesMain {
   Future<List<StoryGroupsForStudent>?> story({
@@ -477,6 +479,10 @@ class GetResponsesMain {
     final response = await sl<MainFetch>().get(path: path);
     final myGroups = response.fold<List<MyGroupsItem>?>(
       (l) {
+        final map = l.response?.data;
+        if (map != null && map['detail'] != null) {
+          Fluttertoast.showToast(msg: map['detail']);
+        }
         return null;
       },
       (r) {

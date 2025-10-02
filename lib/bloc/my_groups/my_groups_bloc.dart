@@ -14,14 +14,11 @@ class MyGroupsBloc extends Bloc<MyGroupsEvent, MyGroupsState> {
       started() async {
         emit(MyGroupsState.loading());
         final myGroups = await sl<GetResponsesMain>().myGroups();
-        if (myGroups != null) {
-          if (myGroups.isNotEmpty) {
-            return emit(MyGroupsState.complited(groups: myGroups));
-          } else {
-            return emit(MyGroupsState.notFound());
-          }
+        if (myGroups == null) return emit(MyGroupsState.errorLoad());
+        if (myGroups.isNotEmpty) {
+          return emit(MyGroupsState.complited(groups: myGroups));
         } else {
-          return emit(MyGroupsState.errorLoad());
+          return emit(MyGroupsState.notFound());
         }
       }
 

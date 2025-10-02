@@ -46,12 +46,12 @@ class Fetch implements MainFetch, AuthFetch, VideoFetch, ChatFetch {
       final dio = await _dio.get('$main$path', options: options);
       final response = dio.data;
       if (response == null) {
-        return Left(ErrorRequest(server: true));
+        return Left(ErrorRequest(server: true, response: dio));
       } else {
         if (response["results"] != null) {
           return Right(response);
         } else {
-          return Left(ErrorRequest(auth: true));
+          return Left(ErrorRequest(auth: true, response: dio));
         }
       }
     } on DioException catch (e) {
@@ -86,9 +86,9 @@ class Fetch implements MainFetch, AuthFetch, VideoFetch, ChatFetch {
       }
       if ((e.response?.statusCode == 403 || e.response?.statusCode == 401)) {
         sl<LocalData>().localLogOut();
-        return Left(ErrorRequest(token: true));
+        return Left(ErrorRequest(token: true, response: e.response));
       }
-      return Left(ErrorRequest(server: true));
+      return Left(ErrorRequest(server: true, response: e.response));
     }
   }
 
