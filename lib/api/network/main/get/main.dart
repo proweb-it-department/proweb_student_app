@@ -60,11 +60,7 @@ class GetResponsesMain {
     }
     String path =
         '/api/v1/stories/story-groups-for-student/?device_type=$deviceType&language_code=$languageCode';
-    final response = await sl<MainFetch>().get(
-      path: path,
-      cache: true,
-      duration: Duration(minutes: 30),
-    );
+    final response = await sl<MainFetch>().get(path: path);
     List<StoryGroupsForStudent>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<StoryGroupsForStudent>.fromJson(
         r,

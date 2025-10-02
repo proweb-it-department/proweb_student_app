@@ -54,4 +54,8 @@ class CacheDatabase extends _$CacheDatabase {
   Future<void> deleteCache(String url) async {
     await (delete(cacheRequest)..where((tbl) => tbl.url.equals(url))).go();
   }
+
+  Future<void> deleteAllCache() async {
+    await (delete(cacheRequest)).go();
+  }
 }

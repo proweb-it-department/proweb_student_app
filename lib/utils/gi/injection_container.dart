@@ -33,7 +33,7 @@ import '../../api/fetch/abstract_fetch.dart';
 import 'injection_container.config.dart';
 
 final sl = GetIt.instance;
-
+final cashDB = CacheDatabase();
 @InjectableInit()
 Future<void> configureDependencies() async => sl.init();
 
@@ -76,9 +76,8 @@ abstract class AppModule {
         receiveTimeout: const Duration(hours: 2),
       ),
     );
-    final db = CacheDatabase();
 
-    dio.interceptors.add(DriftCacheInterceptor(db));
+    dio.interceptors.add(DriftCacheInterceptor(cashDB));
     return dio;
   }
 

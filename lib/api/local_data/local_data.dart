@@ -42,7 +42,7 @@ class LocalData {
   double? _time;
   double? _setTime;
 
-  setTime(int time) {
+  void setTime(int time) {
     _time = time.toDouble() * 1000;
     _setTime = DateTime.now().millisecondsSinceEpoch.toDouble();
   }
@@ -252,7 +252,9 @@ class LocalData {
         }
       }
       if (filesGlob.isNotEmpty) {
-        Share.shareXFiles(filesGlob, text: 'group_homework.share_file'.tr());
+        SharePlus.instance.share(
+          ShareParams(files: filesGlob, text: 'group_homework.share_file'.tr()),
+        );
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -354,6 +356,7 @@ class LocalData {
   }
 
   Future<void> _removeProfile() async {
+    _profile = null;
     final prefs = sl<SharedPreferences>();
     await prefs.remove('myprofile');
   }
@@ -381,6 +384,7 @@ class LocalData {
     final refreshToken = prefs.getString('refresh_token');
     final sinceEpochEnd = prefs.getInt('since_epoch_end');
     final lengthTime = prefs.getInt('length_time');
+    await _removeProfile();
     if (accessToken != null) {
       await prefs.remove('access_token');
     }
@@ -427,6 +431,7 @@ class LocalData {
       // if (token != null) {
       //   await sl<SharedPreferences>().remove('tokenFirebase');
       // }
+      await cashDB.deleteAllCache();
       await _removeProfile();
       await _deleteAuth();
       sl<AuthBloc>().add(AuthEvent.logOut());
@@ -509,6 +514,7 @@ class LocalData {
           lengthTime: lengthTime,
         );
         await setLocalSession(saved);
+        await requestMyProfile(GetMyProfileEnum.network);
         return true;
       } else {
         return false;
