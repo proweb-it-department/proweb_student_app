@@ -20,6 +20,8 @@ class FooterRelationHomework extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     final customColors = Theme.of(context).extension<CustomColors>();
+    final checkedRetakenAt = relation.checkedRetakenAt;
+    final deadlineExpired = relation.deadlineExpired;
     final groupBloc = context.read<GroupDetailBloc>();
     final color = groupBloc.state.whenOrNull(
       complited: (group, groupUser) => group.course?.color,
@@ -34,7 +36,6 @@ class FooterRelationHomework extends StatelessWidget {
         dark: ShadeNumber.shade1100,
       );
     }
-    final deadlineExpired = relation.deadlineExpired;
     return Padding(
       padding: EdgeInsetsGeometry.only(
         bottom: bottomPadding + 10,
@@ -111,11 +112,9 @@ class FooterRelationHomework extends StatelessWidget {
                     (relation.student?.status != StudentStatus.graduate ||
                         relation.student?.status != StudentStatus.leave))
                   SizedBox(height: 5),
-              if (relation.score != null &&
-                  relation.score! > 0 &&
-                  relation.score! < 5 &&
-                  (relation.student?.status != StudentStatus.graduate ||
-                      relation.student?.status != StudentStatus.leave))
+              if (checkedRetakenAt == null &&
+                  relation.student?.status != StudentStatus.graduate &&
+                  relation.student?.status != StudentStatus.leave)
                 Text(
                   'group_homework.support_relation_work_text'.tr(),
                   style: TextStyle(color: customColors?.additionalTwo),

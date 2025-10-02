@@ -36,8 +36,8 @@ class HomeworkPageScreen extends StatelessWidget {
         child: AutoTabsRouter.tabBar(
           routes: [
             HomeworkAboutRoute(bloc: bloc),
-            HomeworkStudentWorkRoute(),
-            HomeworkStudentCommentsRoute(),
+            HomeworkStudentWorkRoute(bloc: bloc),
+            HomeworkStudentCommentsRoute(bloc: bloc),
           ],
           builder: (context, child, tabController) {
             return GestureDetector(

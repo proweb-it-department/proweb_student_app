@@ -28,6 +28,13 @@ class ContentRelationWork extends StatelessWidget {
     }).toList();
     final customColors = Theme.of(context).extension<CustomColors>();
     final deadlineExpired = relation.deadlineExpired;
+    final deadlineLessonNumber = relation.deadlineLessonNumber ?? 0;
+    bool sendDz = true;
+    if (deadlineLessonNumber > 0) {
+      final checkedRetakenAt = relation.checkedRetakenAt == null;
+      final score = (relation.score ?? 0) == 0;
+      sendDz = checkedRetakenAt && score && deadlineExpired == false;
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -35,8 +42,7 @@ class ContentRelationWork extends StatelessWidget {
       spacing: 10,
       children: [
         Divider(),
-        if ((relation.checkedRetakenAt == null && (relation.score ?? 0) == 0) &&
-            deadlineExpired == false)
+        if (sendDz)
           FilledButton(
             onPressed: () {
               showDialog(
