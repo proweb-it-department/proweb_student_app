@@ -39,6 +39,9 @@ enum StudentStatus {
   transfer,
   @JsonValue('partially_completed')
   partiallyCompleted,
+  @JsonValue('transfer_other_course')
+  transferOtherCourse,
+  unknown,
 }
 
 enum StudentPaymentType {

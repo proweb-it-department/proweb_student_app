@@ -451,7 +451,7 @@ $HomeworkCopyWith<$Res>? get homework {
 /// @nodoc
 mixin _$Student implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user_id') int? get userId;@JsonKey(name: 'group_user_id') int? get groupUserId;@JsonKey(name: 'user') UserIdDefault? get user;@JsonKey(name: 'status') StudentStatus? get status;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'user_id') int? get userId;@JsonKey(name: 'group_user_id') int? get groupUserId;@JsonKey(name: 'user') UserIdDefault? get user;@JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown) StudentStatus? get status;
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -490,7 +490,7 @@ abstract mixin class $StudentCopyWith<$Res>  {
   factory $StudentCopyWith(Student value, $Res Function(Student) _then) = _$StudentCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'group_user_id') int? groupUserId,@JsonKey(name: 'user') UserIdDefault? user,@JsonKey(name: 'status') StudentStatus? status
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'group_user_id') int? groupUserId,@JsonKey(name: 'user') UserIdDefault? user,@JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown) StudentStatus? status
 });
 
 
@@ -611,7 +611,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status')  StudentStatus? status)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown)  StudentStatus? status)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Student() when $default != null:
 return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status);case _:
@@ -632,7 +632,7 @@ return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status')  StudentStatus? status)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown)  StudentStatus? status)  $default,) {final _that = this;
 switch (_that) {
 case _Student():
 return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status);case _:
@@ -652,7 +652,7 @@ return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status')  StudentStatus? status)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'group_user_id')  int? groupUserId, @JsonKey(name: 'user')  UserIdDefault? user, @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown)  StudentStatus? status)?  $default,) {final _that = this;
 switch (_that) {
 case _Student() when $default != null:
 return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status);case _:
@@ -667,14 +667,14 @@ return $default(_that.id,_that.userId,_that.groupUserId,_that.user,_that.status)
 @JsonSerializable()
 
 class _Student with DiagnosticableTreeMixin implements Student {
-  const _Student({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user_id') this.userId, @JsonKey(name: 'group_user_id') this.groupUserId, @JsonKey(name: 'user') this.user, @JsonKey(name: 'status') this.status});
+  const _Student({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user_id') this.userId, @JsonKey(name: 'group_user_id') this.groupUserId, @JsonKey(name: 'user') this.user, @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown) this.status});
   factory _Student.fromJson(Map<String, dynamic> json) => _$StudentFromJson(json);
 
 @override@JsonKey(name: 'id') final  int? id;
 @override@JsonKey(name: 'user_id') final  int? userId;
 @override@JsonKey(name: 'group_user_id') final  int? groupUserId;
 @override@JsonKey(name: 'user') final  UserIdDefault? user;
-@override@JsonKey(name: 'status') final  StudentStatus? status;
+@override@JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown) final  StudentStatus? status;
 
 /// Create a copy of Student
 /// with the given fields replaced by the non-null parameter values.
@@ -715,7 +715,7 @@ abstract mixin class _$StudentCopyWith<$Res> implements $StudentCopyWith<$Res> {
   factory _$StudentCopyWith(_Student value, $Res Function(_Student) _then) = __$StudentCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'group_user_id') int? groupUserId,@JsonKey(name: 'user') UserIdDefault? user,@JsonKey(name: 'status') StudentStatus? status
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'group_user_id') int? groupUserId,@JsonKey(name: 'user') UserIdDefault? user,@JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown) StudentStatus? status
 });
 
 

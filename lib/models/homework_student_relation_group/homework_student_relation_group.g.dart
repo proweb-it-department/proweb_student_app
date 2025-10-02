@@ -74,7 +74,11 @@ _Student _$StudentFromJson(Map<String, dynamic> json) => _Student(
   user: json['user'] == null
       ? null
       : UserIdDefault.fromJson(json['user'] as Map<String, dynamic>),
-  status: $enumDecodeNullable(_$StudentStatusEnumMap, json['status']),
+  status: $enumDecodeNullable(
+    _$StudentStatusEnumMap,
+    json['status'],
+    unknownValue: StudentStatus.unknown,
+  ),
 );
 
 Map<String, dynamic> _$StudentToJson(_Student instance) => <String, dynamic>{
@@ -98,6 +102,8 @@ const _$StudentStatusEnumMap = {
   StudentStatus.unstartedLeave: 'unstarted_leave',
   StudentStatus.transfer: 'transfer',
   StudentStatus.partiallyCompleted: 'partially_completed',
+  StudentStatus.transferOtherCourse: 'transfer_other_course',
+  StudentStatus.unknown: 'unknown',
 };
 
 _Homework _$HomeworkFromJson(Map<String, dynamic> json) => _Homework(

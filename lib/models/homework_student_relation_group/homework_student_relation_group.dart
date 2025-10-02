@@ -44,7 +44,8 @@ abstract class Student with _$Student {
     @JsonKey(name: 'user_id') int? userId,
     @JsonKey(name: 'group_user_id') int? groupUserId,
     @JsonKey(name: 'user') UserIdDefault? user,
-    @JsonKey(name: 'status') StudentStatus? status,
+    @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown)
+    StudentStatus? status,
   }) = _Student;
 
   factory Student.fromJson(Map<String, Object?> json) =>

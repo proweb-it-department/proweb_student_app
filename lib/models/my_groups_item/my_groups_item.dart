@@ -14,7 +14,8 @@ abstract class MyGroupsItem with _$MyGroupsItem {
     @JsonKey(name: 'updated_by') UserIdDefault? updatedBy,
     @JsonKey(name: 'group_user_id') int? groupUserId,
     @JsonKey(name: 'user_id') int? userId,
-    @JsonKey(name: 'status') StudentStatus? status,
+    @JsonKey(name: 'status', unknownEnumValue: StudentStatus.unknown)
+    StudentStatus? status,
     @JsonKey(name: 'payment_type') StudentPaymentType? paymentType,
     @JsonKey(name: 'group_role') String? groupRole,
     @JsonKey(name: 'format') String? format,

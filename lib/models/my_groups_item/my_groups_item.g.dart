@@ -18,7 +18,11 @@ _MyGroupsItem _$MyGroupsItemFromJson(Map<String, dynamic> json) =>
           : UserIdDefault.fromJson(json['updated_by'] as Map<String, dynamic>),
       groupUserId: (json['group_user_id'] as num?)?.toInt(),
       userId: (json['user_id'] as num?)?.toInt(),
-      status: $enumDecodeNullable(_$StudentStatusEnumMap, json['status']),
+      status: $enumDecodeNullable(
+        _$StudentStatusEnumMap,
+        json['status'],
+        unknownValue: StudentStatus.unknown,
+      ),
       paymentType: $enumDecodeNullable(
         _$StudentPaymentTypeEnumMap,
         json['payment_type'],
@@ -84,6 +88,8 @@ const _$StudentStatusEnumMap = {
   StudentStatus.unstartedLeave: 'unstarted_leave',
   StudentStatus.transfer: 'transfer',
   StudentStatus.partiallyCompleted: 'partially_completed',
+  StudentStatus.transferOtherCourse: 'transfer_other_course',
+  StudentStatus.unknown: 'unknown',
 };
 
 const _$StudentPaymentTypeEnumMap = {
