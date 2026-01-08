@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
-import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class ThemeColorSettings extends StatefulWidget {
@@ -39,10 +38,7 @@ class _ThemeColorSettingsState extends State<ThemeColorSettings> {
     CustomColors? customColor = Theme.of(context).extension<CustomColors>();
     return ExpansionTile(
       title: Text('profile_dialog.colors'.tr()),
-      leading: IconAvatar(
-        icon: Icons.color_lens,
-        clipPath: PathSvgShape.pentagon,
-      ),
+      leading: IconAvatar(icon: Icons.color_lens),
       backgroundColor: customColor?.containerColor,
       collapsedBackgroundColor: customColor?.containerColor,
       controller: controller,

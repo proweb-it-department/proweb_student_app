@@ -4,7 +4,6 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/download_exclusive_product_modules_video/download_exclusive_product_modules_video_bloc.dart';
-import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';

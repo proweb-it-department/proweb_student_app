@@ -7,7 +7,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/interface/components/body/body.dart';
 import 'package:proweb_student_app/interface/components/nav_bar/nav_bar.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class AppScreenWidget extends StatelessWidget {
   const AppScreenWidget({super.key});

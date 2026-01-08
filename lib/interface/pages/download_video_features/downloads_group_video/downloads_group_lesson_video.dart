@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/downloads_group_lesson_videos/downloads_group_lesson_videos_bloc.dart';
-import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';

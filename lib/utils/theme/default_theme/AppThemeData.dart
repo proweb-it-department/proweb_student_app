@@ -169,6 +169,7 @@ class AppThemeData {
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(
           iconColor: WidgetStateProperty.all<Color>(color.primaryTextColor),
+          backgroundColor: WidgetStateProperty.all<Color>(color.containerColor),
           foregroundColor: WidgetStateProperty.all<Color>(
             color.primaryTextColorOp,
           ),

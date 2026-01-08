@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/video_repository/video_repository.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
-import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/db/db.dart';

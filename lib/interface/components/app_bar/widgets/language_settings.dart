@@ -4,7 +4,6 @@ import 'package:proweb_student_app/api/language/language.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
-import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class LanguageSettings extends StatefulWidget {
@@ -42,10 +41,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
     final list = serviceLocal.loadloadCachedLangList();
     return ExpansionTile(
       title: Text('profile_dialog.language'.tr()),
-      leading: IconAvatar(
-        icon: Icons.translate,
-        clipPath: PathSvgShape.pentagon,
-      ),
+      leading: IconAvatar(icon: Icons.translate),
       backgroundColor: customColor?.containerColor,
       collapsedBackgroundColor: customColor?.containerColor,
       controller: controller,

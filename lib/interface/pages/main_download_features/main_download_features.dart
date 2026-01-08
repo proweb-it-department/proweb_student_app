@@ -5,7 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
-import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/download_video_item/download_video_item.dart';
 import 'package:proweb_student_app/interface/components/download_video_progress/download_video_progress.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';

@@ -15,7 +15,6 @@ import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class SavedDataScreen extends StatelessWidget {

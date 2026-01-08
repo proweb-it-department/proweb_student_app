@@ -3,8 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
-import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/balance_widget.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
