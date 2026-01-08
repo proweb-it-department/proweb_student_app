@@ -618,6 +618,7 @@ class GetResponsesMain {
             .map((e) => e.userId ?? 0)
             .where((element) => element > 0)
             .toList();
+
         if (userIds.isNotEmpty) {
           await sl<UserList>().findAllUser(userIds: userIds);
           data = ResponseLazeList<UserTotalPosition>(

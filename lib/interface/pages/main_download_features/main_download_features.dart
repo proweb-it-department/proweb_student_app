@@ -23,6 +23,7 @@ class DownloadScreen extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [DownloadVideosRoute(), DownloadFilesRoute()],
       builder: (context, child, tabController) {
+        final customColor = Theme.of(context).extension<CustomColors>();
         return AnnotatedRegion(
           value: FlexColorScheme.themedSystemNavigationBar(
             context,
@@ -31,8 +32,27 @@ class DownloadScreen extends StatelessWidget {
           child: TabBarPopScope(
             mainPage: DownloadVideosRoute(),
             child: Scaffold(
-              appBar: MainAppBar(
-                tab: TabBar(
+              appBar: AppBar(
+                shape: Border(
+                  bottom: BorderSide(
+                    color: customColor?.primaryBgBorder ?? Colors.black,
+                    width: 1,
+                  ),
+                ),
+                leading: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: IconButton.styleFrom(
+                    backgroundColor: customColor?.containerColor,
+                  ),
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: customColor?.primaryTextColor,
+                  ),
+                ),
+                title: Text('Загрузки'),
+                bottom: TabBar(
                   controller: tabController,
                   isScrollable: true,
                   tabAlignment: TabAlignment.start,

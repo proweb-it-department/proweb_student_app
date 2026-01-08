@@ -20,152 +20,259 @@ class BottomNavBar extends StatelessWidget {
     final isVisible = context
         .watch<ScrollStateProvider>()
         .isNavigationBarVisible;
-    final fabCoworking = context.watch<FabProvider>().fabCoworking;
-    final fabFeedback = context.watch<FabProvider>().fabFeedback;
     return AnimatedSlide(
       duration: const Duration(milliseconds: 200),
       offset: isVisible ? Offset.zero : const Offset(0, 1),
       child: Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10 + pb, left: 15, right: 15),
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                height: 80,
-                decoration: BoxDecoration(
-                  color: customTheme?.containerColor,
-                  borderRadius: BorderRadius.circular(60),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha((255 * 0.3).toInt()),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.home_outlined,
-                        color: tabsRouter.activeIndex == 0
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      onPressed: () {
-                        context.router.navigate(HomeMainRoute());
-                      },
-                      selectedIcon: Icon(
-                        Icons.home,
-                        color: tabsRouter.activeIndex == 0
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      isSelected: tabsRouter.activeIndex == 0,
-                      padding: EdgeInsets.all(15),
-                      tooltip: 'menu.home'.tr(),
-                      style: IconButton.styleFrom(
-                        backgroundColor: tabsRouter.activeIndex == 0
-                            ? customTheme?.primaryTextColor
-                            : Colors.transparent,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.desktop_windows_outlined,
-                        color: tabsRouter.activeIndex == 1
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      onPressed: () {
-                        tabsRouter.setActiveIndex(1);
-                      },
-                      color: tabsRouter.activeIndex == 1
-                          ? customTheme?.primaryBg
-                          : customTheme?.primaryTextColor,
-                      selectedIcon: Icon(
-                        Icons.desktop_windows,
-                        color: tabsRouter.activeIndex == 1
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      isSelected: tabsRouter.activeIndex == 1,
-                      padding: EdgeInsets.all(15),
-                      tooltip: 'menu.coworking'.tr(),
-                      style: IconButton.styleFrom(
-                        backgroundColor: tabsRouter.activeIndex == 1
-                            ? customTheme?.primaryTextColor
-                            : Colors.transparent,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.forum_outlined,
-                        color: tabsRouter.activeIndex == 2
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      onPressed: () {
-                        tabsRouter.setActiveIndex(2);
-                      },
-                      selectedIcon: Icon(
-                        Icons.forum,
-                        color: tabsRouter.activeIndex == 2
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      isSelected: tabsRouter.activeIndex == 2,
-                      padding: EdgeInsets.all(15),
-                      tooltip: 'menu.feedback'.tr(),
-                      style: IconButton.styleFrom(
-                        backgroundColor: tabsRouter.activeIndex == 2
-                            ? customTheme?.primaryTextColor
-                            : Colors.transparent,
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: tabsRouter.activeIndex > 2
-                            ? customTheme?.primaryBg
-                            : customTheme?.primaryTextColor,
-                      ),
-                      onPressed: () {
-                        showModalBottomSheet<int>(
-                          context: context,
-                          builder: (context) {
-                            return MoreBottomNavBar(tabsRouter: tabsRouter);
-                          },
-                        ).then((data) async {
-                          if (data != null) {
-                            await Future.delayed(Duration(milliseconds: 200));
-                            tabsRouter.setActiveIndex(data);
-                          }
-                        });
-                      },
-                      isSelected: tabsRouter.activeIndex > 2,
-                      padding: EdgeInsets.all(15),
-                      tooltip: 'menu.more'.tr(),
-                      style: IconButton.styleFrom(
-                        backgroundColor: tabsRouter.activeIndex > 2
-                            ? customTheme?.primaryTextColor
-                            : Colors.transparent,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+        padding: EdgeInsets.only(top: 10, bottom: 20 + pb, left: 20, right: 20),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              customTheme?.primaryBg.withAlpha(0) ?? Colors.transparent,
+              customTheme?.primaryBg.withAlpha(200) ?? Colors.transparent,
+              customTheme?.primaryBg ?? Colors.transparent,
+            ],
+          ),
+        ),
+        child: Container(
+          height: 55,
+          decoration: BoxDecoration(
+            color: customTheme?.containerColor,
+            borderRadius: BorderRadius.circular(50),
+            border: Border.all(
+              color:
+                  customTheme?.additionalTwo.withAlpha(50) ??
+                  Colors.transparent,
+              width: 1,
             ),
-            AnimatedContainer(
-              duration: Duration(milliseconds: 300),
-              curve: Curves.linear,
-              width: (fabCoworking ?? fabFeedback) != null ? 70 : 0,
-              height: 5,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(3),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 2,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(40),
+                    child: Material(
+                      color: activeColor(
+                        tabsRouter.activeIndex == 0,
+                        customTheme,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          context.router.navigate(HomeMainRoute());
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: 15,
+                            vertical: 4,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                tabsRouter.activeIndex == 0
+                                    ? Icons.home
+                                    : Icons.home_outlined,
+                                size: 22,
+                                color: activeTextColor(
+                                  tabsRouter.activeIndex == 0,
+                                  customTheme,
+                                ),
+                              ),
+                              Text(
+                                'menu.home'.tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: activeTextColor(
+                                    tabsRouter.activeIndex == 0,
+                                    customTheme,
+                                  ),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(40),
+                    child: Material(
+                      color: activeColor(
+                        tabsRouter.activeIndex == 1,
+                        customTheme,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          tabsRouter.setActiveIndex(1);
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: 15,
+                            vertical: 4,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                tabsRouter.activeIndex == 1
+                                    ? Icons.desktop_windows
+                                    : Icons.desktop_windows_outlined,
+                                size: 22,
+                                color: activeTextColor(
+                                  tabsRouter.activeIndex == 1,
+                                  customTheme,
+                                ),
+                              ),
+                              Text(
+                                'menu.coworking'.tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: activeTextColor(
+                                    tabsRouter.activeIndex == 1,
+                                    customTheme,
+                                  ),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(40),
+                    child: Material(
+                      color: activeColor(
+                        tabsRouter.activeIndex == 2,
+                        customTheme,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          tabsRouter.setActiveIndex(2);
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: 15,
+                            vertical: 4,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                tabsRouter.activeIndex == 2
+                                    ? Icons.forum
+                                    : Icons.forum_outlined,
+                                size: 22,
+                                color: activeTextColor(
+                                  tabsRouter.activeIndex == 2,
+                                  customTheme,
+                                ),
+                              ),
+                              Text(
+                                'menu.feedback'.tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: activeTextColor(
+                                    tabsRouter.activeIndex == 2,
+                                    customTheme,
+                                  ),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(40),
+                    child: Material(
+                      color: activeColor(
+                        tabsRouter.activeIndex > 2,
+                        customTheme,
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          showModalBottomSheet<int>(
+                            context: context,
+                            builder: (context) {
+                              return MoreBottomNavBar(tabsRouter: tabsRouter);
+                            },
+                          ).then((data) async {
+                            if (data != null) {
+                              await Future.delayed(Duration(milliseconds: 200));
+                              tabsRouter.setActiveIndex(data);
+                            }
+                          });
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(
+                            horizontal: 15,
+                            vertical: 4,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                Icons.arrow_circle_up_outlined,
+                                size: 22,
+                                color: activeTextColor(
+                                  tabsRouter.activeIndex > 2,
+                                  customTheme,
+                                ),
+                              ),
+                              Text(
+                                'menu.more'.tr(),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: activeTextColor(
+                                    tabsRouter.activeIndex > 2,
+                                    customTheme,
+                                  ),
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Color? activeColor(bool isTrue, CustomColors? customTheme) {
+    if (!isTrue) return Colors.transparent;
+    return customTheme?.borderColor;
+  }
+
+  Color? activeTextColor(bool isTrue, CustomColors? customTheme) {
+    if (!isTrue) return customTheme?.primaryTextColor;
+    return customTheme?.primaryTextColor;
   }
 }

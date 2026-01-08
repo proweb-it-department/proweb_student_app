@@ -43,7 +43,11 @@ class Fetch implements MainFetch, AuthFetch, VideoFetch, ChatFetch {
         };
       }
       if (cache) {}
-      final dio = await _dio.get('$main$path', options: options);
+      String fullPath = '$main$path';
+      if (path.contains('https://') || path.contains('http://')) {
+        fullPath = path;
+      }
+      final dio = await _dio.get(fullPath, options: options);
       final response = dio.data;
       if (response == null) {
         return Left(ErrorRequest(server: true, response: dio));
@@ -79,6 +83,83 @@ class Fetch implements MainFetch, AuthFetch, VideoFetch, ChatFetch {
       } else if (e.type == DioExceptionType.connectionError &&
           refreshCount <= maxRefresh) {
         return await get(
+          path: path,
+          checkToken: checkToken,
+          refreshCount: refreshCount,
+        );
+      }
+      if ((e.response?.statusCode == 403 || e.response?.statusCode == 401)) {
+        sl<LocalData>().localLogOut();
+        return Left(ErrorRequest(token: true, response: e.response));
+      }
+      return Left(ErrorRequest(server: true, response: e.response));
+    }
+  }
+
+  @override
+  Future<Either<ErrorRequest, String>> getString({
+    required String path,
+    bool checkToken = true,
+    int refreshCount = 0,
+    bool cache = false,
+    Duration? duration,
+  }) async {
+    try {
+      Options options = Options(
+        extra: {'cache': cache, 'cacheDuration': duration},
+      );
+      if (checkToken) {
+        Either<ErrorRequest, bool> checkRefresh = await _actionRefresh();
+        ErrorRequest? checkRefreshResponse = checkRefresh.fold(
+          (l) => l,
+          (_) => null,
+        );
+        if (checkRefreshResponse != null) return Left(checkRefreshResponse);
+        options.headers = {
+          'Authorization': 'Bearer ${sl<LocalData>().getAccessToken()}',
+        };
+      }
+      if (cache) {}
+      String fullPath = '$main$path';
+      if (path.contains('https://') || path.contains('http://')) {
+        fullPath = path;
+      }
+      final dio = await _dio.get(fullPath, options: options);
+      final response = dio.data;
+      if (response == null) {
+        return Left(ErrorRequest(server: true, response: dio));
+      } else {
+        if (response.runtimeType == String) {
+          return Right(response);
+        } else {
+          return Left(ErrorRequest(auth: true, response: dio));
+        }
+      }
+    } on DioException catch (e) {
+      refreshCount++;
+      if ((e.response?.statusCode == 403 || e.response?.statusCode == 401) &&
+          refreshCount <= maxRefresh) {
+        Either<ErrorRequest, bool> checkRefresh = await _getNewToken();
+        ErrorRequest? checkRefreshResponse = checkRefresh.fold(
+          (l) => l,
+          (_) => null,
+        );
+        if (checkRefreshResponse != null) return Left(checkRefreshResponse);
+        return await getString(
+          path: path,
+          checkToken: checkToken,
+          refreshCount: refreshCount,
+        );
+      } else if (e.type == DioExceptionType.connectionTimeout &&
+          refreshCount <= maxRefresh) {
+        return await getString(
+          path: path,
+          checkToken: checkToken,
+          refreshCount: refreshCount,
+        );
+      } else if (e.type == DioExceptionType.connectionError &&
+          refreshCount <= maxRefresh) {
+        return await getString(
           path: path,
           checkToken: checkToken,
           refreshCount: refreshCount,

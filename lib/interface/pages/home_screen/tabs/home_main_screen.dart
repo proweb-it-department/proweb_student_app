@@ -41,7 +41,7 @@ class HomeMainTab extends StatelessWidget {
               left: 20,
               right: 10,
               top: 20,
-              bottom: 5,
+              bottom: 10,
             ),
             child: Text(
               'education.my_groups'.tr(),
@@ -51,8 +51,8 @@ class HomeMainTab extends StatelessWidget {
           BlocBuilder<MyGroupsBloc, MyGroupsState>(
             bloc: context.read<MyGroupsBloc>()..add(MyGroupsEvent.started()),
             builder: (context, state) {
-              return state.when(
-                initial: () => Padding(
+              return switch (state) {
+                MyGroupsInitial() => Padding(
                   padding: EdgeInsets.all(8),
                   child: Center(
                     child: Md3CirculeIndicator(
@@ -61,11 +61,11 @@ class HomeMainTab extends StatelessWidget {
                     ),
                   ),
                 ),
-                loading: () => Padding(
+                MyGroupsLoading() => Padding(
                   padding: EdgeInsets.all(8),
                   child: Center(child: Md3CirculeIndicator()),
                 ),
-                notFound: () => Padding(
+                MyGroupsNotFound() => Padding(
                   padding: EdgeInsets.all(8),
                   child: Center(
                     child: NoData(
@@ -74,7 +74,7 @@ class HomeMainTab extends StatelessWidget {
                     ),
                   ),
                 ),
-                errorLoad: () => Padding(
+                MyGroupsErrorLoad() => Padding(
                   padding: EdgeInsets.all(8),
                   child: ErrorLoad(
                     action: FilledButton(
@@ -86,8 +86,10 @@ class HomeMainTab extends StatelessWidget {
                     ),
                   ),
                 ),
-                complited: (groups) => MyGroupsWidgets(groups: groups),
-              );
+                MyGroupsComplited(groups: final groups) => MyGroupsWidgets(
+                  groups: groups,
+                ),
+              };
             },
           ),
         ],

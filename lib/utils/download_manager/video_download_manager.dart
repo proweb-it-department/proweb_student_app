@@ -8,8 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
 import 'package:proweb_student_app/models/video_sendet_model/video_sendet_model.dart';
+import 'package:proweb_student_app/server/server.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 
@@ -192,8 +194,9 @@ class DownloadManager {
       saveModel(modelReturned);
 
       final file = File(m3u8Path);
-      final lines = await file.readAsLines();
       String outerText = await file.readAsString();
+      outerText = decryptAES(outerText);
+      final lines = outerText.split('\n');
 
       final innerM3U8List = lines
           .where((line) => line.trim().endsWith('.m3u8'))
@@ -250,8 +253,9 @@ class DownloadManager {
         saveModel(modelReturned);
 
         final fileInner = File(m3u8PathInner);
-        final fileInnerLines = await fileInner.readAsLines();
-
+        String fileInnerString = await fileInner.readAsString();
+        fileInnerString = decryptAES(fileInnerString);
+        List<String> fileInnerLines = fileInnerString.split('\n');
         final tsSegments = fileInnerLines
             .where((line) => line.trim().endsWith('.ts'))
             .toList();
@@ -634,6 +638,11 @@ class DownloadManager {
             downloadPath,
             '$savePath/$nameFile',
             cancelToken: token,
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer ${sl<LocalData>().getAccessToken()}',
+              },
+            ),
           );
           return true;
         } catch (e) {

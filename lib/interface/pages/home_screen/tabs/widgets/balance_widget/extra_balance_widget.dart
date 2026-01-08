@@ -95,7 +95,7 @@ class ExtraBalanceWidget extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 24.5,
+                            spacing: 20,
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Padding(
@@ -134,7 +134,7 @@ class ExtraBalanceWidget extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                  spacing: 5,
+                                  spacing: 0,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Text(

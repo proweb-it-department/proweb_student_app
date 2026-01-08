@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/interface/components/body/body.dart';
 import 'package:proweb_student_app/interface/components/nav_bar/nav_bar.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class AppScreenWidget extends StatelessWidget {
   const AppScreenWidget({super.key});
@@ -46,7 +47,8 @@ class BodyPopScope extends StatelessWidget {
     final provider = Provider.of<ScrollStateProvider>(context);
     final fabCoworking = context.watch<FabProvider>().fabCoworking;
     final fabFeedback = context.watch<FabProvider>().fabFeedback;
-
+    final isVisible = provider.isNavigationBarVisible;
+    final pb = MediaQuery.of(context).viewPadding.bottom;
     tabsRouter.addListener(() {
       if (!provider.isNavigationBarVisible) {
         provider.showNavigationBar();
@@ -74,13 +76,60 @@ class BodyPopScope extends StatelessWidget {
           body: BodyApp(child: child),
           bottomNavigationBar: BottomNavBar(),
           floatingActionButton: fabCoworking ?? fabFeedback,
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.endContained,
+          floatingActionButtonLocation: MenuAwareFabLocation(isVisible, pb),
+          floatingActionButtonAnimator: SlideFabAnimator(),
           extendBody: true,
           primary: true,
         ),
       ),
     );
+  }
+}
+
+class SlideFabAnimator extends FloatingActionButtonAnimator {
+  @override
+  Offset getOffset({
+    required Offset begin,
+    required Offset end,
+    required double progress,
+  }) {
+    return Offset.lerp(begin, end, progress)!;
+  }
+
+  @override
+  Animation<double> getScaleAnimation({required Animation<double> parent}) {
+    return const AlwaysStoppedAnimation(1.0);
+  }
+
+  @override
+  Animation<double> getRotationAnimation({required Animation<double> parent}) {
+    return const AlwaysStoppedAnimation(0.0);
+  }
+}
+
+class MenuAwareFabLocation extends FloatingActionButtonLocation {
+  final bool menuVisible;
+  final double pb;
+
+  MenuAwareFabLocation(this.menuVisible, this.pb);
+
+  @override
+  Offset getOffset(ScaffoldPrelayoutGeometry g) {
+    final double margin = 16;
+
+    final double fabX =
+        g.scaffoldSize.width - g.floatingActionButtonSize.width - margin;
+
+    final double fabYWithMenu =
+        g.scaffoldSize.height -
+        (55 + pb + 15) -
+        g.floatingActionButtonSize.height -
+        margin;
+
+    final double fabYWithoutMenu =
+        g.scaffoldSize.height - g.floatingActionButtonSize.height - margin - 10;
+
+    return Offset(fabX, menuVisible ? fabYWithMenu : fabYWithoutMenu);
   }
 }
 

@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   connectivity_plus
+  disk_space_2
   firebase_core
   flutter_inappwebview_windows
   maps_launcher

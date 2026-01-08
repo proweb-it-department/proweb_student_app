@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:proweb_student_app/models/db/db.dart';
 import 'package:proweb_student_app/server/server.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class VideoRepository {
   final db = sl<AppDatabase>();
@@ -36,6 +37,7 @@ class VideoRepository {
       db.videoSaved,
     )..where((tbl) => tbl.slug.equals(slug))).getSingleOrNull();
     if (video == null) return null;
+    TalkerLogger().log(video);
     if (video.preview != null) {
       video = video.copyWith(
         preview: Value(

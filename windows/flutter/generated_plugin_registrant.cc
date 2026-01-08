@@ -8,6 +8,7 @@
 
 #include <app_links/app_links_plugin_c_api.h>
 #include <connectivity_plus/connectivity_plus_windows_plugin.h>
+#include <disk_space_2/disk_space_2_plugin.h>
 #include <firebase_core/firebase_core_plugin_c_api.h>
 #include <flutter_inappwebview_windows/flutter_inappwebview_windows_plugin_c_api.h>
 #include <maps_launcher/maps_launcher_plugin.h>
@@ -25,6 +26,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("AppLinksPluginCApi"));
   ConnectivityPlusWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
+  DiskSpace_2PluginRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("DiskSpace_2Plugin"));
   FirebaseCorePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
   FlutterInappwebviewWindowsPluginCApiRegisterWithRegistrar(

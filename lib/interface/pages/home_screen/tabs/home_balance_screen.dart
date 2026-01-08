@@ -236,7 +236,6 @@ class TransactionItem extends StatelessWidget {
           return Material(
             color: Colors.transparent,
             child: ListTile(
-              isThreeLine: isThreeLine,
               selectedColor: customColors?.primaryTextColor,
               selectedTileColor: customColors?.primaryBg,
               minTileHeight: 30,

@@ -1,10 +1,11 @@
 part of 'my_groups_bloc.dart';
 
 @freezed
-class MyGroupsState with _$MyGroupsState {
-  const factory MyGroupsState.initial() = _Initial;
-  const factory MyGroupsState.complited({required List<MyGroupsItem> groups}) = _MyGroupsComplited;
-  const factory MyGroupsState.loading() = _MyGroupsLoading;
-  const factory MyGroupsState.errorLoad() = _MyGroupsErrorLoad;
-  const factory MyGroupsState.notFound() = _MyGroupsNotFound;
+sealed class MyGroupsState with _$MyGroupsState {
+  const factory MyGroupsState.initial() = MyGroupsInitial;
+  const factory MyGroupsState.complited({required List<MyGroupsItem> groups}) =
+      MyGroupsComplited;
+  const factory MyGroupsState.loading() = MyGroupsLoading;
+  const factory MyGroupsState.errorLoad() = MyGroupsErrorLoad;
+  const factory MyGroupsState.notFound() = MyGroupsNotFound;
 }

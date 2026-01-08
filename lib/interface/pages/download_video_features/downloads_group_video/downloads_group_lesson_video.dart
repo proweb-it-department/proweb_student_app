@@ -30,6 +30,7 @@ class DownloadsGroupLessonVideoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColor = Theme.of(context).extension<CustomColors>();
     return BlocProvider(
       create: (context) =>
           DownloadsGroupLessonVideosBloc()
@@ -40,7 +41,21 @@ class DownloadsGroupLessonVideoScreen extends StatelessWidget {
           systemNavBarStyle: FlexSystemNavBarStyle.transparent,
         ),
         child: Scaffold(
-          appBar: MainAppBar(isBorder: false),
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: IconButton.styleFrom(
+                backgroundColor: customColor?.containerColor,
+              ),
+              icon: Icon(
+                Icons.arrow_back,
+                color: customColor?.primaryTextColor,
+              ),
+            ),
+            title: Text('Группа #$groupId'),
+          ),
           body: DownloadsGroupLessonVideoBody(
             blockLessonCount: blockLessonCount,
             lessonCount: lessonCount,

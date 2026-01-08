@@ -65,7 +65,18 @@ class _VideoSlugScreenState extends State<VideoSlugScreen> {
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: Scaffold(
-        appBar: MainAppBar(),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: IconButton.styleFrom(
+              backgroundColor: customColors?.containerColor,
+            ),
+            icon: Icon(Icons.arrow_back, color: customColors?.primaryTextColor),
+          ),
+          title: Text('Просмотр видео'),
+        ),
         body: FutureBuilder(
           future: getModel(),
           builder: (context, snapshot) {

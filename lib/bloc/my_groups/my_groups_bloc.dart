@@ -9,7 +9,7 @@ part 'my_groups_state.dart';
 part 'my_groups_bloc.freezed.dart';
 
 class MyGroupsBloc extends Bloc<MyGroupsEvent, MyGroupsState> {
-  MyGroupsBloc() : super(_Initial()) {
+  MyGroupsBloc() : super(MyGroupsInitial()) {
     on<MyGroupsEvent>((event, emit) async {
       started() async {
         emit(MyGroupsState.loading());

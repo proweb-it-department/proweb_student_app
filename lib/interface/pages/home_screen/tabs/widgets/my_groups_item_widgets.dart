@@ -110,7 +110,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
       url = widget.myGroup.group?.course?.posters?.first.image;
     }
     final double width = MediaQuery.sizeOf(context).width;
-    return GestureDetector(
+    return InkWell(
       onTapDown: block ? null : _getTapPosition,
       onTap: block
           ? null

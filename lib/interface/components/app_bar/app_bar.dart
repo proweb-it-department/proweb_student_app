@@ -7,7 +7,6 @@ import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/balance_widget.dart';
-import 'package:proweb_student_app/interface/components/app_bar/profile_dialog.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -76,35 +75,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
               view: (profile) {
                 return GestureDetector(
                   onTap: () async {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return MultiBlocProvider(
-                          providers: [
-                            BlocProvider.value(
-                              value: context.read<ProfileDataBloc>(),
-                            ),
-                            BlocProvider.value(
-                              value: context.read<BalanceBloc>(),
-                            ),
-                          ],
-                          child: ProfileDialog(),
-                        );
-                      },
-                    ).then((data) {
-                      if (data != null) {
-                        if (!context.mounted) return;
-                        if (data == 'logOut') {
-                          ErrorRequest.logOut();
-                        } else if (data == 'balance') {
-                          context.router.navigate(HomeBalanceRoute());
-                        } else if (data == 'download') {
-                          context.router.navigate(DownloadVideosRoute());
-                        } else if (data == 'files') {
-                          context.router.navigate(DownloadFilesRoute());
-                        }
-                      }
-                    });
+                    context.router.navigate(ProfileRoute());
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(right: 10),

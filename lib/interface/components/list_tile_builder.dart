@@ -19,7 +19,7 @@ class ListTileBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double radiusBig = 22;
-    double radiusSmall = 8;
+    double radiusSmall = 0;
     Radius? top;
     Radius? bottom;
     if (isStart) {
@@ -37,7 +37,7 @@ class ListTileBuilder extends StatelessWidget {
           bottomEnd: bottom ?? Radius.circular(radiusSmall),
         ),
       ),
-      EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       true,
     );
   }

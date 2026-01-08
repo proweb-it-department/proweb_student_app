@@ -247,14 +247,14 @@ extension MyGroupsStatePatterns on MyGroupsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _MyGroupsComplited value)?  complited,TResult Function( _MyGroupsLoading value)?  loading,TResult Function( _MyGroupsErrorLoad value)?  errorLoad,TResult Function( _MyGroupsNotFound value)?  notFound,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( MyGroupsInitial value)?  initial,TResult Function( MyGroupsComplited value)?  complited,TResult Function( MyGroupsLoading value)?  loading,TResult Function( MyGroupsErrorLoad value)?  errorLoad,TResult Function( MyGroupsNotFound value)?  notFound,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _MyGroupsComplited() when complited != null:
-return complited(_that);case _MyGroupsLoading() when loading != null:
-return loading(_that);case _MyGroupsErrorLoad() when errorLoad != null:
-return errorLoad(_that);case _MyGroupsNotFound() when notFound != null:
+case MyGroupsInitial() when initial != null:
+return initial(_that);case MyGroupsComplited() when complited != null:
+return complited(_that);case MyGroupsLoading() when loading != null:
+return loading(_that);case MyGroupsErrorLoad() when errorLoad != null:
+return errorLoad(_that);case MyGroupsNotFound() when notFound != null:
 return notFound(_that);case _:
   return orElse();
 
@@ -273,18 +273,15 @@ return notFound(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _MyGroupsComplited value)  complited,required TResult Function( _MyGroupsLoading value)  loading,required TResult Function( _MyGroupsErrorLoad value)  errorLoad,required TResult Function( _MyGroupsNotFound value)  notFound,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( MyGroupsInitial value)  initial,required TResult Function( MyGroupsComplited value)  complited,required TResult Function( MyGroupsLoading value)  loading,required TResult Function( MyGroupsErrorLoad value)  errorLoad,required TResult Function( MyGroupsNotFound value)  notFound,}){
 final _that = this;
 switch (_that) {
-case _Initial():
-return initial(_that);case _MyGroupsComplited():
-return complited(_that);case _MyGroupsLoading():
-return loading(_that);case _MyGroupsErrorLoad():
-return errorLoad(_that);case _MyGroupsNotFound():
-return notFound(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+case MyGroupsInitial():
+return initial(_that);case MyGroupsComplited():
+return complited(_that);case MyGroupsLoading():
+return loading(_that);case MyGroupsErrorLoad():
+return errorLoad(_that);case MyGroupsNotFound():
+return notFound(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -298,14 +295,14 @@ return notFound(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _MyGroupsComplited value)?  complited,TResult? Function( _MyGroupsLoading value)?  loading,TResult? Function( _MyGroupsErrorLoad value)?  errorLoad,TResult? Function( _MyGroupsNotFound value)?  notFound,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( MyGroupsInitial value)?  initial,TResult? Function( MyGroupsComplited value)?  complited,TResult? Function( MyGroupsLoading value)?  loading,TResult? Function( MyGroupsErrorLoad value)?  errorLoad,TResult? Function( MyGroupsNotFound value)?  notFound,}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _MyGroupsComplited() when complited != null:
-return complited(_that);case _MyGroupsLoading() when loading != null:
-return loading(_that);case _MyGroupsErrorLoad() when errorLoad != null:
-return errorLoad(_that);case _MyGroupsNotFound() when notFound != null:
+case MyGroupsInitial() when initial != null:
+return initial(_that);case MyGroupsComplited() when complited != null:
+return complited(_that);case MyGroupsLoading() when loading != null:
+return loading(_that);case MyGroupsErrorLoad() when errorLoad != null:
+return errorLoad(_that);case MyGroupsNotFound() when notFound != null:
 return notFound(_that);case _:
   return null;
 
@@ -325,11 +322,11 @@ return notFound(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( List<MyGroupsItem> groups)?  complited,TResult Function()?  loading,TResult Function()?  errorLoad,TResult Function()?  notFound,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _MyGroupsComplited() when complited != null:
-return complited(_that.groups);case _MyGroupsLoading() when loading != null:
-return loading();case _MyGroupsErrorLoad() when errorLoad != null:
-return errorLoad();case _MyGroupsNotFound() when notFound != null:
+case MyGroupsInitial() when initial != null:
+return initial();case MyGroupsComplited() when complited != null:
+return complited(_that.groups);case MyGroupsLoading() when loading != null:
+return loading();case MyGroupsErrorLoad() when errorLoad != null:
+return errorLoad();case MyGroupsNotFound() when notFound != null:
 return notFound();case _:
   return orElse();
 
@@ -350,15 +347,12 @@ return notFound();case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( List<MyGroupsItem> groups)  complited,required TResult Function()  loading,required TResult Function()  errorLoad,required TResult Function()  notFound,}) {final _that = this;
 switch (_that) {
-case _Initial():
-return initial();case _MyGroupsComplited():
-return complited(_that.groups);case _MyGroupsLoading():
-return loading();case _MyGroupsErrorLoad():
-return errorLoad();case _MyGroupsNotFound():
-return notFound();case _:
-  throw StateError('Unexpected subclass');
-
-}
+case MyGroupsInitial():
+return initial();case MyGroupsComplited():
+return complited(_that.groups);case MyGroupsLoading():
+return loading();case MyGroupsErrorLoad():
+return errorLoad();case MyGroupsNotFound():
+return notFound();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -374,11 +368,11 @@ return notFound();case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( List<MyGroupsItem> groups)?  complited,TResult? Function()?  loading,TResult? Function()?  errorLoad,TResult? Function()?  notFound,}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _MyGroupsComplited() when complited != null:
-return complited(_that.groups);case _MyGroupsLoading() when loading != null:
-return loading();case _MyGroupsErrorLoad() when errorLoad != null:
-return errorLoad();case _MyGroupsNotFound() when notFound != null:
+case MyGroupsInitial() when initial != null:
+return initial();case MyGroupsComplited() when complited != null:
+return complited(_that.groups);case MyGroupsLoading() when loading != null:
+return loading();case MyGroupsErrorLoad() when errorLoad != null:
+return errorLoad();case MyGroupsNotFound() when notFound != null:
 return notFound();case _:
   return null;
 
@@ -390,8 +384,8 @@ return notFound();case _:
 /// @nodoc
 
 
-class _Initial implements MyGroupsState {
-  const _Initial();
+class MyGroupsInitial implements MyGroupsState {
+  const MyGroupsInitial();
   
 
 
@@ -401,7 +395,7 @@ class _Initial implements MyGroupsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyGroupsInitial);
 }
 
 
@@ -422,8 +416,8 @@ String toString() {
 /// @nodoc
 
 
-class _MyGroupsComplited implements MyGroupsState {
-  const _MyGroupsComplited({required final  List<MyGroupsItem> groups}): _groups = groups;
+class MyGroupsComplited implements MyGroupsState {
+  const MyGroupsComplited({required final  List<MyGroupsItem> groups}): _groups = groups;
   
 
  final  List<MyGroupsItem> _groups;
@@ -438,13 +432,13 @@ class _MyGroupsComplited implements MyGroupsState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$MyGroupsComplitedCopyWith<_MyGroupsComplited> get copyWith => __$MyGroupsComplitedCopyWithImpl<_MyGroupsComplited>(this, _$identity);
+$MyGroupsComplitedCopyWith<MyGroupsComplited> get copyWith => _$MyGroupsComplitedCopyWithImpl<MyGroupsComplited>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyGroupsComplited&&const DeepCollectionEquality().equals(other._groups, _groups));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyGroupsComplited&&const DeepCollectionEquality().equals(other._groups, _groups));
 }
 
 
@@ -460,8 +454,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$MyGroupsComplitedCopyWith<$Res> implements $MyGroupsStateCopyWith<$Res> {
-  factory _$MyGroupsComplitedCopyWith(_MyGroupsComplited value, $Res Function(_MyGroupsComplited) _then) = __$MyGroupsComplitedCopyWithImpl;
+abstract mixin class $MyGroupsComplitedCopyWith<$Res> implements $MyGroupsStateCopyWith<$Res> {
+  factory $MyGroupsComplitedCopyWith(MyGroupsComplited value, $Res Function(MyGroupsComplited) _then) = _$MyGroupsComplitedCopyWithImpl;
 @useResult
 $Res call({
  List<MyGroupsItem> groups
@@ -472,17 +466,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$MyGroupsComplitedCopyWithImpl<$Res>
-    implements _$MyGroupsComplitedCopyWith<$Res> {
-  __$MyGroupsComplitedCopyWithImpl(this._self, this._then);
+class _$MyGroupsComplitedCopyWithImpl<$Res>
+    implements $MyGroupsComplitedCopyWith<$Res> {
+  _$MyGroupsComplitedCopyWithImpl(this._self, this._then);
 
-  final _MyGroupsComplited _self;
-  final $Res Function(_MyGroupsComplited) _then;
+  final MyGroupsComplited _self;
+  final $Res Function(MyGroupsComplited) _then;
 
 /// Create a copy of MyGroupsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? groups = null,}) {
-  return _then(_MyGroupsComplited(
+  return _then(MyGroupsComplited(
 groups: null == groups ? _self._groups : groups // ignore: cast_nullable_to_non_nullable
 as List<MyGroupsItem>,
   ));
@@ -494,8 +488,8 @@ as List<MyGroupsItem>,
 /// @nodoc
 
 
-class _MyGroupsLoading implements MyGroupsState {
-  const _MyGroupsLoading();
+class MyGroupsLoading implements MyGroupsState {
+  const MyGroupsLoading();
   
 
 
@@ -505,7 +499,7 @@ class _MyGroupsLoading implements MyGroupsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyGroupsLoading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyGroupsLoading);
 }
 
 
@@ -526,8 +520,8 @@ String toString() {
 /// @nodoc
 
 
-class _MyGroupsErrorLoad implements MyGroupsState {
-  const _MyGroupsErrorLoad();
+class MyGroupsErrorLoad implements MyGroupsState {
+  const MyGroupsErrorLoad();
   
 
 
@@ -537,7 +531,7 @@ class _MyGroupsErrorLoad implements MyGroupsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyGroupsErrorLoad);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyGroupsErrorLoad);
 }
 
 
@@ -558,8 +552,8 @@ String toString() {
 /// @nodoc
 
 
-class _MyGroupsNotFound implements MyGroupsState {
-  const _MyGroupsNotFound();
+class MyGroupsNotFound implements MyGroupsState {
+  const MyGroupsNotFound();
   
 
 
@@ -569,7 +563,7 @@ class _MyGroupsNotFound implements MyGroupsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MyGroupsNotFound);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MyGroupsNotFound);
 }
 
 

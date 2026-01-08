@@ -1,12 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:dio/dio.dart' as dio;
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
+import 'package:proweb_student_app/api/network/video/get/video.dart';
 import 'package:proweb_student_app/api/video_repository/video_repository.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
+import 'package:talker_logger/talker_logger.dart';
+import 'package:encrypt/encrypt.dart';
 
 HttpServer? _httpServer;
 const PORT = 50432;
@@ -35,13 +42,11 @@ Future<Response> getM3U8Main(Request request) async {
   if (publickpath == null || slug == null) {
     return Response.badRequest();
   }
-
   try {
     if (publickpath.contains('https://') || publickpath.contains('http://')) {
-      final request = sl<DioHTTP>();
-      final dioResponse = await request.dio.get(publickpath);
-      String? playlist = dioResponse.data;
+      String? playlist = await sl<GetResponsesVideo>().getPlaylist(publickpath);
       if (playlist != null) {
+        playlist = decryptAES(playlist);
         final baseurl = '${GlobalPath.video}/api/v1/video/collection';
         final replaceurl =
             'http://${InternetAddress.loopbackIPv4.host}:$PORT/replace';
@@ -55,8 +60,8 @@ Future<Response> getM3U8Main(Request request) async {
       final String filePath = '${dir.path}/$publickpath';
       final file = File(filePath);
       if (await file.exists()) {
-        final lines = await file.readAsLines();
         String fileString = await file.readAsString();
+        List<String> lines = fileString.split('\n');
         final m3u8s = lines.where((line) {
           return line.endsWith('.m3u8');
         }).toList();
@@ -66,7 +71,6 @@ Future<Response> getM3U8Main(Request request) async {
             element,
             'http://${InternetAddress.loopbackIPv4.host}:$PORT/replace/local$path',
           );
-          // fileString = fileString.replaceFirst(element, '/replace/local$path');
         }
         return Response.ok(fileString);
       } else {
@@ -85,12 +89,12 @@ Future<Response> replacerM3U8(
   String m3u8,
 ) async {
   try {
-    final request = sl<DioHTTP>();
     final baseurl =
         '${GlobalPath.video}/api/v1/video/collection/$slug/$format/$m3u8';
-    final dioResponse = await request.dio.get(baseurl);
-    String? playlist = dioResponse.data;
+    String? playlist = await sl<GetResponsesVideo>().getPlaylist(baseurl);
+
     if (playlist != null) {
+      playlist = decryptAES(playlist);
       final host = GlobalPath.video;
       playlist = playlist.replaceFirst(
         '[KEY]',
@@ -162,8 +166,8 @@ Future<Response> localM3U8(
     final file = File(filePath);
 
     if (await file.exists()) {
-      final fileLines = await file.readAsLines();
       String fileString = await file.readAsString();
+      List<String> fileLines = fileString.split('\n');
       final tsSegments = fileLines.where((line) {
         return line.endsWith('.ts');
       }).toList();
@@ -238,4 +242,33 @@ Future<void> stopServer() async {
   if (_httpServer != null) {
     await _httpServer!.close(force: true);
   }
+}
+
+const ENC_KEY = "2cvcjxgtjwl7uf78qzwpcda66syg4mv2";
+const IV_BASE64 = "b2Y2eWhkeWE1Z2Y0N2gzNA==";
+
+String base64ToString(String base64Str) {
+  return utf8.decode(base64.decode(base64Str));
+}
+
+Uint8List base64ToBytes(String base64Str) {
+  return base64.decode(base64Str);
+}
+
+String decryptAES(
+  String encryptedBase64, {
+  String keyStr = ENC_KEY,
+  String ivStr = IV_BASE64,
+}) {
+  final key = Key(utf8.encode(keyStr)); // 32 bytes
+  final iv = IV(base64ToBytes(ivStr));
+
+  final encrypter = Encrypter(AES(key, mode: AESMode.cbc, padding: null));
+
+  final decrypted = encrypter.decrypt(
+    Encrypted(base64.decode(encryptedBase64)),
+    iv: iv,
+  );
+
+  return decrypted;
 }

@@ -127,6 +127,18 @@ class AppRouter extends RootStackRouter {
       children: [],
     ),
     AutoRoute(
+      path: '/profile',
+      page: ProfileRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+    ),
+    AutoRoute(
+      path: '/savedata',
+      page: SavedDataRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+    ),
+    AutoRoute(
       path: '/shop/market/services',
       page: ServicesListRoute.page,
       guards: [_AuthGuard()],

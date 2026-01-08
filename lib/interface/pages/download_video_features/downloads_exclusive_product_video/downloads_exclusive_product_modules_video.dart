@@ -42,13 +42,25 @@ class DownloadsExclusiveProductModulesVideoScafold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
     return AnnotatedRegion(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: Scaffold(
-        appBar: MainAppBar(isBorder: false),
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            style: IconButton.styleFrom(
+              backgroundColor: customColors?.containerColor,
+            ),
+            icon: Icon(Icons.arrow_back, color: customColors?.primaryTextColor),
+          ),
+          title: Text('Модули'),
+        ),
         body: DownloadsExclusiveProductModulesVideo(),
       ),
     );

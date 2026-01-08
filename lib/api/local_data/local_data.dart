@@ -195,21 +195,26 @@ class LocalData {
     return 'http://${InternetAddress.loopbackIPv4.host}:50432/video/?publickpath=$publickPath&slug=$slug';
   }
 
-  String formatSize(int megabytes, {FileSizeType type = FileSizeType.mb}) {
+  String formatSize(
+    int megabytes, {
+    FileSizeType type = FileSizeType.mb,
+    bool? round,
+  }) {
     if (type == FileSizeType.mb) {
-      if (megabytes < 1024) {
+      if (megabytes < 1000) {
         return '$megabytes MB';
       } else {
-        double gigabytes = megabytes / 1024;
+        double gigabytes = megabytes / 1000;
         return '${gigabytes.toStringAsFixed(2)} GB';
       }
     } else {
       if (megabytes <= 0) return "0 B";
       double bytes = megabytes.toDouble();
       const List<String> sizes = ["B", "KB", "MB", "GB", "TB", "PB"];
-      int i = (bytes > 0) ? (log(bytes) / log(1024)).floor() : 0;
-      double size = bytes / pow(1024, i);
-      return "${size.toStringAsFixed(2)} ${sizes[i]}";
+      int i = (bytes > 0) ? (log(bytes) / log(1000)).floor() : 0;
+      double size = bytes / pow(1000, i);
+
+      return "${(i >= 3 || round == null || round == false ? size.toStringAsFixed(1).replaceAll('.', ',') : size.round())} ${sizes[i]}";
     }
   }
 

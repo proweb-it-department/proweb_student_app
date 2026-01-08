@@ -37,6 +37,7 @@ class _StoryGroupsViewState extends State<StoryGroupsView> {
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   itemCount: story.length,
+                  physics: BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
                     final item = story.elementAt(index);
                     final hero = 'storygroup';

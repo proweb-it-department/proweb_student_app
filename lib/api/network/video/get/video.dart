@@ -58,4 +58,14 @@ class GetResponsesVideo {
 
     return videos;
   }
+
+  Future<String?> getPlaylist(String path) async {
+    final response = await sl<VideoFetch>().getString(
+      path: path,
+      cache: true,
+      duration: Duration(hours: 2),
+    );
+    final String? data = response.fold<String?>((l) => null, (data) => data);
+    return data;
+  }
 }

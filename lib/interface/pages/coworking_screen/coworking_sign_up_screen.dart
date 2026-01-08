@@ -270,8 +270,11 @@ class CoworkingSignUpBody extends StatelessWidget {
             title: Text(data.student?.group?.course?.name ?? '- - -'),
             subtitle: Text('#${data.student!.group!.id}'),
             trailing: data.student?.hasPackage == true
-                ? PremiumContainer(
-                    text: 'transactions_balance.tarif_transaction'.tr(),
+                ? Material(
+                    color: Colors.transparent,
+                    child: PremiumContainer(
+                      text: 'transactions_balance.tarif_transaction'.tr(),
+                    ),
                   )
                 : null,
           ),
