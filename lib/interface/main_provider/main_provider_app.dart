@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/language/language.dart';
 import 'package:proweb_student_app/bloc/all_poll_nps/all_poll_nps_bloc.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
+import 'package:proweb_student_app/bloc/bloc/payments_provider_bloc.dart';
 import 'package:proweb_student_app/bloc/branch_room_holiday/branch_room_holiday_bloc.dart';
 import 'package:proweb_student_app/bloc/download_video/download_video_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
@@ -63,6 +64,7 @@ class MainProviderApp extends StatelessWidget {
         BlocProvider(create: (context) => SessionsBloc()),
         BlocProvider(create: (context) => ProfileDataBloc()),
         BlocProvider(create: (context) => BalanceBloc()),
+        BlocProvider(create: (context) => PaymentsProviderBloc()),
         BlocProvider(create: (context) => BranchRoomHolidayBloc()),
         BlocProvider(create: (context) => StoryGroupsBloc()),
         BlocProvider(create: (context) => MyGroupsBloc()),

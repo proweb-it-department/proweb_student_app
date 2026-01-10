@@ -55,11 +55,12 @@ extension MyTelegramConnectedEventPatterns on MyTelegramConnectedEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _DeletedTg value)?  delete,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _DeletedTg() when delete != null:
+return delete(_that);case _:
   return orElse();
 
 }
@@ -77,11 +78,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _DeletedTg value)  delete,}){
 final _that = this;
 switch (_that) {
 case _Started():
-return started(_that);case _:
+return started(_that);case _DeletedTg():
+return delete(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +100,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _DeletedTg value)?  delete,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _DeletedTg() when delete != null:
+return delete(_that);case _:
   return null;
 
 }
@@ -119,10 +122,11 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( int id)?  delete,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _DeletedTg() when delete != null:
+return delete(_that.id);case _:
   return orElse();
 
 }
@@ -140,10 +144,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( int id)  delete,}) {final _that = this;
 switch (_that) {
 case _Started():
-return started();case _:
+return started();case _DeletedTg():
+return delete(_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +165,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( int id)?  delete,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _DeletedTg() when delete != null:
+return delete(_that.id);case _:
   return null;
 
 }
@@ -202,6 +208,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _DeletedTg implements MyTelegramConnectedEvent {
+  const _DeletedTg({required this.id});
+  
+
+ final  int id;
+
+/// Create a copy of MyTelegramConnectedEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DeletedTgCopyWith<_DeletedTg> get copyWith => __$DeletedTgCopyWithImpl<_DeletedTg>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DeletedTg&&(identical(other.id, id) || other.id == id));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'MyTelegramConnectedEvent.delete(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DeletedTgCopyWith<$Res> implements $MyTelegramConnectedEventCopyWith<$Res> {
+  factory _$DeletedTgCopyWith(_DeletedTg value, $Res Function(_DeletedTg) _then) = __$DeletedTgCopyWithImpl;
+@useResult
+$Res call({
+ int id
+});
+
+
+
+
+}
+/// @nodoc
+class __$DeletedTgCopyWithImpl<$Res>
+    implements _$DeletedTgCopyWith<$Res> {
+  __$DeletedTgCopyWithImpl(this._self, this._then);
+
+  final _DeletedTg _self;
+  final $Res Function(_DeletedTg) _then;
+
+/// Create a copy of MyTelegramConnectedEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(_DeletedTg(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$MyTelegramConnectedState {
@@ -277,10 +349,7 @@ switch (_that) {
 case MyTelegramConnectedInitial():
 return initial(_that);case MyTelegramConnectedLoad():
 return load(_that);case MyTelegramConnectedComplited():
-return complited(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return complited(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -345,10 +414,7 @@ switch (_that) {
 case MyTelegramConnectedInitial():
 return initial();case MyTelegramConnectedLoad():
 return load();case MyTelegramConnectedComplited():
-return complited(_that.tgUserList);case _:
-  throw StateError('Unexpected subclass');
-
-}
+return complited(_that.tgUserList);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///

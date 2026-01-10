@@ -1,7 +1,7 @@
 part of 'my_telegram_connected_bloc.dart';
 
 @freezed
-class MyTelegramConnectedState with _$MyTelegramConnectedState {
+sealed class MyTelegramConnectedState with _$MyTelegramConnectedState {
   const factory MyTelegramConnectedState.initial() = MyTelegramConnectedInitial;
   const factory MyTelegramConnectedState.load() = MyTelegramConnectedLoad;
   const factory MyTelegramConnectedState.complited({

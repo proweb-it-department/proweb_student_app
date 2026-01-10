@@ -103,6 +103,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                     labelText: 'auth.newpassword'.tr(),
                     errorText: state.errorText,
                     suffixIcon: IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isView = !_isView;
@@ -158,6 +161,9 @@ class _NewPasswordWriteState extends State<NewPasswordWrite> {
                     labelText: 'auth.newpassword_confirming'.tr(),
                     errorText: state.errorText,
                     suffixIcon: IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isViewConfirm = !_isViewConfirm;

@@ -133,6 +133,17 @@ class AppRouter extends RootStackRouter {
       children: [],
     ),
     AutoRoute(
+      path: '/profile/edit',
+      page: ProfileEditedRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    AutoRoute(
+      path: '/tg',
+      page: TelegramRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+    ),
+    AutoRoute(
       path: '/savedata',
       page: SavedDataRoute.page,
       guards: [_AuthGuard()],

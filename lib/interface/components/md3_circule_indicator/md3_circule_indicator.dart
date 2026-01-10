@@ -7,11 +7,13 @@ class Md3CirculeIndicator extends StatefulWidget {
   final double size;
   final Color? background;
   final Color? shapeColor;
+  final bool center;
   const Md3CirculeIndicator({
     super.key,
     this.size = 50,
     this.background,
     this.shapeColor,
+    this.center = true,
   });
 
   @override
@@ -115,29 +117,34 @@ class _Md3CirculeIndicatorState extends State<Md3CirculeIndicator>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.center) {
+      return Center(child: _build(context));
+    }
+    return _build(context);
+  }
+
+  Container _build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
-    return Center(
-      child: Container(
-        alignment: Alignment.center,
-        width: widget.size,
-        height: widget.size,
-        decoration: BoxDecoration(
-          color: widget.background ?? customColors?.additionalOne,
-          borderRadius: BorderRadius.circular(widget.size),
-        ),
-        child: AnimatedBuilder(
-          animation: Listenable.merge([_rotation, _scale]),
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: _rotation.value,
-              child: Transform.scale(scale: _scale.value, child: child),
-            );
-          },
-          child: _ShapeMd3CirculeIndicator(
-            score: _currentIndex + 1,
-            size: widget.size,
-            shapeColor: widget.shapeColor,
-          ),
+    return Container(
+      alignment: Alignment.center,
+      width: widget.size,
+      height: widget.size,
+      decoration: BoxDecoration(
+        color: widget.background ?? customColors?.additionalOne,
+        borderRadius: BorderRadius.circular(widget.size),
+      ),
+      child: AnimatedBuilder(
+        animation: Listenable.merge([_rotation, _scale]),
+        builder: (context, child) {
+          return Transform.rotate(
+            angle: _rotation.value,
+            child: Transform.scale(scale: _scale.value, child: child),
+          );
+        },
+        child: _ShapeMd3CirculeIndicator(
+          score: _currentIndex + 1,
+          size: widget.size,
+          shapeColor: widget.shapeColor,
         ),
       ),
     );

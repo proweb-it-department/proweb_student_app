@@ -17,6 +17,8 @@ import 'package:proweb_student_app/api/fetch/abstract_fetch.dart' as _i320;
 import 'package:proweb_student_app/api/language/language.dart' as _i97;
 import 'package:proweb_student_app/api/local_data/local_data.dart' as _i896;
 import 'package:proweb_student_app/api/network/auth/post/auth.dart' as _i1059;
+import 'package:proweb_student_app/api/network/chat/get/chat.dart' as _i133;
+import 'package:proweb_student_app/api/network/chat/post/chat.dart' as _i35;
 import 'package:proweb_student_app/api/network/main/get/main.dart' as _i426;
 import 'package:proweb_student_app/api/network/main/post/main.dart' as _i484;
 import 'package:proweb_student_app/api/network/video/get/video.dart' as _i202;
@@ -92,6 +94,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i484.PostResponsesMain>(() => appModule.postResponseMain);
     gh.lazySingleton<_i202.GetResponsesVideo>(() => appModule.getResponseVideo);
+    gh.lazySingleton<_i133.GetResponsesChat>(() => appModule.getResponseChat);
+    gh.lazySingleton<_i35.PostResponsesChat>(() => appModule.postResponseChat);
     gh.lazySingleton<_i896.LocalData>(() => appModule.localData);
     gh.lazySingleton<_i104.FileRepository>(() => appModule.fileRepository);
     gh.lazySingleton<_i284.DioHTTP>(() => appModule.diohttp);

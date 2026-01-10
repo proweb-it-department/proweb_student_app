@@ -56,6 +56,7 @@ class ProfileScreen extends StatelessWidget {
               },
               initial: () => Md3CirculeIndicator(size: 20),
             ),
+
             surfaceTintColor: customColor?.additionalTwo,
             centerTitle: true,
           ),
@@ -73,6 +74,11 @@ class ProfileBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileBloc = context.watch<ProfileDataBloc>();
     final customColor = Theme.of(context).extension<CustomColors>();
+    final profile = profileBloc.state.when(
+      initial: () => null,
+      view: (profile) => profile,
+    );
+    final birth = profile?.dateOfBirth;
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -82,49 +88,189 @@ class ProfileBody extends StatelessWidget {
             child: Column(
               spacing: 2,
               children: [
-                profileBloc.state.when(
-                  view: (profile) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 10,
-                      children: [
-                        GestureDetector(
-                          onTap: () {},
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Avatar(profile: profile, size: 90, circular: 90),
-                              Positioned(
-                                top: -10,
-                                right: -10,
-                                child: IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.edit),
+                SizedBox(),
+                if (profile != null)
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 10,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          context.router.navigate(ProfileEditedRoute());
+                        },
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Avatar(
+                              profile: profile,
+                              size: 90,
+                              circular: 90,
+                              fontSize: 40,
+                            ),
+                            Positioned(
+                              top: -15,
+                              right: -15,
+                              child: IconButton.outlined(
+                                onPressed: () {
+                                  context.router.navigate(ProfileEditedRoute());
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  padding: EdgeInsets.all(12),
+                                  side: BorderSide(
+                                    color:
+                                        customColor?.primaryBg ??
+                                        Colors.transparent,
+                                    width: 4,
+                                  ),
+                                  shape: const CircleBorder(),
                                 ),
+                                icon: Icon(Icons.edit),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          sl<LocalData>().nameMyProfile(profile),
-                          style: TextStyle(fontSize: 22),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        sl<LocalData>().nameMyProfile(profile),
+                        style: TextStyle(fontSize: 22),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (birth != null)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          spacing: 10,
+                          children: [
+                            Opacity(
+                              opacity:
+                                  sl<LocalData>().getDateString(
+                                        date: DateTime.parse(birth),
+                                        seporator: DateSeporator.dotMd,
+                                      ) ==
+                                      sl<LocalData>().getDateString(
+                                        date:
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                              sl<LocalData>().getTime().toInt(),
+                                            ),
+                                        seporator: DateSeporator.dotMd,
+                                      )
+                                  ? 1
+                                  : 0.7,
+                              child: Icon(Icons.cake),
+                            ),
+                            Text(
+                              sl<LocalData>().getDateString(
+                                date: DateTime.parse(birth),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  },
-                  initial: () => SizedBox(),
-                ),
+                    ],
+                  ),
+                SizedBox(height: 20),
                 BlocBuilder<MyTelegramConnectedBloc, MyTelegramConnectedState>(
                   builder: (context, state) {
-                    return Container(
-                      width: double.infinity,
-                      child: Text('asdasd asd a'),
+                    final data = state.when(
+                      initial: () => null,
+                      load: () => null,
+                      complited: (tgUserList) => tgUserList,
+                    );
+                    final bloc = context.read<MyTelegramConnectedBloc>();
+                    return Material(
+                      color: Colors.transparent,
+                      child: Column(
+                        spacing: 2,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTileBuilder(
+                            isStart: true,
+                            isEnd: false,
+                            builder: (shape, contentPadding, isThreeLine) {
+                              return ListTile(
+                                tileColor: customColor?.containerColor,
+                                shape: shape,
+                                contentPadding: contentPadding,
+                                onTap: data == null
+                                    ? null
+                                    : () {
+                                        context.router.navigate(
+                                          TelegramRoute(bloc: bloc),
+                                        );
+                                      },
+                                leading: IconAvatar(
+                                  icon: Icons.send_time_extension_rounded,
+                                ),
+                                title: Text('Привязка Telegram'),
+                                trailing: data == null
+                                    ? Md3CirculeIndicator(
+                                        size: 25,
+                                        center: false,
+                                        background: customColor?.primaryBg,
+                                        shapeColor: customColor?.additionalTwo,
+                                      )
+                                    : Ink(
+                                        decoration: BoxDecoration(
+                                          color: customColor?.primaryBg,
+                                          borderRadius: BorderRadius.circular(
+                                            80,
+                                          ),
+                                        ),
+                                        child: Icon(Icons.keyboard_arrow_right),
+                                      ),
+                                subtitle: data == null
+                                    ? Text('Загрузка...')
+                                    : Text(
+                                        data.isNotEmpty
+                                            ? 'Привязано: ${data.length}'
+                                            : 'Не привязан аккаунт',
+                                      ),
+                              );
+                            },
+                          ),
+                          ListTileBuilder(
+                            isStart: false,
+                            isEnd: true,
+                            builder: (shape, contentPadding, isThreeLine) {
+                              return ListTile(
+                                tileColor: customColor?.containerColor,
+                                shape: shape,
+                                contentPadding: contentPadding,
+                                onTap: data == null ? null : () {},
+                                leading: IconAvatar(
+                                  icon: Icons.alternate_email_rounded,
+                                ),
+                                title: Text('Почта для входа'),
+                                trailing: profile == null
+                                    ? Md3CirculeIndicator(
+                                        size: 25,
+                                        center: false,
+                                        background: customColor?.primaryBg,
+                                        shapeColor: customColor?.additionalTwo,
+                                      )
+                                    : Ink(
+                                        decoration: BoxDecoration(
+                                          color: customColor?.primaryBg,
+                                          borderRadius: BorderRadius.circular(
+                                            80,
+                                          ),
+                                        ),
+                                        child: Icon(Icons.keyboard_arrow_right),
+                                      ),
+                                subtitle: profile == null
+                                    ? Text('Загрузка...')
+                                    : profile.email == null
+                                    ? Text('Почта не привязана')
+                                    : Text('${profile.email}'),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 0),
                 Material(
                   color: Colors.transparent,
                   child: Padding(

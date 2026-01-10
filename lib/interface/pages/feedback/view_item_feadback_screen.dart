@@ -196,7 +196,7 @@ class _TicketContentState extends State<TicketContent> {
             trailing:
                 offer == null && widget.ticket.status == FeadbackStatus.open
                 ? widget.loadClosed
-                      ? Md3CirculeIndicator()
+                      ? Md3CirculeIndicator(center: false)
                       : FilledButton.icon(
                           onPressed: () {
                             final bloc = context.read<FeadbackManageBloc>();

@@ -23,38 +23,52 @@ class AuthScreen extends StatelessWidget {
     serviceLocal.loadloadCachedLangList();
     Theme.of(context).extension<CustomColors>();
     return AnnotatedRegion(
-      value: FlexColorScheme.themedSystemNavigationBar(context, systemNavBarStyle: FlexSystemNavBarStyle.transparent),
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        systemNavBarStyle: FlexSystemNavBarStyle.transparent,
+      ),
       child: Scaffold(
         appBar: AppBar(),
-        body: BlocBuilder<AuthPageBloc, AuthPageState>(
-          builder: (context, state) {
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: state.when(
-                initial: (load, type) {
-                  return LoginWrite(load: load, type: type);
+        body: SingleChildScrollView(
+          child: BlocBuilder<AuthPageBloc, AuthPageState>(
+            builder: (context, state) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
                 },
-                password: (login, load) {
-                  return PasswordWrite(load: load, login: login);
-                },
-                code: (login, load, type) {
-                  return CodeWrite(login: login, type: type, load: load);
-                },
-                passwordRecovery: (login, type, load) {
-                  return ResetPasswordWrite(load: load, login: login, type: type);
-                },
-                newPassword: (login, load) {
-                  return NewPasswordWrite(login: login, load: load);
-                },
-                sessions: (login, password, type, isLoad) {
-                  return SessionsLimitedList(login: login, password: password, type: type, load: isLoad);
-                },
-              ),
-            );
-          },
+                child: state.when(
+                  initial: (load, type) {
+                    return LoginWrite(load: load, type: type);
+                  },
+                  password: (login, load) {
+                    return PasswordWrite(load: load, login: login);
+                  },
+                  code: (login, load, type) {
+                    return CodeWrite(login: login, type: type, load: load);
+                  },
+                  passwordRecovery: (login, type, load) {
+                    return ResetPasswordWrite(
+                      load: load,
+                      login: login,
+                      type: type,
+                    );
+                  },
+                  newPassword: (login, load) {
+                    return NewPasswordWrite(login: login, load: load);
+                  },
+                  sessions: (login, password, type, isLoad) {
+                    return SessionsLimitedList(
+                      login: login,
+                      password: password,
+                      type: type,
+                      load: isLoad,
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

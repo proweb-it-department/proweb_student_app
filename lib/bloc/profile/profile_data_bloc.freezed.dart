@@ -55,11 +55,13 @@ extension ProfileDataEventPatterns on ProfileDataEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _UpdateBirth value)?  updateBirth,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _UploadImage() when uploadImage != null:
+return uploadImage(_that);case _UpdateBirth() when updateBirth != null:
+return updateBirth(_that);case _:
   return orElse();
 
 }
@@ -77,11 +79,13 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _UpdateBirth value)  updateBirth,}){
 final _that = this;
 switch (_that) {
 case _Started():
-return started(_that);case _:
+return started(_that);case _UploadImage():
+return uploadImage(_that);case _UpdateBirth():
+return updateBirth(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +102,13 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _UpdateBirth value)?  updateBirth,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _UploadImage() when uploadImage != null:
+return uploadImage(_that);case _UpdateBirth() when updateBirth != null:
+return updateBirth(_that);case _:
   return null;
 
 }
@@ -119,10 +125,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( Uint8List image)?  uploadImage,TResult Function( String date)?  updateBirth,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _UploadImage() when uploadImage != null:
+return uploadImage(_that.image);case _UpdateBirth() when updateBirth != null:
+return updateBirth(_that.date);case _:
   return orElse();
 
 }
@@ -140,10 +148,12 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( Uint8List image)  uploadImage,required TResult Function( String date)  updateBirth,}) {final _that = this;
 switch (_that) {
 case _Started():
-return started();case _:
+return started();case _UploadImage():
+return uploadImage(_that.image);case _UpdateBirth():
+return updateBirth(_that.date);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +170,12 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( Uint8List image)?  uploadImage,TResult? Function( String date)?  updateBirth,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _UploadImage() when uploadImage != null:
+return uploadImage(_that.image);case _UpdateBirth() when updateBirth != null:
+return updateBirth(_that.date);case _:
   return null;
 
 }
@@ -202,6 +214,138 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _UploadImage implements ProfileDataEvent {
+  const _UploadImage({required this.image});
+  
+
+ final  Uint8List image;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UploadImageCopyWith<_UploadImage> get copyWith => __$UploadImageCopyWithImpl<_UploadImage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UploadImage&&const DeepCollectionEquality().equals(other.image, image));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(image));
+
+@override
+String toString() {
+  return 'ProfileDataEvent.uploadImage(image: $image)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UploadImageCopyWith<$Res> implements $ProfileDataEventCopyWith<$Res> {
+  factory _$UploadImageCopyWith(_UploadImage value, $Res Function(_UploadImage) _then) = __$UploadImageCopyWithImpl;
+@useResult
+$Res call({
+ Uint8List image
+});
+
+
+
+
+}
+/// @nodoc
+class __$UploadImageCopyWithImpl<$Res>
+    implements _$UploadImageCopyWith<$Res> {
+  __$UploadImageCopyWithImpl(this._self, this._then);
+
+  final _UploadImage _self;
+  final $Res Function(_UploadImage) _then;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? image = null,}) {
+  return _then(_UploadImage(
+image: null == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
+as Uint8List,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _UpdateBirth implements ProfileDataEvent {
+  const _UpdateBirth({required this.date});
+  
+
+ final  String date;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateBirthCopyWith<_UpdateBirth> get copyWith => __$UpdateBirthCopyWithImpl<_UpdateBirth>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateBirth&&(identical(other.date, date) || other.date == date));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,date);
+
+@override
+String toString() {
+  return 'ProfileDataEvent.updateBirth(date: $date)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdateBirthCopyWith<$Res> implements $ProfileDataEventCopyWith<$Res> {
+  factory _$UpdateBirthCopyWith(_UpdateBirth value, $Res Function(_UpdateBirth) _then) = __$UpdateBirthCopyWithImpl;
+@useResult
+$Res call({
+ String date
+});
+
+
+
+
+}
+/// @nodoc
+class __$UpdateBirthCopyWithImpl<$Res>
+    implements _$UpdateBirthCopyWith<$Res> {
+  __$UpdateBirthCopyWithImpl(this._self, this._then);
+
+  final _UpdateBirth _self;
+  final $Res Function(_UpdateBirth) _then;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? date = null,}) {
+  return _then(_UpdateBirth(
+date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$ProfileDataState {

@@ -27,6 +27,7 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_purchases/my_purchases.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
+import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/models/product_module_access.dart';
 import 'package:proweb_student_app/models/products/products.dart';
 import 'package:proweb_student_app/models/products_modules/products_modules.dart';
@@ -475,7 +476,7 @@ class GetResponsesMain {
     final myGroups = response.fold<List<MyGroupsItem>?>(
       (l) {
         final map = l.response?.data;
-        if (map != null && map['detail'] != null) {
+        if (map != null && map.runtimeType == Map && map['detail'] != null) {
           Fluttertoast.showToast(msg: map['detail']);
         }
         return null;
@@ -531,6 +532,23 @@ class GetResponsesMain {
       );
       return response.whenOrNull(
         results: (results) {
+          return results;
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<List<PaymentsProviderModel>?> paymentsProvider() async {
+    String path = '/api/v1/payments/common/providers/';
+    final response = await sl<MainFetch>().get(path: path);
+    List<PaymentsProviderModel>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<PaymentsProviderModel>.fromJson(
+        r,
+        (data) => PaymentsProviderModel.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        list: (results) {
           return results;
         },
       );

@@ -89,6 +89,9 @@ class _PasswordWriteState extends State<PasswordWrite> {
                     labelText: 'auth.password'.tr(),
                     errorText: state.errorText,
                     suffixIcon: IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                      ),
                       onPressed: () {
                         setState(() {
                           _isView = !_isView;

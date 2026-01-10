@@ -23,6 +23,7 @@ import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.
 import 'package:proweb_student_app/models/tarif_model/tarif_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
@@ -1513,6 +1514,7 @@ class TarifServiceList extends StatelessWidget {
                               colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
                               stops: [0.28, 1.0],
                             ),
+                            clipPath: PathSvgShape.pill,
                             icon: type == ServiceType.video
                                 ? Icons.play_circle
                                 : type == ServiceType.coworking

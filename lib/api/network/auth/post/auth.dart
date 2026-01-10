@@ -106,4 +106,11 @@ class PostResponsesAuth {
       form: form,
     );
   }
+
+  Future<void> updateProfile(FormData form) async {
+    await sl<AuthFetch>().post(
+      path: '/api/v1/auth/update-my-profile/',
+      form: form,
+    );
+  }
 }

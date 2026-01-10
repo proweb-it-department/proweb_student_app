@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:proweb_student_app/api/network/chat/get/chat.dart';
+import 'package:proweb_student_app/api/network/chat/post/chat.dart';
 import 'package:proweb_student_app/models/telegram_user/telegram_user.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 
@@ -17,16 +18,26 @@ class MyTelegramConnectedBloc
         final chat = sl<GetResponsesChat>();
         final response = await chat.myTgAccount();
         if (response == null) return emit(MyTelegramConnectedState.initial());
-        emit(
-          MyTelegramConnectedState.complited(
-            tgUserList: response.where((a) {
-              return a.status == 'active';
-            }).toList(),
-          ),
-        );
+        final list = [...response].where((a) {
+          return a.status == 'active';
+        }).toList();
+        emit(MyTelegramConnectedState.complited(tgUserList: list));
       }
 
-      await event.when(started: started);
+      delete(int id) async {
+        emit(MyTelegramConnectedState.load());
+        final chatPost = sl<PostResponsesChat>();
+        await chatPost.deleteTg(id);
+        final chat = sl<GetResponsesChat>();
+        final response = await chat.myTgAccount();
+        if (response == null) return emit(MyTelegramConnectedState.initial());
+        final list = [...response].where((a) {
+          return a.status == 'active';
+        }).toList();
+        emit(MyTelegramConnectedState.complited(tgUserList: list));
+      }
+
+      await event.when(started: started, delete: delete);
     });
   }
 }

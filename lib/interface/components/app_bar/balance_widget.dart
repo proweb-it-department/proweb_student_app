@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
+import 'package:proweb_student_app/bloc/bloc/payments_provider_bloc.dart';
+import 'package:proweb_student_app/interface/components/app_bar/top_up_balance.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
@@ -182,6 +184,9 @@ class _BalanceWidgetState extends State<BalanceWidget>
                                         return BalanceView(
                                           balance: balance,
                                           onTap: onTap,
+                                          openTopUpBalance: () {
+                                            _hideOverlay();
+                                          },
                                         );
                                       },
                                     ),
@@ -349,14 +354,25 @@ class _BalanceWidgetState extends State<BalanceWidget>
 class BalanceView extends StatelessWidget {
   final Balance balance;
   final Function() onTap;
-  const BalanceView({super.key, required this.balance, required this.onTap});
+  final Function() openTopUpBalance;
+  const BalanceView({
+    super.key,
+    required this.balance,
+    required this.onTap,
+    required this.openTopUpBalance,
+  });
 
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
+    final blocPayProvider = context.read<PaymentsProviderBloc>();
+    final stateProviders = blocPayProvider.state.when(
+      initial: () => false,
+      load: () => false,
+      complited: (_) => true,
+    );
     return Column(
       mainAxisSize: MainAxisSize.min,
-      spacing: 2,
       children: [
         ListTileBuilder(
           isStart: true,
@@ -407,6 +423,7 @@ class BalanceView extends StatelessWidget {
             );
           },
         ),
+        SizedBox(height: 2),
         ListTileBuilder(
           isStart: false,
           isEnd: false,
@@ -438,6 +455,7 @@ class BalanceView extends StatelessWidget {
             );
           },
         ),
+        SizedBox(height: 2),
         ListTileBuilder(
           isStart: false,
           isEnd: true,
@@ -461,6 +479,59 @@ class BalanceView extends StatelessWidget {
               ),
               trailing: Icon(Icons.chevron_right),
             );
+          },
+        ),
+        BlocBuilder<PaymentsProviderBloc, PaymentsProviderState>(
+          bloc: stateProviders
+              ? null
+              : (blocPayProvider..add(PaymentsProviderEvent.started())),
+          builder: (context, state) {
+            return switch (state) {
+              PaymentsProviderInitial() => Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 5, width: double.infinity),
+                  Md3CirculeIndicator(center: false),
+                ],
+              ),
+              PaymentsProviderLoad() => Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 5, width: double.infinity),
+                  Md3CirculeIndicator(center: false),
+                ],
+              ),
+              PaymentsProviderComplited(providers: final providers) =>
+                providers.isEmpty
+                    ? SizedBox()
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 5, width: double.infinity),
+                          FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: customColors?.primaryBg,
+                              iconColor: customColors?.primaryTextColor,
+                              textStyle: TextStyle(
+                                color: customColors?.primaryTextColor,
+                              ),
+                            ),
+                            onPressed: () {
+                              openTopUpBalance();
+                              openPaymentProviders(context);
+                            },
+                            label: Text('Пополнить баланс'),
+                            icon: Icon(Icons.payment_rounded),
+                          ),
+                        ],
+                      ),
+            };
           },
         ),
       ],

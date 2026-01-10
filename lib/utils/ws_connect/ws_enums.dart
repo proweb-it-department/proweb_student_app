@@ -19,7 +19,8 @@ enum WsEvent {
   ticketComment('ticket_comment'),
   ticketStatus('ticket_status'),
   ticketClosingOfferProposed('ticket_closing_offer_proposed'),
-  testingComment('testing_comment');
+  testingComment('testing_comment'),
+  telegramLinked('telegram_linked');
 
   final String name;
   const WsEvent(this.name);

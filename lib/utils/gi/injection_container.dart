@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:proweb_student_app/api/network/chat/get/chat.dart';
+import 'package:proweb_student_app/api/network/chat/post/chat.dart';
 import 'package:proweb_student_app/api/repositories/file_repositories/file_repositories.dart';
 import 'package:proweb_student_app/api/repositories/video_group_repositiories/video_group_repositiories.dart';
 import 'package:proweb_student_app/api/repositories/video_product_repositiories/video_product_repositiories.dart';
@@ -118,6 +120,10 @@ abstract class AppModule {
 
   @lazySingleton
   GetResponsesVideo get getResponseVideo => GetResponsesVideo();
+  @lazySingleton
+  GetResponsesChat get getResponseChat => GetResponsesChat();
+  @lazySingleton
+  PostResponsesChat get postResponseChat => PostResponsesChat();
 
   @lazySingleton
   LocalData get localData => LocalData();

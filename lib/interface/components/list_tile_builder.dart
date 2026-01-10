@@ -28,17 +28,20 @@ class ListTileBuilder extends StatelessWidget {
     if (isEnd) {
       bottom = Radius.circular(radiusBig);
     }
-    return builder(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadiusGeometry.directional(
-          topStart: top ?? Radius.circular(radiusSmall),
-          topEnd: top ?? Radius.circular(radiusSmall),
-          bottomStart: bottom ?? Radius.circular(radiusSmall),
-          bottomEnd: bottom ?? Radius.circular(radiusSmall),
+    return Material(
+      color: Colors.transparent,
+      child: builder(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadiusGeometry.directional(
+            topStart: top ?? Radius.circular(radiusSmall),
+            topEnd: top ?? Radius.circular(radiusSmall),
+            bottomStart: bottom ?? Radius.circular(radiusSmall),
+            bottomEnd: bottom ?? Radius.circular(radiusSmall),
+          ),
         ),
+        EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        true,
       ),
-      EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      true,
     );
   }
 }
