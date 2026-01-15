@@ -55,11 +55,13 @@ extension PaymentsProviderEventPatterns on PaymentsProviderEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _GenerateUrl value)?  generateURL,TResult Function( _ClearUrl value)?  clearUrl,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _GenerateUrl() when generateURL != null:
+return generateURL(_that);case _ClearUrl() when clearUrl != null:
+return clearUrl(_that);case _:
   return orElse();
 
 }
@@ -77,11 +79,13 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _GenerateUrl value)  generateURL,required TResult Function( _ClearUrl value)  clearUrl,}){
 final _that = this;
 switch (_that) {
 case _Started():
-return started(_that);case _:
+return started(_that);case _GenerateUrl():
+return generateURL(_that);case _ClearUrl():
+return clearUrl(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +102,13 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _GenerateUrl value)?  generateURL,TResult? Function( _ClearUrl value)?  clearUrl,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _GenerateUrl() when generateURL != null:
+return generateURL(_that);case _ClearUrl() when clearUrl != null:
+return clearUrl(_that);case _:
   return null;
 
 }
@@ -119,10 +125,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( FormData form)?  generateURL,TResult Function()?  clearUrl,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _GenerateUrl() when generateURL != null:
+return generateURL(_that.form);case _ClearUrl() when clearUrl != null:
+return clearUrl();case _:
   return orElse();
 
 }
@@ -140,10 +148,12 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( FormData form)  generateURL,required TResult Function()  clearUrl,}) {final _that = this;
 switch (_that) {
 case _Started():
-return started();case _:
+return started();case _GenerateUrl():
+return generateURL(_that.form);case _ClearUrl():
+return clearUrl();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +170,12 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( FormData form)?  generateURL,TResult? Function()?  clearUrl,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _GenerateUrl() when generateURL != null:
+return generateURL(_that.form);case _ClearUrl() when clearUrl != null:
+return clearUrl();case _:
   return null;
 
 }
@@ -195,6 +207,104 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'PaymentsProviderEvent.started()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _GenerateUrl implements PaymentsProviderEvent {
+  const _GenerateUrl({required this.form});
+  
+
+ final  FormData form;
+
+/// Create a copy of PaymentsProviderEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$GenerateUrlCopyWith<_GenerateUrl> get copyWith => __$GenerateUrlCopyWithImpl<_GenerateUrl>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GenerateUrl&&(identical(other.form, form) || other.form == form));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,form);
+
+@override
+String toString() {
+  return 'PaymentsProviderEvent.generateURL(form: $form)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$GenerateUrlCopyWith<$Res> implements $PaymentsProviderEventCopyWith<$Res> {
+  factory _$GenerateUrlCopyWith(_GenerateUrl value, $Res Function(_GenerateUrl) _then) = __$GenerateUrlCopyWithImpl;
+@useResult
+$Res call({
+ FormData form
+});
+
+
+
+
+}
+/// @nodoc
+class __$GenerateUrlCopyWithImpl<$Res>
+    implements _$GenerateUrlCopyWith<$Res> {
+  __$GenerateUrlCopyWithImpl(this._self, this._then);
+
+  final _GenerateUrl _self;
+  final $Res Function(_GenerateUrl) _then;
+
+/// Create a copy of PaymentsProviderEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? form = null,}) {
+  return _then(_GenerateUrl(
+form: null == form ? _self.form : form // ignore: cast_nullable_to_non_nullable
+as FormData,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _ClearUrl implements PaymentsProviderEvent {
+  const _ClearUrl();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClearUrl);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'PaymentsProviderEvent.clearUrl()';
 }
 
 
@@ -314,12 +424,12 @@ return complited(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  load,TResult Function( List<PaymentsProviderModel> providers)?  complited,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  load,TResult Function( List<PaymentsProviderModel> providers,  TelegramConnectUrl? url)?  complited,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case PaymentsProviderInitial() when initial != null:
 return initial();case PaymentsProviderLoad() when load != null:
 return load();case PaymentsProviderComplited() when complited != null:
-return complited(_that.providers);case _:
+return complited(_that.providers,_that.url);case _:
   return orElse();
 
 }
@@ -337,12 +447,12 @@ return complited(_that.providers);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  load,required TResult Function( List<PaymentsProviderModel> providers)  complited,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  load,required TResult Function( List<PaymentsProviderModel> providers,  TelegramConnectUrl? url)  complited,}) {final _that = this;
 switch (_that) {
 case PaymentsProviderInitial():
 return initial();case PaymentsProviderLoad():
 return load();case PaymentsProviderComplited():
-return complited(_that.providers);}
+return complited(_that.providers,_that.url);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -356,12 +466,12 @@ return complited(_that.providers);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  load,TResult? Function( List<PaymentsProviderModel> providers)?  complited,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  load,TResult? Function( List<PaymentsProviderModel> providers,  TelegramConnectUrl? url)?  complited,}) {final _that = this;
 switch (_that) {
 case PaymentsProviderInitial() when initial != null:
 return initial();case PaymentsProviderLoad() when load != null:
 return load();case PaymentsProviderComplited() when complited != null:
-return complited(_that.providers);case _:
+return complited(_that.providers,_that.url);case _:
   return null;
 
 }
@@ -437,7 +547,7 @@ String toString() {
 
 
 class PaymentsProviderComplited implements PaymentsProviderState {
-  const PaymentsProviderComplited({required final  List<PaymentsProviderModel> providers}): _providers = providers;
+  const PaymentsProviderComplited({required final  List<PaymentsProviderModel> providers, this.url}): _providers = providers;
   
 
  final  List<PaymentsProviderModel> _providers;
@@ -447,6 +557,7 @@ class PaymentsProviderComplited implements PaymentsProviderState {
   return EqualUnmodifiableListView(_providers);
 }
 
+ final  TelegramConnectUrl? url;
 
 /// Create a copy of PaymentsProviderState
 /// with the given fields replaced by the non-null parameter values.
@@ -458,16 +569,16 @@ $PaymentsProviderComplitedCopyWith<PaymentsProviderComplited> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentsProviderComplited&&const DeepCollectionEquality().equals(other._providers, _providers));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentsProviderComplited&&const DeepCollectionEquality().equals(other._providers, _providers)&&(identical(other.url, url) || other.url == url));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_providers));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_providers),url);
 
 @override
 String toString() {
-  return 'PaymentsProviderState.complited(providers: $providers)';
+  return 'PaymentsProviderState.complited(providers: $providers, url: $url)';
 }
 
 
@@ -478,11 +589,11 @@ abstract mixin class $PaymentsProviderComplitedCopyWith<$Res> implements $Paymen
   factory $PaymentsProviderComplitedCopyWith(PaymentsProviderComplited value, $Res Function(PaymentsProviderComplited) _then) = _$PaymentsProviderComplitedCopyWithImpl;
 @useResult
 $Res call({
- List<PaymentsProviderModel> providers
+ List<PaymentsProviderModel> providers, TelegramConnectUrl? url
 });
 
 
-
+$TelegramConnectUrlCopyWith<$Res>? get url;
 
 }
 /// @nodoc
@@ -495,14 +606,27 @@ class _$PaymentsProviderComplitedCopyWithImpl<$Res>
 
 /// Create a copy of PaymentsProviderState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? providers = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? providers = null,Object? url = freezed,}) {
   return _then(PaymentsProviderComplited(
 providers: null == providers ? _self._providers : providers // ignore: cast_nullable_to_non_nullable
-as List<PaymentsProviderModel>,
+as List<PaymentsProviderModel>,url: freezed == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as TelegramConnectUrl?,
   ));
 }
 
+/// Create a copy of PaymentsProviderState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$TelegramConnectUrlCopyWith<$Res>? get url {
+    if (_self.url == null) {
+    return null;
+  }
 
+  return $TelegramConnectUrlCopyWith<$Res>(_self.url!, (value) {
+    return _then(_self.copyWith(url: value));
+  });
+}
 }
 
 // dart format on

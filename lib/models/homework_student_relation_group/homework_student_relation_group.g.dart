@@ -35,6 +35,7 @@ _HomeworkStudentRelationGroup _$HomeworkStudentRelationGroupFromJson(
       .toList(),
   deadlineExpired: json['deadline_expired'] as bool?,
   checkExpired: json['check_expired'] as bool?,
+  hasMaterial: json['has_material'] as bool?,
   retakeCheckExpired: json['retake_check_expired'] as bool?,
   lastLessonNumber: (json['last_lesson_number'] as num?)?.toInt(),
   checkDeadlineLessonNumber: (json['check_deadline_lesson_number'] as num?)
@@ -61,6 +62,7 @@ Map<String, dynamic> _$HomeworkStudentRelationGroupToJson(
   'homework_materials': instance.homeworkMaterials,
   'deadline_expired': instance.deadlineExpired,
   'check_expired': instance.checkExpired,
+  'has_material': instance.hasMaterial,
   'retake_check_expired': instance.retakeCheckExpired,
   'last_lesson_number': instance.lastLessonNumber,
   'check_deadline_lesson_number': instance.checkDeadlineLessonNumber,

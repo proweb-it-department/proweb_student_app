@@ -32,7 +32,7 @@ import 'package:uuid/uuid.dart';
 
 enum GetMyProfileEnum { local, network }
 
-enum DateSeporator { w, wd, day, dot, dash, dashMd, dotMd }
+enum DateSeporator { w, wd, wMY, day, dot, dash, dashMd, dotMd, dotMY, dashMY }
 
 class ErrorUser {}
 
@@ -156,10 +156,16 @@ class LocalData {
       return '${date.day < 10 ? '0${date.day}' : date.day}.${date.month < 10 ? '0${date.month}' : date.month}';
     } else if (seporator.name == DateSeporator.dot.name) {
       return '${date.day < 10 ? '0${date.day}' : date.day}.${date.month < 10 ? '0${date.month}' : date.month}.${date.year}';
+    } else if (seporator == DateSeporator.dotMY) {
+      return '${date.month < 10 ? '0${date.month}' : date.month}.${date.year}';
+    } else if (seporator == DateSeporator.dashMY) {
+      return '${date.year}-${date.month < 10 ? '0${date.month}' : date.month}';
     } else if (seporator.name == DateSeporator.w.name) {
       return '${date.day < 10 ? '0${date.day}' : date.day} ${'global_data.date_month_${date.month}'.tr()}, ${date.year}';
     } else if (seporator.name == DateSeporator.wd.name) {
       return '${date.day < 10 ? '0${date.day}' : date.day} ${'global_data.date_month_${date.month}'.tr()}';
+    } else if (seporator.name == DateSeporator.wMY.name) {
+      return '${'global_data.date_month_${date.month}_from'.tr()} ${date.year}';
     } else {
       return 'global_data.day_${date.weekday}'.tr();
     }

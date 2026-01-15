@@ -1,20 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
-import 'package:proweb_student_app/bloc/bloc/payments_provider_bloc.dart';
+import 'package:proweb_student_app/bloc/payments_provider/payments_provider_bloc.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
+import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
-openPaymentProviders(BuildContext ctx) {
+Future<dynamic> openPaymentProviders(BuildContext ctx) {
   final balance = ctx.read<BalanceBloc>();
   final paymentsProvider = ctx.read<PaymentsProviderBloc>();
   return showDialog(
@@ -50,6 +52,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
   PaymentsProviderModel? providerModel;
   int sum = 0;
   late TextEditingController controller;
+  bool loadUrl = false;
 
   @override
   void initState() {
@@ -77,8 +80,26 @@ class _TopUpBalanceState extends State<TopUpBalance> {
     final paymentsProviders = paymentsProviderState.state.when(
       initial: () => null,
       load: () => null,
-      complited: (providers) => providers.isEmpty ? null : providers,
+      complited: (providers, _) => providers.isEmpty ? null : providers,
     );
+
+    paymentsProviderState.stream.listen((event) {
+      event.when(
+        initial: () {},
+        load: () {},
+        complited: (providers, url) {
+          if (loadUrl && url != null) {
+            setState(() {
+              loadUrl = false;
+            });
+            final openUrl = url.url;
+            if (openUrl == null) return;
+            sl<LocalData>().openLink(url: openUrl);
+            Navigator.of(context).pop();
+          }
+        },
+      );
+    });
     if (profile == null || balance == null || paymentsProviders == null) {
       Widget? error;
       if (profile == null) {
@@ -355,16 +376,53 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   ],
                 ),
                 SizedBox(height: 10),
-                FilledButton.icon(
-                  onPressed: () {},
-                  style: FilledButton.styleFrom(
-                    backgroundColor: customColors?.containerColor,
-                    iconColor: customColors?.primaryTextColor,
-                    textStyle: TextStyle(color: customColors?.primaryTextColor),
-                  ),
-                  label: Text('Прейти к оплате'),
-                  icon: Icon(Icons.wallet),
-                ),
+                if (loadUrl == false)
+                  FilledButton.icon(
+                    onPressed: () async {
+                      final transactionParam = profile.phone;
+                      final amount = sum;
+                      if (amount < 1000) return;
+                      final provider = providerModel?.provider;
+                      if (provider == null) return;
+                      final language = context.locale;
+                      final form = FormData.fromMap({
+                        "amount": amount,
+                        "transaction_param": transactionParam,
+                        "language": language,
+                        "provider": provider,
+                      });
+                      paymentsProviderState.add(
+                        PaymentsProviderEvent.generateURL(form: form),
+                      );
+                      setState(() {
+                        loadUrl = true;
+                      });
+                      final returned = await paymentsProviderState.stream.first;
+                      setState(() {
+                        loadUrl = false;
+                      });
+                      final dataUrl = returned.when(
+                        initial: () => null,
+                        load: () => null,
+                        complited: (_, url) => url,
+                      );
+                      if (dataUrl == null) return;
+                      final url = dataUrl.url;
+                      if (url == null) return;
+                      await sl<LocalData>().openLink(url: url);
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: customColors?.containerColor,
+                      iconColor: customColors?.primaryTextColor,
+                      textStyle: TextStyle(
+                        color: customColors?.primaryTextColor,
+                      ),
+                    ),
+                    label: Text('Прейти к оплате'),
+                    icon: Icon(Icons.wallet),
+                  )
+                else
+                  Md3CirculeIndicator(size: 40),
               } else
                 Center(
                   child: Text(

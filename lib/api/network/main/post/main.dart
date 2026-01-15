@@ -9,6 +9,7 @@ import 'package:proweb_student_app/models/global_comment/global_comment.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
 import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/story_groups_for_student/story_groups_for_student.dart';
+import 'package:proweb_student_app/models/telegram_connect_url/telegram_connect_url.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 
@@ -302,6 +303,28 @@ class PostResponsesMain {
       },
       (r) {
         return true;
+      },
+    );
+    return data;
+  }
+
+  Future<TelegramConnectUrl?> generateUrl(FormData form) async {
+    String path = '/api/v1/payments/common/generate_url/';
+    final response = await sl<MainFetch>().post(path: path, form: form);
+    final data = response.fold<TelegramConnectUrl?>(
+      (l) {
+        return null;
+      },
+      (r) {
+        final response = ApiResponse<TelegramConnectUrl>.fromJson(
+          r,
+          (p0) => TelegramConnectUrl.fromJson(p0 as Map<String, dynamic>),
+        );
+        return response.whenOrNull(
+          results: (res) {
+            return res;
+          },
+        );
       },
     );
     return data;

@@ -26,6 +26,7 @@ abstract class HomeworkStudentRelationGroup
     List<HomeworkMaterials>? homeworkMaterials,
     @JsonKey(name: 'deadline_expired') bool? deadlineExpired,
     @JsonKey(name: 'check_expired') bool? checkExpired,
+    @JsonKey(name: 'has_material') bool? hasMaterial,
     @JsonKey(name: 'retake_check_expired') bool? retakeCheckExpired,
     @JsonKey(name: 'last_lesson_number') int? lastLessonNumber,
     @JsonKey(name: 'check_deadline_lesson_number')

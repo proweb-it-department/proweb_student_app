@@ -47,7 +47,12 @@ import 'package:proweb_student_app/models/user_skill/user_skill.dart';
 import 'package:proweb_student_app/models/user_total_position/user_total_position.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
+import 'package:talker_logger/talker_logger.dart';
+
+typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
+typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
 
 class GetResponsesMain {
   Future<List<StoryGroupsForStudent>?> story({
@@ -1293,5 +1298,54 @@ class GetResponsesMain {
       return response.whenOrNull(results: (results) => results);
     });
     return data;
+  }
+
+  Future<DataHomeHomework?> homeworkGgroups(
+    int groupId,
+    int offset,
+    int limit,
+  ) async {
+    String path =
+        '/api/v1/learning-process/students/homeworks/?group_id=$groupId&offset=$offset&limit=$limit';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<HomeworkStudentRelationGroup>? data = response.fold(
+      (l) => null,
+      (r) {
+        final response = ApiResponse<HomeworkStudentRelationGroup>.fromJson(
+          r,
+          (data) => HomeworkStudentRelationGroup.fromJson(
+            data as Map<String, dynamic>,
+          ),
+        );
+        return response.whenOrNull(
+          lazylist: (count, list) =>
+              ResponseLazeList<HomeworkStudentRelationGroup>(
+                count: count,
+                list: list,
+              ),
+        );
+      },
+    );
+    if (data == null) return null;
+    final dataList = [...data.list];
+    dataList.sort(
+      (a, b) =>
+          (DateTime.parse(b.createdAt ?? '12.01.2026').millisecondsSinceEpoch) -
+          (DateTime.parse(a.createdAt ?? '12.01.2026')).millisecondsSinceEpoch,
+    );
+    final map = MapHomework();
+    for (var element in dataList) {
+      final date = element.createdAt;
+      if (date == null) continue;
+      final dateCreate = sl<LocalData>().getDateString(
+        date: DateTime.parse(date),
+        seporator: DateSeporator.dashMY,
+      );
+      final data = map.getOrSet(dateCreate, () => []);
+      data.add(element);
+      map.set(dateCreate, data);
+    }
+
+    return DataHomeHomework(count: data.count, map: map);
   }
 }

@@ -54,12 +54,7 @@ class HomeMainTab extends StatelessWidget {
               return switch (state) {
                 MyGroupsInitial() => Padding(
                   padding: EdgeInsets.all(8),
-                  child: Center(
-                    child: Md3CirculeIndicator(
-                      background: Colors.red.shade100,
-                      shapeColor: Colors.red.shade900,
-                    ),
-                  ),
+                  child: Center(child: Md3CirculeIndicator()),
                 ),
                 MyGroupsLoading() => Padding(
                   padding: EdgeInsets.all(8),

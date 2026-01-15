@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:proweb_student_app/api/ws/ws_connection_state.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
-import 'package:proweb_student_app/bloc/bloc/payments_provider_bloc.dart';
+import 'package:proweb_student_app/bloc/payments_provider/payments_provider_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/top_up_balance.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
@@ -369,7 +369,7 @@ class BalanceView extends StatelessWidget {
     final stateProviders = blocPayProvider.state.when(
       initial: () => false,
       load: () => false,
-      complited: (_) => true,
+      complited: (_, _) => true,
     );
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -493,7 +493,11 @@ class BalanceView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 5, width: double.infinity),
-                  Md3CirculeIndicator(center: false),
+                  Md3CirculeIndicator(
+                    center: false,
+                    size: 40,
+                    background: customColors?.primaryBg,
+                  ),
                 ],
               ),
               PaymentsProviderLoad() => Column(
@@ -502,7 +506,11 @@ class BalanceView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 5, width: double.infinity),
-                  Md3CirculeIndicator(center: false),
+                  Md3CirculeIndicator(
+                    center: false,
+                    size: 40,
+                    background: customColors?.primaryBg,
+                  ),
                 ],
               ),
               PaymentsProviderComplited(providers: final providers) =>

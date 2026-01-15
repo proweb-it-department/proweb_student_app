@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
+import 'package:proweb_student_app/bloc/payments_provider/payments_provider_bloc.dart';
+import 'package:proweb_student_app/interface/components/app_bar/top_up_balance.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -16,6 +18,12 @@ class BalanceWidgetInPage extends StatelessWidget {
     final customColors = Theme.of(context).extension<CustomColors>();
     final double borderDouble = 20;
     final BorderRadius border = BorderRadius.circular(borderDouble);
+    final blocPayProvider = context.read<PaymentsProviderBloc>();
+    final stateProviders = blocPayProvider.state.when(
+      initial: () => false,
+      load: () => false,
+      complited: (_, _) => true,
+    );
     return BlocBuilder<BalanceBloc, BalanceState>(
       bloc: context.read<BalanceBloc>()..add(BalanceEvent.started()),
       builder: (context, state) {
@@ -107,7 +115,6 @@ class BalanceWidgetInPage extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            spacing: 50,
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Column(
@@ -131,22 +138,95 @@ class BalanceWidgetInPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                spacing: 5,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'transactions_balance.Tuition_fees'.tr(),
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                  Text(
-                                    'transactions_balance.Payment_in_store'
-                                        .tr(),
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                              BlocBuilder<
+                                PaymentsProviderBloc,
+                                PaymentsProviderState
+                              >(
+                                bloc: stateProviders
+                                    ? null
+                                    : (blocPayProvider
+                                        ..add(PaymentsProviderEvent.started())),
+                                builder: (context, state) {
+                                  return switch (state) {
+                                    PaymentsProviderInitial() => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 5,
+                                          width: double.infinity,
+                                        ),
+                                        Md3CirculeIndicator(
+                                          center: false,
+                                          size: 40,
+                                          background: customColors?.primaryBg,
+                                        ),
+                                      ],
+                                    ),
+                                    PaymentsProviderLoad() => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: 5,
+                                          width: double.infinity,
+                                        ),
+                                        Md3CirculeIndicator(
+                                          center: false,
+                                          size: 40,
+                                          background: customColors?.primaryBg,
+                                        ),
+                                      ],
+                                    ),
+                                    PaymentsProviderComplited(
+                                      providers: final providers,
+                                    ) =>
+                                      providers.isEmpty
+                                          ? SizedBox()
+                                          : Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                SizedBox(
+                                                  height: 5,
+                                                  width: double.infinity,
+                                                ),
+                                                FilledButton.icon(
+                                                  style: FilledButton.styleFrom(
+                                                    backgroundColor:
+                                                        customColors?.primaryBg,
+                                                    iconColor: customColors
+                                                        ?.primaryTextColor,
+                                                    textStyle: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    openPaymentProviders(
+                                                      context,
+                                                    );
+                                                  },
+                                                  label: Text(
+                                                    'Пополнить баланс',
+                                                  ),
+                                                  icon: Icon(
+                                                    Icons.payment_rounded,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                  };
+                                },
                               ),
                             ],
                           ),

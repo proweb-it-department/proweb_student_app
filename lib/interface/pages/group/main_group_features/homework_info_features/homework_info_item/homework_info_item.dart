@@ -107,7 +107,7 @@ class TrailingWork extends StatelessWidget {
         ),
       );
     } else if (isExamination) {
-      return RotatingScoreIcon(group: group);
+      return RotatingScoreIcon(color: group.course?.color);
     } else {
       return ScoreIcon(
         score: 0,
@@ -147,8 +147,8 @@ class ScoreIcon extends StatelessWidget {
 }
 
 class RotatingScoreIcon extends StatefulWidget {
-  final GroupDetail group;
-  const RotatingScoreIcon({super.key, required this.group});
+  final String? color;
+  const RotatingScoreIcon({super.key, this.color});
 
   @override
   State<RotatingScoreIcon> createState() => _RotatingScoreIconState();
@@ -211,7 +211,7 @@ class _RotatingScoreIconState extends State<RotatingScoreIcon>
   }
 
   Widget _buildScoreIcon(int index) {
-    final groupColro = HexColor(widget.group.course?.color ?? '#ffffff');
+    final groupColro = HexColor(widget.color ?? '#ffffff');
     final brightness = ThemeData.estimateBrightnessForColor(groupColro);
     final colorText = brightness == Brightness.dark
         ? Colors.white

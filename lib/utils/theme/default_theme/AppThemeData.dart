@@ -42,6 +42,12 @@ class AppThemeData {
           ),
         ),
       ),
+      chipTheme: ChipThemeData(
+        surfaceTintColor: Colors.transparent,
+        backgroundColor: color.primaryBg,
+        selectedColor: color.containerColor,
+        shadowColor: Colors.transparent,
+      ),
       expansionTileTheme: ExpansionTileThemeData(
         iconColor: color.primaryTextColor,
         collapsedIconColor: color.primaryTextColor,

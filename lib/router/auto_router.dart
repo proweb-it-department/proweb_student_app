@@ -39,12 +39,14 @@ class AppRouter extends RootStackRouter {
               guards: [_AuthGuard()],
             ),
             AutoRoute(
-              path: 'balance',
-              page: HomeBalanceRoute.page,
+              path: 'homework',
+              page: HomeHomeworkRoute.page,
+              initial: false,
               guards: [_AuthGuard()],
             ),
           ],
         ),
+
         AutoRoute(
           path: 'coworking',
           page: CoworkingRoute.page,
@@ -97,6 +99,11 @@ class AppRouter extends RootStackRouter {
         //   guards: [_AuthGuard()],
         // ),
       ],
+    ),
+    AutoRoute(
+      path: '/balance',
+      page: HomeBalanceRoute.page,
+      guards: [_AuthGuard()],
     ),
     AutoRoute(
       path: '/shop/my-purchases',

@@ -14,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     return AutoTabsRouter.tabBar(
-      routes: [HomeMainRoute(), HomeBalanceRoute()],
+      routes: [HomeMainRoute(), HomeHomeworkRoute()],
       builder: (context, child, controller) {
         return TabBarPopScope(
           mainPage: HomeMainRoute(),
@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: (value) {},
                 tabs: [
                   Tab(text: 'home.tab_edu'.tr()),
-                  Tab(text: 'home.tab_balance'.tr()),
+                  Tab(text: 'Задания'),
                 ],
               ),
             ),

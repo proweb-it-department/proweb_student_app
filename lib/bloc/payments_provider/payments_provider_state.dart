@@ -6,5 +6,6 @@ sealed class PaymentsProviderState with _$PaymentsProviderState {
   const factory PaymentsProviderState.load() = PaymentsProviderLoad;
   const factory PaymentsProviderState.complited({
     required List<PaymentsProviderModel> providers,
+    TelegramConnectUrl? url,
   }) = PaymentsProviderComplited;
 }

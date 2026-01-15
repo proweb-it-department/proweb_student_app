@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -18,24 +19,34 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
-class HomeBalanceTab extends StatelessWidget {
-  const HomeBalanceTab({super.key});
+class HomeBalanceScreen extends StatelessWidget {
+  const HomeBalanceScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    return MediaQuery.removePadding(
-      removeBottom: true,
-      context: context,
-      child: Md3RefreshIndicator(
-        onRefresh: () async {
-          final balanceBloc = context.read<BalanceBloc>();
-          balanceBloc.add(BalanceEvent.update());
-          final transactionsBloc = context.read<TransactionsStudentBloc>();
-          transactionsBloc.add(TransactionsStudentEvent.started(offset: 0));
-          await balanceBloc.stream.first;
-          await transactionsBloc.stream.first;
-          await Future.delayed(Duration(seconds: 1, milliseconds: 500));
-        },
-        child: ListViewContent(),
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return AnnotatedRegion(
+      value: FlexColorScheme.themedSystemNavigationBar(
+        context,
+        systemNavBarStyle: FlexSystemNavBarStyle.transparent,
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Мой баланс'),
+          centerTitle: true,
+          surfaceTintColor: customColors?.additionalTwo,
+        ),
+        body: Md3RefreshIndicator(
+          onRefresh: () async {
+            final balanceBloc = context.read<BalanceBloc>();
+            balanceBloc.add(BalanceEvent.update());
+            final transactionsBloc = context.read<TransactionsStudentBloc>();
+            transactionsBloc.add(TransactionsStudentEvent.started(offset: 0));
+            await balanceBloc.stream.first;
+            await transactionsBloc.stream.first;
+            await Future.delayed(Duration(seconds: 1, milliseconds: 500));
+          },
+          child: ListViewContent(),
+        ),
       ),
     );
   }
