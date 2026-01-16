@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
-import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/home_homework/home_homework_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
@@ -90,6 +90,8 @@ class ListForGroup extends StatefulWidget {
 
 class _ListForGroupState extends State<ListForGroup> {
   final List<MyGroupsItem> groupsList = [];
+  final notifier = ScrollEndNotifier();
+  final ScrollController _scrollController = ScrollController();
   MyGroupsItem? groupSelect;
   @override
   void initState() {
@@ -99,13 +101,16 @@ class _ListForGroupState extends State<ListForGroup> {
       final student = {
         StudentStatus.active,
         StudentStatus.graduate,
+        StudentStatus.leave,
+        StudentStatus.transfer,
       }.contains(el.status);
       final group = {
         MyGroupStatus.started,
         MyGroupStatus.graduaded,
+        MyGroupStatus.disbanded,
       }.contains(el.group?.status);
 
-      if (true) {
+      if (student && group) {
         groupsListFiltered.add(el);
       }
     }
@@ -117,6 +122,18 @@ class _ListForGroupState extends State<ListForGroup> {
     setState(() {
       groupsList.addAll(groupsListFiltered);
     });
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMoreItems();
+    }
+  }
+
+  Future<void> _loadMoreItems() async {
+    notifier.notifyScrollEnd();
   }
 
   @override
@@ -130,139 +147,156 @@ class _ListForGroupState extends State<ListForGroup> {
       );
     }
 
-    return ListView(
-      children: [
-        SizedBox(height: 10),
-        Stack(
+    return Ink(
+      color: customColors?.containerColor,
+      child: ScrollEventInherited(
+        notifier: notifier,
+        child: ListView(
+          controller: _scrollController,
           children: [
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: 40,
-              child: Row(
-                spacing: 10,
+            Ink(color: customColors?.primaryBg, child: SizedBox(height: 10)),
+            Ink(
+              color: customColors?.primaryBg,
+              child: Stack(
                 children: [
-                  Expanded(
-                    child: ListView.separated(
-                      shrinkWrap: false,
-                      separatorBuilder: (context, index) => SizedBox(width: 7),
-                      padding: EdgeInsetsDirectional.symmetric(horizontal: 10),
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        final group = groupsList.elementAt(index);
-                        return Material(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () {
-                              setState(() {
-                                groupSelect = group;
-                              });
-                            },
-                            child: Ink(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: BoxBorder.all(
-                                  color:
-                                      customColors?.containerColor ??
-                                      Colors.transparent,
-                                ),
-                                color: groupSelect?.group?.id == group.group?.id
-                                    ? customColors?.containerColor
-                                    : null,
-                              ),
-                              child: Row(
-                                spacing: 7,
-                                children: [
-                                  CourseAvatar(
-                                    icon: group.group?.course?.icon ?? '',
-                                    color: HexColor(
-                                      group.group?.course?.color ?? '#fff',
-                                    ),
-                                    size: 20,
-                                    borderRadius: 5,
-                                    padding: 4,
-                                  ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        group.group?.course?.name ?? '',
-                                        style: TextStyle(fontSize: 10),
-                                      ),
-                                      Text(
-                                        '#${group.group?.id ?? '- - -'}',
-                                        style: TextStyle(fontSize: 12),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 40,
+                    child: Row(
+                      spacing: 10,
+                      children: [
+                        Expanded(
+                          child: ListView.separated(
+                            shrinkWrap: false,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 7),
+                            padding: EdgeInsetsDirectional.symmetric(
+                              horizontal: 10,
                             ),
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final group = groupsList.elementAt(index);
+                              return Material(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(10),
+                                  onTap: () {
+                                    setState(() {
+                                      groupSelect = group;
+                                    });
+                                  },
+                                  child: Ink(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: BoxBorder.all(
+                                        color:
+                                            customColors?.containerColor ??
+                                            Colors.transparent,
+                                      ),
+                                      color:
+                                          groupSelect?.group?.id ==
+                                              group.group?.id
+                                          ? customColors?.containerColor
+                                          : null,
+                                    ),
+                                    child: Row(
+                                      spacing: 7,
+                                      children: [
+                                        CourseAvatar(
+                                          icon: group.group?.course?.icon ?? '',
+                                          color: HexColor(
+                                            group.group?.course?.color ??
+                                                '#fff',
+                                          ),
+                                          size: 20,
+                                          borderRadius: 5,
+                                          padding: 4,
+                                        ),
+                                        Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              group.group?.course?.name ?? '',
+                                              style: TextStyle(fontSize: 10),
+                                            ),
+                                            Text(
+                                              '#${group.group?.id ?? '- - -'}',
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            itemCount: groupsList.length,
                           ),
-                        );
-                      },
-                      itemCount: groupsList.length,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: -1,
+                    left: 0,
+                    child: Container(
+                      width: 15,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: AlignmentGeometry.topLeft,
+                          end: AlignmentGeometry.topRight,
+                          colors: [
+                            customColors?.primaryBg ?? Colors.transparent,
+                            customColors?.primaryBg.withAlpha(0) ??
+                                Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: -1,
+                    right: 0,
+                    child: Container(
+                      width: 15,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: AlignmentGeometry.topRight,
+                          end: AlignmentGeometry.topLeft,
+                          colors: [
+                            customColors?.primaryBg ?? Colors.transparent,
+                            customColors?.primaryBg.withAlpha(0) ??
+                                Colors.transparent,
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-            Positioned(
-              top: -1,
-              left: 0,
-              child: Container(
-                width: 15,
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: AlignmentGeometry.topLeft,
-                    end: AlignmentGeometry.topRight,
-                    colors: [
-                      customColors?.primaryBg ?? Colors.transparent,
-                      customColors?.primaryBg.withAlpha(0) ??
-                          Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              top: -1,
-              right: 0,
-              child: Container(
-                width: 15,
-                height: 50,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: AlignmentGeometry.topRight,
-                    end: AlignmentGeometry.topLeft,
-                    colors: [
-                      customColors?.primaryBg ?? Colors.transparent,
-                      customColors?.primaryBg.withAlpha(0) ??
-                          Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
+            Ink(color: customColors?.primaryBg, child: SizedBox(height: 10)),
+            ViewCourseHomework(
+              group: groupSelect,
+              key: groupSelect?.group?.id != null
+                  ? ValueKey(groupSelect!.group!.id)
+                  : null,
             ),
           ],
         ),
-        SizedBox(height: 10),
-        ViewCourseHomework(
-          group: groupSelect,
-          key: groupSelect?.group?.id != null
-              ? ValueKey(groupSelect!.group!.id)
-              : null,
-        ),
-      ],
+      ),
     );
   }
 }
@@ -298,163 +332,165 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
     if (widget.group == null) {
       return NoData(text: 'Группа не выбрана', icon: Icons.group);
     }
-    return Container(
-      decoration: BoxDecoration(
-        color: customColors?.containerColor,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(22),
-          topRight: Radius.circular(22),
-          bottomLeft: Radius.circular(6),
-          bottomRight: Radius.circular(6),
+    return Ink(
+      color: customColors?.primaryBg,
+      child: Container(
+        decoration: BoxDecoration(
+          color: customColors?.containerColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(22),
+            topRight: Radius.circular(22),
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: 15),
-          Stack(
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 30,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  spacing: 10,
-                  children: [
-                    SizedBox(width: 10),
-                    CourseAvatar(
-                      icon: widget.group?.group?.course?.icon ?? '',
-                      color: HexColor(
-                        widget.group?.group?.course?.color ?? '#ffffff',
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(height: 15),
+            Stack(
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: 30,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 10,
+                    children: [
+                      SizedBox(width: 10),
+                      CourseAvatar(
+                        icon: widget.group?.group?.course?.icon ?? '',
+                        color: HexColor(
+                          widget.group?.group?.course?.color ?? '#ffffff',
+                        ),
+                        size: 30,
+                        borderRadius: 7,
                       ),
-                      size: 30,
-                      borderRadius: 7,
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        shrinkWrap: false,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: HomeworkType.values.length,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(width: 7),
-                        itemBuilder: (context, index) {
-                          final type = HomeworkType.values.elementAt(index);
-                          final shape = shapes.elementAt(index);
-                          return Material(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(20),
-                            child: InkWell(
+                      Expanded(
+                        child: ListView.separated(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          shrinkWrap: false,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: HomeworkType.values.length,
+                          separatorBuilder: (context, index) =>
+                              SizedBox(width: 7),
+                          itemBuilder: (context, index) {
+                            final type = HomeworkType.values.elementAt(index);
+                            final shape = shapes.elementAt(index);
+                            return Material(
+                              color: Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
-                              onTap: page == type
-                                  ? null
-                                  : () {
-                                      setState(() {
-                                        page = type;
-                                      });
-                                    },
-                              child: Ink(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(20),
+                                onTap: page == type
+                                    ? null
+                                    : () {
+                                        setState(() {
+                                          page = type;
+                                        });
+                                      },
+                                child: Ink(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
 
-                                  color: page == type
-                                      ? customColors?.primaryBg
-                                      : null,
-                                ),
-                                child: Row(
-                                  spacing: 10,
-                                  children: [
-                                    ClipPath(
-                                      clipper: SvgClipper(shape),
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      child: Container(
-                                        width: 15,
-                                        height: 15,
-                                        color: page == type
-                                            ? HexColor(
-                                                widget
-                                                        .group
-                                                        ?.group
-                                                        ?.course
-                                                        ?.color ??
-                                                    '#ffffff',
-                                              )
-                                            : customColors?.primaryBg,
+                                    color: page == type
+                                        ? customColors?.primaryBg
+                                        : null,
+                                  ),
+                                  child: Row(
+                                    spacing: 10,
+                                    children: [
+                                      ClipPath(
+                                        clipper: SvgClipper(shape),
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        child: Container(
+                                          width: 15,
+                                          height: 15,
+                                          color: page == type
+                                              ? HexColor(
+                                                  widget
+                                                          .group
+                                                          ?.group
+                                                          ?.course
+                                                          ?.color ??
+                                                      '#ffffff',
+                                                )
+                                              : customColors?.primaryBg,
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      type == HomeworkType.homework
-                                          ? 'Домашние задания'
-                                          : HomeworkType.material == type
-                                          ? 'Материалы'
-                                          : "Тестирование",
-                                    ),
-                                  ],
+                                      Text(
+                                        type == HomeworkType.homework
+                                            ? 'Домашние задания'
+                                            : HomeworkType.material == type
+                                            ? 'Материалы'
+                                            : "Тестирование",
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: -1,
+                  left: 30 + 10 + 20,
+                  child: Container(
+                    width: 20,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: AlignmentGeometry.topLeft,
+                        end: AlignmentGeometry.topRight,
+                        colors: [
+                          customColors?.containerColor ?? Colors.transparent,
+                          customColors?.containerColor.withAlpha(0) ??
+                              Colors.transparent,
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              Positioned(
-                top: -1,
-                left: 30 + 10 + 20,
-                child: Container(
-                  width: 20,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: AlignmentGeometry.topLeft,
-                      end: AlignmentGeometry.topRight,
-                      colors: [
-                        customColors?.containerColor ?? Colors.transparent,
-                        customColors?.containerColor.withAlpha(0) ??
-                            Colors.transparent,
-                      ],
+                Positioned(
+                  top: -1,
+                  right: 0,
+                  child: Container(
+                    width: 20,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: AlignmentGeometry.topRight,
+                        end: AlignmentGeometry.topLeft,
+                        colors: [
+                          customColors?.containerColor ?? Colors.transparent,
+                          customColors?.containerColor.withAlpha(0) ??
+                              Colors.transparent,
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: -1,
-                right: 0,
-                child: Container(
-                  width: 20,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: AlignmentGeometry.topRight,
-                      end: AlignmentGeometry.topLeft,
-                      colors: [
-                        customColors?.containerColor ?? Colors.transparent,
-                        customColors?.containerColor.withAlpha(0) ??
-                            Colors.transparent,
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 15),
-          if (widget.group != null && page == HomeworkType.homework)
-            HomeworkProvider(
-              group: widget.group!,
-              key: ValueKey(
-                '${page.name}_homework_${widget.group?.group?.id ?? 1}',
-              ),
+              ],
             ),
-        ],
+            SizedBox(height: 15),
+            if (widget.group != null && page == HomeworkType.homework)
+              HomeworkProvider(
+                group: widget.group!,
+                key: ValueKey(
+                  '${page.name}_homework_${widget.group?.group?.id ?? 1}',
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -501,7 +537,7 @@ class HomeworkViewData extends StatelessWidget {
   }
 }
 
-class ListHomeworks extends StatelessWidget {
+class ListHomeworks extends StatefulWidget {
   final MyGroupsItem group;
   final bool load;
   final DataHomeHomework data;
@@ -513,8 +549,58 @@ class ListHomeworks extends StatelessWidget {
   });
 
   @override
+  State<ListHomeworks> createState() => _ListHomeworksState();
+}
+
+class _ListHomeworksState extends State<ListHomeworks> {
+  late final ScrollEndNotifier notifier;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    notifier = ScrollEventInherited.of(context);
+    notifier.addListener(_onScrollEnd);
+  }
+
+  void _onScrollEnd() {
+    if (context.mounted && mounted) {
+      final data = context.read<HomeHomeworkBloc>();
+      final load = data.state.when(
+        initial: () => null,
+        complited: (_, load) => load,
+      );
+      final homeworks = data.state.when(
+        initial: () => null,
+        complited: (homeworks, load) => homeworks,
+      );
+      if (load == true) return;
+      if (homeworks == null) return;
+      final count = homeworks.count;
+      final length = homeworks.map.values.toList().fold(
+        0,
+        (value, element) => value + element.length,
+      );
+      if (length < count && (load == false || load == null)) {
+        data.add(
+          HomeHomeworkEvent.started(
+            groupId: widget.group.group!.id!,
+            limit: 50,
+            offset: length,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    notifier.removeListener(_onScrollEnd);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final List<String> month = data.map.keys.toList();
+    final List<String> month = widget.data.map.keys.toList();
     month.sort(
       (a, b) =>
           (DateTime.parse('$b-01').millisecondsSinceEpoch) -
@@ -525,9 +611,13 @@ class ListHomeworks extends StatelessWidget {
       spacing: 10,
       children: [
         for (final e in month)
-          ItemMonthHomework(month: e, data: data.map, group: group),
+          ItemMonthHomework(
+            month: e,
+            data: widget.data.map,
+            group: widget.group,
+          ),
 
-        if (load)
+        if (widget.load)
           Padding(
             padding: EdgeInsetsGeometry.only(bottom: 20),
             child: Md3CirculeIndicator(),
@@ -719,4 +809,29 @@ class TrailingWork extends StatelessWidget {
       );
     }
   }
+}
+
+class ScrollEndNotifier extends ChangeNotifier {
+  void notifyScrollEnd() {
+    notifyListeners();
+  }
+}
+
+class ScrollEventInherited extends InheritedWidget {
+  final ScrollEndNotifier notifier;
+
+  const ScrollEventInherited({
+    super.key,
+    required this.notifier,
+    required super.child,
+  });
+
+  static ScrollEndNotifier of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<ScrollEventInherited>()!
+        .notifier;
+  }
+
+  @override
+  bool updateShouldNotify(_) => false;
 }

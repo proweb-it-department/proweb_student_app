@@ -49,7 +49,6 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
@@ -1330,8 +1329,8 @@ class GetResponsesMain {
     final dataList = [...data.list];
     dataList.sort(
       (a, b) =>
-          (DateTime.parse(b.createdAt ?? '12.01.2026').millisecondsSinceEpoch) -
-          (DateTime.parse(a.createdAt ?? '12.01.2026')).millisecondsSinceEpoch,
+          (DateTime.parse(b.createdAt ?? '2026-01-01').millisecondsSinceEpoch) -
+          (DateTime.parse(a.createdAt ?? '2026-01-01')).millisecondsSinceEpoch,
     );
     final map = MapHomework();
     for (var element in dataList) {
