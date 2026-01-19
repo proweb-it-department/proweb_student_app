@@ -9,7 +9,6 @@ import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
-import 'package:proweb_student_app/interface/components/app_bar/balance_widget.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';

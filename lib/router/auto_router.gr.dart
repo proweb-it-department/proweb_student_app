@@ -2532,12 +2532,15 @@ class TestingCommentRouteArgs {
 /// generated route for
 /// [_i60.TestingGroupScreen]
 class TestingGroupRoute extends _i65.PageRouteInfo<TestingGroupRouteArgs> {
-  TestingGroupRoute({_i66.Key? key, List<_i65.PageRouteInfo>? children})
-    : super(
-        TestingGroupRoute.name,
-        args: TestingGroupRouteArgs(key: key),
-        initialChildren: children,
-      );
+  TestingGroupRoute({
+    _i66.Key? key,
+    _i69.GroupDetailBloc? bloc,
+    List<_i65.PageRouteInfo>? children,
+  }) : super(
+         TestingGroupRoute.name,
+         args: TestingGroupRouteArgs(key: key, bloc: bloc),
+         initialChildren: children,
+       );
 
   static const String name = 'TestingGroupRoute';
 
@@ -2552,30 +2555,33 @@ class TestingGroupRoute extends _i65.PageRouteInfo<TestingGroupRouteArgs> {
         key: args.key,
         relationId: pathParams.getInt('relationId'),
         groupId: pathParams.getInt('id'),
+        bloc: args.bloc,
       );
     },
   );
 }
 
 class TestingGroupRouteArgs {
-  const TestingGroupRouteArgs({this.key});
+  const TestingGroupRouteArgs({this.key, this.bloc});
 
   final _i66.Key? key;
 
+  final _i69.GroupDetailBloc? bloc;
+
   @override
   String toString() {
-    return 'TestingGroupRouteArgs{key: $key}';
+    return 'TestingGroupRouteArgs{key: $key, bloc: $bloc}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! TestingGroupRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && bloc == other.bloc;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ bloc.hashCode;
 }
 
 /// generated route for

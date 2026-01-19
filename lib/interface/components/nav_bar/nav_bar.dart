@@ -47,11 +47,12 @@ class BottomNavBar extends StatelessWidget {
               colors: [
                 customTheme?.primaryBg.withAlpha(navBar.isOpen ? 100 : 0) ??
                     Colors.transparent,
-                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 200 : 100) ??
+                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 150 : 100) ??
                     Colors.transparent,
-                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 200 : 200) ??
+                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 150 : 200) ??
                     Colors.transparent,
-                customTheme?.primaryBg ?? Colors.transparent,
+                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 150 : 255) ??
+                    Colors.transparent,
               ],
             ),
           ),

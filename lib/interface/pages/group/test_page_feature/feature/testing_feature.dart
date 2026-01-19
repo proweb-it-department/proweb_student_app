@@ -4,15 +4,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:lottie/lottie.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/test_relation/test_relation_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
+import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_item/homework_info_item.dart';
 import 'package:proweb_student_app/models/test_student_relation/test_student_relation.dart';
+import 'package:proweb_student_app/utils/color_helper/color_helper.dart';
+import 'package:proweb_student_app/utils/color_helper/shade_colors.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/player_widget/video_controlls.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -21,41 +25,77 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 class TestingGroupScreen extends StatelessWidget {
   final int relationId;
   final int groupId;
+  final GroupDetailBloc? bloc;
   const TestingGroupScreen({
     super.key,
     @PathParam.inherit('relationId') required this.relationId,
     @PathParam.inherit('id') required this.groupId,
+    this.bloc,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TestRelationBloc, TestRelationState>(
+    return BlocProvider(
+      create: (context) => bloc ?? GroupDetailBloc()
+        ..add(GroupDetailEvent.started(groupId: groupId)),
+      child: GroupTestingLoad(relationId: relationId, groupId: groupId),
+    );
+  }
+}
+
+class GroupTestingLoad extends StatelessWidget {
+  final int relationId;
+  final int groupId;
+  const GroupTestingLoad({
+    super.key,
+    required this.relationId,
+    required this.groupId,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<GroupDetailBloc, GroupDetailState>(
       builder: (context, state) {
         return state.when(
-          initial: () {
-            return Center(child: Md3CirculeIndicator());
+          initial: () => Center(child: Md3CirculeIndicator()),
+          loadGroupDetail: () => Center(child: Md3CirculeIndicator()),
+          errorGroupDetail: () {
+            return Center(child: ErrorLoad());
           },
-          load: () {
-            return Center(child: Md3CirculeIndicator());
-          },
-          error: () {
-            return Center(
-              child: ErrorLoad(
-                action: FilledButton(
-                  onPressed: () {
-                    final bloc = context.read<TestRelationBloc>();
-                    bloc.add(TestRelationEvent.started(relationId: relationId));
+          complited: (group, groupUser) {
+            return BlocBuilder<TestRelationBloc, TestRelationState>(
+              builder: (context, state) {
+                return state.when(
+                  initial: () {
+                    return Center(child: Md3CirculeIndicator());
                   },
-                  child: Text('global_data.try_again'.tr()),
-                ),
-              ),
-            );
-          },
-          complite: (relation, comments, isLoadComment, isLoadAnswers) {
-            return TestingFeature(
-              relation: relation,
-              isLoadAnswers: isLoadAnswers,
-              relationId: relationId,
+                  load: () {
+                    return Center(child: Md3CirculeIndicator());
+                  },
+                  error: () {
+                    return Center(
+                      child: ErrorLoad(
+                        action: FilledButton(
+                          onPressed: () {
+                            final bloc = context.read<TestRelationBloc>();
+                            bloc.add(
+                              TestRelationEvent.started(relationId: relationId),
+                            );
+                          },
+                          child: Text('global_data.try_again'.tr()),
+                        ),
+                      ),
+                    );
+                  },
+                  complite: (relation, comments, isLoadComment, isLoadAnswers) {
+                    return TestingFeature(
+                      relation: relation,
+                      isLoadAnswers: isLoadAnswers,
+                      relationId: relationId,
+                    );
+                  },
+                );
+              },
             );
           },
         );
@@ -84,6 +124,20 @@ class TestingFeature extends StatelessWidget {
     final score = double.parse(relation.totalScore ?? '0.00').round();
     final solved = jsonAnswer != null && score > 0;
     int scoreStudent = (score / 20).ceil();
+    ShadeColors? shadeColor;
+    final groupBloc = context.read<GroupDetailBloc>();
+    final color = groupBloc.state.whenOrNull(
+      complited: (group, groupUser) => group.course?.color,
+    );
+    ColorCreater? theme;
+    if (color != null) {
+      shadeColor = ShadeColors(color)..generate();
+      theme = shadeColor.theme(
+        context,
+        light: ShadeNumber.shade100,
+        dark: ShadeNumber.shade1100,
+      );
+    }
     return ListView(
       padding: EdgeInsets.only(bottom: bottomPadding + 10, top: 10),
       children: [
@@ -169,35 +223,72 @@ class TestingFeature extends StatelessWidget {
                 ),
               if (solved) SizedBox(height: 15),
               if (solved)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  spacing: 10,
-                  children: [
-                    if (scoreStudent <= 3)
-                      Lottie.asset(
-                        'assets/lottie/Angry.json',
-                        width: 30,
-                        height: 30,
-                      )
-                    else if (scoreStudent == 4)
-                      Lottie.asset(
-                        'assets/lottie/Slightly-frowning.json',
-                        width: 30,
-                        height: 30,
-                      )
-                    else
-                      Lottie.asset(
-                        'assets/lottie/Slightly-happy.json',
-                        width: 30,
-                        height: 30,
+                Center(
+                  child: IntrinsicWidth(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 15,
+                        vertical: 10,
                       ),
-                    Text(
-                      'group_homework.scrore_relation'.tr(
-                        namedArgs: {'score': scoreStudent.toString()},
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                          color:
+                              customColors?.borderColors ?? Colors.transparent,
+                        ),
+                        color: HexColor(theme?.hexString() ?? '#ffffff'),
+                      ),
+                      child: Row(
+                        spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(5, (index) {
+                          return Opacity(
+                            opacity: scoreStudent <= index ? 0.2 : 1,
+                            child: ScoreIcon(
+                              key: ValueKey('key_int_score_${index + 1}'),
+                              score: index + 1,
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                color: HexColor(color ?? '#ffffff'),
+                                child: Center(child: Text('${index + 1}')),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
                     ),
-                  ],
+                  ),
                 ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   spacing: 10,
+              //   children: [
+              //     if (scoreStudent <= 3)
+              //       Lottie.asset(
+              //         'assets/lottie/Angry.json',
+              //         width: 30,
+              //         height: 30,
+              //       )
+              //     else if (scoreStudent == 4)
+              //       Lottie.asset(
+              //         'assets/lottie/Slightly-frowning.json',
+              //         width: 30,
+              //         height: 30,
+              //       )
+              //     else
+              //       Lottie.asset(
+              //         'assets/lottie/Slightly-happy.json',
+              //         width: 30,
+              //         height: 30,
+              //       ),
+              //     Text(
+              //       'group_homework.scrore_relation'.tr(
+              //         namedArgs: {'score': scoreStudent.toString()},
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -481,275 +572,316 @@ class _QuestionsState extends State<Questions> {
                                 }
                               }
 
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  if (index > 0) Divider(height: 1),
-                                  if (image != null)
-                                    CachedNetworkImage(
-                                      imageUrl: image,
-                                      width: double.infinity,
-                                    ),
-                                  if (video != null)
-                                    VideoPlayerTesting(path: video),
-                                  if (question.multiselect == false && !myAns)
-                                    RadioListTile(
-                                      contentPadding: EdgeInsets.only(
-                                        right: 10,
-                                      ),
-                                      groupValue: answer,
-                                      onChanged: (value) {
+                              return RadioGroup(
+                                groupValue:
+                                    question.multiselect == false && !myAns
+                                    ? answer
+                                    : correct == true
+                                    ? (item?.id ?? 0)
+                                    : answer,
+                                onChanged:
+                                    question.multiselect == false && !myAns
+                                    ? (value) {
                                         answers[question.id ?? 0] = value;
                                         setState(() {
                                           answers = answers;
                                           _hasValidate();
                                         });
-                                      },
-                                      value: item?.id ?? 0,
-                                      title: title,
-                                    )
-                                  else if (question.multiselect == false &&
-                                      myAns)
-                                    Material(
-                                      color:
-                                          (correct == true &&
-                                                      answer == (item?.id ?? 0)
-                                                  ? customColors?.successFillOp
-                                                  : correct == false &&
-                                                        answer ==
-                                                            (item?.id ?? 0)
-                                                  ? customColors?.errorFillOp
-                                                  : correct == true &&
-                                                        answer !=
-                                                            (item?.id ?? 0)
-                                                  ? customColors?.warningFillOp
-                                                  : customColors?.primaryBg)
-                                              ?.withAlpha(10),
-                                      child: RadioListTile(
+                                      }
+                                    : (_) {},
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (index > 0) Divider(height: 1),
+                                    if (image != null)
+                                      CachedNetworkImage(
+                                        imageUrl: image,
+                                        width: double.infinity,
+                                      ),
+                                    if (video != null)
+                                      VideoPlayerTesting(path: video),
+                                    if (question.multiselect == false && !myAns)
+                                      RadioListTile(
                                         contentPadding: EdgeInsets.only(
                                           right: 10,
                                         ),
-                                        groupValue: correct == true
-                                            ? (item?.id ?? 0)
-                                            : answer,
-                                        onChanged: null,
+
                                         value: item?.id ?? 0,
                                         title: title,
-                                        subtitle:
-                                            correct == true &&
-                                                answer == (item?.id ?? 0)
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: customColors
-                                                      ?.successFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_correct'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
-                                                  ),
-                                                ),
-                                              )
-                                            : correct == false &&
+                                      )
+                                    else if (question.multiselect == false &&
+                                        myAns)
+                                      Material(
+                                        color:
+                                            (correct == true &&
+                                                        answer ==
+                                                            (item?.id ?? 0)
+                                                    ? customColors
+                                                          ?.successFillOp
+                                                    : correct == false &&
+                                                          answer ==
+                                                              (item?.id ?? 0)
+                                                    ? customColors?.errorFillOp
+                                                    : correct == true &&
+                                                          answer !=
+                                                              (item?.id ?? 0)
+                                                    ? customColors
+                                                          ?.warningFillOp
+                                                    : customColors?.primaryBg)
+                                                ?.withAlpha(10),
+                                        child: RadioListTile(
+                                          contentPadding: EdgeInsets.only(
+                                            right: 10,
+                                          ),
+                                          enabled: false,
+                                          value: item?.id ?? 0,
+                                          title: title,
+                                          subtitle:
+                                              correct == true &&
                                                   answer == (item?.id ?? 0)
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      customColors?.errorFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_error'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
                                                   ),
-                                                ),
-                                              )
-                                            : correct == true &&
-                                                  answer != (item?.id ?? 0)
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: customColors
-                                                      ?.successFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_warn'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
                                                   ),
-                                                ),
-                                              )
-                                            : null,
-                                      ),
-                                    )
-                                  else if (question.multiselect == true &&
-                                      !myAns)
-                                    CheckboxListTile(
-                                      contentPadding: EdgeInsets.only(
-                                        right: 10,
-                                      ),
-                                      controlAffinity:
-                                          ListTileControlAffinity.leading,
-                                      onChanged: myAnswer != null
-                                          ? null
-                                          : (value) {
-                                              answersCheckbox[question.id ??
-                                                      0]![item?.id ?? 0] =
-                                                  value ?? false;
-                                              setState(() {
-                                                answersCheckbox =
-                                                    answersCheckbox;
-                                                _hasValidate();
-                                              });
-                                            },
-                                      value:
-                                          answersCheckbox[question.id ??
-                                              0]![item?.id],
-                                      title: title,
-                                    )
-                                  else if (question.multiselect == true &&
-                                      myAns)
-                                    Material(
-                                      color:
-                                          (correct == true &&
-                                                      answersCheckbox[question
-                                                                  .id ??
-                                                              0]![item?.id] ==
-                                                          true
-                                                  ? customColors?.successFillOp
-                                                  : correct == false &&
-                                                        answersCheckbox[question
-                                                                    .id ??
-                                                                0]![item?.id] ==
-                                                            true
-                                                  ? customColors?.errorFillOp
-                                                  : correct == true &&
-                                                        answersCheckbox[question
-                                                                    .id ??
-                                                                0]![item?.id] ==
-                                                            false
-                                                  ? customColors?.warningFillOp
-                                                  : customColors?.primaryBg)
-                                              ?.withAlpha(10),
-                                      child: CheckboxListTile(
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.successFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_correct'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : correct == false &&
+                                                    answer == (item?.id ?? 0)
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.errorFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_error'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : correct == true &&
+                                                    answer != (item?.id ?? 0)
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.successFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_warn'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : null,
+                                        ),
+                                      )
+                                    else if (question.multiselect == true &&
+                                        !myAns)
+                                      CheckboxListTile(
                                         contentPadding: EdgeInsets.only(
                                           right: 10,
                                         ),
                                         controlAffinity:
                                             ListTileControlAffinity.leading,
-                                        onChanged: null,
+                                        onChanged: myAnswer != null
+                                            ? null
+                                            : (value) {
+                                                answersCheckbox[question.id ??
+                                                        0]![item?.id ?? 0] =
+                                                    value ?? false;
+                                                setState(() {
+                                                  answersCheckbox =
+                                                      answersCheckbox;
+                                                  _hasValidate();
+                                                });
+                                              },
                                         value:
                                             answersCheckbox[question.id ??
                                                 0]![item?.id],
                                         title: title,
-                                        subtitle:
-                                            correct == true &&
-                                                answersCheckbox[question.id ??
-                                                        0]![item?.id] ==
-                                                    true
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: customColors
-                                                      ?.successFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_correct'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
-                                                  ),
-                                                ),
-                                              )
-                                            : correct == false &&
+                                      )
+                                    else if (question.multiselect == true &&
+                                        myAns)
+                                      Material(
+                                        color:
+                                            (correct == true &&
+                                                        answersCheckbox[question
+                                                                    .id ??
+                                                                0]![item?.id] ==
+                                                            true
+                                                    ? customColors
+                                                          ?.successFillOp
+                                                    : correct == false &&
+                                                          answersCheckbox[question
+                                                                      .id ??
+                                                                  0]![item
+                                                                  ?.id] ==
+                                                              true
+                                                    ? customColors?.errorFillOp
+                                                    : correct == true &&
+                                                          answersCheckbox[question
+                                                                      .id ??
+                                                                  0]![item
+                                                                  ?.id] ==
+                                                              false
+                                                    ? customColors
+                                                          ?.warningFillOp
+                                                    : customColors?.primaryBg)
+                                                ?.withAlpha(10),
+                                        child: CheckboxListTile(
+                                          contentPadding: EdgeInsets.only(
+                                            right: 10,
+                                          ),
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          onChanged: null,
+                                          value:
+                                              answersCheckbox[question.id ??
+                                                  0]![item?.id],
+                                          title: title,
+                                          subtitle:
+                                              correct == true &&
                                                   answersCheckbox[question.id ??
                                                           0]![item?.id] ==
                                                       true
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      customColors?.errorFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_error'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
                                                   ),
-                                                ),
-                                              )
-                                            : correct == true &&
-                                                  answersCheckbox[question.id ??
-                                                          0]![item?.id] ==
-                                                      false
-                                            ? Container(
-                                                margin: EdgeInsets.only(top: 5),
-                                                padding: EdgeInsets.symmetric(
-                                                  vertical: 6,
-                                                  horizontal: 10,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  color: customColors
-                                                      ?.warningFillOp,
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Text(
-                                                  'global_data.test_answer_warn'
-                                                      .tr(),
-                                                  style: TextStyle(
-                                                    color: customColors
-                                                        ?.primaryTextColor,
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
                                                   ),
-                                                ),
-                                              )
-                                            : null,
-                                      ),
-                                    )
-                                  else
-                                    SizedBox(),
-                                ],
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.successFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_correct'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : correct == false &&
+                                                    answersCheckbox[question
+                                                                .id ??
+                                                            0]![item?.id] ==
+                                                        true
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.errorFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_error'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : correct == true &&
+                                                    answersCheckbox[question
+                                                                .id ??
+                                                            0]![item?.id] ==
+                                                        false
+                                              ? Container(
+                                                  margin: EdgeInsets.only(
+                                                    top: 5,
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 10,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    color: customColors
+                                                        ?.warningFillOp,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          10,
+                                                        ),
+                                                  ),
+                                                  child: Text(
+                                                    'global_data.test_answer_warn'
+                                                        .tr(),
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
+                                                  ),
+                                                )
+                                              : null,
+                                        ),
+                                      )
+                                    else
+                                      SizedBox(),
+                                  ],
+                                ),
                               );
                             }),
                             if (question.multiselect == true &&
@@ -817,7 +949,7 @@ class _QuestionsState extends State<Questions> {
     );
   }
 
-  _sendAnswer(BuildContext context) async {
+  Future<void> _sendAnswer(BuildContext context) async {
     if (!isSended) {
       final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
       await showModalBottomSheet(
@@ -934,7 +1066,7 @@ class _QuestionsState extends State<Questions> {
       final bloc = context.read<TestRelationBloc>();
       bloc.add(
         TestRelationEvent.sendAnswer(
-          totlaScore: (totlaScore / totlaTestionScore * 100),
+          totlaScore: (totlaScore / totlaTestionScore * 100).round().toDouble(),
           answers: answerStudent,
           relationId: widget.relationId,
         ),

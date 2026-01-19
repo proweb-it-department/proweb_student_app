@@ -19,6 +19,7 @@ import 'package:proweb_student_app/models/holiday/holiday.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
 import 'package:proweb_student_app/models/homework_list_group/homework_list_group.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
+import 'package:proweb_student_app/models/material_homepage_group/material_homepage_group.dart';
 import 'package:proweb_student_app/models/material_list_group/material_list_group.dart';
 import 'package:proweb_student_app/models/material_module_item/material_module_item.dart';
 import 'package:proweb_student_app/models/material_student_relation/material_student_relation.dart';
@@ -52,6 +53,10 @@ import 'package:proweb_student_app/utils/user_list/user_list.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
+typedef MapMaterial = TsMap<String, List<MaterialHomepageGroup>>;
+typedef DataHomeMaterial = ResponseLazeMap<MapMaterial>;
+typedef MapTesting = TsMap<String, List<TestListGroup>>;
+typedef DataHomeTesting = ResponseLazeMap<MapTesting>;
 
 class GetResponsesMain {
   Future<List<StoryGroupsForStudent>?> story({
@@ -1346,5 +1351,89 @@ class GetResponsesMain {
     }
 
     return DataHomeHomework(count: data.count, map: map);
+  }
+
+  Future<DataHomeMaterial?> materialGgroups(
+    int groupId,
+    int offset,
+    int limit,
+  ) async {
+    String path =
+        '/api/v1/learning-process/students/materials/?group_id=$groupId&offset=$offset&limit=$limit';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MaterialHomepageGroup>? data = response.fold((l) => null, (
+      r,
+    ) {
+      final response = ApiResponse<MaterialHomepageGroup>.fromJson(
+        r,
+        (data) => MaterialHomepageGroup.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) =>
+            ResponseLazeList<MaterialHomepageGroup>(count: count, list: list),
+      );
+    });
+    if (data == null) return null;
+    final dataList = [...data.list];
+    dataList.sort(
+      (a, b) =>
+          (DateTime.parse(b.createdAt ?? '2026-01-01').millisecondsSinceEpoch) -
+          (DateTime.parse(a.createdAt ?? '2026-01-01')).millisecondsSinceEpoch,
+    );
+    final map = MapMaterial();
+    for (var element in dataList) {
+      final date = element.createdAt;
+      if (date == null) continue;
+      final dateCreate = sl<LocalData>().getDateString(
+        date: DateTime.parse(date),
+        seporator: DateSeporator.dashMY,
+      );
+      final data = map.getOrSet(dateCreate, () => []);
+      data.add(element);
+      map.set(dateCreate, data);
+    }
+
+    return DataHomeMaterial(count: data.count, map: map);
+  }
+
+  Future<DataHomeTesting?> testGgroups(
+    int groupId,
+    int offset,
+    int limit,
+  ) async {
+    String path =
+        '/api/v1/learning-process/students/testings/?group_id=$groupId&offset=$offset&limit=$limit';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<TestListGroup>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<TestListGroup>.fromJson(
+        r,
+        (data) => TestListGroup.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) =>
+            ResponseLazeList<TestListGroup>(count: count, list: list),
+      );
+    });
+    if (data == null) return null;
+    final dataList = [...data.list];
+    dataList.sort(
+      (a, b) =>
+          (DateTime.parse(b.createdAt ?? '2026-01-01').millisecondsSinceEpoch) -
+          (DateTime.parse(a.createdAt ?? '2026-01-01')).millisecondsSinceEpoch,
+    );
+    final map = MapTesting();
+    for (var element in dataList) {
+      final date = element.createdAt;
+      if (date == null) continue;
+      final dateCreate = sl<LocalData>().getDateString(
+        date: DateTime.parse(date),
+        seporator: DateSeporator.dashMY,
+      );
+      final data = map.getOrSet(dateCreate, () => []);
+      data.add(element);
+      map.set(dateCreate, data);
+    }
+
+    return DataHomeTesting(count: data.count, map: map);
   }
 }

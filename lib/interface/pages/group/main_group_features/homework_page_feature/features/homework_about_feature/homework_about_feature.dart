@@ -7,7 +7,6 @@ import 'package:proweb_student_app/bloc/homework_relation/homework_relation_bloc
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/homework_about_content.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class HomeworkAboutScreen extends StatelessWidget {
@@ -23,7 +22,6 @@ class HomeworkAboutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TalkerLogger().warning(bloc);
     return BlocProvider(
       create: (context) => bloc ?? GroupDetailBloc()
         ..add(GroupDetailEvent.started(groupId: groupId)),
