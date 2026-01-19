@@ -13,24 +13,27 @@ class AppScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => ScrollStateProvider()),
-        ChangeNotifierProvider(create: (context) => FabProvider()),
-      ],
-      child: AutoTabsRouter(
-        routes: const [
-          HomeRoute(),
-          CoworkingRoute(),
-          FeedbackRoute(),
-          RankingRoute(),
-          ShopRoute(),
-          // ProwebRoute(),
+    return ChangeNotifierProvider(
+      create: (_) => NavBarProvider(),
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => ScrollStateProvider()),
+          ChangeNotifierProvider(create: (context) => FabProvider()),
         ],
-        transitionBuilder: (context, child, animation) => child,
-        builder: (context, child) {
-          return BodyPopScope(child: child);
-        },
+        child: AutoTabsRouter(
+          routes: const [
+            HomeRoute(),
+            CoworkingRoute(),
+            FeedbackRoute(),
+            RankingRoute(),
+            ShopRoute(),
+            // ProwebRoute(),
+          ],
+          transitionBuilder: (context, child, animation) => child,
+          builder: (context, child) {
+            return BodyPopScope(child: child);
+          },
+        ),
       ),
     );
   }
@@ -53,15 +56,23 @@ class BodyPopScope extends StatelessWidget {
         provider.showNavigationBar();
       }
     });
+    final navBar = context.watch<NavBarProvider>();
+
     return AnnotatedRegion(
       value: FlexColorScheme.themedSystemNavigationBar(
         context,
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: PopScope(
-        canPop: tabsRouter.current.name == HomeRoute.name,
+        canPop: navBar.isOpen == false
+            ? tabsRouter.current.name == HomeRoute.name
+            : false,
         onPopInvokedWithResult: (didPop, result) {
           if (!didPop) {
+            if (navBar.isOpen) {
+              context.read<NavBarProvider>().close();
+              return;
+            }
             context.router.replaceAll([HomeRoute()]);
             if (tabsRouter.current.name == HomeRoute.name) {
               Fluttertoast.showToast(msg: "home.try_again_main_msg".tr());
@@ -74,7 +85,9 @@ class BodyPopScope extends StatelessWidget {
         child: Scaffold(
           body: BodyApp(child: child),
           bottomNavigationBar: BottomNavBar(),
-          floatingActionButton: fabCoworking ?? fabFeedback,
+          floatingActionButton: navBar.isOpen
+              ? null
+              : fabCoworking ?? fabFeedback,
           floatingActionButtonLocation: MenuAwareFabLocation(isVisible, pb),
           floatingActionButtonAnimator: SlideFabAnimator(),
           extendBody: true,

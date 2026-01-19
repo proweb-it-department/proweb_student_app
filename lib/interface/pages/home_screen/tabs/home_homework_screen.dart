@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
@@ -22,7 +21,6 @@ import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class HomeHomeworkScreen extends StatelessWidget {
@@ -334,7 +332,7 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
     }
     return Ink(
       color: customColors?.primaryBg,
-      child: Container(
+      child: Ink(
         decoration: BoxDecoration(
           color: customColors?.containerColor,
           borderRadius: BorderRadius.only(
@@ -347,98 +345,121 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(height: 15),
             Stack(
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
-                  height: 30,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 10,
-                    children: [
-                      SizedBox(width: 10),
-                      CourseAvatar(
-                        icon: widget.group?.group?.course?.icon ?? '',
-                        color: HexColor(
-                          widget.group?.group?.course?.color ?? '#ffffff',
-                        ),
-                        size: 30,
-                        borderRadius: 7,
+                  height: 50,
+                  child: Ink(
+                    color: customColors?.primaryBg,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(22),
+                        topRight: Radius.circular(22),
                       ),
-                      Expanded(
-                        child: ListView.separated(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
-                          shrinkWrap: false,
-                          scrollDirection: Axis.horizontal,
-                          itemCount: HomeworkType.values.length,
-                          separatorBuilder: (context, index) =>
-                              SizedBox(width: 7),
-                          itemBuilder: (context, index) {
-                            final type = HomeworkType.values.elementAt(index);
-                            final shape = shapes.elementAt(index);
-                            return Material(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.circular(20),
-                              child: InkWell(
-                                borderRadius: BorderRadius.circular(20),
-                                onTap: page == type
-                                    ? null
-                                    : () {
-                                        setState(() {
-                                          page = type;
-                                        });
-                                      },
-                                child: Ink(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
+                      child: Ink(
+                        padding: EdgeInsets.only(top: 15),
+                        decoration: BoxDecoration(
+                          color: customColors?.containerColor,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(22),
+                            topRight: Radius.circular(22),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: 10,
+                          children: [
+                            SizedBox(width: 10),
+                            CourseAvatar(
+                              icon: widget.group?.group?.course?.icon ?? '',
+                              color: HexColor(
+                                widget.group?.group?.course?.color ?? '#ffffff',
+                              ),
+                              size: 30,
+                              borderRadius: 7,
+                            ),
+                            Expanded(
+                              child: ListView.separated(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                shrinkWrap: false,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: HomeworkType.values.length,
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 7),
+                                itemBuilder: (context, index) {
+                                  final type = HomeworkType.values.elementAt(
+                                    index,
+                                  );
+                                  final shape = shapes.elementAt(index);
+                                  return Material(
+                                    color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(20),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: page == type
+                                          ? null
+                                          : () {
+                                              setState(() {
+                                                page = type;
+                                              });
+                                            },
+                                      child: Ink(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 12,
+                                          vertical: 4,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
 
-                                    color: page == type
-                                        ? customColors?.primaryBg
-                                        : null,
-                                  ),
-                                  child: Row(
-                                    spacing: 10,
-                                    children: [
-                                      ClipPath(
-                                        clipper: SvgClipper(shape),
-                                        clipBehavior:
-                                            Clip.antiAliasWithSaveLayer,
-                                        child: Container(
-                                          width: 15,
-                                          height: 15,
                                           color: page == type
-                                              ? HexColor(
-                                                  widget
-                                                          .group
-                                                          ?.group
-                                                          ?.course
-                                                          ?.color ??
-                                                      '#ffffff',
-                                                )
-                                              : customColors?.primaryBg,
+                                              ? customColors?.primaryBg
+                                              : null,
+                                        ),
+                                        child: Row(
+                                          spacing: 10,
+                                          children: [
+                                            ClipPath(
+                                              clipper: SvgClipper(shape),
+                                              clipBehavior:
+                                                  Clip.antiAliasWithSaveLayer,
+                                              child: Container(
+                                                width: 15,
+                                                height: 15,
+                                                color: page == type
+                                                    ? HexColor(
+                                                        widget
+                                                                .group
+                                                                ?.group
+                                                                ?.course
+                                                                ?.color ??
+                                                            '#ffffff',
+                                                      )
+                                                    : customColors?.primaryBg,
+                                              ),
+                                            ),
+                                            Text(
+                                              type == HomeworkType.homework
+                                                  ? 'Домашние задания'
+                                                  : HomeworkType.material ==
+                                                        type
+                                                  ? 'Материалы'
+                                                  : "Тестирование",
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      Text(
-                                        type == HomeworkType.homework
-                                            ? 'Домашние задания'
-                                            : HomeworkType.material == type
-                                            ? 'Материалы'
-                                            : "Тестирование",
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
                 Positioned(
@@ -461,20 +482,25 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
                   ),
                 ),
                 Positioned(
-                  top: -1,
+                  top: 15,
                   right: 0,
-                  child: Container(
-                    width: 20,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: AlignmentGeometry.topRight,
-                        end: AlignmentGeometry.topLeft,
-                        colors: [
-                          customColors?.containerColor ?? Colors.transparent,
-                          customColors?.containerColor.withAlpha(0) ??
-                              Colors.transparent,
-                        ],
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.only(
+                      topRight: Radius.circular(2),
+                    ),
+                    child: Container(
+                      width: 20,
+                      height: 35,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: AlignmentGeometry.topRight,
+                          end: AlignmentGeometry.topLeft,
+                          colors: [
+                            customColors?.containerColor ?? Colors.transparent,
+                            customColors?.containerColor.withAlpha(0) ??
+                                Colors.transparent,
+                          ],
+                        ),
                       ),
                     ),
                   ),
