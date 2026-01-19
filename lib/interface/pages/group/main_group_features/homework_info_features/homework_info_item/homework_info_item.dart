@@ -132,7 +132,7 @@ class ScoreIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     PathSvgShape clipper = PathSvgShape.sunny;
     if (score == 1) {
-      clipper = PathSvgShape.arch;
+      clipper = PathSvgShape.ghostIsh;
     } else if (score == 2) {
       clipper = PathSvgShape.bun;
     } else if (score == 3) {
@@ -140,9 +140,18 @@ class ScoreIcon extends StatelessWidget {
     } else if (score == 4) {
       clipper = PathSvgShape.ghostIsh;
     } else if (score == 0) {
-      clipper = PathSvgShape.pill;
+      clipper = PathSvgShape.arch;
     }
-    return ClipPath(clipper: SvgClipper(clipper), child: child);
+    return RotatedBox(
+      quarterTurns: clipper == PathSvgShape.arch ? 1 : 0,
+      child: ClipPath(
+        clipper: SvgClipper(clipper),
+        child: RotatedBox(
+          quarterTurns: clipper == PathSvgShape.arch ? -1 : 0,
+          child: child,
+        ),
+      ),
+    );
   }
 }
 
