@@ -115,16 +115,19 @@ class ProfileBody extends StatelessWidget {
                                   context.router.navigate(ProfileEditedRoute());
                                 },
                                 style: OutlinedButton.styleFrom(
-                                  padding: EdgeInsets.all(12),
+                                  padding: EdgeInsets.all(6),
+                                  backgroundColor: customColor?.primaryBg,
                                   side: BorderSide(
                                     color:
                                         customColor?.primaryBg ??
                                         Colors.transparent,
-                                    width: 4,
+                                    width: 0,
+                                    style: BorderStyle.none,
                                   ),
                                   shape: const CircleBorder(),
                                 ),
-                                icon: Icon(Icons.edit),
+                                padding: EdgeInsets.zero,
+                                icon: IconAvatar(icon: Icons.edit),
                               ),
                             ),
                           ],

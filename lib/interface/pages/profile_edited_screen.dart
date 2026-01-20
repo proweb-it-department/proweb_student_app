@@ -143,12 +143,14 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                       right: -15,
                       child: IconButton.outlined(
                         onPressed: () => _openChangeImage(context),
-                        icon: Icon(Icons.camera_alt),
+                        icon: IconAvatar(icon: Icons.camera_alt),
                         style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.all(15),
+                          padding: EdgeInsets.all(6),
+                          backgroundColor: customColor?.primaryBg,
                           side: BorderSide(
                             color: customColor?.primaryBg ?? Colors.transparent,
-                            width: 4,
+                            width: 0,
+                            style: BorderStyle.none,
                           ),
                           shape: const CircleBorder(),
                         ),

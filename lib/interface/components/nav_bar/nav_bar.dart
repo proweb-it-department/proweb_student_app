@@ -2,8 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
+import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
+import 'package:proweb_student_app/interface/components/icon_avatar.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -15,6 +21,11 @@ class BottomNavBar extends StatelessWidget {
     final pb = MediaQuery.of(context).viewPadding.bottom;
     final customTheme = Theme.of(context).extension<CustomColors>();
     final navBar = context.watch<NavBarProvider>();
+    final profileBloc = context.watch<ProfileDataBloc>();
+    final profile = profileBloc.state.when(
+      initial: () => null,
+      view: (profile) => profile,
+    );
     final isVisible = context
         .watch<ScrollStateProvider>()
         .isNavigationBarVisible;
@@ -22,7 +33,8 @@ class BottomNavBar extends StatelessWidget {
       context.read<NavBarProvider>().close();
     });
     return AnimatedSlide(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
       offset: isVisible ? Offset.zero : const Offset(0, 1),
       child: GestureDetector(
         onTap: () {
@@ -31,7 +43,8 @@ class BottomNavBar extends StatelessWidget {
           }
         },
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          duration: Duration(milliseconds: 300),
           height: navBar.isOpen ? MediaQuery.of(context).size.height : 92,
           padding: EdgeInsets.only(
             top: 10,
@@ -59,8 +72,9 @@ class BottomNavBar extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(25),
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 200),
-              height: navBar.isOpen ? 112 : 55,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              height: navBar.isOpen ? 385 : 55,
               alignment: Alignment.topCenter,
               decoration: BoxDecoration(
                 color: customTheme?.containerColor,
@@ -72,41 +86,239 @@ class BottomNavBar extends StatelessWidget {
                   width: 1,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(3),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    ClipRect(
-                      child: AnimatedAlign(
-                        alignment: Alignment.topCenter,
-                        duration: Duration(milliseconds: 200),
-                        heightFactor: navBar.isOpen ? 1 : 0,
-                        child: SizedBox(
-                          height: 47,
-                          child: AnimatedOpacity(
-                            opacity: navBar.isOpen ? 1 : 0,
-                            duration: Duration(milliseconds: 200),
-                            child: ExtraMenu(tabsRouter: tabsRouter),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ClipRect(
+                    child: AnimatedAlign(
+                      alignment: Alignment.topCenter,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      heightFactor: navBar.isOpen ? 1 : 0,
+                      child: SizedBox(
+                        height: 333,
+                        child: AnimatedOpacity(
+                          opacity: navBar.isOpen ? 1 : 0,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOut,
+                          child: Padding(
+                            padding: EdgeInsetsGeometry.only(top: 3),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                if (profile != null)
+                                  Material(
+                                    color: Colors.transparent,
+                                    child: Padding(
+                                      padding: EdgeInsetsGeometry.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      child: ListTileBuilder(
+                                        isEnd: true,
+                                        isStart: true,
+                                        builder:
+                                            (
+                                              shape,
+                                              contentPadding,
+                                              isThreeLine,
+                                            ) {
+                                              return ListTile(
+                                                onTap: () {
+                                                  context
+                                                      .read<NavBarProvider>()
+                                                      .close();
+                                                  context.router.navigate(
+                                                    ProfileRoute(),
+                                                  );
+                                                },
+                                                shape: shape,
+                                                tileColor:
+                                                    customTheme?.primaryBg,
+                                                minTileHeight: 30,
+                                                contentPadding: contentPadding,
+                                                // isThreeLine: isThreeLine,
+                                                leading: Avatar(
+                                                  profile: profile,
+                                                  size: 40,
+                                                  circular: 40,
+                                                ),
+                                                title: Text(
+                                                  sl<LocalData>().nameMyProfile(
+                                                    profile,
+                                                  ),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                subtitle: Text(
+                                                  sl<LocalData>().getContryCode(
+                                                    phone: profile.phone,
+                                                  ),
+                                                ),
+                                                trailing: IconButton(
+                                                  onPressed: () {
+                                                    context
+                                                        .read<NavBarProvider>()
+                                                        .close();
+                                                    context.router.navigate(
+                                                      ProfileEditedRoute(),
+                                                    );
+                                                  },
+                                                  style: IconButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                  ),
+                                                  icon: IconAvatar(
+                                                    icon: Icons.edit,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                      ),
+                                    ),
+                                  ),
+                                SizedBox(height: 20),
+                                Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: ExtraMenu(tabsRouter: tabsRouter),
+                                ),
+                                SizedBox(height: 10),
+                                Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Padding(
+                                      padding: EdgeInsetsGeometry.only(top: 10),
+                                      child: ListTileBuilder(
+                                        isStart: true,
+                                        isEnd: false,
+                                        builder:
+                                            (
+                                              shape,
+                                              contentPadding,
+                                              isThreeLine,
+                                            ) {
+                                              return ListTile(
+                                                shape: shape,
+                                                contentPadding: contentPadding,
+                                                tileColor:
+                                                    customTheme?.primaryBg,
+                                                onTap: () {
+                                                  context
+                                                      .read<NavBarProvider>()
+                                                      .close();
+                                                  context.router.navigate(
+                                                    DownloadVideosRoute(),
+                                                  );
+                                                },
+                                                leading: IconAvatar(
+                                                  icon: Icons.slow_motion_video,
+                                                ),
+                                                title: Text(
+                                                  'profile_dialog.download_video'
+                                                      .tr(),
+                                                ),
+                                                trailing: Ink(
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        customTheme?.primaryBg,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          80,
+                                                        ),
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.keyboard_arrow_right,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 2),
+                                Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(
+                                    horizontal: 10,
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: ListTileBuilder(
+                                      isStart: false,
+                                      isEnd: true,
+                                      builder:
+                                          (shape, contentPadding, isThreeLine) {
+                                            return ListTile(
+                                              shape: shape,
+                                              contentPadding: contentPadding,
+                                              tileColor: customTheme?.primaryBg,
+                                              onTap: () {
+                                                context
+                                                    .read<NavBarProvider>()
+                                                    .close();
+                                                context.router.navigate(
+                                                  DownloadFilesRoute(),
+                                                );
+                                              },
+                                              leading: IconAvatar(
+                                                icon: Icons.file_open_outlined,
+                                              ),
+                                              title: Text(
+                                                'profile_dialog.download_files'
+                                                    .tr(),
+                                              ),
+                                              trailing: Ink(
+                                                decoration: BoxDecoration(
+                                                  color: customTheme?.primaryBg,
+                                                  borderRadius:
+                                                      BorderRadius.circular(80),
+                                                ),
+                                                child: Icon(
+                                                  Icons.keyboard_arrow_right,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 10),
+                                Divider(
+                                  height: 1,
+                                  color: customTheme?.additionalTwo.withAlpha(
+                                    150,
+                                  ),
+                                ),
+                                SizedBox(height: 5),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                    ClipRect(
-                      child: AnimatedAlign(
-                        alignment: Alignment.topCenter,
-                        duration: Duration(milliseconds: 200),
-                        heightFactor: navBar.isOpen ? 1 : 0,
-                        child: SizedBox(height: 10),
-                      ),
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    padding: EdgeInsets.only(
+                      left: 3,
+                      right: 3,
+                      bottom: 3,
+                      top: navBar.isOpen ? 0 : 3,
                     ),
-                    SizedBox(
+                    child: SizedBox(
                       height: 47,
                       child: MainMenu(tabsRouter: tabsRouter),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -279,7 +491,7 @@ class MainMenu extends StatelessWidget {
                   });
                 },
                 child: AnimatedSwitcher(
-                  duration: Duration(milliseconds: 200),
+                  duration: Duration(milliseconds: 300),
                   switchInCurve: Curves.easeInOut,
                   switchOutCurve: Curves.easeInOut,
                   transitionBuilder:
@@ -389,13 +601,13 @@ class ExtraMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final customTheme = Theme.of(context).extension<CustomColors>();
-    final navBar = context.watch<NavBarProvider>();
+    final padding = EdgeInsetsGeometry.symmetric(horizontal: 10, vertical: 10);
     return Row(
-      spacing: 2,
+      spacing: 7,
       children: [
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(40),
+            borderRadius: BorderRadiusGeometry.circular(10),
             child: Material(
               color: activeColor(tabsRouter.activeIndex == 3, customTheme),
               child: InkWell(
@@ -403,10 +615,7 @@ class ExtraMenu extends StatelessWidget {
                   tabsRouter.setActiveIndex(3);
                 },
                 child: Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
+                  padding: padding,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -441,7 +650,7 @@ class ExtraMenu extends StatelessWidget {
         ),
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(40),
+            borderRadius: BorderRadiusGeometry.circular(10),
             child: Material(
               color: activeColor(tabsRouter.activeIndex == 4, customTheme),
               child: InkWell(
@@ -449,10 +658,7 @@ class ExtraMenu extends StatelessWidget {
                   tabsRouter.setActiveIndex(4);
                 },
                 child: Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
+                  padding: padding,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -487,7 +693,7 @@ class ExtraMenu extends StatelessWidget {
         ),
         Expanded(
           child: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(40),
+            borderRadius: BorderRadiusGeometry.circular(10),
             child: Material(
               color: activeColor(tabsRouter.activeIndex == 5, customTheme),
               child: InkWell(
@@ -495,56 +701,7 @@ class ExtraMenu extends StatelessWidget {
                   tabsRouter.setActiveIndex(5);
                 },
                 child: Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        tabsRouter.activeIndex == 5
-                            ? Icons.local_parking
-                            : Icons.local_parking_outlined,
-                        size: 22,
-                        color: activeTextColor(
-                          tabsRouter.activeIndex == 5,
-                          customTheme,
-                        ),
-                      ),
-                      Text(
-                        'menu.proweb'.tr(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: activeTextColor(
-                            tabsRouter.activeIndex == 5,
-                            customTheme,
-                          ),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          child: ClipRRect(
-            borderRadius: BorderRadiusGeometry.circular(40),
-            child: Material(
-              color: activeColor(tabsRouter.activeIndex == 5, customTheme),
-              child: InkWell(
-                onTap: () {
-                  tabsRouter.setActiveIndex(5);
-                },
-                child: Padding(
-                  padding: EdgeInsetsGeometry.symmetric(
-                    horizontal: 15,
-                    vertical: 4,
-                  ),
+                  padding: padding,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -582,7 +739,7 @@ class ExtraMenu extends StatelessWidget {
   }
 
   Color? activeColor(bool isTrue, CustomColors? customTheme) {
-    if (!isTrue) return Colors.transparent;
+    if (!isTrue) return customTheme?.additionalTwo.withAlpha(100);
     return customTheme?.borderColor;
   }
 
