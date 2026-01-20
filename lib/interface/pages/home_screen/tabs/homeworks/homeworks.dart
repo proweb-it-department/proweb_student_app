@@ -14,6 +14,7 @@ import 'package:proweb_student_app/models/homework_student_relation_group/homewo
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 
@@ -121,7 +122,6 @@ class _ListHomeworksState extends State<ListHomeworks> {
 
   @override
   Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>();
     final List<String> month = widget.data.map.keys.toList();
     if (month.isEmpty && widget.load == false) {
       return SizedBox(
@@ -132,7 +132,10 @@ class _ListHomeworksState extends State<ListHomeworks> {
             text:
                 'Преподаватель еще не назначил ни одного домашнего задания Вам.',
             icon: Icons.assignment,
-            color: customColors?.primaryBg,
+            color: widget.group.group?.course?.color != null
+                ? HexColor(widget.group.group!.course!.color!)
+                : null,
+            shape: PathSvgShape.circle,
           ),
         ),
       );

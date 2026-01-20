@@ -48,9 +48,9 @@ class BottomNavBar extends StatelessWidget {
           height: navBar.isOpen ? MediaQuery.of(context).size.height : 92,
           padding: EdgeInsets.only(
             top: 10,
-            bottom: 10 + pb,
-            left: 20,
-            right: 20,
+            bottom: 2 + pb,
+            left: 10,
+            right: 10,
           ),
           alignment: Alignment.bottomCenter,
           decoration: BoxDecoration(
@@ -58,6 +58,8 @@ class BottomNavBar extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
+                customTheme?.primaryBg.withAlpha(navBar.isOpen ? 50 : 0) ??
+                    Colors.transparent,
                 customTheme?.primaryBg.withAlpha(navBar.isOpen ? 100 : 0) ??
                     Colors.transparent,
                 customTheme?.primaryBg.withAlpha(navBar.isOpen ? 150 : 100) ??
@@ -483,6 +485,13 @@ class MainMenu extends StatelessWidget {
               color: activeColor(tabsRouter.activeIndex > 2, customTheme),
               child: InkWell(
                 onTap: () {
+                  Future.microtask(() {
+                    if (context.mounted) {
+                      context.read<NavBarProvider>().toggle();
+                    }
+                  });
+                },
+                onLongPress: () {
                   Future.microtask(() {
                     if (context.mounted) {
                       context.read<NavBarProvider>().toggle();

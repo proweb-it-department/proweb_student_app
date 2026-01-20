@@ -4,20 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/pass_work/pass_work.dart';
+import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/file_icon_manager/file_icon_manager.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:uuid/uuid.dart';
 
 class HandInTheWork extends StatefulWidget {
+  final MyGroupsItem groupUser;
   final Function(
     List<ModelFile> files,
     List<DataLink> links,
     TextEditingController nots,
   )
   collback;
-  const HandInTheWork({super.key, required this.collback});
+  const HandInTheWork({
+    super.key,
+    required this.collback,
+    required this.groupUser,
+  });
 
   @override
   State<HandInTheWork> createState() => _HandInTheWorkState();
@@ -40,7 +47,7 @@ class _HandInTheWorkState extends State<HandInTheWork> {
     }
   }
 
-  _addFile(String? path, Widget? icon, String? name, int size) {
+  void _addFile(String? path, Widget? icon, String? name, int size) {
     if (path != null && icon != null && name != null) {
       final hasVerifaed = _isFileSizeExceeds(size);
       if (hasVerifaed) {
@@ -68,7 +75,7 @@ class _HandInTheWorkState extends State<HandInTheWork> {
     return fileSizeInBytes <= maxSizeInBytes;
   }
 
-  _deletePath(String path) {
+  void _deletePath(String path) {
     final list = files.where((element) => element.path != path).toList();
     setState(() {
       files = list;

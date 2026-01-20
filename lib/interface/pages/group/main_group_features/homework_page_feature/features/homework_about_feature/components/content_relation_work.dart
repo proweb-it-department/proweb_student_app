@@ -9,14 +9,21 @@ import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/hand_in_the_work.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_page_feature/features/homework_about_feature/components/trailing_file_homework_button.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
+import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/pass_work/pass_work.dart';
+import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/file_icon_manager/file_icon_manager.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class ContentRelationWork extends StatelessWidget {
   final HomeworkStudentRelationGroup relation;
-  const ContentRelationWork({super.key, required this.relation});
+  final MyGroupsItem groupUser;
+  const ContentRelationWork({
+    super.key,
+    required this.relation,
+    required this.groupUser,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +41,11 @@ class ContentRelationWork extends StatelessWidget {
       final checkedRetakenAt = relation.checkedRetakenAt == null;
       final score = (relation.score ?? 0) == 0;
       sendDz = checkedRetakenAt && score && deadlineExpired == false;
+    }
+    if (groupUser.status != StudentStatus.active) {
+      if (sendDz) {
+        sendDz = false;
+      }
     }
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -87,6 +99,7 @@ class ContentRelationWork extends StatelessWidget {
                             ),
                           ),
                           HandInTheWork(
+                            groupUser: groupUser,
                             collback: (files, links, nots) async {
                               final bloc = context.read<HomeworkRelationBloc>();
                               List<String> correctLinks = _listLinks(links);

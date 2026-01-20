@@ -22,11 +22,7 @@ class HomeworkStudentWorkScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => bloc ?? GroupDetailBloc()
-        ..add(GroupDetailEvent.started(groupId: groupId)),
-      child: HomeworkWork(groupId: groupId, relationId: relationId, bloc: bloc),
-    );
+    return HomeworkWork(groupId: groupId, relationId: relationId, bloc: bloc);
   }
 }
 
@@ -77,6 +73,7 @@ class HomeworkWork extends StatelessWidget {
                       relation: relation,
                       work: work,
                       comments: comments,
+                      groupUser: groupUser,
                     );
                   },
                 );

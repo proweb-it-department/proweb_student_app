@@ -12,11 +12,14 @@ import 'package:proweb_student_app/interface/pages/group/main_group_features/hom
 import 'package:proweb_student_app/models/global_comment/global_comment.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
+import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/pass_work/pass_work.dart';
+import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 class HomeworkStudentWorkFeature extends StatelessWidget {
   final HomeworkStudentRelationGroup relation;
+  final MyGroupsItem groupUser;
   final HomeworkGroup work;
   final List<GlobalComment> comments;
   const HomeworkStudentWorkFeature({
@@ -24,6 +27,7 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
     required this.relation,
     required this.work,
     required this.comments,
+    required this.groupUser,
   });
 
   @override
@@ -69,11 +73,14 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
                 SizedBox(height: 10),
                 InfoDedlineWork(
                   relation: relation,
+                  groupUser: groupUser,
                   padding: EdgeInsetsGeometry.only(bottom: 10),
                 ),
                 if (relation.homeworkMaterials?.isEmpty == true &&
-                    deadlineExpired == false)
+                    deadlineExpired == false &&
+                    groupUser.status == StudentStatus.active)
                   HandInTheWork(
+                    groupUser: groupUser,
                     collback: (files, links, nots) async {
                       final bloc = context.read<HomeworkRelationBloc>();
                       List<String> correctLinks = _listLinks(links);
@@ -93,7 +100,7 @@ class HomeworkStudentWorkFeature extends StatelessWidget {
                     },
                   )
                 else
-                  ContentRelationWork(relation: relation),
+                  ContentRelationWork(relation: relation, groupUser: groupUser),
               ],
             ),
           ),

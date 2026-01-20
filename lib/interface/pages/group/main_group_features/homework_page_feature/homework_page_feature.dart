@@ -29,51 +29,58 @@ class HomeworkPageScreen extends StatelessWidget {
         context,
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
-      child: BlocProvider<HomeworkRelationBloc>(
-        create: (context) =>
-            HomeworkRelationBloc()
-              ..add(HomeworkRelationEvent.started(relationId: relationId)),
-        child: AutoTabsRouter.tabBar(
-          routes: [
-            HomeworkAboutRoute(bloc: bloc),
-            HomeworkStudentWorkRoute(bloc: bloc),
-            HomeworkStudentCommentsRoute(bloc: bloc),
-          ],
-          builder: (context, child, tabController) {
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: TabBarPopScope(
-                mainPage: HomeworkAboutRoute(),
-                child: Scaffold(
-                  appBar: MainAppBar(
-                    isBorder: false,
-                    tab: TabBar(
-                      controller: tabController,
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      indicatorWeight: 4,
-                      dragStartBehavior: DragStartBehavior.down,
-                      dividerColor: Colors.transparent,
-                      tabs: [
-                        Tab(text: 'group_homework.homework_about'.tr()),
-                        Tab(text: 'group_homework.homework_student_work'.tr()),
-                        Tab(
-                          text: 'group_homework.homework_student_comment'.tr(),
-                        ),
-                      ],
-                      onTap: (value) {
-                        FocusScope.of(context).unfocus();
-                      },
+      child: BlocProvider(
+        create: (context) => bloc ?? GroupDetailBloc()
+          ..add(GroupDetailEvent.started(groupId: groupId)),
+        child: BlocProvider<HomeworkRelationBloc>(
+          create: (context) =>
+              HomeworkRelationBloc()
+                ..add(HomeworkRelationEvent.started(relationId: relationId)),
+          child: AutoTabsRouter.tabBar(
+            routes: [
+              HomeworkAboutRoute(bloc: bloc),
+              HomeworkStudentWorkRoute(bloc: bloc),
+              HomeworkStudentCommentsRoute(bloc: bloc),
+            ],
+            builder: (context, child, tabController) {
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  FocusScope.of(context).unfocus();
+                },
+                child: TabBarPopScope(
+                  mainPage: HomeworkAboutRoute(),
+                  child: Scaffold(
+                    appBar: MainAppBar(
+                      isBorder: false,
+                      tab: TabBar(
+                        controller: tabController,
+                        isScrollable: true,
+                        tabAlignment: TabAlignment.start,
+                        indicatorWeight: 4,
+                        dragStartBehavior: DragStartBehavior.down,
+                        dividerColor: Colors.transparent,
+                        tabs: [
+                          Tab(text: 'group_homework.homework_about'.tr()),
+                          Tab(
+                            text: 'group_homework.homework_student_work'.tr(),
+                          ),
+                          Tab(
+                            text: 'group_homework.homework_student_comment'
+                                .tr(),
+                          ),
+                        ],
+                        onTap: (value) {
+                          FocusScope.of(context).unfocus();
+                        },
+                      ),
                     ),
+                    body: child,
                   ),
-                  body: child,
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

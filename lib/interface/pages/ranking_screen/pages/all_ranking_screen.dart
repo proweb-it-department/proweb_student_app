@@ -442,103 +442,104 @@ class RankingTileUser extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 2),
-        child: ListTileBuilder(
-          isEnd: isEnd,
-          isStart: isStart,
-          builder: (shape, contentPadding, isThreeLine) {
-            return ListTile(
-              selectedColor: customColors?.primaryTextColor,
-              selectedTileColor: color,
-              selected: true,
-              shape: shape,
-              contentPadding: contentPadding,
-              minTileHeight: 60,
-              onTap: id == null
-                  ? null
-                  : () {
-                      context.router.push(UserRoute(id: id));
-                    },
-              leading: Row(
-                spacing: 10,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if ((item.position ?? 0) > 0 && (item.position ?? 0) < 4)
-                    SvgPicture.asset(
-                      'assets/images/winner${item.position}.svg',
-                      width: 22,
-                    )
-                  else
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 5,
-                      children: [
-                        Opacity(
-                          opacity: 0.7,
-                          child: Text(
-                            '${item.position ?? 0}'.padLeft(2, '0'),
-                            style: GoogleFonts.inter(fontSize: 20),
-                          ),
+      child: ListTileBuilder(
+        isEnd: isEnd,
+        isStart: isStart,
+        builder: (shape, contentPadding, isThreeLine) {
+          return ListTile(
+            selectedColor: customColors?.primaryTextColor,
+            selectedTileColor: color,
+            selected: true,
+            shape: shape,
+            contentPadding: contentPadding,
+            minTileHeight: 60,
+            onTap: id == null
+                ? null
+                : () {
+                    if (id == myId && isHeader) {
+                      context.router.navigate(RankingRoute());
+                      return;
+                    }
+                    context.router.push(UserRoute(id: id));
+                  },
+            leading: Row(
+              spacing: 10,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if ((item.position ?? 0) > 0 && (item.position ?? 0) < 4)
+                  SvgPicture.asset(
+                    'assets/images/winner${item.position}.svg',
+                    width: 22,
+                  )
+                else
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    spacing: 5,
+                    children: [
+                      Opacity(
+                        opacity: 0.7,
+                        child: Text(
+                          '${item.position ?? 0}'.padLeft(2, '0'),
+                          style: GoogleFonts.inter(fontSize: 20),
                         ),
-                        if (id == myId && isHeader)
-                          Text(
-                            '${((item.position ?? 0) / LimitRequest.ranking).ceil()} ${'ranking.str_page'.tr()}',
-                          ),
-                      ],
-                    ),
-                  if (item.user != null)
-                    ClipPath(
-                      clipper:
-                          (item.position ?? 0) > 0 && (item.position ?? 0) < 4
-                          ? SvgClipper(
-                              item.position == 3
-                                  ? PathSvgShape.leaf9Cookie
-                                  : item.position == 2
-                                  ? PathSvgShape.leaf6Cookie
-                                  : PathSvgShape.leaf12Cookie,
-                            )
-                          : null,
-                      child: Avatar(
-                        user: item.user!,
-                        circular:
-                            (item.position ?? 0) > 0 && (item.position ?? 0) < 4
-                            ? 0
-                            : 40,
                       ),
+                      if (id == myId && isHeader)
+                        Text(
+                          '${((item.position ?? 0) / LimitRequest.ranking).ceil()} ${'ranking.str_page'.tr()}',
+                        ),
+                    ],
+                  ),
+                if (item.user != null)
+                  ClipPath(
+                    clipper:
+                        (item.position ?? 0) > 0 && (item.position ?? 0) < 4
+                        ? SvgClipper(
+                            item.position == 3
+                                ? PathSvgShape.leaf9Cookie
+                                : item.position == 2
+                                ? PathSvgShape.leaf6Cookie
+                                : PathSvgShape.leaf12Cookie,
+                          )
+                        : null,
+                    child: Avatar(
+                      user: item.user!,
+                      circular:
+                          (item.position ?? 0) > 0 && (item.position ?? 0) < 4
+                          ? 0
+                          : 40,
                     ),
-                ],
-              ),
-              title: Text(
-                item.user != null
-                    ? id == myId && isHeader
-                          ? 'ranking.your_ranking'.tr()
-                          : sl<LocalData>().nameUser(item.user)
-                    : '- - -',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              subtitle: ((item.totalScore ?? 0) > 0 && (winnerPoint ?? 0) > 0)
-                  ? LinearProgressIndicator(
-                      year2023: false,
-                      value: ((item.totalScore ?? 0) / (winnerPoint ?? 0))
-                          .toDouble(),
-                      backgroundColor: customColors?.warningFillOp,
-                      color: customColors?.warningFill,
-                      stopIndicatorColor: Colors.transparent,
-                    )
-                  : null,
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                spacing: 10,
-                children: [
-                  Text('${item.totalScore ?? 0}'),
-                  Icon(Icons.star_rounded, color: customColors?.warningFill),
-                ],
-              ),
-            );
-          },
-        ),
+                  ),
+              ],
+            ),
+            title: Text(
+              item.user != null
+                  ? id == myId && isHeader
+                        ? 'ranking.your_ranking'.tr()
+                        : sl<LocalData>().nameUser(item.user)
+                  : '- - -',
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            subtitle: ((item.totalScore ?? 0) > 0 && (winnerPoint ?? 0) > 0)
+                ? LinearProgressIndicator(
+                    year2023: false,
+                    value: ((item.totalScore ?? 0) / (winnerPoint ?? 0))
+                        .toDouble(),
+                    backgroundColor: customColors?.warningFillOp,
+                    color: customColors?.warningFill,
+                    stopIndicatorColor: Colors.transparent,
+                  )
+                : null,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: 10,
+              children: [
+                Text('${item.totalScore ?? 0}'),
+                Icon(Icons.star_rounded, color: customColors?.warningFill),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
