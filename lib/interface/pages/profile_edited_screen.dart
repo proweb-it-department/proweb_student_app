@@ -172,7 +172,10 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                     isThreeLine: isThreeLine,
                     tileColor: customColor?.containerColor,
                     minTileHeight: 10,
-                    leading: Avatar(profile: profile),
+                    leading: Avatar(
+                      profile: profile,
+                      backgroundColor: customColor?.primaryBg,
+                    ),
                     title: Text('Ваше имя'),
                     subtitle: Text(sl<LocalData>().nameMyProfile(profile)),
                   );

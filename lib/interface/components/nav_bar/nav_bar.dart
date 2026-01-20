@@ -138,7 +138,6 @@ class BottomNavBar extends StatelessWidget {
                                                     customTheme?.primaryBg,
                                                 minTileHeight: 30,
                                                 contentPadding: contentPadding,
-                                                // isThreeLine: isThreeLine,
                                                 leading: Avatar(
                                                   profile: profile,
                                                   size: 40,
@@ -739,8 +738,8 @@ class ExtraMenu extends StatelessWidget {
   }
 
   Color? activeColor(bool isTrue, CustomColors? customTheme) {
-    if (!isTrue) return customTheme?.additionalTwo.withAlpha(100);
-    return customTheme?.borderColor;
+    if (!isTrue) return customTheme?.additionalTwo.withAlpha(50);
+    return customTheme?.additionalTwo.withAlpha(200);
   }
 
   Color? activeTextColor(bool isTrue, CustomColors? customTheme) {

@@ -4,66 +4,69 @@ import 'package:proweb_student_app/models/my_profile/my_profile.dart';
 import 'package:proweb_student_app/models/user/user.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
-var colorData = <String, Color>{
-  "a": Colors.red.shade800,
-  "b": Colors.pink.shade800,
-  "c": Colors.purple.shade800,
-  "d": Colors.deepPurple.shade800,
-  "e": Colors.indigo.shade800,
-  "f": Colors.blue.shade800,
-  "g": Colors.lightBlue.shade800,
-  "h": Colors.cyan.shade800,
-  "i": Colors.teal.shade800,
-  "j": Colors.green.shade800,
-  "k": Colors.lightGreen.shade800,
-  "l": Colors.lime.shade800,
-  "m": Colors.yellow.shade800,
-  "n": Colors.amber.shade800,
-  "o": Colors.orange.shade800,
-  "p": Colors.deepOrange.shade800,
-  "q": Colors.brown.shade800,
-  "r": Colors.grey.shade800,
-  "s": Colors.blueGrey.shade800,
-  "t": Colors.redAccent.shade700,
-  "u": Colors.pinkAccent.shade700,
-  "v": Colors.purpleAccent.shade700,
-  "w": Colors.deepPurpleAccent.shade700,
-  "x": Colors.indigoAccent.shade700,
-  "y": Colors.blueAccent.shade700,
-  "z": Colors.lightBlueAccent.shade700,
-  "а": Colors.red.shade800,
-  "б": Colors.pink.shade800,
-  "в": Colors.purple.shade800,
-  "г": Colors.deepPurple.shade800,
-  "д": Colors.indigo.shade800,
-  "е": Colors.blue.shade800,
-  "ё": Colors.lightBlue.shade800,
-  "ж": Colors.cyan.shade800,
-  "з": Colors.teal.shade800,
-  "и": Colors.green.shade800,
-  "й": Colors.lightGreen.shade800,
-  "к": Colors.lime.shade800,
-  "л": Colors.yellow.shade800,
-  "м": Colors.amber.shade800,
-  "н": Colors.orange.shade800,
-  "о": Colors.deepOrange.shade800,
-  "п": Colors.brown.shade800,
-  "р": Colors.grey.shade800,
-  "с": Colors.blueGrey.shade800,
-  "т": Colors.redAccent.shade700,
-  "у": Colors.pinkAccent.shade700,
-  "ф": Colors.purpleAccent.shade700,
-  "х": Colors.deepPurpleAccent.shade700,
-  "ц": Colors.indigoAccent.shade700,
-  "ч": Colors.blueAccent.shade700,
-  "ш": Colors.lightBlueAccent.shade700,
-  "щ": Colors.grey.shade900,
-  "ъ": Colors.blueGrey.shade900,
-  "ы": Colors.redAccent.shade700,
-  "ь": Colors.pinkAccent.shade700,
-  "э": Colors.purpleAccent.shade700,
-  "ю": Colors.deepPurpleAccent.shade700,
-  "я": Colors.indigoAccent.shade700,
+final Map<String, String> avatarPathByLetter = {
+  // latin
+  "a": "assets/images/avatar/gray1.png",
+  "b": "assets/images/avatar/gray2.png",
+  "c": "assets/images/avatar/green1.png",
+  "d": "assets/images/avatar/green2.png",
+  "e": "assets/images/avatar/ice1.png",
+  "f": "assets/images/avatar/ice2.png",
+  "g": "assets/images/avatar/purple1.png",
+  "h": "assets/images/avatar/purple2.png",
+  "i": "assets/images/avatar/red1.png",
+  "j": "assets/images/avatar/red2.png",
+  "k": "assets/images/avatar/gray1.png",
+  "l": "assets/images/avatar/gray2.png",
+  "m": "assets/images/avatar/green1.png",
+  "n": "assets/images/avatar/green2.png",
+  "o": "assets/images/avatar/ice1.png",
+  "p": "assets/images/avatar/ice2.png",
+  "q": "assets/images/avatar/purple1.png",
+  "r": "assets/images/avatar/purple2.png",
+  "s": "assets/images/avatar/red1.png",
+  "t": "assets/images/avatar/red2.png",
+  "u": "assets/images/avatar/gray1.png",
+  "v": "assets/images/avatar/gray2.png",
+  "w": "assets/images/avatar/green1.png",
+  "x": "assets/images/avatar/green2.png",
+  "y": "assets/images/avatar/ice1.png",
+  "z": "assets/images/avatar/ice2.png",
+
+  // cyrillic
+  "а": "assets/images/avatar/gray1.png",
+  "б": "assets/images/avatar/purple2.png",
+  "в": "assets/images/avatar/red1.png",
+  "г": "assets/images/avatar/red2.png",
+  "д": "assets/images/avatar/gray1.png",
+  "е": "assets/images/avatar/gray2.png",
+  "ё": "assets/images/avatar/green1.png",
+  "ж": "assets/images/avatar/green2.png",
+  "з": "assets/images/avatar/ice1.png",
+  "и": "assets/images/avatar/ice2.png",
+  "й": "assets/images/avatar/purple1.png",
+  "к": "assets/images/avatar/purple2.png",
+  "л": "assets/images/avatar/red1.png",
+  "м": "assets/images/avatar/red2.png",
+  "н": "assets/images/avatar/gray1.png",
+  "о": "assets/images/avatar/gray2.png",
+  "п": "assets/images/avatar/green1.png",
+  "р": "assets/images/avatar/green2.png",
+  "с": "assets/images/avatar/ice1.png",
+  "т": "assets/images/avatar/ice2.png",
+  "у": "assets/images/avatar/purple1.png",
+  "ф": "assets/images/avatar/purple2.png",
+  "х": "assets/images/avatar/red1.png",
+  "ц": "assets/images/avatar/red2.png",
+  "ч": "assets/images/avatar/gray1.png",
+  "ш": "assets/images/avatar/gray2.png",
+  "щ": "assets/images/avatar/green1.png",
+  "ъ": "assets/images/avatar/green2.png",
+  "ы": "assets/images/avatar/ice1.png",
+  "ь": "assets/images/avatar/ice2.png",
+  "э": "assets/images/avatar/purple1.png",
+  "ю": "assets/images/avatar/purple2.png",
+  "я": "assets/images/avatar/red1.png",
 };
 
 class Avatar extends StatelessWidget {
@@ -71,7 +74,6 @@ class Avatar extends StatelessWidget {
   final User? user;
   final double size;
   final double circular;
-  final Color? textColor;
   final Color? backgroundColor;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -81,7 +83,6 @@ class Avatar extends StatelessWidget {
     super.key,
     this.profile,
     this.size = 40,
-    this.textColor,
     this.backgroundColor,
     this.fontWeight = FontWeight.bold,
     this.fontFamily,
@@ -125,15 +126,17 @@ class Avatar extends StatelessWidget {
   }
 
   Widget _textAvatar(CustomColors? customTheme) {
-    return _textDisplay();
+    return _textDisplay(customTheme);
   }
 
-  Color? _colorBackgroundConfig() {
-    if (RegExp(r'[A-Z]|').hasMatch(_textConfiguration()) &&
-        backgroundColor == null) {
-      return colorData[_textConfiguration()[0].toLowerCase().toString()];
+  String _colorBackgroundConfig() {
+    if (RegExp(r'[A-Z]|').hasMatch(_textConfiguration())) {
+      return avatarPathByLetter[_textConfiguration()[0]
+              .toLowerCase()
+              .toString()] ??
+          avatarPathByLetter.keys.first;
     }
-    return backgroundColor;
+    return avatarPathByLetter.keys.first;
   }
 
   String _textConfiguration() {
@@ -163,14 +166,21 @@ class Avatar extends StatelessWidget {
     return String.fromCharCodes(value!.runes.toList());
   }
 
-  Widget _textDisplay() {
-    return Material(
-      shape: circular == 0 ? null : _buildTextType(),
-      color: _colorBackgroundConfig(),
-      child: SizedBox(
-        height: size,
-        width: size,
-        child: Center(child: _buildText()),
+  Widget _textDisplay(CustomColors? customTheme) {
+    return ClipRRect(
+      borderRadius: circular == 0 ? BorderRadius.zero : _buildBorderRadius(),
+      child: Material(
+        shape: circular == 0 ? null : _buildTextType(),
+        color: backgroundColor ?? customTheme?.containerColor,
+        child: SizedBox(
+          height: size,
+          width: size,
+          child: Image.asset(
+            _colorBackgroundConfig(),
+            height: size * 0.8,
+            width: size * 0.8,
+          ),
+        ),
       ),
     );
   }
@@ -181,15 +191,7 @@ class Avatar extends StatelessWidget {
     );
   }
 
-  Widget _buildText() {
-    return Text(
-      _textConfiguration(),
-      style: TextStyle(
-        color: textColor ?? Colors.white,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        fontFamily: fontFamily,
-      ),
-    );
+  BorderRadiusGeometry _buildBorderRadius() {
+    return BorderRadiusGeometry.circular(size / 2);
   }
 }
