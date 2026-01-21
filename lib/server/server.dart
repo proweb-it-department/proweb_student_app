@@ -2,17 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart' as dio;
 import 'package:mime/mime.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/network/video/get/video.dart';
 import 'package:proweb_student_app/api/video_repository/video_repository.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:talker_logger/talker_logger.dart';
 import 'package:encrypt/encrypt.dart';
 
 HttpServer? _httpServer;
