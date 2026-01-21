@@ -929,7 +929,10 @@ class _QuestionsState extends State<Questions> {
                             _sendAnswer(context);
                           }
                         : null,
-                    child: Text('group_homework.questions_send_btn'.tr()),
+                    child: Text(
+                      'group_homework.questions_send_btn'.tr(),
+                      style: TextStyle(color: customColors?.primaryTextColor),
+                    ),
                   ),
                 ),
               ],

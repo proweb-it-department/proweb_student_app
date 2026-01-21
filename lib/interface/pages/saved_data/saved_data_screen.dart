@@ -428,7 +428,10 @@ class SizedData extends StatelessWidget {
                     savedData.add(SavedDataInfoEvent.delete('all'));
                   }
                 },
-                label: Text('Удалить всё'),
+                label: Text(
+                  'Удалить всё',
+                  style: TextStyle(color: customColors?.primaryTextColor),
+                ),
                 icon: Icon(Icons.delete),
                 style: FilledButton.styleFrom(
                   backgroundColor: customColors?.containerColor,

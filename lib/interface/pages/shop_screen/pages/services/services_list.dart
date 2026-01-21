@@ -323,7 +323,7 @@ class _ServiceItemState extends State<ServiceItem> {
                       contentPadding: contentPadding,
                       leading: type != null
                           ? IconAvatar(
-                              clipPath: PathSvgShape.pill,
+                              clipPath: PathSvgShape.pentagon,
                               gradient: LinearGradient(
                                 begin: Alignment(-0.766, -1.0),
                                 end: Alignment(1.0, 0.5),
@@ -748,7 +748,7 @@ class ServiceAppBar extends StatelessWidget {
                         children: [
                           if (type != null)
                             IconAvatar(
-                              clipPath: PathSvgShape.pill,
+                              clipPath: PathSvgShape.pentagon,
                               gradient: LinearGradient(
                                 begin: Alignment(-0.766, -1.0),
                                 end: Alignment(1.0, 0.5),

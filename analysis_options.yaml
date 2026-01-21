@@ -12,6 +12,7 @@ analyzer:
   errors:
     invalid_annotation_target: ignore
     duplicate_ignore: ignore
+    constant_identifier_names: ignore
 
 linter:
   # The lint rules applied to this project can be customized in the

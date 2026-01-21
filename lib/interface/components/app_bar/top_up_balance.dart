@@ -418,7 +418,10 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                         color: customColors?.primaryTextColor,
                       ),
                     ),
-                    label: Text('Прейти к оплате'),
+                    label: Text(
+                      'Прейти к оплате',
+                      style: TextStyle(color: customColors?.primaryTextColor),
+                    ),
                     icon: Icon(Icons.wallet),
                   )
                 else

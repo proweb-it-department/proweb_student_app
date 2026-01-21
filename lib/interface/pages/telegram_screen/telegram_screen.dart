@@ -174,7 +174,12 @@ class _TgListState extends State<TgList> {
                                   ),
                                 ),
                                 icon: Icon(Icons.link),
-                                label: Text('Перейти к подключению'),
+                                label: Text(
+                                  'Перейти к подключению',
+                                  style: TextStyle(
+                                    color: customColors?.primaryTextColor,
+                                  ),
+                                ),
                               ),
                             ],
                           );
@@ -199,7 +204,10 @@ class _TgListState extends State<TgList> {
                 backgroundColor: customColors?.containerColor,
                 textStyle: TextStyle(color: customColors?.primaryTextColor),
               ),
-              label: Text('Привязить аккаунт'),
+              label: Text(
+                'Привязить аккаунт',
+                style: TextStyle(color: customColors?.primaryTextColor),
+              ),
               icon: Icon(Icons.add, color: customColors?.primaryTextColor),
             ),
         ],

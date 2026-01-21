@@ -1017,7 +1017,10 @@ class BuyProductPrice extends StatelessWidget {
             FilledButton.icon(
               onPressed: onBack,
               icon: Icon(Icons.chevron_left),
-              label: Text('shop_app.To_the_rules_of_purchase'.tr()),
+              label: Text(
+                'shop_app.To_the_rules_of_purchase'.tr(),
+                style: TextStyle(color: customColors?.primaryTextColor),
+              ),
               style: FilledButton.styleFrom(
                 backgroundColor: customColors?.additionalThree,
                 textStyle: TextStyle(color: customColors?.primaryTextColor),

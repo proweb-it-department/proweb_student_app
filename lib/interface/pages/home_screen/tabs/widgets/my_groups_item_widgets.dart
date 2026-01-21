@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:hexcolor/hexcolor.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
-import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
-import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class MyGroupsItemWidgets extends StatefulWidget {
   final MyGroupsItem myGroup;
@@ -23,7 +25,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
   void _getTapPosition(TapDownDetails position) {
     final RenderBox renderBox = context.findRenderObject() as RenderBox;
     setState(() {
-      _tapPosition = renderBox.localToGlobal(position.localPosition);
+      _tapPosition = position.globalPosition;
     });
   }
 
@@ -110,6 +112,16 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
       url = widget.myGroup.group?.course?.posters?.first.image;
     }
     final double width = MediaQuery.sizeOf(context).width;
+    final borderRadius = BorderRadius.circular(22);
+    final isLeave = widget.myGroup.status == StudentStatus.leave;
+    final isTransfer =
+        widget.myGroup.status == StudentStatus.transfer ||
+        widget.myGroup.status == StudentStatus.transferOtherCourse;
+    final isGraduated =
+        widget.myGroup.status == StudentStatus.graduate ||
+        widget.myGroup.status == StudentStatus.partiallyCompleted;
+    final isPremium = widget.myGroup.hasPackage == true;
+    final lesson = widget.myGroup.group?.lessons?.firstOrNull;
     return InkWell(
       onTapDown: block ? null : _getTapPosition,
       onTap: block
@@ -124,98 +136,216 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
           : () {
               _showContextMenu(context);
             },
+      borderRadius: borderRadius,
       child: Stack(
         children: [
-          ClipRect(
-            child: OverflowBox(
-              maxWidth: width,
-              minWidth: width,
-              child: url != null
-                  ? Image(
-                      fit: BoxFit.cover,
-                      image: CachedNetworkImageProvider(url),
-                    )
-                  : null,
-            ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 0, bottom: 8),
-                child: Text(
-                  'education.group_id'.tr(
-                    namedArgs: {'id': widget.myGroup.group!.id.toString()},
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 2,
-                        color: Colors.black,
-                        offset: Offset(0, 1),
+          Ink(
+            width: width,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: customColors?.primaryBg,
+              borderRadius: borderRadius,
+              border: isPremium
+                  ? GradientBoxBorder(
+                      gradient: LinearGradient(
+                        begin: AlignmentGeometry.topLeft,
+                        end: AlignmentGeometry.bottomRight,
+                        colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
                       ),
-                    ],
+                      width: 2,
+                    )
+                  : Border.all(
+                      color: customColors?.borderColors ?? Colors.transparent,
+                      width: 2,
+                    ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                IntrinsicHeight(
+                  child: Ink(
+                    width: width - 20,
+                    padding: EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: customColors?.primaryBg,
+                      borderRadius: BorderRadius.circular(12),
+                      image: url != null
+                          ? DecorationImage(
+                              image: CachedNetworkImageProvider(url),
+                              fit: BoxFit.cover,
+                              alignment: AlignmentGeometry.topCenter,
+                            )
+                          : null,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: block
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.spaceBetween,
+                      children: [
+                        Material(
+                          color: Colors.transparent,
+                          child: CourseAvatar(
+                            icon: widget.myGroup.group!.course!.icon!,
+                            color: HexColor(
+                              widget.myGroup.group!.course!.color!,
+                            ),
+                            borderRadius: 70,
+                            padding: 10,
+                            size: 50,
+                          ),
+                        ),
+                        if (block == false)
+                          InkWell(
+                            onTapDown: block ? null : _getTapPosition,
+                            onTap: block
+                                ? null
+                                : () {
+                                    _showContextMenu(context);
+                                  },
+                            borderRadius: BorderRadius.circular(22),
+                            child: Ink(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                color: customColors?.primaryBg,
+                              ),
+                              child: Icon(Icons.more_vert),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 16, right: 0, bottom: 8),
-                child: Text(
+                SizedBox(height: 7),
+                Text(
                   widget.myGroup.group?.course?.name ?? '',
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 2,
-                        color: Colors.black,
-                        offset: Offset(0, 1),
-                      ),
-                    ],
+                    color: customColors?.primaryTextColor,
                   ),
                 ),
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
-          if (block)
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              top: 0,
-              child: Container(
-                color: customColors?.primaryBg.withAlpha(150),
-                child: Center(child: Icon(Icons.lock, size: 50)),
-              ),
-            )
-          else
-            Positioned(
-              right: 0,
-              top: 0,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 30, top: 20),
-                child: ClipPath(
-                  clipper: SvgClipper(PathSvgShape.pill),
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    color: Colors.white.withAlpha(200),
-                    child: Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.black,
+                // SizedBox(height: 3),
+                Opacity(
+                  opacity: 0.7,
+                  child: Text(
+                    'education.group_id'.tr(
+                      namedArgs: {'id': widget.myGroup.group!.id.toString()},
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: customColors?.primaryTextColor,
+                      fontSize: 16,
                     ),
                   ),
                 ),
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IntrinsicWidth(
+                      child: IntrinsicHeight(
+                        child: Ink(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: customColors?.containerColor,
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Opacity(
+                            opacity: 0.5,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              spacing: 5,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  spacing: 5,
+                                  children: [
+                                    Icon(
+                                      block
+                                          ? Icons.lock_outline
+                                          : Icons.question_mark_rounded,
+                                      size: 12,
+                                    ),
+                                    Text(
+                                      block
+                                          ? 'Доступ закрыт'
+                                          : isLeave
+                                          ? 'Обучение остановлено'
+                                          : isTransfer
+                                          ? 'Вы перевелись'
+                                          : isGraduated
+                                          ? 'Вы выпустились'
+                                          : 'В процессе обучения',
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    CircleAvatar(
+                      backgroundColor: customColors?.containerColor,
+                      radius: 20,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            right: 20,
+            top: 80,
+            child: Ink(
+              padding: EdgeInsetsGeometry.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: customColors?.primaryTextColor,
+                borderRadius: BorderRadius.circular(22),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                spacing: 5,
+                children: [
+                  Icon(
+                    block
+                        ? Icons.lock_outline
+                        : isLeave
+                        ? Icons.close
+                        : isTransfer
+                        ? Icons.published_with_changes
+                        : isGraduated
+                        ? Icons.celebration
+                        : Icons.check,
+                    color: customColors?.primaryBg,
+                    size: 16,
+                  ),
+                  Text(
+                    block
+                        ? 'Доступ закрыт'
+                        : isLeave
+                        ? 'Обучение остановлено'
+                        : isTransfer
+                        ? 'Вы перевелись'
+                        : isGraduated
+                        ? 'Вы выпустились'
+                        : 'В процессе обучения',
+                    style: TextStyle(
+                      color: customColors?.primaryBg,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
         ],
       ),
     );
@@ -249,7 +379,7 @@ class CourseAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorImg = ThemeData.estimateBrightnessForColor(color);
-    return Container(
+    return Ink(
       width: size ?? 40,
       height: size ?? 40,
       padding: EdgeInsets.all(padding ?? 6),

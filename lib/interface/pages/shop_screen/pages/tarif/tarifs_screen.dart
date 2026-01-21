@@ -14,6 +14,7 @@ import 'package:lottie/lottie.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/tarif_for_sale/tarif_for_sale_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/gradient_text/gradient_text.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
@@ -1421,7 +1422,12 @@ class TarifProductList extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Icon(Icons.chevron_right_rounded),
+                        trailing: GoPage(
+                          decoration: BoxDecoration(
+                            color: customColors?.containerColor,
+                          ),
+                          child: Icon(Icons.chevron_right_rounded),
+                        ),
                         subtitle: Text(
                           sl<LocalData>().plural(
                             'shop_app.countModule'.tr(
@@ -1514,7 +1520,7 @@ class TarifServiceList extends StatelessWidget {
                               colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
                               stops: [0.28, 1.0],
                             ),
-                            clipPath: PathSvgShape.pill,
+                            clipPath: PathSvgShape.pentagon,
                             icon: type == ServiceType.video
                                 ? Icons.play_circle
                                 : type == ServiceType.coworking
@@ -1524,7 +1530,10 @@ class TarifServiceList extends StatelessWidget {
                                 : Icons.work,
                           )
                         : null,
-                    trailing: Icon(Icons.chevron_right_rounded),
+                    trailing: GoPage(
+                      decoration: BoxDecoration(color: customColors?.primaryBg),
+                      child: Icon(Icons.chevron_right_rounded),
+                    ),
                     subtitle: Text(
                       item?.service?.description ??
                           itemPurchase?.service?.description ??

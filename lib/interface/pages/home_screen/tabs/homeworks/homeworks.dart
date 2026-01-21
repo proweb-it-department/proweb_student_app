@@ -342,16 +342,13 @@ class TrailingWork extends StatelessWidget {
     } else if (isExamination) {
       return RotatingScoreIcon(color: color);
     } else {
-      return Opacity(
-        opacity: 0.5,
-        child: ScoreIcon(
-          score: 0,
-          child: Container(
-            width: 30,
-            height: 30,
-            color: HexColor(color ?? '#ffffff'),
-            child: Center(child: Icon(Icons.chevron_right, color: colorText)),
-          ),
+      return ScoreIcon(
+        score: 0,
+        child: Container(
+          width: 30,
+          height: 30,
+          color: HexColor(color ?? '#ffffff'),
+          child: Center(child: Icon(Icons.chevron_right, color: colorText)),
         ),
       );
     }

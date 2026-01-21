@@ -218,6 +218,10 @@ class BalanceWidgetInPage extends StatelessWidget {
                                                   },
                                                   label: Text(
                                                     'Пополнить баланс',
+                                                    style: TextStyle(
+                                                      color: customColors
+                                                          ?.primaryTextColor,
+                                                    ),
                                                   ),
                                                   icon: Icon(
                                                     Icons.payment_rounded,

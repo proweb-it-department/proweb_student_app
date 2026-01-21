@@ -177,7 +177,7 @@ class ModuleMaterialView extends StatelessWidget {
             );
           },
           separatorBuilder: (context, index) {
-            return SizedBox(height: 2);
+            return SizedBox(height: 0);
           },
           itemCount: materials.length,
         ),

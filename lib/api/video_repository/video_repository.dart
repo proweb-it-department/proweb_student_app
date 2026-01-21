@@ -37,7 +37,6 @@ class VideoRepository {
       db.videoSaved,
     )..where((tbl) => tbl.slug.equals(slug))).getSingleOrNull();
     if (video == null) return null;
-    TalkerLogger().log(video);
     if (video.preview != null) {
       video = video.copyWith(
         preview: Value(

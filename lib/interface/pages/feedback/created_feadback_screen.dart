@@ -147,7 +147,10 @@ class _BodyCreatedFeadbackState extends State<BodyCreatedFeadback> {
                     context.router.navigate(FeedbackRoute());
                   },
             icon: Icon(Icons.add),
-            label: Text('global_data.Create_data'.tr()),
+            label: Text(
+              'global_data.Create_data'.tr(),
+              style: TextStyle(color: customColors?.primaryTextColor),
+            ),
           ),
         ],
       ),

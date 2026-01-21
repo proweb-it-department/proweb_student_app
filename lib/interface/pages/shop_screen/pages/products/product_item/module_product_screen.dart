@@ -98,7 +98,7 @@ class ModuleProductBody extends StatelessWidget {
                       product: product,
                     );
                   },
-                  separatorBuilder: (context, index) => SizedBox(height: 4),
+                  separatorBuilder: (context, index) => SizedBox(height: 2),
                   itemCount: productModules.length,
                 ),
               ),

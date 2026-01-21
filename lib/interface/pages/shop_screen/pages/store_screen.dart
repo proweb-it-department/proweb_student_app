@@ -38,8 +38,8 @@ class StoreScreen extends StatelessWidget {
                     borderRadius: BorderRadiusGeometry.only(
                       topLeft: Radius.circular(22),
                       topRight: Radius.circular(22),
-                      bottomLeft: Radius.circular(6),
-                      bottomRight: Radius.circular(6),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
                     ),
                     child: Material(
                       color: customColors?.primaryBg,
@@ -55,7 +55,7 @@ class StoreScreen extends StatelessWidget {
                             spacing: 10,
                             children: [
                               ClipPath(
-                                clipper: SvgClipper(PathSvgShape.pill),
+                                clipper: SvgClipper(PathSvgShape.leaf4Cookie),
                                 child: OneUiIconShape(
                                   size: 80,
                                   color: LinearGradient(
@@ -91,10 +91,10 @@ class StoreScreen extends StatelessWidget {
                   mainAxisCellCount: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
-                      bottomLeft: Radius.circular(6),
-                      bottomRight: Radius.circular(6),
+                      topLeft: Radius.circular(0),
+                      topRight: Radius.circular(0),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
                     ),
                     child: Material(
                       color: customColors?.primaryBg,
@@ -143,10 +143,10 @@ class StoreScreen extends StatelessWidget {
                   mainAxisCellCount: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
-                      bottomLeft: Radius.circular(6),
-                      bottomRight: Radius.circular(6),
+                      topLeft: Radius.circular(0),
+                      topRight: Radius.circular(0),
+                      bottomLeft: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
                     ),
                     child: Material(
                       color: customColors?.primaryBg,
@@ -163,7 +163,7 @@ class StoreScreen extends StatelessWidget {
                             spacing: 10,
                             children: [
                               ClipPath(
-                                clipper: SvgClipper(PathSvgShape.arrow),
+                                clipper: SvgClipper(PathSvgShape.pentagon),
                                 child: OneUiIconShape(
                                   size: 80,
                                   color: LinearGradient(
@@ -199,8 +199,8 @@ class StoreScreen extends StatelessWidget {
                   mainAxisCellCount: 1,
                   child: ClipRRect(
                     borderRadius: BorderRadiusGeometry.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
+                      topLeft: Radius.circular(0),
+                      topRight: Radius.circular(0),
                       bottomLeft: Radius.circular(22),
                       bottomRight: Radius.circular(22),
                     ),
@@ -217,16 +217,13 @@ class StoreScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             spacing: 10,
                             children: [
-                              ClipPath(
-                                clipper: SvgClipper(PathSvgShape.leaf12Cookie),
-                                child: OneUiIconShapeTarif(
-                                  size: 80,
-                                  child: Text(
-                                    'PREMIUM',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              OneUiIconShapeTarif(
+                                size: 80,
+                                child: Text(
+                                  'PREMIUM',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
@@ -274,7 +271,7 @@ class _OneUiIconShapeTarifState extends State<OneUiIconShapeTarif>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 5),
+      duration: const Duration(seconds: 8),
     )..repeat();
   }
 
@@ -289,18 +286,27 @@ class _OneUiIconShapeTarifState extends State<OneUiIconShapeTarif>
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
-        return Container(
-          alignment: Alignment.center,
-          width: widget.size,
-          height: widget.size,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
-              stops: [0.28, 1.0],
-              transform: GradientRotation(_controller.value * 2 * math.pi),
+        return RotationTransition(
+          turns: _controller,
+          child: ClipPath(
+            clipper: SvgClipper(PathSvgShape.leaf9Cookie),
+            child: Container(
+              alignment: Alignment.center,
+              width: widget.size,
+              height: widget.size,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF5296FD), Color(0xFFBF57FF)],
+                  stops: [0.28, 1.0],
+                  transform: GradientRotation(_controller.value * 2 * math.pi),
+                ),
+              ),
+              child: RotationTransition(
+                turns: Tween<double>(begin: 0, end: -1).animate(_controller),
+                child: child,
+              ),
             ),
           ),
-          child: child,
         );
       },
       child: widget.child,

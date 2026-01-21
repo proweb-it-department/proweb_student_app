@@ -10,50 +10,53 @@ class PriceProduct extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Ink(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 0,
-        children: [
-          if (product.saleType == ProductSaleType.package ||
-              product.saleType == ProductSaleType.packageMoney)
-            PremiumContainer(
-              text: 'transactions_balance.tarif_transaction'.tr(),
-            ),
-          if (product.price != null &&
-              (product.saleType == ProductSaleType.packageMoney ||
-                  product.saleType == ProductSaleType.money))
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              child: Text(
-                'global_data.sum'.tr(
-                  namedArgs: {
-                    'money': NumberFormat(
-                      '#,##0',
-                      'ru_RU',
-                    ).format(double.parse(product.price!)),
-                  },
+    return Material(
+      color: Colors.transparent,
+      child: Ink(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: 0,
+          children: [
+            if (product.saleType == ProductSaleType.package ||
+                product.saleType == ProductSaleType.packageMoney)
+              PremiumContainer(
+                text: 'transactions_balance.tarif_transaction'.tr(),
+              ),
+            if (product.price != null &&
+                (product.saleType == ProductSaleType.packageMoney ||
+                    product.saleType == ProductSaleType.money))
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                child: Text(
+                  'global_data.sum'.tr(
+                    namedArgs: {
+                      'money': NumberFormat(
+                        '#,##0',
+                        'ru_RU',
+                      ).format(double.parse(product.price!)),
+                    },
+                  ),
+                  style: TextStyle(color: Colors.black, fontSize: 12),
                 ),
-                style: TextStyle(color: Colors.black, fontSize: 12),
               ),
-            ),
-          if (product.priceCoin != null &&
-              product.saleType == ProductSaleType.coin)
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              child: Text(
-                NumberFormat(
-                  '#,##0',
-                  'ru_RU',
-                ).format(double.parse('${product.priceCoin!}')),
-                style: TextStyle(color: Colors.black, fontSize: 12),
+            if (product.priceCoin != null &&
+                product.saleType == ProductSaleType.coin)
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                child: Text(
+                  NumberFormat(
+                    '#,##0',
+                    'ru_RU',
+                  ).format(double.parse('${product.priceCoin!}')),
+                  style: TextStyle(color: Colors.black, fontSize: 12),
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

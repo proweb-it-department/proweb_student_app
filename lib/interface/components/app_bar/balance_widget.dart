@@ -534,7 +534,12 @@ class BalanceView extends StatelessWidget {
                               openTopUpBalance();
                               openPaymentProviders(context);
                             },
-                            label: Text('Пополнить баланс'),
+                            label: Text(
+                              'Пополнить баланс',
+                              style: TextStyle(
+                                color: customColors?.primaryTextColor,
+                              ),
+                            ),
                             icon: Icon(Icons.payment_rounded),
                           ),
                         ],

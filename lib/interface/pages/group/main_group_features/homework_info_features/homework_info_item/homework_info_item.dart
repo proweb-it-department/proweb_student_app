@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/homework_list_group/homework_list_group.dart';
@@ -109,14 +110,11 @@ class TrailingWork extends StatelessWidget {
     } else if (isExamination) {
       return RotatingScoreIcon(color: group.course?.color);
     } else {
-      return ScoreIcon(
-        score: 0,
-        child: Container(
-          width: 30,
-          height: 30,
-          color: Colors.red,
-          child: Center(child: Icon(Icons.chevron_right)),
-        ),
+      return GoPage(
+        width: 30,
+        height: 30,
+        color: HexColor(group.course?.color ?? '#ffffff'),
+        child: Center(child: Icon(Icons.chevron_right)),
       );
     }
   }
@@ -140,18 +138,10 @@ class ScoreIcon extends StatelessWidget {
     } else if (score == 4) {
       clipper = PathSvgShape.ghostIsh;
     } else if (score == 0) {
-      clipper = PathSvgShape.arch;
+      return GoPage(child: child);
     }
-    return RotatedBox(
-      quarterTurns: clipper == PathSvgShape.arch ? 1 : 0,
-      child: ClipPath(
-        clipper: SvgClipper(clipper),
-        child: RotatedBox(
-          quarterTurns: clipper == PathSvgShape.arch ? -1 : 0,
-          child: child,
-        ),
-      ),
-    );
+
+    return ClipPath(clipper: SvgClipper(clipper), child: child);
   }
 }
 

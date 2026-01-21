@@ -10,20 +10,16 @@ class MyGroupsWidgets extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: AspectRatio(
-        aspectRatio: 16 / 9,
+      child: SizedBox(
+        height: 210,
         child: PageView.builder(
           physics: BouncingScrollPhysics(),
           itemBuilder: (context, index) {
             return Padding(
               padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
-              child: ClipRRect(
-                clipBehavior: Clip.antiAlias,
-                borderRadius: BorderRadius.circular(20),
-                child: Material(
-                  color: Colors.transparent,
-                  child: MyGroupsItemWidgets(myGroup: groups[index]),
-                ),
+              child: Material(
+                color: Colors.transparent,
+                child: MyGroupsItemWidgets(myGroup: groups[index]),
               ),
             );
           },

@@ -24,7 +24,6 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_connect.dart';
 import 'package:proweb_student_app/utils/ws_connect/ws_enums.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class HomeworkAboutContent extends StatefulWidget {
   final HomeworkStudentRelationGroup relation;
@@ -677,17 +676,7 @@ class InfoDedlineWork extends StatelessWidget {
     final deadlineExpired = relation.deadlineExpired;
     final checkedRetakenAt = relation.checkedRetakenAt;
     final score = relation.score;
-    TalkerLogger().log(groupUser.status);
-    TalkerLogger().log(
-      ''' deadlineExpired == false &&
-          !(checkedRetakenAt != null && score != null && score > 0) ${deadlineExpired == false && !(checkedRetakenAt != null && score != null && score > 0)}  ''',
-    );
-    TalkerLogger().log(
-      ''' deadlineLessonNumber != null && deadlineLessonNumber != 0 ${deadlineLessonNumber != null && deadlineLessonNumber != 0}  ''',
-    );
-    TalkerLogger().log(
-      ''' deadlineLessonNumber $deadlineLessonNumber  deadlineLessonNumber $deadlineLessonNumber ''',
-    );
+
     if (deadlineLessonNumber != null && deadlineLessonNumber != 0) {
       if (deadlineExpired == false &&
           !(checkedRetakenAt != null && score != null && score > 0) &&

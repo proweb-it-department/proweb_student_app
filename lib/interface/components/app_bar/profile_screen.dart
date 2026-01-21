@@ -7,6 +7,7 @@ import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/my_telegram_connected/my_telegram_connected_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/app_bar/widgets/language_settings.dart';
 import 'package:proweb_student_app/interface/components/app_bar/widgets/theme_color_settings.dart';
 import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
@@ -212,15 +213,13 @@ class ProfileBody extends StatelessWidget {
                                         background: customColor?.primaryBg,
                                         shapeColor: customColor?.additionalTwo,
                                       )
-                                    : Ink(
+                                    : GoPage(
                                         decoration: BoxDecoration(
                                           color: customColor?.primaryBg,
-                                          borderRadius: BorderRadius.circular(
-                                            80,
-                                          ),
                                         ),
                                         child: Icon(Icons.keyboard_arrow_right),
                                       ),
+
                                 subtitle: data == null
                                     ? Text('Загрузка...')
                                     : Text(
@@ -251,15 +250,13 @@ class ProfileBody extends StatelessWidget {
                                         background: customColor?.primaryBg,
                                         shapeColor: customColor?.additionalTwo,
                                       )
-                                    : Ink(
+                                    : GoPage(
                                         decoration: BoxDecoration(
                                           color: customColor?.primaryBg,
-                                          borderRadius: BorderRadius.circular(
-                                            80,
-                                          ),
                                         ),
                                         child: Icon(Icons.keyboard_arrow_right),
                                       ),
+
                                 subtitle: profile == null
                                     ? Text('Загрузка...')
                                     : profile.email == null
@@ -291,10 +288,9 @@ class ProfileBody extends StatelessWidget {
                           },
                           leading: IconAvatar(icon: Icons.slow_motion_video),
                           title: Text('profile_dialog.download_video'.tr()),
-                          trailing: Ink(
+                          trailing: GoPage(
                             decoration: BoxDecoration(
                               color: customColor?.primaryBg,
-                              borderRadius: BorderRadius.circular(80),
                             ),
                             child: Icon(Icons.keyboard_arrow_right),
                           ),
@@ -318,10 +314,9 @@ class ProfileBody extends StatelessWidget {
                         },
                         leading: IconAvatar(icon: Icons.file_open_outlined),
                         title: Text('profile_dialog.download_files'.tr()),
-                        trailing: Ink(
+                        trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
-                            borderRadius: BorderRadius.circular(80),
                           ),
                           child: Icon(Icons.keyboard_arrow_right),
                         ),
@@ -344,10 +339,9 @@ class ProfileBody extends StatelessWidget {
                         },
                         leading: IconAvatar(icon: Icons.data_usage),
                         title: Text('Использование памяти'),
-                        trailing: Ink(
+                        trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
-                            borderRadius: BorderRadius.circular(80),
                           ),
                           child: Icon(Icons.keyboard_arrow_right),
                         ),
@@ -383,10 +377,9 @@ class ProfileBody extends StatelessWidget {
                         onTap: () {},
                         leading: IconAvatar(icon: Icons.phonelink),
                         title: Text('Мои активные сессии'),
-                        trailing: Ink(
+                        trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
-                            borderRadius: BorderRadius.circular(80),
                           ),
                           child: Icon(Icons.keyboard_arrow_right),
                         ),
@@ -409,10 +402,9 @@ class ProfileBody extends StatelessWidget {
                         onTap: () {},
                         leading: IconAvatar(icon: Icons.timer_outlined),
                         title: Text('Срок действия сессии'),
-                        trailing: Ink(
+                        trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
-                            borderRadius: BorderRadius.circular(80),
                           ),
                           child: Icon(Icons.keyboard_arrow_right),
                         ),

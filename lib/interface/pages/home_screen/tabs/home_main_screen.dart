@@ -12,6 +12,7 @@ import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_g
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/global_context/global_context.dart';
+import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
 class HomeMainTab extends StatelessWidget {
@@ -21,6 +22,7 @@ class HomeMainTab extends StatelessWidget {
     if (sl<NavigationService>().context == null) {
       sl<NavigationService>().setContext(context);
     }
+    final customColors = Theme.of(context).extension<CustomColors>();
     return Md3RefreshIndicator(
       onRefresh: () async {
         final blocstory = context.read<StoryGroupsBloc>();
@@ -33,61 +35,81 @@ class HomeMainTab extends StatelessWidget {
         await blocgroups.stream.first;
         await Future.delayed(Duration(seconds: 1, milliseconds: 500));
       },
-      child: ListView(
-        children: [
-          StoryGroupsView(),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 20,
-              right: 10,
-              top: 20,
-              bottom: 10,
+      child: Material(
+        color: customColors?.containerColor,
+        child: ListView(
+          children: [
+            Material(
+              color: customColors?.primaryBg,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [StoryGroupsView(), SizedBox(height: 20)],
+              ),
             ),
-            child: Text(
-              'education.my_groups'.tr(),
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-          ),
-          BlocBuilder<MyGroupsBloc, MyGroupsState>(
-            bloc: context.read<MyGroupsBloc>()..add(MyGroupsEvent.started()),
-            builder: (context, state) {
-              return switch (state) {
-                MyGroupsInitial() => Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Center(child: Md3CirculeIndicator()),
-                ),
-                MyGroupsLoading() => Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Center(child: Md3CirculeIndicator()),
-                ),
-                MyGroupsNotFound() => Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Center(
-                    child: NoData(
-                      text: 'education.no_group'.tr(),
-                      icon: Icons.group_off,
-                    ),
+            Material(
+              color: customColors?.primaryBg,
+
+              child: Ink(
+                decoration: BoxDecoration(
+                  color: customColors?.containerColor,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(22),
+                    topRight: Radius.circular(22),
                   ),
                 ),
-                MyGroupsErrorLoad() => Padding(
-                  padding: EdgeInsets.all(8),
-                  child: ErrorLoad(
-                    action: FilledButton(
-                      onPressed: () {
-                        final bloc = context.read<MyGroupsBloc>();
-                        bloc.add(MyGroupsEvent.started());
-                      },
-                      child: Text('global_data.try_again'.tr()),
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 10,
+                  top: 10,
+                  bottom: 10,
+                ),
+                child: Text(
+                  'education.my_groups'.tr(),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            BlocBuilder<MyGroupsBloc, MyGroupsState>(
+              bloc: context.read<MyGroupsBloc>()..add(MyGroupsEvent.started()),
+              builder: (context, state) {
+                return switch (state) {
+                  MyGroupsInitial() => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Center(child: Md3CirculeIndicator()),
+                  ),
+                  MyGroupsLoading() => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Center(child: Md3CirculeIndicator()),
+                  ),
+                  MyGroupsNotFound() => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Center(
+                      child: NoData(
+                        text: 'education.no_group'.tr(),
+                        icon: Icons.group_off,
+                      ),
                     ),
                   ),
-                ),
-                MyGroupsComplited(groups: final groups) => MyGroupsWidgets(
-                  groups: groups,
-                ),
-              };
-            },
-          ),
-        ],
+                  MyGroupsErrorLoad() => Padding(
+                    padding: EdgeInsets.all(8),
+                    child: ErrorLoad(
+                      action: FilledButton(
+                        onPressed: () {
+                          final bloc = context.read<MyGroupsBloc>();
+                          bloc.add(MyGroupsEvent.started());
+                        },
+                        child: Text('global_data.try_again'.tr()),
+                      ),
+                    ),
+                  ),
+                  MyGroupsComplited(groups: final groups) => MyGroupsWidgets(
+                    groups: groups,
+                  ),
+                };
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

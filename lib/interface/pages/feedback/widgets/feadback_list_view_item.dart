@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/models/feadbacks_page_item/feadbacks_page_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -122,7 +123,12 @@ class FeadbackListViewItem extends StatelessWidget {
                           style: TextStyle(color: colorStatus),
                         ),
                       ),
-                      Icon(Icons.keyboard_arrow_right),
+                      GoPage(
+                        decoration: BoxDecoration(
+                          color: customColors?.containerColor,
+                        ),
+                        child: Icon(Icons.keyboard_arrow_right),
+                      ),
                     ],
                   ),
                 );

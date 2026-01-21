@@ -287,7 +287,12 @@ class _TicketContentState extends State<TicketContent> {
                               );
                             }
                           },
-                          child: Text('global_data.Reject'.tr()),
+                          child: Text(
+                            'global_data.Reject'.tr(),
+                            style: TextStyle(
+                              color: customColors?.primaryTextColor,
+                            ),
+                          ),
                         ),
                       ],
                     )

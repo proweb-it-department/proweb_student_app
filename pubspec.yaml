@@ -90,6 +90,7 @@ dependencies:
   disk_space_2: ^1.0.12
   storage_info: ^1.0.0
   crop_your_image: ^2.0.0
+  gradient_borders: ^1.0.2
 
 dev_dependencies:
   flutter_test:

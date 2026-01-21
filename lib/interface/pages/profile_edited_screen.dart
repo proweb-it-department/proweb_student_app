@@ -442,7 +442,10 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                     ),
                   );
                 },
-                label: Text('Создать обращение'),
+                label: Text(
+                  'Создать обращение',
+                  style: TextStyle(color: customColor?.primaryTextColor),
+                ),
                 icon: Icon(Icons.add),
                 style: FilledButton.styleFrom(
                   backgroundColor: customColor?.containerColor,
