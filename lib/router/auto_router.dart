@@ -2,13 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:proweb_student_app/router/predictive_back_route.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/global_context/global_context.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen|Page|Tab,Route')
 class AppRouter extends RootStackRouter {
   @override
-  RouteType get defaultRouteType => RouteType.cupertino();
+  RouteType get defaultRouteType => RouteType.material();
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _updateContext();
@@ -133,9 +134,13 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/profile',
       page: ProfileRoute.page,
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       guards: [_AuthGuard()],
       children: [],
     ),

@@ -15,6 +15,7 @@ import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
+import 'package:proweb_student_app/router/predictive_back_scope.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -34,34 +35,37 @@ class ProfileScreen extends StatelessWidget {
           context,
           systemNavBarStyle: FlexSystemNavBarStyle.transparent,
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            leading: SizedBox(width: 0),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: IconButton.styleFrom(
-                  backgroundColor: customColor?.containerColor,
+        child: PredictiveBackScope(
+          onPop: () => context.router.pop(),
+          child: Scaffold(
+            appBar: AppBar(
+              leading: SizedBox(width: 0),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: IconButton.styleFrom(
+                    backgroundColor: customColor?.containerColor,
+                  ),
+                  icon: Icon(Icons.close, color: customColor?.primaryTextColor),
                 ),
-                icon: Icon(Icons.close, color: customColor?.primaryTextColor),
+              ],
+              title: profileBloc.state.when(
+                view: (profile) {
+                  return Text(
+                    sl<LocalData>().getContryCode(phone: profile.phone),
+                    style: TextStyle(fontSize: 16),
+                  );
+                },
+                initial: () => Md3CirculeIndicator(size: 20),
               ),
-            ],
-            title: profileBloc.state.when(
-              view: (profile) {
-                return Text(
-                  sl<LocalData>().getContryCode(phone: profile.phone),
-                  style: TextStyle(fontSize: 16),
-                );
-              },
-              initial: () => Md3CirculeIndicator(size: 20),
-            ),
 
-            surfaceTintColor: customColor?.additionalTwo,
-            centerTitle: true,
+              surfaceTintColor: customColor?.additionalTwo,
+              centerTitle: true,
+            ),
+            body: ProfileBody(),
           ),
-          body: ProfileBody(),
         ),
       ),
     );
