@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:proweb_student_app/router/predictive_back_scope.dart';
 
 class PredictiveBackRouteCustom<T> extends PageRoute<T> {
   final Widget child;
@@ -29,6 +31,6 @@ class PredictiveBackRouteCustom<T> extends PageRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    return child;
+    return PredictiveBackScope(onPop: () => context.router.pop(), child: child);
   }
 }

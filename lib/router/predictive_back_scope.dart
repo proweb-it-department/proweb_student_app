@@ -12,6 +12,11 @@ class PredictiveBackScope extends StatefulWidget {
     required this.onPop,
   });
 
+  /// Получение state для программного pop (кнопка назад)
+  static _PredictiveBackScopeState? of(BuildContext context) {
+    return context.findAncestorStateOfType<_PredictiveBackScopeState>();
+  }
+
   @override
   State<PredictiveBackScope> createState() => _PredictiveBackScopeState();
 }
@@ -35,7 +40,15 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, value: 0);
+    // стартуем с открытой страницы
+    _controller = AnimationController(vsync: this, value: 1.0);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 260),
+        curve: Curves.easeOutCubic,
+      );
+    });
   }
 
   @override
@@ -44,19 +57,18 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     super.dispose();
   }
 
+  /// Обновление при свайпе
   void _update(double dx, double width) {
     _controller.value = (_controller.value + dx / width).clamp(0.0, 1.0);
   }
 
+  /// Завершение свайпа (или velocity)
   void _end(double velocity) {
     final shouldPop =
         _controller.value > _commitThreshold || velocity > _velocityThreshold;
-
     final target = shouldPop ? 1.0 : 0.0;
 
-    if (shouldPop) {
-      HapticFeedback.lightImpact();
-    }
+    if (shouldPop) HapticFeedback.lightImpact();
 
     final simulation = SpringSimulation(
       _spring,
@@ -72,6 +84,12 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     _dragging = false;
   }
 
+  /// Программный pop (кнопка назад)
+  Future<void> pop() async {
+    final simulation = SpringSimulation(_spring, _controller.value, 1.0, 0);
+    _controller.animateWith(simulation).then((_) => widget.onPop());
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -81,7 +99,7 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
       builder: (_, __) {
         final t = _controller.value;
 
-        // opacity всего stack (fade-out в конце)
+        // Fade всего stack
         final stackOpacity = t < 0.9
             ? 1.0
             : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
@@ -111,7 +129,7 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
                 ),
               ),
 
-              // edge gesture
+              // edge swipe
               Positioned(
                 left: 0,
                 top: 0,
@@ -121,14 +139,10 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
                   behavior: HitTestBehavior.translucent,
                   onHorizontalDragStart: (_) => _dragging = true,
                   onHorizontalDragUpdate: (d) {
-                    if (_dragging) {
-                      _update(d.delta.dx, width);
-                    }
+                    if (_dragging) _update(d.delta.dx, width);
                   },
                   onHorizontalDragEnd: (d) {
-                    if (_dragging) {
-                      _end(d.velocity.pixelsPerSecond.dx);
-                    }
+                    if (_dragging) _end(d.velocity.pixelsPerSecond.dx);
                   },
                   onHorizontalDragCancel: () {
                     if (_dragging) _end(0);

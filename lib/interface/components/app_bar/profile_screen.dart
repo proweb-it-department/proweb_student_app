@@ -35,37 +35,34 @@ class ProfileScreen extends StatelessWidget {
           context,
           systemNavBarStyle: FlexSystemNavBarStyle.transparent,
         ),
-        child: PredictiveBackScope(
-          onPop: () => context.router.pop(),
-          child: Scaffold(
-            appBar: AppBar(
-              leading: SizedBox(width: 0),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  style: IconButton.styleFrom(
-                    backgroundColor: customColor?.containerColor,
-                  ),
-                  icon: Icon(Icons.close, color: customColor?.primaryTextColor),
-                ),
-              ],
-              title: profileBloc.state.when(
-                view: (profile) {
-                  return Text(
-                    sl<LocalData>().getContryCode(phone: profile.phone),
-                    style: TextStyle(fontSize: 16),
-                  );
+        child: Scaffold(
+          appBar: AppBar(
+            leading: SizedBox(width: 0),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
                 },
-                initial: () => Md3CirculeIndicator(size: 20),
+                style: IconButton.styleFrom(
+                  backgroundColor: customColor?.containerColor,
+                ),
+                icon: Icon(Icons.close, color: customColor?.primaryTextColor),
               ),
-
-              surfaceTintColor: customColor?.additionalTwo,
-              centerTitle: true,
+            ],
+            title: profileBloc.state.when(
+              view: (profile) {
+                return Text(
+                  sl<LocalData>().getContryCode(phone: profile.phone),
+                  style: TextStyle(fontSize: 16),
+                );
+              },
+              initial: () => Md3CirculeIndicator(size: 20),
             ),
-            body: ProfileBody(),
+
+            surfaceTintColor: customColor?.additionalTwo,
+            centerTitle: true,
           ),
+          body: ProfileBody(),
         ),
       ),
     );

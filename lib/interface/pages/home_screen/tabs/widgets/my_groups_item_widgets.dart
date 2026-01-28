@@ -4,10 +4,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
+import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 import 'package:talker_logger/talker_logger.dart';
 
@@ -120,6 +122,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
     final isGraduated =
         widget.myGroup.status == StudentStatus.graduate ||
         widget.myGroup.status == StudentStatus.partiallyCompleted;
+    final graduated = widget.myGroup.group?.graduatedDate;
     final isPremium = widget.myGroup.hasPackage == true;
     final lesson = widget.myGroup.group?.lessons?.firstOrNull;
     return InkWell(
@@ -270,7 +273,13 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                                     Icon(
                                       block
                                           ? Icons.lock_outline
-                                          : Icons.question_mark_rounded,
+                                          : isLeave
+                                          ? Icons.close
+                                          : isTransfer
+                                          ? Icons.published_with_changes
+                                          : isGraduated
+                                          ? Icons.celebration
+                                          : Icons.check,
                                       size: 12,
                                     ),
                                     Text(
@@ -281,7 +290,16 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                                           : isTransfer
                                           ? 'Вы перевелись'
                                           : isGraduated
-                                          ? 'Вы выпустились'
+                                          ? graduated == null
+                                                ? 'Вы выпустились'
+                                                : sl<LocalData>().getDateString(
+                                                    date: DateTime.parse(
+                                                      graduated,
+                                                    ),
+                                                  )
+                                          : lesson?.status == 'active' &&
+                                                lesson?.datetime != null
+                                          ? '${sl<LocalData>().getDateString(date: DateTime.parse(lesson!.datetime!).toLocal())}, ${DateTime.parse(lesson.datetime!).toLocal().hour.toString().padLeft(2, '0')}:${DateTime.parse(lesson.datetime!).toLocal().minute.toString().padLeft(2, '0')}'
                                           : 'В процессе обучения',
                                     ),
                                   ],
@@ -292,9 +310,11 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                         ),
                       ),
                     ),
-                    CircleAvatar(
-                      backgroundColor: customColors?.containerColor,
-                      radius: 20,
+                    GoPage(
+                      color: customColors?.containerColor,
+                      width: 40,
+                      height: 40,
+                      child: Icon(Icons.chevron_right),
                     ),
                   ],
                 ),

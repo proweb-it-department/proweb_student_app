@@ -101,15 +101,23 @@ class AppRouter extends RootStackRouter {
         // ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/balance',
       page: HomeBalanceRoute.page,
       guards: [_AuthGuard()],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/shop/my-purchases',
       page: MyPurchasesRoute.page,
       guards: [_AuthGuard()],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       children: [
         AutoRoute(
           path: 'products',
@@ -128,11 +136,15 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/shop/market/products',
       page: ProductsListRoute.page,
       guards: [_AuthGuard()],
       children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
     CustomRoute(
       path: '/profile',
@@ -144,40 +156,64 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/profile/edit',
       page: ProfileEditedRoute.page,
       guards: [_AuthGuard()],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/tg',
       page: TelegramRoute.page,
       guards: [_AuthGuard()],
       children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/savedata',
       page: SavedDataRoute.page,
       guards: [_AuthGuard()],
       children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/shop/market/services',
       page: ServicesListRoute.page,
       guards: [_AuthGuard()],
       children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/shop/market/packages',
       page: TarifsRoute.page,
       guards: [_AuthGuard()],
       children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
     ),
-    AutoRoute(
+    CustomRoute(
       path: '/shop/product/:id',
       page: ProductItemRoute.page,
       initial: false,
       guards: [_AuthGuard()],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       children: [
         AutoRoute(
           page: ProductRoute.page,
@@ -187,26 +223,67 @@ class AppRouter extends RootStackRouter {
         AutoRoute(page: ModuleProductRoute.page, guards: [_AuthGuard()]),
       ],
     ),
-    AutoRoute(page: ModuleRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(page: MaterialProductRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: ModuleRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: MaterialProductRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       page: DownloadsGroupLessonVideoRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(page: DownloadsGroupVideosRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: DownloadsGroupVideosRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       page: DownloadsExclusiveProductModulesVideoRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       page: DownloadsExclusiveProductModulesMaterialVideoRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       page: DownloadsExclusiveProductModulesMaterialVideosRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/group/:id',
       page: MainGroupRoute.page,
       guards: [_AuthGuard()],
@@ -254,12 +331,20 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/group/:id/main/:lessonid',
       page: LessonVideoRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/group/:id/homeworks/:relationId',
       page: HomeworkRouteRoute.page,
       guards: [_AuthGuard()],
@@ -282,12 +367,20 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/group/:id/material/:relationId',
       page: MaterialViewRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/group/:id/test/:relationId',
       page: TestRouteRoute.page,
       guards: [_AuthGuard()],
@@ -305,7 +398,11 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/download',
       page: DownloadRoute.page,
       guards: [_AuthGuard()],
@@ -328,28 +425,80 @@ class AppRouter extends RootStackRouter {
         ),
       ],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/download/:slug',
       page: VideoSlugRoute.page,
       guards: [_AuthGuard()],
     ),
 
-    AutoRoute(page: TransactionViewRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(page: CoworkingReserveRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(page: CoworkingSignUpRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(page: CreatedFeadbackRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: TransactionViewRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: CoworkingReserveRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: CoworkingSignUpRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      page: CreatedFeadbackRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/feedback/tickets/:id',
       page: ViewItemFeadbackRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(path: '/user/:id', page: UserRoute.page, guards: [_AuthGuard()]),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+      path: '/user/:id',
+      page: UserRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       path: '/ranking/course/:id',
       page: CourseRankingViewRoute.page,
       guards: [_AuthGuard()],
     ),
-    AutoRoute(
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
       page: StoryRoute.page,
       fullscreenDialog: true,
       guards: [_AuthGuard()],
