@@ -5,6 +5,12 @@ class AppThemeData {
   static ThemeData start(BuildContext context, CustomColors color) {
     return ThemeData(
       useMaterial3: true,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: <TargetPlatform, PageTransitionsBuilder>{
+          TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          TargetPlatform.iOS: PredictiveBackPageTransitionsBuilder(),
+        },
+      ),
       checkboxTheme: CheckboxThemeData(
         checkColor: WidgetStateProperty.all<Color>(color.primaryBg),
         side: BorderSide(color: color.primaryTextColor, width: 2),

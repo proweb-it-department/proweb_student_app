@@ -103,7 +103,7 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
               Transform.translate(
                 offset: Offset(width * 0.1 * t, 0),
                 child: Transform.scale(
-                  scale: 1 - 0.3 * t,
+                  scale: 1 - 0.15 * t,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(25 * t),
                     child: widget.child,
