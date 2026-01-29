@@ -44,7 +44,7 @@ class TelegramScafold extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = context.read<MyTelegramConnectedBloc>();
     return Scaffold(
-      appBar: AppBar(title: Text('Привзяка Telegram')),
+      appBar: AppBar(title: Text('Привязка Telegram')),
       body: RefreshIndicator(
         onRefresh: () async {
           bloc.add(MyTelegramConnectedEvent.started());
@@ -205,7 +205,7 @@ class _TgListState extends State<TgList> {
                 textStyle: TextStyle(color: customColors?.primaryTextColor),
               ),
               label: Text(
-                'Привязить аккаунт',
+                'Привязать аккаунт',
                 style: TextStyle(color: customColors?.primaryTextColor),
               ),
               icon: Icon(Icons.add, color: customColors?.primaryTextColor),

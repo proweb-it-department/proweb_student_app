@@ -7,4 +7,10 @@ class ProfileDataEvent with _$ProfileDataEvent {
       _UploadImage;
   const factory ProfileDataEvent.updateBirth({required String date}) =
       _UpdateBirth;
+  const factory ProfileDataEvent.sendCode({required String email}) =
+      _EmailSendCode;
+  const factory ProfileDataEvent.setEmail({
+    required String email,
+    required String verificationCode,
+  }) = _EmailVerificationCode;
 }

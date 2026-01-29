@@ -113,4 +113,12 @@ class PostResponsesAuth {
       form: form,
     );
   }
+
+  Future<void> sendCode(FormData form) async {
+    await sl<AuthFetch>().post(path: '/api/v1/auth/send-code/', form: form);
+  }
+
+  Future<void> setEmail(FormData form) async {
+    await sl<AuthFetch>().post(path: '/api/v1/auth/email/set/', form: form);
+  }
 }

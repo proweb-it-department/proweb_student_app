@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/physics.dart';
@@ -25,7 +27,7 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
-  static const double _edgeWidth = 24;
+  static const double _edgeWidth = 50;
   static const double _commitThreshold = 0.35;
   static const double _velocityThreshold = 900;
 
@@ -36,6 +38,7 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   );
 
   bool _dragging = false;
+  bool _haptic = false;
 
   @override
   void initState() {
@@ -60,6 +63,12 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   /// Обновление при свайпе
   void _update(double dx, double width) {
     _controller.value = (_controller.value + dx / width).clamp(0.0, 1.0);
+    if (_controller.value > _commitThreshold && _haptic == false) {
+      HapticFeedback.lightImpact();
+      _haptic = true;
+    } else if (_controller.value <= _commitThreshold && _haptic == true) {
+      _haptic = false;
+    }
   }
 
   /// Завершение свайпа (или velocity)
@@ -96,34 +105,31 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
 
     return AnimatedBuilder(
       animation: _controller,
-      builder: (_, __) {
+      builder: (_, _) {
         final t = _controller.value;
 
-        // Fade всего stack
         final stackOpacity = t < 0.9
             ? 1.0
             : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
-
+        final scale = computeScale(t);
         return Opacity(
           opacity: stackOpacity,
           child: Stack(
             children: [
-              // scrim над предыдущим экраном
               IgnorePointer(
                 child: Container(
-                  color: Colors.black.withOpacity(
-                    (0.8 * (1 - t)).clamp(0.0, 0.8),
+                  color: Colors.black.withAlpha(
+                    (255 * (0.8 * (1 - t)).clamp(0.2, 0.8)).round(),
                   ),
                 ),
               ),
 
-              // текущий экран
               Transform.translate(
                 offset: Offset(width * 0.1 * t, 0),
                 child: Transform.scale(
-                  scale: 1 - 0.15 * t,
+                  scale: scale,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(25 * t),
+                    borderRadius: BorderRadius.circular(t < 0.01 ? 0 : 40),
                     child: widget.child,
                   ),
                 ),
@@ -154,5 +160,14 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
         );
       },
     );
+  }
+
+  double computeScale(double t) {
+    if (t <= 0.15) {
+      final fastT = Curves.easeOut.transform(t / 0.15);
+      return lerpDouble(1.0, 0.90, fastT)!;
+    }
+    final slowT = Curves.easeIn.transform((t - 0.15) / 0.85);
+    return lerpDouble(0.90, 0.85, slowT)!;
   }
 }

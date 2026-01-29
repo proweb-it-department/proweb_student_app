@@ -24,7 +24,7 @@ class BottomNavBar extends StatelessWidget {
     final profileBloc = context.watch<ProfileDataBloc>();
     final profile = profileBloc.state.when(
       initial: () => null,
-      view: (profile) => profile,
+      view: (profile, _) => profile,
     );
     final isVisible = context
         .watch<ScrollStateProvider>()
@@ -48,7 +48,7 @@ class BottomNavBar extends StatelessWidget {
           height: navBar.isOpen ? MediaQuery.of(context).size.height : 92,
           padding: EdgeInsets.only(
             top: 10,
-            bottom: 2 + pb,
+            bottom: 2 + (pb > 10 ? pb : 10),
             left: 10,
             right: 10,
           ),

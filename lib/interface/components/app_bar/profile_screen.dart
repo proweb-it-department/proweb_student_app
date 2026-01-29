@@ -15,7 +15,6 @@ import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
-import 'package:proweb_student_app/router/predictive_back_scope.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
@@ -50,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ],
             title: profileBloc.state.when(
-              view: (profile) {
+              view: (profile, _) {
                 return Text(
                   sl<LocalData>().getContryCode(phone: profile.phone),
                   style: TextStyle(fontSize: 16),
@@ -78,7 +77,7 @@ class ProfileBody extends StatelessWidget {
     final customColor = Theme.of(context).extension<CustomColors>();
     final profile = profileBloc.state.when(
       initial: () => null,
-      view: (profile) => profile,
+      view: (profile, _) => profile,
     );
     final birth = profile?.dateOfBirth;
     return SingleChildScrollView(
@@ -239,7 +238,11 @@ class ProfileBody extends StatelessWidget {
                                 tileColor: customColor?.containerColor,
                                 shape: shape,
                                 contentPadding: contentPadding,
-                                onTap: data == null ? null : () {},
+                                onTap: data == null
+                                    ? null
+                                    : () {
+                                        context.router.push(EmailRoute());
+                                      },
                                 leading: IconAvatar(
                                   icon: Icons.alternate_email_rounded,
                                 ),

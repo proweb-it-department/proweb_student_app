@@ -109,7 +109,7 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
     final profileBloc = context.watch<ProfileDataBloc>();
     final profile = profileBloc.state.when(
       initial: () => null,
-      view: (profile) => profile,
+      view: (profile, _) => profile,
     );
     final customColor = Theme.of(context).extension<CustomColors>();
     if (profile == null) {

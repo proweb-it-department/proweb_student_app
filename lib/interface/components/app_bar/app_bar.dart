@@ -70,7 +70,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           builder: (context, state) {
             return state.when(
               initial: () => CircularProgressIndicator(strokeWidth: 2),
-              view: (profile) {
+              view: (profile, _) {
                 return GestureDetector(
                   onTap: () async {
                     context.router.navigate(ProfileRoute());

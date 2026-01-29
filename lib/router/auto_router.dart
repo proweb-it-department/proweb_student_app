@@ -176,6 +176,16 @@ class AppRouter extends RootStackRouter {
       },
     ),
     CustomRoute(
+      path: '/email',
+      page: EmailRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page)
+            as PageRoute<T>;
+      },
+    ),
+    CustomRoute(
       path: '/savedata',
       page: SavedDataRoute.page,
       guards: [_AuthGuard()],

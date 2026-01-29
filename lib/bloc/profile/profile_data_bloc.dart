@@ -20,17 +20,17 @@ class ProfileDataBloc extends Bloc<ProfileDataEvent, ProfileDataState> {
         await sl<LocalData>().requestMyProfile(GetMyProfileEnum.local);
         final MyProfile? profile = sl<LocalData>().profile;
         if (profile != null) {
-          emit(ProfileDataState.view(profile: profile));
+          emit(ProfileDataState.view(profile: profile, load: false));
         }
         await sl<LocalData>().requestMyProfile(GetMyProfileEnum.network);
         final MyProfile? profileNetwork = sl<LocalData>().profile;
         if (profileNetwork != null) {
-          emit(ProfileDataState.view(profile: profileNetwork));
+          emit(ProfileDataState.view(profile: profileNetwork, load: false));
         }
       }
 
       uploadImage(Uint8List img) async {
-        final profile = state.whenOrNull(view: (profile) => profile);
+        final profile = state.whenOrNull(view: (profile, _) => profile);
         if (profile == null) return;
         final form = FormData.fromMap({
           'image': MultipartFile.fromBytes(
@@ -43,12 +43,12 @@ class ProfileDataBloc extends Bloc<ProfileDataEvent, ProfileDataState> {
         await sl<LocalData>().requestMyProfile(GetMyProfileEnum.network);
         final MyProfile? profileNetwork = sl<LocalData>().profile;
         if (profileNetwork != null) {
-          emit(ProfileDataState.view(profile: profileNetwork));
+          emit(ProfileDataState.view(profile: profileNetwork, load: false));
         }
       }
 
       updateBirth(String date) async {
-        final profile = state.whenOrNull(view: (profile) => profile);
+        final profile = state.whenOrNull(view: (profile, _) => profile);
         if (profile == null) return;
         final form = FormData.fromMap({'date_of_birth': date});
         final auth = sl<PostResponsesAuth>();
@@ -56,7 +56,34 @@ class ProfileDataBloc extends Bloc<ProfileDataEvent, ProfileDataState> {
         await sl<LocalData>().requestMyProfile(GetMyProfileEnum.network);
         final MyProfile? profileNetwork = sl<LocalData>().profile;
         if (profileNetwork != null) {
-          emit(ProfileDataState.view(profile: profileNetwork));
+          emit(ProfileDataState.view(profile: profileNetwork, load: false));
+        }
+      }
+
+      sendCode(String email) async {
+        final profile = state.whenOrNull(view: (profile, _) => profile);
+        if (profile == null) return;
+        emit(ProfileDataState.view(profile: profile, load: true));
+        final form = FormData.fromMap({'email': email});
+        final auth = sl<PostResponsesAuth>();
+        await auth.sendCode(form);
+        emit(ProfileDataState.view(profile: profile, load: false));
+      }
+
+      setEmail(String email, String verificationCode) async {
+        final profile = state.whenOrNull(view: (profile, _) => profile);
+        if (profile == null) return;
+        emit(ProfileDataState.view(profile: profile, load: true));
+        final form = FormData.fromMap({
+          'email': email,
+          'verification_code': verificationCode,
+        });
+        final auth = sl<PostResponsesAuth>();
+        await auth.setEmail(form);
+        await sl<LocalData>().requestMyProfile(GetMyProfileEnum.network);
+        final MyProfile? profileNetwork = sl<LocalData>().profile;
+        if (profileNetwork != null) {
+          emit(ProfileDataState.view(profile: profileNetwork, load: false));
         }
       }
 
@@ -64,6 +91,8 @@ class ProfileDataBloc extends Bloc<ProfileDataEvent, ProfileDataState> {
         started: started,
         uploadImage: uploadImage,
         updateBirth: updateBirth,
+        sendCode: sendCode,
+        setEmail: setEmail,
       );
     });
   }

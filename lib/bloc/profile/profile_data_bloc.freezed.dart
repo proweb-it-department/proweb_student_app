@@ -55,13 +55,15 @@ extension ProfileDataEventPatterns on ProfileDataEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _UpdateBirth value)?  updateBirth,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _UploadImage value)?  uploadImage,TResult Function( _UpdateBirth value)?  updateBirth,TResult Function( _EmailSendCode value)?  sendCode,TResult Function( _EmailVerificationCode value)?  setEmail,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _UpdateBirth() when updateBirth != null:
-return updateBirth(_that);case _:
+return updateBirth(_that);case _EmailSendCode() when sendCode != null:
+return sendCode(_that);case _EmailVerificationCode() when setEmail != null:
+return setEmail(_that);case _:
   return orElse();
 
 }
@@ -79,13 +81,15 @@ return updateBirth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _UpdateBirth value)  updateBirth,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _UploadImage value)  uploadImage,required TResult Function( _UpdateBirth value)  updateBirth,required TResult Function( _EmailSendCode value)  sendCode,required TResult Function( _EmailVerificationCode value)  setEmail,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _UploadImage():
 return uploadImage(_that);case _UpdateBirth():
-return updateBirth(_that);case _:
+return updateBirth(_that);case _EmailSendCode():
+return sendCode(_that);case _EmailVerificationCode():
+return setEmail(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -102,13 +106,15 @@ return updateBirth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _UpdateBirth value)?  updateBirth,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _UploadImage value)?  uploadImage,TResult? Function( _UpdateBirth value)?  updateBirth,TResult? Function( _EmailSendCode value)?  sendCode,TResult? Function( _EmailVerificationCode value)?  setEmail,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _UploadImage() when uploadImage != null:
 return uploadImage(_that);case _UpdateBirth() when updateBirth != null:
-return updateBirth(_that);case _:
+return updateBirth(_that);case _EmailSendCode() when sendCode != null:
+return sendCode(_that);case _EmailVerificationCode() when setEmail != null:
+return setEmail(_that);case _:
   return null;
 
 }
@@ -125,12 +131,14 @@ return updateBirth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( Uint8List image)?  uploadImage,TResult Function( String date)?  updateBirth,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( Uint8List image)?  uploadImage,TResult Function( String date)?  updateBirth,TResult Function( String email)?  sendCode,TResult Function( String email,  String verificationCode)?  setEmail,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _UploadImage() when uploadImage != null:
 return uploadImage(_that.image);case _UpdateBirth() when updateBirth != null:
-return updateBirth(_that.date);case _:
+return updateBirth(_that.date);case _EmailSendCode() when sendCode != null:
+return sendCode(_that.email);case _EmailVerificationCode() when setEmail != null:
+return setEmail(_that.email,_that.verificationCode);case _:
   return orElse();
 
 }
@@ -148,12 +156,14 @@ return updateBirth(_that.date);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( Uint8List image)  uploadImage,required TResult Function( String date)  updateBirth,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( Uint8List image)  uploadImage,required TResult Function( String date)  updateBirth,required TResult Function( String email)  sendCode,required TResult Function( String email,  String verificationCode)  setEmail,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _UploadImage():
 return uploadImage(_that.image);case _UpdateBirth():
-return updateBirth(_that.date);case _:
+return updateBirth(_that.date);case _EmailSendCode():
+return sendCode(_that.email);case _EmailVerificationCode():
+return setEmail(_that.email,_that.verificationCode);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -170,12 +180,14 @@ return updateBirth(_that.date);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( Uint8List image)?  uploadImage,TResult? Function( String date)?  updateBirth,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( Uint8List image)?  uploadImage,TResult? Function( String date)?  updateBirth,TResult? Function( String email)?  sendCode,TResult? Function( String email,  String verificationCode)?  setEmail,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _UploadImage() when uploadImage != null:
 return uploadImage(_that.image);case _UpdateBirth() when updateBirth != null:
-return updateBirth(_that.date);case _:
+return updateBirth(_that.date);case _EmailSendCode() when sendCode != null:
+return sendCode(_that.email);case _EmailVerificationCode() when setEmail != null:
+return setEmail(_that.email,_that.verificationCode);case _:
   return null;
 
 }
@@ -348,6 +360,140 @@ as String,
 }
 
 /// @nodoc
+
+
+class _EmailSendCode implements ProfileDataEvent {
+  const _EmailSendCode({required this.email});
+  
+
+ final  String email;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EmailSendCodeCopyWith<_EmailSendCode> get copyWith => __$EmailSendCodeCopyWithImpl<_EmailSendCode>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmailSendCode&&(identical(other.email, email) || other.email == email));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,email);
+
+@override
+String toString() {
+  return 'ProfileDataEvent.sendCode(email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EmailSendCodeCopyWith<$Res> implements $ProfileDataEventCopyWith<$Res> {
+  factory _$EmailSendCodeCopyWith(_EmailSendCode value, $Res Function(_EmailSendCode) _then) = __$EmailSendCodeCopyWithImpl;
+@useResult
+$Res call({
+ String email
+});
+
+
+
+
+}
+/// @nodoc
+class __$EmailSendCodeCopyWithImpl<$Res>
+    implements _$EmailSendCodeCopyWith<$Res> {
+  __$EmailSendCodeCopyWithImpl(this._self, this._then);
+
+  final _EmailSendCode _self;
+  final $Res Function(_EmailSendCode) _then;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? email = null,}) {
+  return _then(_EmailSendCode(
+email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _EmailVerificationCode implements ProfileDataEvent {
+  const _EmailVerificationCode({required this.email, required this.verificationCode});
+  
+
+ final  String email;
+ final  String verificationCode;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EmailVerificationCodeCopyWith<_EmailVerificationCode> get copyWith => __$EmailVerificationCodeCopyWithImpl<_EmailVerificationCode>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmailVerificationCode&&(identical(other.email, email) || other.email == email)&&(identical(other.verificationCode, verificationCode) || other.verificationCode == verificationCode));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,email,verificationCode);
+
+@override
+String toString() {
+  return 'ProfileDataEvent.setEmail(email: $email, verificationCode: $verificationCode)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EmailVerificationCodeCopyWith<$Res> implements $ProfileDataEventCopyWith<$Res> {
+  factory _$EmailVerificationCodeCopyWith(_EmailVerificationCode value, $Res Function(_EmailVerificationCode) _then) = __$EmailVerificationCodeCopyWithImpl;
+@useResult
+$Res call({
+ String email, String verificationCode
+});
+
+
+
+
+}
+/// @nodoc
+class __$EmailVerificationCodeCopyWithImpl<$Res>
+    implements _$EmailVerificationCodeCopyWith<$Res> {
+  __$EmailVerificationCodeCopyWithImpl(this._self, this._then);
+
+  final _EmailVerificationCode _self;
+  final $Res Function(_EmailVerificationCode) _then;
+
+/// Create a copy of ProfileDataEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? email = null,Object? verificationCode = null,}) {
+  return _then(_EmailVerificationCode(
+email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String,verificationCode: null == verificationCode ? _self.verificationCode : verificationCode // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$ProfileDataState {
 
 
@@ -458,11 +604,11 @@ return view(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( MyProfile profile)?  view,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( MyProfile profile,  bool load)?  view,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileDataInitial() when initial != null:
 return initial();case _ProfileDataView() when view != null:
-return view(_that.profile);case _:
+return view(_that.profile,_that.load);case _:
   return orElse();
 
 }
@@ -480,11 +626,11 @@ return view(_that.profile);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( MyProfile profile)  view,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( MyProfile profile,  bool load)  view,}) {final _that = this;
 switch (_that) {
 case _ProfileDataInitial():
 return initial();case _ProfileDataView():
-return view(_that.profile);case _:
+return view(_that.profile,_that.load);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -501,11 +647,11 @@ return view(_that.profile);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( MyProfile profile)?  view,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( MyProfile profile,  bool load)?  view,}) {final _that = this;
 switch (_that) {
 case _ProfileDataInitial() when initial != null:
 return initial();case _ProfileDataView() when view != null:
-return view(_that.profile);case _:
+return view(_that.profile,_that.load);case _:
   return null;
 
 }
@@ -549,10 +695,11 @@ String toString() {
 
 
 class _ProfileDataView implements ProfileDataState {
-  const _ProfileDataView({required this.profile});
+  const _ProfileDataView({required this.profile, required this.load});
   
 
  final  MyProfile profile;
+ final  bool load;
 
 /// Create a copy of ProfileDataState
 /// with the given fields replaced by the non-null parameter values.
@@ -564,16 +711,16 @@ _$ProfileDataViewCopyWith<_ProfileDataView> get copyWith => __$ProfileDataViewCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileDataView&&(identical(other.profile, profile) || other.profile == profile));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileDataView&&(identical(other.profile, profile) || other.profile == profile)&&(identical(other.load, load) || other.load == load));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,profile);
+int get hashCode => Object.hash(runtimeType,profile,load);
 
 @override
 String toString() {
-  return 'ProfileDataState.view(profile: $profile)';
+  return 'ProfileDataState.view(profile: $profile, load: $load)';
 }
 
 
@@ -584,7 +731,7 @@ abstract mixin class _$ProfileDataViewCopyWith<$Res> implements $ProfileDataStat
   factory _$ProfileDataViewCopyWith(_ProfileDataView value, $Res Function(_ProfileDataView) _then) = __$ProfileDataViewCopyWithImpl;
 @useResult
 $Res call({
- MyProfile profile
+ MyProfile profile, bool load
 });
 
 
@@ -601,10 +748,11 @@ class __$ProfileDataViewCopyWithImpl<$Res>
 
 /// Create a copy of ProfileDataState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? profile = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? profile = null,Object? load = null,}) {
   return _then(_ProfileDataView(
 profile: null == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
-as MyProfile,
+as MyProfile,load: null == load ? _self.load : load // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
