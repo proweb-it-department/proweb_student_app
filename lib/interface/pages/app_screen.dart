@@ -21,13 +21,13 @@ class AppScreen extends StatelessWidget {
           },
           child: state.when(
             initial: () {
-              return AnimatedLogo();
+              return AnimatedLogo(key: ValueKey('initial'));
             },
             login: () {
-              return AuthScreen();
+              return AuthScreen(key: ValueKey('login'));
             },
             app: () {
-              return AppScreenWidget();
+              return AppScreenWidget(key: ValueKey('app'));
             },
           ),
         );

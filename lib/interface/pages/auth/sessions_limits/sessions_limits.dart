@@ -74,6 +74,7 @@ class SessionsLimitedList extends StatelessWidget {
                             ),
                           ),
                         ],
+                        sessionsList: (_, _, _) => [SizedBox()],
                         sessionsNoAuth: (list, _, __) {
                           return List.generate(list.length, (index) {
                             final item = list[index];

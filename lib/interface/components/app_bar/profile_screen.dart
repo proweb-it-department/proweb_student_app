@@ -3,9 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/my_telegram_connected/my_telegram_connected_bloc.dart';
+import 'package:proweb_student_app/bloc/offer_path/offer_path_bloc.dart';
 import 'package:proweb_student_app/bloc/profile/profile_data_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/app_bar/widgets/language_settings.dart';
@@ -26,9 +28,17 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     CustomColors? customColor = Theme.of(context).extension<CustomColors>();
     final profileBloc = context.watch<ProfileDataBloc>();
-    return BlocProvider(
-      create: (context) =>
-          MyTelegramConnectedBloc()..add(MyTelegramConnectedEvent.started()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              MyTelegramConnectedBloc()
+                ..add(MyTelegramConnectedEvent.started()),
+        ),
+        BlocProvider(
+          create: (context) => OfferPathBloc()..add(OfferPathEvent.started()),
+        ),
+      ],
       child: AnnotatedRegion(
         value: FlexColorScheme.themedSystemNavigationBar(
           context,
@@ -378,7 +388,9 @@ class ProfileBody extends StatelessWidget {
                         shape: shape,
                         contentPadding: contentPadding,
                         tileColor: customColor?.containerColor,
-                        onTap: () {},
+                        onTap: () {
+                          context.router.navigate(MyActiveSessionsRoute());
+                        },
                         leading: IconAvatar(icon: Icons.phonelink),
                         title: Text('Мои активные сессии'),
                         trailing: GoPage(
@@ -398,20 +410,77 @@ class ProfileBody extends StatelessWidget {
                     isEnd: true,
                     isStart: false,
                     builder: (shape, contentPadding, isThreeLine) {
-                      return ListTile(
-                        minVerticalPadding: 1,
-                        shape: shape,
-                        contentPadding: contentPadding,
-                        tileColor: customColor?.containerColor,
-                        onTap: () {},
-                        leading: IconAvatar(icon: Icons.timer_outlined),
-                        title: Text('Срок действия сессии'),
-                        trailing: GoPage(
-                          decoration: BoxDecoration(
-                            color: customColor?.primaryBg,
-                          ),
-                          child: Icon(Icons.keyboard_arrow_right),
-                        ),
+                      return BlocBuilder<OfferPathBloc, OfferPathState>(
+                        builder: (context, state) {
+                          return switch (state) {
+                            OfferPathInitial() => ListTile(
+                              minVerticalPadding: 1,
+                              shape: shape,
+                              contentPadding: contentPadding,
+                              tileColor: customColor?.containerColor,
+                              onTap: null,
+                              leading: IconAvatar(icon: Icons.article_outlined),
+                              title: Text('Публичная оферта'),
+                              trailing: Md3CirculeIndicator(
+                                size: 25,
+                                center: false,
+                                background: customColor?.primaryBg,
+                                shapeColor: customColor?.additionalTwo,
+                              ),
+                            ),
+                            OfferPathLoad() => ListTile(
+                              minVerticalPadding: 1,
+                              shape: shape,
+                              contentPadding: contentPadding,
+                              tileColor: customColor?.containerColor,
+                              onTap: null,
+                              leading: IconAvatar(icon: Icons.article_outlined),
+                              title: Text('Публичная оферта'),
+                              trailing: Md3CirculeIndicator(
+                                size: 25,
+                                center: false,
+                                background: customColor?.primaryBg,
+                                shapeColor: customColor?.additionalTwo,
+                              ),
+                            ),
+                            OfferPathComplited(offer: final offer) => ListTile(
+                              minVerticalPadding: 1,
+                              shape: shape,
+                              contentPadding: contentPadding,
+                              tileColor: customColor?.containerColor,
+                              onTap: () {
+                                final locale = context.locale.languageCode;
+                                String? url;
+                                if (locale == 'ru') {
+                                  url = offer.offerpath?.offerRu?.offer?.url;
+                                } else if (locale == 'uz') {
+                                  url = offer.offerpath?.offerUz?.offer?.url;
+                                }
+
+                                if (url == null) {
+                                  Fluttertoast.showToast(
+                                    msg: 'Оферта не доступна',
+                                  );
+                                  return;
+                                }
+                                context.router.navigate(
+                                  PdfViewRoute(
+                                    title: 'Публичная оферта',
+                                    url: url,
+                                  ),
+                                );
+                              },
+                              leading: IconAvatar(icon: Icons.article_outlined),
+                              title: Text('Публичная оферта'),
+                              trailing: GoPage(
+                                decoration: BoxDecoration(
+                                  color: customColor?.primaryBg,
+                                ),
+                                child: Icon(Icons.keyboard_arrow_right),
+                              ),
+                            ),
+                          };
+                        },
                       );
                     },
                   ),

@@ -112,7 +112,17 @@ class _EmailBodyState extends State<EmailBody> {
             ),
             codeLength: 5,
             onCodeChanged: (code) {
-              if (code?.length == 5) {}
+              if (code == null) return;
+              if (code.length == 5) {
+                final profileBloc = context.read<ProfileDataBloc>();
+                profileBloc.add(
+                  ProfileDataEvent.setEmail(
+                    email: email,
+                    verificationCode: code,
+                  ),
+                );
+                context.router.pop();
+              }
             },
             onCodeSubmitted: (code) {},
           ),
@@ -144,6 +154,8 @@ class _EmailBodyState extends State<EmailBody> {
         FilledButton.icon(
           onPressed: valid
               ? () async {
+                  final profileBloc = context.read<ProfileDataBloc>();
+                  profileBloc.add(ProfileDataEvent.sendCode(email: email));
                   setState(() {
                     codeVrite = true;
                   });

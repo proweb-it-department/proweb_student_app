@@ -106,8 +106,7 @@ class AppRouter extends RootStackRouter {
       page: HomeBalanceRoute.page,
       guards: [_AuthGuard()],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -115,8 +114,7 @@ class AppRouter extends RootStackRouter {
       page: MyPurchasesRoute.page,
       guards: [_AuthGuard()],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       children: [
         AutoRoute(
@@ -142,16 +140,14 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
       path: '/profile',
       page: ProfileRoute.page,
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       guards: [_AuthGuard()],
       children: [],
@@ -161,8 +157,7 @@ class AppRouter extends RootStackRouter {
       page: ProfileEditedRoute.page,
       guards: [_AuthGuard()],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -171,8 +166,7 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -181,8 +175,24 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
+    ),
+    CustomRoute(
+      path: '/my-sessions',
+      page: MyActiveSessionsRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
+    ),
+    CustomRoute(
+      page: PdfViewRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -191,8 +201,7 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -201,8 +210,7 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -211,8 +219,7 @@ class AppRouter extends RootStackRouter {
       guards: [_AuthGuard()],
       children: [],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
     ),
     CustomRoute(
@@ -221,8 +228,7 @@ class AppRouter extends RootStackRouter {
       initial: false,
       guards: [_AuthGuard()],
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       children: [
         AutoRoute(
@@ -235,64 +241,56 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: ModuleRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: MaterialProductRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: DownloadsGroupLessonVideoRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: DownloadsGroupVideosRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: DownloadsExclusiveProductModulesVideoRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: DownloadsExclusiveProductModulesMaterialVideoRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: DownloadsExclusiveProductModulesMaterialVideosRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/group/:id',
       page: MainGroupRoute.page,
@@ -343,8 +341,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/group/:id/main/:lessonid',
       page: LessonVideoRoute.page,
@@ -352,8 +349,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/group/:id/homeworks/:relationId',
       page: HomeworkRouteRoute.page,
@@ -379,8 +375,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/group/:id/material/:relationId',
       page: MaterialViewRoute.page,
@@ -388,8 +383,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/group/:id/test/:relationId',
       page: TestRouteRoute.page,
@@ -410,8 +404,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/download',
       page: DownloadRoute.page,
@@ -437,8 +430,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/download/:slug',
       page: VideoSlugRoute.page,
@@ -447,40 +439,35 @@ class AppRouter extends RootStackRouter {
 
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: TransactionViewRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: CoworkingReserveRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: CoworkingSignUpRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: CreatedFeadbackRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/feedback/tickets/:id',
       page: ViewItemFeadbackRoute.page,
@@ -488,8 +475,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/user/:id',
       page: UserRoute.page,
@@ -497,8 +483,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       path: '/ranking/course/:id',
       page: CourseRankingViewRoute.page,
@@ -506,8 +491,7 @@ class AppRouter extends RootStackRouter {
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
-        return PredictiveBackRouteCustom(child: child, settings: page)
-            as PageRoute<T>;
+        return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: StoryRoute.page,
       fullscreenDialog: true,

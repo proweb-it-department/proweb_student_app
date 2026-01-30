@@ -53,6 +53,7 @@ class SessionItemView extends StatelessWidget {
             sessionsError: () {
               return null;
             },
+            sessionsList: (_, _, _) => null,
             sessionsNoAuth: (list, load, error) {
               if (load != null) {
                 if (load) {

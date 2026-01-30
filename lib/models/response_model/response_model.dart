@@ -31,6 +31,9 @@ sealed class ApiResponse<T> with _$ApiResponse<T> {
     if (json['results'] is String) {
       return ApiResponse.resultsAsString((json['results'] as String));
     }
+    if (json['data'] is Map<String, dynamic>) {
+      return ApiResponse.results(fromJsonT(json['data']));
+    }
     if (json['results'] is List && json['count'] is int) {
       return ApiResponse.lazylist(
         (json['count'] as int),

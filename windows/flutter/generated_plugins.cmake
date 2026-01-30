@@ -15,6 +15,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   screen_brightness_windows
   share_plus
   sqlite3_flutter_libs
+  syncfusion_pdfviewer_windows
   url_launcher_windows
   volume_controller
 )

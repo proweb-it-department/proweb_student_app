@@ -55,12 +55,14 @@ extension SessionsEventPatterns on SessionsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _EventSessionsNoLogin value)?  sessionsNoLogin,TResult Function( _SessionCloseLogin value)?  sessionCloseCredential,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _EventSessionsNoLogin value)?  sessionsNoLogin,TResult Function( _EventSessionsMy value)?  getMySessions,TResult Function( _EventSessionsClose value)?  closeSession,TResult Function( _SessionCloseLogin value)?  sessionCloseCredential,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _EventSessionsNoLogin() when sessionsNoLogin != null:
-return sessionsNoLogin(_that);case _SessionCloseLogin() when sessionCloseCredential != null:
+return sessionsNoLogin(_that);case _EventSessionsMy() when getMySessions != null:
+return getMySessions(_that);case _EventSessionsClose() when closeSession != null:
+return closeSession(_that);case _SessionCloseLogin() when sessionCloseCredential != null:
 return sessionCloseCredential(_that);case _:
   return orElse();
 
@@ -79,12 +81,14 @@ return sessionCloseCredential(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _EventSessionsNoLogin value)  sessionsNoLogin,required TResult Function( _SessionCloseLogin value)  sessionCloseCredential,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _EventSessionsNoLogin value)  sessionsNoLogin,required TResult Function( _EventSessionsMy value)  getMySessions,required TResult Function( _EventSessionsClose value)  closeSession,required TResult Function( _SessionCloseLogin value)  sessionCloseCredential,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _EventSessionsNoLogin():
-return sessionsNoLogin(_that);case _SessionCloseLogin():
+return sessionsNoLogin(_that);case _EventSessionsMy():
+return getMySessions(_that);case _EventSessionsClose():
+return closeSession(_that);case _SessionCloseLogin():
 return sessionCloseCredential(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -102,12 +106,14 @@ return sessionCloseCredential(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _EventSessionsNoLogin value)?  sessionsNoLogin,TResult? Function( _SessionCloseLogin value)?  sessionCloseCredential,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _EventSessionsNoLogin value)?  sessionsNoLogin,TResult? Function( _EventSessionsMy value)?  getMySessions,TResult? Function( _EventSessionsClose value)?  closeSession,TResult? Function( _SessionCloseLogin value)?  sessionCloseCredential,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _EventSessionsNoLogin() when sessionsNoLogin != null:
-return sessionsNoLogin(_that);case _SessionCloseLogin() when sessionCloseCredential != null:
+return sessionsNoLogin(_that);case _EventSessionsMy() when getMySessions != null:
+return getMySessions(_that);case _EventSessionsClose() when closeSession != null:
+return closeSession(_that);case _SessionCloseLogin() when sessionCloseCredential != null:
 return sessionCloseCredential(_that);case _:
   return null;
 
@@ -125,11 +131,13 @@ return sessionCloseCredential(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String login)?  sessionsNoLogin,TResult Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)?  sessionCloseCredential,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function( String login)?  sessionsNoLogin,TResult Function()?  getMySessions,TResult Function( int sessionId)?  closeSession,TResult Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)?  sessionCloseCredential,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _EventSessionsNoLogin() when sessionsNoLogin != null:
-return sessionsNoLogin(_that.login);case _SessionCloseLogin() when sessionCloseCredential != null:
+return sessionsNoLogin(_that.login);case _EventSessionsMy() when getMySessions != null:
+return getMySessions();case _EventSessionsClose() when closeSession != null:
+return closeSession(_that.sessionId);case _SessionCloseLogin() when sessionCloseCredential != null:
 return sessionCloseCredential(_that.login,_that.password,_that.sessionId,_that.context,_that.list);case _:
   return orElse();
 
@@ -148,11 +156,13 @@ return sessionCloseCredential(_that.login,_that.password,_that.sessionId,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String login)  sessionsNoLogin,required TResult Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)  sessionCloseCredential,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function( String login)  sessionsNoLogin,required TResult Function()  getMySessions,required TResult Function( int sessionId)  closeSession,required TResult Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)  sessionCloseCredential,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _EventSessionsNoLogin():
-return sessionsNoLogin(_that.login);case _SessionCloseLogin():
+return sessionsNoLogin(_that.login);case _EventSessionsMy():
+return getMySessions();case _EventSessionsClose():
+return closeSession(_that.sessionId);case _SessionCloseLogin():
 return sessionCloseCredential(_that.login,_that.password,_that.sessionId,_that.context,_that.list);case _:
   throw StateError('Unexpected subclass');
 
@@ -170,11 +180,13 @@ return sessionCloseCredential(_that.login,_that.password,_that.sessionId,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String login)?  sessionsNoLogin,TResult? Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)?  sessionCloseCredential,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function( String login)?  sessionsNoLogin,TResult? Function()?  getMySessions,TResult? Function( int sessionId)?  closeSession,TResult? Function( String login,  String password,  int sessionId,  BuildContext context,  List<SessionsListItemModel> list)?  sessionCloseCredential,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _EventSessionsNoLogin() when sessionsNoLogin != null:
-return sessionsNoLogin(_that.login);case _SessionCloseLogin() when sessionCloseCredential != null:
+return sessionsNoLogin(_that.login);case _EventSessionsMy() when getMySessions != null:
+return getMySessions();case _EventSessionsClose() when closeSession != null:
+return closeSession(_that.sessionId);case _SessionCloseLogin() when sessionCloseCredential != null:
 return sessionCloseCredential(_that.login,_that.password,_that.sessionId,_that.context,_that.list);case _:
   return null;
 
@@ -275,6 +287,104 @@ class __$EventSessionsNoLoginCopyWithImpl<$Res>
   return _then(_EventSessionsNoLogin(
 login: null == login ? _self.login : login // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _EventSessionsMy implements SessionsEvent {
+  const _EventSessionsMy();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventSessionsMy);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'SessionsEvent.getMySessions()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _EventSessionsClose implements SessionsEvent {
+  const _EventSessionsClose({required this.sessionId});
+  
+
+ final  int sessionId;
+
+/// Create a copy of SessionsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$EventSessionsCloseCopyWith<_EventSessionsClose> get copyWith => __$EventSessionsCloseCopyWithImpl<_EventSessionsClose>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EventSessionsClose&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,sessionId);
+
+@override
+String toString() {
+  return 'SessionsEvent.closeSession(sessionId: $sessionId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$EventSessionsCloseCopyWith<$Res> implements $SessionsEventCopyWith<$Res> {
+  factory _$EventSessionsCloseCopyWith(_EventSessionsClose value, $Res Function(_EventSessionsClose) _then) = __$EventSessionsCloseCopyWithImpl;
+@useResult
+$Res call({
+ int sessionId
+});
+
+
+
+
+}
+/// @nodoc
+class __$EventSessionsCloseCopyWithImpl<$Res>
+    implements _$EventSessionsCloseCopyWith<$Res> {
+  __$EventSessionsCloseCopyWithImpl(this._self, this._then);
+
+  final _EventSessionsClose _self;
+  final $Res Function(_EventSessionsClose) _then;
+
+/// Create a copy of SessionsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? sessionId = null,}) {
+  return _then(_EventSessionsClose(
+sessionId: null == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -405,14 +515,15 @@ extension SessionsStatePatterns on SessionsState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _SessionsLoad value)?  sessionsLoad,TResult Function( _SessionsError value)?  sessionsError,TResult Function( _SessionsNoAuth value)?  sessionsNoAuth,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( SessionsInitial value)?  initial,TResult Function( SessionsLoad value)?  sessionsLoad,TResult Function( SessionsError value)?  sessionsError,TResult Function( SessionsNoAuth value)?  sessionsNoAuth,TResult Function( SessionsList value)?  sessionsList,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _SessionsLoad() when sessionsLoad != null:
-return sessionsLoad(_that);case _SessionsError() when sessionsError != null:
-return sessionsError(_that);case _SessionsNoAuth() when sessionsNoAuth != null:
-return sessionsNoAuth(_that);case _:
+case SessionsInitial() when initial != null:
+return initial(_that);case SessionsLoad() when sessionsLoad != null:
+return sessionsLoad(_that);case SessionsError() when sessionsError != null:
+return sessionsError(_that);case SessionsNoAuth() when sessionsNoAuth != null:
+return sessionsNoAuth(_that);case SessionsList() when sessionsList != null:
+return sessionsList(_that);case _:
   return orElse();
 
 }
@@ -430,17 +541,15 @@ return sessionsNoAuth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _SessionsLoad value)  sessionsLoad,required TResult Function( _SessionsError value)  sessionsError,required TResult Function( _SessionsNoAuth value)  sessionsNoAuth,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( SessionsInitial value)  initial,required TResult Function( SessionsLoad value)  sessionsLoad,required TResult Function( SessionsError value)  sessionsError,required TResult Function( SessionsNoAuth value)  sessionsNoAuth,required TResult Function( SessionsList value)  sessionsList,}){
 final _that = this;
 switch (_that) {
-case _Initial():
-return initial(_that);case _SessionsLoad():
-return sessionsLoad(_that);case _SessionsError():
-return sessionsError(_that);case _SessionsNoAuth():
-return sessionsNoAuth(_that);case _:
-  throw StateError('Unexpected subclass');
-
-}
+case SessionsInitial():
+return initial(_that);case SessionsLoad():
+return sessionsLoad(_that);case SessionsError():
+return sessionsError(_that);case SessionsNoAuth():
+return sessionsNoAuth(_that);case SessionsList():
+return sessionsList(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -454,14 +563,15 @@ return sessionsNoAuth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _SessionsLoad value)?  sessionsLoad,TResult? Function( _SessionsError value)?  sessionsError,TResult? Function( _SessionsNoAuth value)?  sessionsNoAuth,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( SessionsInitial value)?  initial,TResult? Function( SessionsLoad value)?  sessionsLoad,TResult? Function( SessionsError value)?  sessionsError,TResult? Function( SessionsNoAuth value)?  sessionsNoAuth,TResult? Function( SessionsList value)?  sessionsList,}){
 final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial(_that);case _SessionsLoad() when sessionsLoad != null:
-return sessionsLoad(_that);case _SessionsError() when sessionsError != null:
-return sessionsError(_that);case _SessionsNoAuth() when sessionsNoAuth != null:
-return sessionsNoAuth(_that);case _:
+case SessionsInitial() when initial != null:
+return initial(_that);case SessionsLoad() when sessionsLoad != null:
+return sessionsLoad(_that);case SessionsError() when sessionsError != null:
+return sessionsError(_that);case SessionsNoAuth() when sessionsNoAuth != null:
+return sessionsNoAuth(_that);case SessionsList() when sessionsList != null:
+return sessionsList(_that);case _:
   return null;
 
 }
@@ -478,13 +588,14 @@ return sessionsNoAuth(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  sessionsLoad,TResult Function()?  sessionsError,TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsNoAuth,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  sessionsLoad,TResult Function()?  sessionsError,TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsNoAuth,TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsList,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _SessionsLoad() when sessionsLoad != null:
-return sessionsLoad();case _SessionsError() when sessionsError != null:
-return sessionsError();case _SessionsNoAuth() when sessionsNoAuth != null:
-return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
+case SessionsInitial() when initial != null:
+return initial();case SessionsLoad() when sessionsLoad != null:
+return sessionsLoad();case SessionsError() when sessionsError != null:
+return sessionsError();case SessionsNoAuth() when sessionsNoAuth != null:
+return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case SessionsList() when sessionsList != null:
+return sessionsList(_that.list,_that.isLoad,_that.isError);case _:
   return orElse();
 
 }
@@ -502,16 +613,14 @@ return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  sessionsLoad,required TResult Function()  sessionsError,required TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)  sessionsNoAuth,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  sessionsLoad,required TResult Function()  sessionsError,required TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)  sessionsNoAuth,required TResult Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)  sessionsList,}) {final _that = this;
 switch (_that) {
-case _Initial():
-return initial();case _SessionsLoad():
-return sessionsLoad();case _SessionsError():
-return sessionsError();case _SessionsNoAuth():
-return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
-  throw StateError('Unexpected subclass');
-
-}
+case SessionsInitial():
+return initial();case SessionsLoad():
+return sessionsLoad();case SessionsError():
+return sessionsError();case SessionsNoAuth():
+return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case SessionsList():
+return sessionsList(_that.list,_that.isLoad,_that.isError);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -525,13 +634,14 @@ return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  sessionsLoad,TResult? Function()?  sessionsError,TResult? Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsNoAuth,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  sessionsLoad,TResult? Function()?  sessionsError,TResult? Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsNoAuth,TResult? Function( List<SessionsListItemModel> list,  bool? isLoad,  bool? isError)?  sessionsList,}) {final _that = this;
 switch (_that) {
-case _Initial() when initial != null:
-return initial();case _SessionsLoad() when sessionsLoad != null:
-return sessionsLoad();case _SessionsError() when sessionsError != null:
-return sessionsError();case _SessionsNoAuth() when sessionsNoAuth != null:
-return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
+case SessionsInitial() when initial != null:
+return initial();case SessionsLoad() when sessionsLoad != null:
+return sessionsLoad();case SessionsError() when sessionsError != null:
+return sessionsError();case SessionsNoAuth() when sessionsNoAuth != null:
+return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case SessionsList() when sessionsList != null:
+return sessionsList(_that.list,_that.isLoad,_that.isError);case _:
   return null;
 
 }
@@ -542,8 +652,8 @@ return sessionsNoAuth(_that.list,_that.isLoad,_that.isError);case _:
 /// @nodoc
 
 
-class _Initial implements SessionsState {
-  const _Initial();
+class SessionsInitial implements SessionsState {
+  const SessionsInitial();
   
 
 
@@ -553,7 +663,7 @@ class _Initial implements SessionsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SessionsInitial);
 }
 
 
@@ -574,8 +684,8 @@ String toString() {
 /// @nodoc
 
 
-class _SessionsLoad implements SessionsState {
-  const _SessionsLoad();
+class SessionsLoad implements SessionsState {
+  const SessionsLoad();
   
 
 
@@ -585,7 +695,7 @@ class _SessionsLoad implements SessionsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SessionsLoad);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SessionsLoad);
 }
 
 
@@ -606,8 +716,8 @@ String toString() {
 /// @nodoc
 
 
-class _SessionsError implements SessionsState {
-  const _SessionsError();
+class SessionsError implements SessionsState {
+  const SessionsError();
   
 
 
@@ -617,7 +727,7 @@ class _SessionsError implements SessionsState {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SessionsError);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SessionsError);
 }
 
 
@@ -638,8 +748,8 @@ String toString() {
 /// @nodoc
 
 
-class _SessionsNoAuth implements SessionsState {
-  const _SessionsNoAuth({required final  List<SessionsListItemModel> list, this.isLoad, this.isError}): _list = list;
+class SessionsNoAuth implements SessionsState {
+  const SessionsNoAuth({required final  List<SessionsListItemModel> list, this.isLoad, this.isError}): _list = list;
   
 
  final  List<SessionsListItemModel> _list;
@@ -656,13 +766,13 @@ class _SessionsNoAuth implements SessionsState {
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$SessionsNoAuthCopyWith<_SessionsNoAuth> get copyWith => __$SessionsNoAuthCopyWithImpl<_SessionsNoAuth>(this, _$identity);
+$SessionsNoAuthCopyWith<SessionsNoAuth> get copyWith => _$SessionsNoAuthCopyWithImpl<SessionsNoAuth>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SessionsNoAuth&&const DeepCollectionEquality().equals(other._list, _list)&&(identical(other.isLoad, isLoad) || other.isLoad == isLoad)&&(identical(other.isError, isError) || other.isError == isError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SessionsNoAuth&&const DeepCollectionEquality().equals(other._list, _list)&&(identical(other.isLoad, isLoad) || other.isLoad == isLoad)&&(identical(other.isError, isError) || other.isError == isError));
 }
 
 
@@ -678,8 +788,8 @@ String toString() {
 }
 
 /// @nodoc
-abstract mixin class _$SessionsNoAuthCopyWith<$Res> implements $SessionsStateCopyWith<$Res> {
-  factory _$SessionsNoAuthCopyWith(_SessionsNoAuth value, $Res Function(_SessionsNoAuth) _then) = __$SessionsNoAuthCopyWithImpl;
+abstract mixin class $SessionsNoAuthCopyWith<$Res> implements $SessionsStateCopyWith<$Res> {
+  factory $SessionsNoAuthCopyWith(SessionsNoAuth value, $Res Function(SessionsNoAuth) _then) = _$SessionsNoAuthCopyWithImpl;
 @useResult
 $Res call({
  List<SessionsListItemModel> list, bool? isLoad, bool? isError
@@ -690,17 +800,93 @@ $Res call({
 
 }
 /// @nodoc
-class __$SessionsNoAuthCopyWithImpl<$Res>
-    implements _$SessionsNoAuthCopyWith<$Res> {
-  __$SessionsNoAuthCopyWithImpl(this._self, this._then);
+class _$SessionsNoAuthCopyWithImpl<$Res>
+    implements $SessionsNoAuthCopyWith<$Res> {
+  _$SessionsNoAuthCopyWithImpl(this._self, this._then);
 
-  final _SessionsNoAuth _self;
-  final $Res Function(_SessionsNoAuth) _then;
+  final SessionsNoAuth _self;
+  final $Res Function(SessionsNoAuth) _then;
 
 /// Create a copy of SessionsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? list = null,Object? isLoad = freezed,Object? isError = freezed,}) {
-  return _then(_SessionsNoAuth(
+  return _then(SessionsNoAuth(
+list: null == list ? _self._list : list // ignore: cast_nullable_to_non_nullable
+as List<SessionsListItemModel>,isLoad: freezed == isLoad ? _self.isLoad : isLoad // ignore: cast_nullable_to_non_nullable
+as bool?,isError: freezed == isError ? _self.isError : isError // ignore: cast_nullable_to_non_nullable
+as bool?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class SessionsList implements SessionsState {
+  const SessionsList({required final  List<SessionsListItemModel> list, this.isLoad, this.isError}): _list = list;
+  
+
+ final  List<SessionsListItemModel> _list;
+ List<SessionsListItemModel> get list {
+  if (_list is EqualUnmodifiableListView) return _list;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_list);
+}
+
+ final  bool? isLoad;
+ final  bool? isError;
+
+/// Create a copy of SessionsState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SessionsListCopyWith<SessionsList> get copyWith => _$SessionsListCopyWithImpl<SessionsList>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SessionsList&&const DeepCollectionEquality().equals(other._list, _list)&&(identical(other.isLoad, isLoad) || other.isLoad == isLoad)&&(identical(other.isError, isError) || other.isError == isError));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_list),isLoad,isError);
+
+@override
+String toString() {
+  return 'SessionsState.sessionsList(list: $list, isLoad: $isLoad, isError: $isError)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SessionsListCopyWith<$Res> implements $SessionsStateCopyWith<$Res> {
+  factory $SessionsListCopyWith(SessionsList value, $Res Function(SessionsList) _then) = _$SessionsListCopyWithImpl;
+@useResult
+$Res call({
+ List<SessionsListItemModel> list, bool? isLoad, bool? isError
+});
+
+
+
+
+}
+/// @nodoc
+class _$SessionsListCopyWithImpl<$Res>
+    implements $SessionsListCopyWith<$Res> {
+  _$SessionsListCopyWithImpl(this._self, this._then);
+
+  final SessionsList _self;
+  final $Res Function(SessionsList) _then;
+
+/// Create a copy of SessionsState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? list = null,Object? isLoad = freezed,Object? isError = freezed,}) {
+  return _then(SessionsList(
 list: null == list ? _self._list : list // ignore: cast_nullable_to_non_nullable
 as List<SessionsListItemModel>,isLoad: freezed == isLoad ? _self.isLoad : isLoad // ignore: cast_nullable_to_non_nullable
 as bool?,isError: freezed == isError ? _self.isError : isError // ignore: cast_nullable_to_non_nullable

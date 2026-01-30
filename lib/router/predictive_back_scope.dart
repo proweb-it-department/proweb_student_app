@@ -103,62 +103,71 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (_, _) {
-        final t = _controller.value;
-
-        final stackOpacity = t < 0.9
-            ? 1.0
-            : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
-        final scale = computeScale(t);
-        return Opacity(
-          opacity: stackOpacity,
-          child: Stack(
-            children: [
-              IgnorePointer(
-                child: Container(
-                  color: Colors.black.withAlpha(
-                    (255 * (0.8 * (1 - t)).clamp(0.2, 0.8)).round(),
-                  ),
-                ),
-              ),
-
-              Transform.translate(
-                offset: Offset(width * 0.1 * t, 0),
-                child: Transform.scale(
-                  scale: scale,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(t < 0.01 ? 0 : 40),
-                    child: widget.child,
-                  ),
-                ),
-              ),
-
-              // edge swipe
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                width: _edgeWidth,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onHorizontalDragStart: (_) => _dragging = true,
-                  onHorizontalDragUpdate: (d) {
-                    if (_dragging) _update(d.delta.dx, width);
-                  },
-                  onHorizontalDragEnd: (d) {
-                    if (_dragging) _end(d.velocity.pixelsPerSecond.dx);
-                  },
-                  onHorizontalDragCancel: () {
-                    if (_dragging) _end(0);
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).unfocus();
       },
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (_, _) {
+          final t = _controller.value;
+
+          final stackOpacity = t < 0.9
+              ? 1.0
+              : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
+          final scale = computeScale(t);
+          return Opacity(
+            opacity: stackOpacity,
+            child: Stack(
+              children: [
+                IgnorePointer(
+                  child: Container(
+                    color: Colors.black.withAlpha(
+                      (255 * (0.8 * (1 - t)).clamp(0.2, 0.8)).round(),
+                    ),
+                  ),
+                ),
+
+                Transform.translate(
+                  offset: Offset(width * 0.1 * t, 0),
+                  child: Transform.scale(
+                    scale: scale,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(t < 0.01 ? 0 : 40),
+                      child: widget.child,
+                    ),
+                  ),
+                ),
+
+                // edge swipe
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: _edgeWidth,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onHorizontalDragStart: (_) {
+                      _dragging = true;
+                      FocusScope.of(context).unfocus();
+                    },
+                    onHorizontalDragUpdate: (d) {
+                      if (_dragging) _update(d.delta.dx, width);
+                    },
+                    onHorizontalDragEnd: (d) {
+                      if (_dragging) _end(d.velocity.pixelsPerSecond.dx);
+                    },
+                    onHorizontalDragCancel: () {
+                      if (_dragging) _end(0);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:proweb_student_app/api/network/auth/get/auth.dart';
 import 'package:proweb_student_app/api/network/chat/get/chat.dart';
 import 'package:proweb_student_app/api/network/chat/post/chat.dart';
 import 'package:proweb_student_app/api/repositories/file_repositories/file_repositories.dart';
@@ -114,6 +115,9 @@ abstract class AppModule {
 
   @lazySingleton
   PostResponsesAuth get postResponseAuth => PostResponsesAuth();
+
+  @lazySingleton
+  GetResponsesAuth get getResponseAuth => GetResponsesAuth();
 
   @lazySingleton
   PostResponsesMain get postResponseMain => PostResponsesMain();

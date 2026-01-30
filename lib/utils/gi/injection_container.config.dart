@@ -16,6 +16,7 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart' as _i320;
 import 'package:proweb_student_app/api/language/language.dart' as _i97;
 import 'package:proweb_student_app/api/local_data/local_data.dart' as _i896;
+import 'package:proweb_student_app/api/network/auth/get/auth.dart' as _i1008;
 import 'package:proweb_student_app/api/network/auth/post/auth.dart' as _i1059;
 import 'package:proweb_student_app/api/network/chat/get/chat.dart' as _i133;
 import 'package:proweb_student_app/api/network/chat/post/chat.dart' as _i35;
@@ -92,6 +93,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i1059.PostResponsesAuth>(
       () => appModule.postResponseAuth,
     );
+    gh.lazySingleton<_i1008.GetResponsesAuth>(() => appModule.getResponseAuth);
     gh.lazySingleton<_i484.PostResponsesMain>(() => appModule.postResponseMain);
     gh.lazySingleton<_i202.GetResponsesVideo>(() => appModule.getResponseVideo);
     gh.lazySingleton<_i133.GetResponsesChat>(() => appModule.getResponseChat);

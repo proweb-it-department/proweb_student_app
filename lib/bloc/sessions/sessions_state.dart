@@ -1,13 +1,18 @@
 part of 'sessions_bloc.dart';
 
 @freezed
-class SessionsState with _$SessionsState {
-  const factory SessionsState.initial() = _Initial;
-  const factory SessionsState.sessionsLoad() = _SessionsLoad;
-  const factory SessionsState.sessionsError() = _SessionsError;
+sealed class SessionsState with _$SessionsState {
+  const factory SessionsState.initial() = SessionsInitial;
+  const factory SessionsState.sessionsLoad() = SessionsLoad;
+  const factory SessionsState.sessionsError() = SessionsError;
   const factory SessionsState.sessionsNoAuth({
     required List<SessionsListItemModel> list,
     bool? isLoad,
     bool? isError,
-  }) = _SessionsNoAuth;
+  }) = SessionsNoAuth;
+  const factory SessionsState.sessionsList({
+    required List<SessionsListItemModel> list,
+    bool? isLoad,
+    bool? isError,
+  }) = SessionsList;
 }
