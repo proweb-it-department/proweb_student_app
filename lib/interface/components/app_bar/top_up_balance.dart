@@ -26,7 +26,9 @@ Future<dynamic> openPaymentProviders(BuildContext ctx) {
       return MultiBlocProvider(
         providers: [
           BlocProvider.value(value: balance),
-          BlocProvider.value(value: paymentsProvider),
+          BlocProvider.value(
+            value: paymentsProvider..add(PaymentsProviderEvent.started()),
+          ),
         ],
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -82,6 +84,11 @@ class _TopUpBalanceState extends State<TopUpBalance> {
       load: () => null,
       complited: (providers, _) => providers.isEmpty ? null : providers,
     );
+    final paymentsProvidersLoad = paymentsProviderState.state.when(
+      initial: () => false,
+      load: () => true,
+      complited: (providers, _) => false,
+    );
 
     paymentsProviderState.stream.listen((event) {
       event.when(
@@ -108,8 +115,10 @@ class _TopUpBalanceState extends State<TopUpBalance> {
       if (balance == null) {
         error = ErrorLoad();
       }
-      if (paymentsProviders == null) {
+      if (paymentsProviders == null && paymentsProvidersLoad == false) {
         error = ErrorLoad(text: 'Доступных способов оплаты нет.');
+      } else if (paymentsProviders == null && paymentsProvidersLoad) {
+        error = Md3CirculeIndicator();
       }
       return Dialog.fullscreen(
         child: Scaffold(
@@ -127,7 +136,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
             ],
             title: Text('Пополнить баланс'),
           ),
-          body: error,
+          body: Center(child: error),
         ),
       );
     }
