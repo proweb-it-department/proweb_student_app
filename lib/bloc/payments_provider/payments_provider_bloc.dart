@@ -21,9 +21,9 @@ class PaymentsProviderBloc
         );
         if (providers != null) {
           emit(PaymentsProviderState.complited(providers: providers));
-          return;
+        } else {
+          emit(PaymentsProviderState.load());
         }
-        emit(PaymentsProviderState.load());
         final main = sl<GetResponsesMain>();
         final response = await main.paymentsProvider();
         if (response == null) {

@@ -32,7 +32,7 @@ class _StoryGroupsViewState extends State<StoryGroupsView> {
               ),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: (isLoad || isError) && story.isEmpty ? 0 : 100,
+                height: (isLoad || isError) && story.isEmpty ? 0 : 70,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.symmetric(horizontal: 10),

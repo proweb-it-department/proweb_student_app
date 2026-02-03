@@ -100,7 +100,8 @@ class FlutterStoryPROWEB extends StatefulWidget {
   State<FlutterStoryPROWEB> createState() => _FlutterStoryPROWEBState();
 }
 
-class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBindingObserver, TickerProviderStateMixin {
+class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB>
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   AnimationController? _animationController;
   Animation? _currentProgressAnimation;
   int currentIndex = 0;
@@ -116,6 +117,8 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
   late Animation<double> _animation;
   bool isStartOpacity = false;
   bool isCallComplited = false;
+  bool _isDisposed = false;
+
   @override
   void initState() {
     if (_animationController != null) {
@@ -123,9 +126,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
       _animationController?.dispose();
       _animationController = null;
     }
-    _animationController = AnimationController(
-      vsync: this,
-    );
+    _animationController = AnimationController(vsync: this);
     currentIndex = widget.initialIndex;
     widget.flutterStoryController?.addListener(_storyControllerListener);
     _startStoryView();
@@ -138,10 +139,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
     _animation = Tween<double>(
       begin: 1,
       end: 0,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
     super.initState();
   }
 
@@ -164,6 +162,8 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
 
   @override
   void dispose() {
+    _isDisposed = true;
+
     _animationController?.dispose();
     _animationController = null;
     widget.flutterStoryController
@@ -177,7 +177,8 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
 
   StoryItem get currentItem => widget.items[currentIndex];
 
-  StoryViewIndicatorConfig get storyViewIndicatorConfig => widget.storyViewIndicatorConfig ?? const StoryViewIndicatorConfig();
+  StoryViewIndicatorConfig get storyViewIndicatorConfig =>
+      widget.storyViewIndicatorConfig ?? const StoryViewIndicatorConfig();
 
   /// Listener for the story controller to handle various story actions.
   void _storyControllerListener() {
@@ -199,7 +200,9 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
       }
     }
 
-    if (jumpIndex != null && jumpIndex >= 0 && jumpIndex < widget.items.length) {
+    if (jumpIndex != null &&
+        jumpIndex >= 0 &&
+        jumpIndex < widget.items.length) {
       currentIndex = jumpIndex - 1;
       _playNext();
     }
@@ -219,9 +222,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
   void _resetAnimation() {
     _animationController?.reset();
     if (_currentProgressAnimation != null) {
-      _animationController?.forward(
-        from: 0,
-      );
+      _animationController?.forward(from: 0);
     }
     _animationController
       ?..removeListener(animationListener)
@@ -235,14 +236,14 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
 
   /// Resumes the media playback.
   void _resumeMedia() {
+    if (_isDisposed || !mounted) return;
+
     _controller.reset();
 
     _audioPlayer?.play();
     _currentVideoPlayer?.play();
     if (_currentProgressAnimation != null) {
-      _animationController?.forward(
-        from: _currentProgressAnimation?.value,
-      );
+      _animationController?.forward(from: _currentProgressAnimation?.value);
       if (_currentVideoPlayer != null) {
         // final videoPlayerValue = _currentVideoPlayer;
         // videoPlayerValue!.seekTo(Duration(milliseconds: 0));
@@ -252,6 +253,8 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
 
   /// Starts the countdown for the story item duration.
   void _startStoryCountdown() {
+    if (_isDisposed || !mounted) return;
+
     _currentVideoPlayer?.addListener(videoListener);
     if (_currentVideoPlayer != null) {
       return;
@@ -260,48 +263,49 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
     if (currentItem.audioConfig != null) {
       _audioPlayer?.durationFuture?.then((v) {
         _totalAudioDuration = v;
-        _animationController ??= AnimationController(
-          vsync: this,
-        );
+        _animationController ??= AnimationController(vsync: this);
 
         _animationController?.duration = v;
 
-        _currentProgressAnimation = Tween<double>(begin: 0, end: 1).animate(_animationController!)
-          ..addListener(animationListener)
-          ..addStatusListener(animationStatusListener);
+        _currentProgressAnimation =
+            Tween<double>(begin: 0, end: 1).animate(_animationController!)
+              ..addListener(animationListener)
+              ..addStatusListener(animationStatusListener);
 
         _animationController!.forward();
       });
-      _audioDurationSubscriptionStream = _audioPlayer?.positionStream.listen(audioPositionListener);
-      _audioPlayerStateStream = _audioPlayer?.playerStateStream.listen(
-        (event) {
-          if (event.playing) {
-            if (event.processingState == ProcessingState.loading) {
-              _pauseMedia();
-            } else {
-              _resumeMedia();
-            }
-          }
-        },
+      _audioDurationSubscriptionStream = _audioPlayer?.positionStream.listen(
+        audioPositionListener,
       );
+      _audioPlayerStateStream = _audioPlayer?.playerStateStream.listen((event) {
+        if (event.playing) {
+          if (event.processingState == ProcessingState.loading) {
+            _pauseMedia();
+          } else {
+            _resumeMedia();
+          }
+        }
+      });
 
       return;
     }
 
-    _animationController ??= AnimationController(
-      vsync: this,
-    );
-    _animationController?.duration = _currentVideoPlayer?.value.duration ?? currentItem.duration;
+    _animationController ??= AnimationController(vsync: this);
+    _animationController?.duration =
+        _currentVideoPlayer?.value.duration ?? currentItem.duration;
     if (_currentVideoPlayer == null && !currentItem.storyItemType.isVideo) {
-      _currentProgressAnimation = Tween<double>(begin: 0, end: 1).animate(_animationController!)
-        ..addListener(animationListener)
-        ..addStatusListener(animationStatusListener);
+      _currentProgressAnimation =
+          Tween<double>(begin: 0, end: 1).animate(_animationController!)
+            ..addListener(animationListener)
+            ..addStatusListener(animationStatusListener);
 
       _animationController!.forward();
     }
   }
 
   void videoListener() {
+    if (_isDisposed || !mounted) return;
+
     final dur = _currentVideoPlayer?.value.duration.inMilliseconds;
     final pos = _currentVideoPlayer?.value.position.inMilliseconds;
 
@@ -369,14 +373,17 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
 
   /// Plays the next story item.
   void _playNext() async {
-    if (widget.items.length == 1 && _currentVideoPlayer != null && widget.restartOnCompleted) {
+    if (widget.items.length == 1 &&
+        _currentVideoPlayer != null &&
+        widget.restartOnCompleted) {
       await callComplited();
 
       /// In case of story length 1 with video, we won't initialise,
       /// instead we will loop the video
       return;
     }
-    if (_currentVideoPlayer != null && currentIndex != (widget.items.length - 1)) {
+    if (_currentVideoPlayer != null &&
+        currentIndex != (widget.items.length - 1)) {
       /// Dispose the video player only in case of multiple story
       isCurrentItemLoaded = false;
       setState(() {});
@@ -447,9 +454,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
     final size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        if (currentItem.thumbnail != null) ...{
-          currentItem.thumbnail!,
-        },
+        if (currentItem.thumbnail != null) ...{currentItem.thumbnail!},
         if (currentItem.storyItemType.isImage) ...{
           Positioned.fill(
             child: ImageStoryView(
@@ -475,6 +480,11 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
               key: ValueKey('$currentIndex'),
               looping: widget.items.length == 1 && widget.restartOnCompleted,
               onVideoLoad: (videoPlayer) {
+                if (_isDisposed || !mounted) {
+                  videoPlayer?.dispose();
+                  return;
+                }
+
                 isCurrentItemLoaded = true;
                 _currentVideoPlayer = videoPlayer;
                 widget.onVideoLoad?.call(videoPlayer);
@@ -496,7 +506,10 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
                 if (loaded) {
                   _startStoryCountdown();
                 }
-                currentItem.webConfig?.onWebViewLoaded?.call(controller, loaded);
+                currentItem.webConfig?.onWebViewLoaded?.call(
+                  controller,
+                  loaded,
+                );
               },
             ),
           ),
@@ -524,7 +537,11 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
               isAutoStart: true,
               key: UniqueKey(),
               builder: (audioPlayer) {
-                return currentItem.customWidget!(widget.flutterStoryController, audioPlayer) ?? const SizedBox.shrink();
+                return currentItem.customWidget!(
+                      widget.flutterStoryController,
+                      audioPlayer,
+                    ) ??
+                    const SizedBox.shrink();
               },
               storyItem: currentItem,
               onLoaded: () {
@@ -610,27 +627,33 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
                               builder: (context, progress, duration, child) {
                                 return StoryViewIndicator(
                                   currentIndex: currentIndex,
-                                  currentItemAnimatedValue: progress.inMilliseconds / duration.inMilliseconds,
+                                  currentItemAnimatedValue:
+                                      progress.inMilliseconds /
+                                      duration.inMilliseconds,
                                   totalItems: widget.items.length,
-                                  storyViewIndicatorConfig: storyViewIndicatorConfig,
+                                  storyViewIndicatorConfig:
+                                      storyViewIndicatorConfig,
                                 );
-                              })
+                              },
+                            )
                           : _animationController != null
-                              ? AnimatedBuilder(
-                                  animation: _animationController!,
-                                  builder: (context, child) => StoryViewIndicator(
-                                    currentIndex: currentIndex,
-                                    currentItemAnimatedValue: currentItemProgress,
-                                    totalItems: widget.items.length,
-                                    storyViewIndicatorConfig: storyViewIndicatorConfig,
-                                  ),
-                                )
-                              : StoryViewIndicator(
-                                  currentIndex: currentIndex,
-                                  currentItemAnimatedValue: currentItemProgress,
-                                  totalItems: widget.items.length,
-                                  storyViewIndicatorConfig: storyViewIndicatorConfig,
-                                ),
+                          ? AnimatedBuilder(
+                              animation: _animationController!,
+                              builder: (context, child) => StoryViewIndicator(
+                                currentIndex: currentIndex,
+                                currentItemAnimatedValue: currentItemProgress,
+                                totalItems: widget.items.length,
+                                storyViewIndicatorConfig:
+                                    storyViewIndicatorConfig,
+                              ),
+                            )
+                          : StoryViewIndicator(
+                              currentIndex: currentIndex,
+                              currentItemAnimatedValue: currentItemProgress,
+                              totalItems: widget.items.length,
+                              storyViewIndicatorConfig:
+                                  storyViewIndicatorConfig,
+                            ),
                     ],
                   ),
                 ),
@@ -643,9 +666,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
           child: SizedBox(
             width: size.width * .2,
             height: size.height,
-            child: GestureDetector(
-              onTap: _playPrevious,
-            ),
+            child: GestureDetector(onTap: _playPrevious),
           ),
         ),
         Align(
@@ -653,9 +674,7 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
           child: SizedBox(
             width: size.width * .2,
             height: size.height,
-            child: GestureDetector(
-              onTap: _playNext,
-            ),
+            child: GestureDetector(onTap: _playNext),
           ),
         ),
         Align(
@@ -672,7 +691,8 @@ class _FlutterStoryPROWEBState extends State<FlutterStoryPROWEB> with WidgetsBin
               onLongPressCancel: _resumeMedia,
               onVerticalDragStart: widget.onSlideStart?.call,
               onVerticalDragUpdate: widget.onSlideDown?.call,
-              onVerticalDragEnd: (p0) => widget.onSlideEnd?.call(p0, currentIndex),
+              onVerticalDragEnd: (p0) =>
+                  widget.onSlideEnd?.call(p0, currentIndex),
             ),
           ),
         ),

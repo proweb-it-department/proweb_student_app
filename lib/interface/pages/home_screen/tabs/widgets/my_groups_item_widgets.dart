@@ -42,6 +42,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
 
     final result = await showMenu<int>(
       context: context,
+      requestFocus: true,
       position: RelativeRect.fromRect(
         Rect.fromLTWH(_tapPosition.dx, _tapPosition.dy, 10, 10),
         Rect.fromLTWH(

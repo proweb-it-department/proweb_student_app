@@ -19,7 +19,12 @@ class FooterStoryGroupView extends StatelessWidget {
   final int currentIndex;
   final ViewStoryModel storyModel;
   final FlutterStoryController controller;
-  const FooterStoryGroupView({super.key, required this.storyModel, required this.currentIndex, required this.controller});
+  const FooterStoryGroupView({
+    super.key,
+    required this.storyModel,
+    required this.currentIndex,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,13 @@ class FooterStoryGroupView extends StatelessWidget {
               child: FilledButton.icon(
                 onPressed: () {
                   final bloc = context.read<StoryGroupsBloc>();
-                  bloc.add(StoryGroupsEvent.action(storyId: story.storyId, groupId: storyModel.groupId, followed: true));
+                  bloc.add(
+                    StoryGroupsEvent.action(
+                      storyId: story.storyId,
+                      groupId: storyModel.groupId,
+                      followed: true,
+                    ),
+                  );
                   controller.pause();
                   _openLink(story.buttonUrl!, context);
                 },
@@ -51,12 +62,25 @@ class FooterStoryGroupView extends StatelessWidget {
               ),
             ),
           IconButton(
+            style: IconButton.styleFrom(backgroundColor: Colors.transparent),
             onPressed: () {
               if (story == null) return;
               final bloc = context.read<StoryGroupsBloc>();
-              bloc.add(StoryGroupsEvent.action(storyId: story.storyId, groupId: storyModel.groupId, liked: !(action?.liked ?? false)));
+              bloc.add(
+                StoryGroupsEvent.action(
+                  storyId: story.storyId,
+                  groupId: storyModel.groupId,
+                  liked: !(action?.liked ?? false),
+                ),
+              );
             },
-            icon: Icon(action?.liked == true ? Icons.favorite_outlined : Icons.favorite_border_outlined, size: 30, color: action?.liked == true ? Colors.red : Colors.white),
+            icon: Icon(
+              action?.liked == true
+                  ? Icons.favorite_outlined
+                  : Icons.favorite_border_outlined,
+              size: 30,
+              color: action?.liked == true ? Colors.red : Colors.white,
+            ),
           ),
         ],
       ),
@@ -85,7 +109,13 @@ class FooterStoryGroupView extends StatelessWidget {
       if (path.isNotEmpty && data.isNotEmpty) {
         if (path == 'group') {
           final blocGroup = context.read<MyGroupsBloc>();
-          final groups = blocGroup.state.when(initial: () => null, complited: (groups) => groups, loading: () => null, errorLoad: () => null, notFound: () => null);
+          final groups = blocGroup.state.when(
+            initial: () => null,
+            complited: (groups) => groups,
+            loading: () => null,
+            errorLoad: () => null,
+            notFound: () => null,
+          );
           if (groups != null && groups.isNotEmpty) {
             if (groups.length == 1) {
               final firstGroup = groups.firstOrNull;
@@ -109,7 +139,9 @@ class FooterStoryGroupView extends StatelessWidget {
               }
             }
           } else if (groups == null || groups.isEmpty) {
-            Fluttertoast.showToast(msg: "home.You_don't_have_any_transition_groups".tr());
+            Fluttertoast.showToast(
+              msg: "home.You_don't_have_any_transition_groups".tr(),
+            );
           }
         } /* else if (path == 'courses') {
             router.goNamed('courseinfo', params: {'id': data.trim()});
@@ -124,11 +156,27 @@ class FooterStoryGroupView extends StatelessWidget {
           } */
       }
     } else {
-      final baseAction = ['coworking', 'feedback', 'shop', 'branches', 'courses', 'rating', 'balance', 'messenger'];
-      final find = baseAction.firstWhere((a) => a == linkDataUrl.trim(), orElse: () => '');
+      final baseAction = [
+        'coworking',
+        'feedback',
+        'shop',
+        'branches',
+        'courses',
+        'rating',
+        'balance',
+        'messenger',
+      ];
+      final find = baseAction.firstWhere(
+        (a) => a == linkDataUrl.trim(),
+        orElse: () => '',
+      );
 
       if (find.isNotEmpty) {
-        final pathMap = {'branches': 'prowebbranch', 'courses': 'prowebcourse', 'balance': 'home/balance'};
+        final pathMap = {
+          'branches': 'prowebbranch',
+          'courses': 'prowebcourse',
+          'balance': 'home/balance',
+        };
         final routeName = pathMap[find] ?? find;
         linkApp = '/$routeName';
       }
@@ -171,13 +219,21 @@ class _DialogSelectGroupState extends State<DialogSelectGroup> {
               children: [
                 SizedBox(height: 60),
                 ...widget.groups.map((group) {
-                  if (group.group?.course?.icon != null && group.group?.course?.color != null) {
+                  if (group.group?.course?.icon != null &&
+                      group.group?.course?.color != null) {
                     return RadioListTile<int>(
                       controlAffinity: ListTileControlAffinity.trailing,
-                      secondary: CourseAvatar(icon: group.group!.course!.icon!, color: HexColor(group.group!.course!.color!)),
+                      secondary: CourseAvatar(
+                        icon: group.group!.course!.icon!,
+                        color: HexColor(group.group!.course!.color!),
+                      ),
                       value: group.group?.id ?? 0,
                       groupValue: _selectedGroupId,
-                      title: Text(group.group!.course!.name ?? '', maxLines: 1, overflow: TextOverflow.ellipsis),
+                      title: Text(
+                        group.group!.course!.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       subtitle: Text('#${group.group?.id}'),
                       onChanged: (value) {
                         if (value != null) {
@@ -210,10 +266,19 @@ class _DialogSelectGroupState extends State<DialogSelectGroup> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: Icon(Icons.close, color: customColor?.primaryTextColor),
+                    icon: Icon(
+                      Icons.close,
+                      color: customColor?.primaryTextColor,
+                    ),
                   ),
                   Center(
-                    child: Text('group.SELECT_GROUP'.tr(), style: GoogleFonts.roboto(fontSize: 22, fontWeight: FontWeight.bold)),
+                    child: Text(
+                      'group.SELECT_GROUP'.tr(),
+                      style: GoogleFonts.roboto(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -231,7 +296,10 @@ class _DialogSelectGroupState extends State<DialogSelectGroup> {
                 color: customColor?.primaryBg,
                 child: FilledButton(
                   onPressed: () {
-                    Navigator.pop(context, _selectedGroupId <= 0 ? null : _selectedGroupId);
+                    Navigator.pop(
+                      context,
+                      _selectedGroupId <= 0 ? null : _selectedGroupId,
+                    );
                   },
                   child: Text('global_data.Choose'.tr()),
                 ),
