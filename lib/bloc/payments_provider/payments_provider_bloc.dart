@@ -16,6 +16,13 @@ class PaymentsProviderBloc
   PaymentsProviderBloc() : super(PaymentsProviderInitial()) {
     on<PaymentsProviderEvent>((event, emit) async {
       started() async {
+        final providers = state.whenOrNull(
+          complited: (providers, url) => providers,
+        );
+        if (providers != null) {
+          emit(PaymentsProviderState.complited(providers: providers));
+          return;
+        }
         emit(PaymentsProviderState.load());
         final main = sl<GetResponsesMain>();
         final response = await main.paymentsProvider();
