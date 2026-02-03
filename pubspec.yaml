@@ -93,6 +93,7 @@ dependencies:
   gradient_borders: ^1.0.2
   syncfusion_flutter_pdfviewer: ^32.1.25
   shimmer_animation: ^2.1.0
+  
 
 dev_dependencies:
   flutter_test:
