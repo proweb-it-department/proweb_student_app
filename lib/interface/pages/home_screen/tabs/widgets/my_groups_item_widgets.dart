@@ -10,7 +10,6 @@ import 'package:proweb_student_app/bloc/balance/balance_bloc.dart';
 import 'package:proweb_student_app/bloc/payments_provider/payments_provider_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/app_bar/top_up_balance.dart';
-import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
@@ -162,7 +161,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
     bool isDuty = false;
     if (mainBalance != null) {
       double balance = double.parse(mainBalance);
-      isDuty = balance < 5000;
+      isDuty = balance < -5000;
     }
     return InkWell(
       onTapDown: block ? null : _getTapPosition,

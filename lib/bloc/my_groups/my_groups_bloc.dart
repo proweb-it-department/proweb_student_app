@@ -16,7 +16,6 @@ class MyGroupsBloc extends Bloc<MyGroupsEvent, MyGroupsState> {
         final myGroups = await sl<GetResponsesMain>().myGroups();
         if (myGroups == null) return emit(MyGroupsState.errorLoad());
         if (myGroups.isNotEmpty) {
-          // await Future.delayed(Duration(seconds: 60));
           return emit(MyGroupsState.complited(groups: myGroups));
         } else {
           return emit(MyGroupsState.notFound());

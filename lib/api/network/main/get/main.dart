@@ -35,6 +35,7 @@ import 'package:proweb_student_app/models/products_modules/products_modules.dart
 import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/room/room.dart';
+import 'package:proweb_student_app/models/scheduled_lesson_models/scheduled_lesson_models.dart';
 import 'package:proweb_student_app/models/seat_item/seat_item.dart';
 import 'package:proweb_student_app/models/servise_for_sale/servise_for_sale.dart';
 import 'package:proweb_student_app/models/story_groups_for_student/story_groups_for_student.dart';
@@ -158,6 +159,32 @@ class GetResponsesMain {
         return e;
       }).toList();
     }
+    return data;
+  }
+
+  Future<List<ScheduledLessonModels>?> myScheduleLesson({
+    required int groupId,
+    String type = 'main',
+  }) async {
+    String path =
+        '/api/v1/learning-process/group-lessons/?group_id=$groupId&type=$type';
+    final response = await sl<MainFetch>().get(
+      path: path,
+      cache: true,
+      duration: Duration(days: 2),
+    );
+    List<ScheduledLessonModels>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<ScheduledLessonModels>.fromJson(
+        r,
+        (data) => ScheduledLessonModels.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        list: (results) {
+          return results;
+        },
+      );
+    });
+
     return data;
   }
 
