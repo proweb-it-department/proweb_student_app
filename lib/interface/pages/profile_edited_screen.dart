@@ -371,7 +371,7 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                                     rangePickerSurfaceTintColor:
                                         Colors.transparent,
                                     rangeSelectionBackgroundColor: Colors.blue
-                                        .withOpacity(0.15),
+                                        .withAlpha((255 * 0.15).toInt()),
                                   );
                                   return Theme(
                                     data: ThemeData(

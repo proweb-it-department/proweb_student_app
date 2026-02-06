@@ -382,11 +382,11 @@ return complited(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  load,TResult Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits)?  complited,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  load,TResult Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits,  TsMap<String, List<HomeworkListGroup>> homework)?  complited,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ScheduledStudentLoad() when load != null:
 return load();case ScheduledStudentComplited() when complited != null:
-return complited(_that.lessons,_that.myVisits);case _:
+return complited(_that.lessons,_that.myVisits,_that.homework);case _:
   return orElse();
 
 }
@@ -404,11 +404,11 @@ return complited(_that.lessons,_that.myVisits);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  load,required TResult Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits)  complited,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  load,required TResult Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits,  TsMap<String, List<HomeworkListGroup>> homework)  complited,}) {final _that = this;
 switch (_that) {
 case ScheduledStudentLoad():
 return load();case ScheduledStudentComplited():
-return complited(_that.lessons,_that.myVisits);}
+return complited(_that.lessons,_that.myVisits,_that.homework);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -422,11 +422,11 @@ return complited(_that.lessons,_that.myVisits);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  load,TResult? Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits)?  complited,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  load,TResult? Function( TsMap<String, List<ScheduledLessonModels>> lessons,  TsMap<String, List<CoworkingListReserve>> myVisits,  TsMap<String, List<HomeworkListGroup>> homework)?  complited,}) {final _that = this;
 switch (_that) {
 case ScheduledStudentLoad() when load != null:
 return load();case ScheduledStudentComplited() when complited != null:
-return complited(_that.lessons,_that.myVisits);case _:
+return complited(_that.lessons,_that.myVisits,_that.homework);case _:
   return null;
 
 }
@@ -470,11 +470,12 @@ String toString() {
 
 
 class ScheduledStudentComplited implements ScheduledStudentState {
-  const ScheduledStudentComplited({required this.lessons, required this.myVisits});
+  const ScheduledStudentComplited({required this.lessons, required this.myVisits, required this.homework});
   
 
  final  TsMap<String, List<ScheduledLessonModels>> lessons;
  final  TsMap<String, List<CoworkingListReserve>> myVisits;
+ final  TsMap<String, List<HomeworkListGroup>> homework;
 
 /// Create a copy of ScheduledStudentState
 /// with the given fields replaced by the non-null parameter values.
@@ -486,16 +487,16 @@ $ScheduledStudentComplitedCopyWith<ScheduledStudentComplited> get copyWith => _$
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduledStudentComplited&&(identical(other.lessons, lessons) || other.lessons == lessons)&&(identical(other.myVisits, myVisits) || other.myVisits == myVisits));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ScheduledStudentComplited&&(identical(other.lessons, lessons) || other.lessons == lessons)&&(identical(other.myVisits, myVisits) || other.myVisits == myVisits)&&(identical(other.homework, homework) || other.homework == homework));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,lessons,myVisits);
+int get hashCode => Object.hash(runtimeType,lessons,myVisits,homework);
 
 @override
 String toString() {
-  return 'ScheduledStudentState.complited(lessons: $lessons, myVisits: $myVisits)';
+  return 'ScheduledStudentState.complited(lessons: $lessons, myVisits: $myVisits, homework: $homework)';
 }
 
 
@@ -506,7 +507,7 @@ abstract mixin class $ScheduledStudentComplitedCopyWith<$Res> implements $Schedu
   factory $ScheduledStudentComplitedCopyWith(ScheduledStudentComplited value, $Res Function(ScheduledStudentComplited) _then) = _$ScheduledStudentComplitedCopyWithImpl;
 @useResult
 $Res call({
- TsMap<String, List<ScheduledLessonModels>> lessons, TsMap<String, List<CoworkingListReserve>> myVisits
+ TsMap<String, List<ScheduledLessonModels>> lessons, TsMap<String, List<CoworkingListReserve>> myVisits, TsMap<String, List<HomeworkListGroup>> homework
 });
 
 
@@ -523,11 +524,12 @@ class _$ScheduledStudentComplitedCopyWithImpl<$Res>
 
 /// Create a copy of ScheduledStudentState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? lessons = null,Object? myVisits = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? lessons = null,Object? myVisits = null,Object? homework = null,}) {
   return _then(ScheduledStudentComplited(
 lessons: null == lessons ? _self.lessons : lessons // ignore: cast_nullable_to_non_nullable
 as TsMap<String, List<ScheduledLessonModels>>,myVisits: null == myVisits ? _self.myVisits : myVisits // ignore: cast_nullable_to_non_nullable
-as TsMap<String, List<CoworkingListReserve>>,
+as TsMap<String, List<CoworkingListReserve>>,homework: null == homework ? _self.homework : homework // ignore: cast_nullable_to_non_nullable
+as TsMap<String, List<HomeworkListGroup>>,
   ));
 }
 

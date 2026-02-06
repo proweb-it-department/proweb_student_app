@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/sessions_list_item/sessions_list_item.dart';
 part 'homework_list_group.freezed.dart';
 part 'homework_list_group.g.dart';
@@ -21,6 +22,7 @@ abstract class HomeworkListGroup with _$HomeworkListGroup {
     @JsonKey(name: 'group_id') int? groupId,
     @JsonKey(name: 'homework') Homework? homework,
     @JsonKey(name: 'has_material') bool? hasMaterial,
+    MyGroupsItem? myGroup,
   }) = _HomeworkListGroup;
 
   factory HomeworkListGroup.fromJson(Map<String, Object?> json) =>

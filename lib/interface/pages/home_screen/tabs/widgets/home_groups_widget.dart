@@ -34,8 +34,12 @@ class BlocBuilderGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<MyGroupsBloc>();
+    final groups = bloc.state.whenOrNull(complited: (groups) => groups);
     return BlocBuilder<MyGroupsBloc, MyGroupsState>(
-      bloc: context.read<MyGroupsBloc>()..add(MyGroupsEvent.started()),
+      bloc: groups == null
+          ? (context.read<MyGroupsBloc>()..add(MyGroupsEvent.started()))
+          : null,
       builder: (context, state) {
         return switch (state) {
           MyGroupsInitial() => MyGroupsHeader(child: ShimmerGroup()),

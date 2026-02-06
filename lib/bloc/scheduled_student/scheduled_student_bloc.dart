@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
+import 'package:proweb_student_app/models/homework_list_group/homework_list_group.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/models/scheduled_lesson_models/scheduled_lesson_models.dart';
@@ -22,6 +23,7 @@ class ScheduledStudentBloc
         emit(ScheduledStudentState.load());
         final lessons = TsMap<String, List<ScheduledLessonModels>>();
         final myVisits = TsMap<String, List<CoworkingListReserve>>();
+        final homework = TsMap<String, List<HomeworkListGroup>>();
 
         final main = sl<GetResponsesMain>();
         final List<ScheduledLessonModels> lessonResponse = [];
@@ -60,8 +62,46 @@ class ScheduledStudentBloc
             myVisits.set(date, dateVisits);
           }
         }
+
+        final studentIds = groups
+            .map((a) => a.groupUserId)
+            .whereType<int>()
+            .toList();
+        ResponseLazeList<HomeworkListGroup>? responseHomework = await main
+            .homeworkListStudentIds(studentIds: studentIds);
+        List<HomeworkListGroup> homeworks = [...(responseHomework?.list ?? [])];
+        if (homeworks.isNotEmpty) {
+          homeworks = homeworks.map((e) {
+            final stId = e.studentId;
+            if (stId != null) {
+              final group = groups.firstWhere(
+                (element) => element.groupUserId == stId,
+                orElse: () => MyGroupsItem(),
+              );
+              if (group.groupUserId != null) {
+                return e.copyWith(myGroup: group);
+              }
+            }
+            return e;
+          }).toList();
+          for (var element in homeworks) {
+            String? createAt = element.createdAt;
+            if (createAt == null) continue;
+            createAt = sl<LocalData>().getDateString(
+              date: DateTime.parse(createAt),
+              seporator: DateSeporator.dash,
+            );
+            final date = homework.getOrSet(createAt, () => []);
+            date.add(element);
+            homework.set(createAt, date);
+          }
+        }
         emit(
-          ScheduledStudentState.complited(lessons: lessons, myVisits: myVisits),
+          ScheduledStudentState.complited(
+            lessons: lessons,
+            myVisits: myVisits,
+            homework: homework,
+          ),
         );
       }
 

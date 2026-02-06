@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HomeworkListGroup implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by') UserIdDefault? get createdBy;@JsonKey(name: 'updated_by') UserIdDefault? get updatedBy;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'score') int? get score;@JsonKey(name: 'checked') bool? get checked;@JsonKey(name: 'checked_at') String? get checkedAt;@JsonKey(name: 'deadline_lesson_number') int? get deadlineLessonNumber;@JsonKey(name: 'student_id') int? get studentId;@JsonKey(name: 'material_deleted') bool? get materialDeleted;@JsonKey(name: 'group_id') int? get groupId;@JsonKey(name: 'homework') Homework? get homework;@JsonKey(name: 'has_material') bool? get hasMaterial;
+@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by') UserIdDefault? get createdBy;@JsonKey(name: 'updated_by') UserIdDefault? get updatedBy;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'score') int? get score;@JsonKey(name: 'checked') bool? get checked;@JsonKey(name: 'checked_at') String? get checkedAt;@JsonKey(name: 'deadline_lesson_number') int? get deadlineLessonNumber;@JsonKey(name: 'student_id') int? get studentId;@JsonKey(name: 'material_deleted') bool? get materialDeleted;@JsonKey(name: 'group_id') int? get groupId;@JsonKey(name: 'homework') Homework? get homework;@JsonKey(name: 'has_material') bool? get hasMaterial; MyGroupsItem? get myGroup;
 /// Create a copy of HomeworkListGroup
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,21 +29,21 @@ $HomeworkListGroupCopyWith<HomeworkListGroup> get copyWith => _$HomeworkListGrou
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'HomeworkListGroup'))
-    ..add(DiagnosticsProperty('createdAt', createdAt))..add(DiagnosticsProperty('updatedAt', updatedAt))..add(DiagnosticsProperty('createdBy', createdBy))..add(DiagnosticsProperty('updatedBy', updatedBy))..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('checked', checked))..add(DiagnosticsProperty('checkedAt', checkedAt))..add(DiagnosticsProperty('deadlineLessonNumber', deadlineLessonNumber))..add(DiagnosticsProperty('studentId', studentId))..add(DiagnosticsProperty('materialDeleted', materialDeleted))..add(DiagnosticsProperty('groupId', groupId))..add(DiagnosticsProperty('homework', homework))..add(DiagnosticsProperty('hasMaterial', hasMaterial));
+    ..add(DiagnosticsProperty('createdAt', createdAt))..add(DiagnosticsProperty('updatedAt', updatedAt))..add(DiagnosticsProperty('createdBy', createdBy))..add(DiagnosticsProperty('updatedBy', updatedBy))..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('checked', checked))..add(DiagnosticsProperty('checkedAt', checkedAt))..add(DiagnosticsProperty('deadlineLessonNumber', deadlineLessonNumber))..add(DiagnosticsProperty('studentId', studentId))..add(DiagnosticsProperty('materialDeleted', materialDeleted))..add(DiagnosticsProperty('groupId', groupId))..add(DiagnosticsProperty('homework', homework))..add(DiagnosticsProperty('hasMaterial', hasMaterial))..add(DiagnosticsProperty('myGroup', myGroup));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeworkListGroup&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.updatedBy, updatedBy) || other.updatedBy == updatedBy)&&(identical(other.id, id) || other.id == id)&&(identical(other.score, score) || other.score == score)&&(identical(other.checked, checked) || other.checked == checked)&&(identical(other.checkedAt, checkedAt) || other.checkedAt == checkedAt)&&(identical(other.deadlineLessonNumber, deadlineLessonNumber) || other.deadlineLessonNumber == deadlineLessonNumber)&&(identical(other.studentId, studentId) || other.studentId == studentId)&&(identical(other.materialDeleted, materialDeleted) || other.materialDeleted == materialDeleted)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.homework, homework) || other.homework == homework)&&(identical(other.hasMaterial, hasMaterial) || other.hasMaterial == hasMaterial));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HomeworkListGroup&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.updatedBy, updatedBy) || other.updatedBy == updatedBy)&&(identical(other.id, id) || other.id == id)&&(identical(other.score, score) || other.score == score)&&(identical(other.checked, checked) || other.checked == checked)&&(identical(other.checkedAt, checkedAt) || other.checkedAt == checkedAt)&&(identical(other.deadlineLessonNumber, deadlineLessonNumber) || other.deadlineLessonNumber == deadlineLessonNumber)&&(identical(other.studentId, studentId) || other.studentId == studentId)&&(identical(other.materialDeleted, materialDeleted) || other.materialDeleted == materialDeleted)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.homework, homework) || other.homework == homework)&&(identical(other.hasMaterial, hasMaterial) || other.hasMaterial == hasMaterial)&&(identical(other.myGroup, myGroup) || other.myGroup == myGroup));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,createdAt,updatedAt,createdBy,updatedBy,id,score,checked,checkedAt,deadlineLessonNumber,studentId,materialDeleted,groupId,homework,hasMaterial);
+int get hashCode => Object.hash(runtimeType,createdAt,updatedAt,createdBy,updatedBy,id,score,checked,checkedAt,deadlineLessonNumber,studentId,materialDeleted,groupId,homework,hasMaterial,myGroup);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'HomeworkListGroup(createdAt: $createdAt, updatedAt: $updatedAt, createdBy: $createdBy, updatedBy: $updatedBy, id: $id, score: $score, checked: $checked, checkedAt: $checkedAt, deadlineLessonNumber: $deadlineLessonNumber, studentId: $studentId, materialDeleted: $materialDeleted, groupId: $groupId, homework: $homework, hasMaterial: $hasMaterial)';
+  return 'HomeworkListGroup(createdAt: $createdAt, updatedAt: $updatedAt, createdBy: $createdBy, updatedBy: $updatedBy, id: $id, score: $score, checked: $checked, checkedAt: $checkedAt, deadlineLessonNumber: $deadlineLessonNumber, studentId: $studentId, materialDeleted: $materialDeleted, groupId: $groupId, homework: $homework, hasMaterial: $hasMaterial, myGroup: $myGroup)';
 }
 
 
@@ -54,11 +54,11 @@ abstract mixin class $HomeworkListGroupCopyWith<$Res>  {
   factory $HomeworkListGroupCopyWith(HomeworkListGroup value, $Res Function(HomeworkListGroup) _then) = _$HomeworkListGroupCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by') UserIdDefault? createdBy,@JsonKey(name: 'updated_by') UserIdDefault? updatedBy,@JsonKey(name: 'id') int? id,@JsonKey(name: 'score') int? score,@JsonKey(name: 'checked') bool? checked,@JsonKey(name: 'checked_at') String? checkedAt,@JsonKey(name: 'deadline_lesson_number') int? deadlineLessonNumber,@JsonKey(name: 'student_id') int? studentId,@JsonKey(name: 'material_deleted') bool? materialDeleted,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'homework') Homework? homework,@JsonKey(name: 'has_material') bool? hasMaterial
+@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by') UserIdDefault? createdBy,@JsonKey(name: 'updated_by') UserIdDefault? updatedBy,@JsonKey(name: 'id') int? id,@JsonKey(name: 'score') int? score,@JsonKey(name: 'checked') bool? checked,@JsonKey(name: 'checked_at') String? checkedAt,@JsonKey(name: 'deadline_lesson_number') int? deadlineLessonNumber,@JsonKey(name: 'student_id') int? studentId,@JsonKey(name: 'material_deleted') bool? materialDeleted,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'homework') Homework? homework,@JsonKey(name: 'has_material') bool? hasMaterial, MyGroupsItem? myGroup
 });
 
 
-$UserIdDefaultCopyWith<$Res>? get createdBy;$UserIdDefaultCopyWith<$Res>? get updatedBy;$HomeworkCopyWith<$Res>? get homework;
+$UserIdDefaultCopyWith<$Res>? get createdBy;$UserIdDefaultCopyWith<$Res>? get updatedBy;$HomeworkCopyWith<$Res>? get homework;$MyGroupsItemCopyWith<$Res>? get myGroup;
 
 }
 /// @nodoc
@@ -71,7 +71,7 @@ class _$HomeworkListGroupCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkListGroup
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? createdAt = freezed,Object? updatedAt = freezed,Object? createdBy = freezed,Object? updatedBy = freezed,Object? id = freezed,Object? score = freezed,Object? checked = freezed,Object? checkedAt = freezed,Object? deadlineLessonNumber = freezed,Object? studentId = freezed,Object? materialDeleted = freezed,Object? groupId = freezed,Object? homework = freezed,Object? hasMaterial = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? createdAt = freezed,Object? updatedAt = freezed,Object? createdBy = freezed,Object? updatedBy = freezed,Object? id = freezed,Object? score = freezed,Object? checked = freezed,Object? checkedAt = freezed,Object? deadlineLessonNumber = freezed,Object? studentId = freezed,Object? materialDeleted = freezed,Object? groupId = freezed,Object? homework = freezed,Object? hasMaterial = freezed,Object? myGroup = freezed,}) {
   return _then(_self.copyWith(
 createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,8 @@ as int?,materialDeleted: freezed == materialDeleted ? _self.materialDeleted : ma
 as bool?,groupId: freezed == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int?,homework: freezed == homework ? _self.homework : homework // ignore: cast_nullable_to_non_nullable
 as Homework?,hasMaterial: freezed == hasMaterial ? _self.hasMaterial : hasMaterial // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,myGroup: freezed == myGroup ? _self.myGroup : myGroup // ignore: cast_nullable_to_non_nullable
+as MyGroupsItem?,
   ));
 }
 /// Create a copy of HomeworkListGroup
@@ -125,6 +126,18 @@ $HomeworkCopyWith<$Res>? get homework {
 
   return $HomeworkCopyWith<$Res>(_self.homework!, (value) {
     return _then(_self.copyWith(homework: value));
+  });
+}/// Create a copy of HomeworkListGroup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MyGroupsItemCopyWith<$Res>? get myGroup {
+    if (_self.myGroup == null) {
+    return null;
+  }
+
+  return $MyGroupsItemCopyWith<$Res>(_self.myGroup!, (value) {
+    return _then(_self.copyWith(myGroup: value));
   });
 }
 }
@@ -208,10 +221,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial,  MyGroupsItem? myGroup)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HomeworkListGroup() when $default != null:
-return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial);case _:
+return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial,_that.myGroup);case _:
   return orElse();
 
 }
@@ -229,10 +242,10 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial,  MyGroupsItem? myGroup)  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkListGroup():
-return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial);case _:
+return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial,_that.myGroup);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -249,10 +262,10 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by')  UserIdDefault? createdBy, @JsonKey(name: 'updated_by')  UserIdDefault? updatedBy, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'checked')  bool? checked, @JsonKey(name: 'checked_at')  String? checkedAt, @JsonKey(name: 'deadline_lesson_number')  int? deadlineLessonNumber, @JsonKey(name: 'student_id')  int? studentId, @JsonKey(name: 'material_deleted')  bool? materialDeleted, @JsonKey(name: 'group_id')  int? groupId, @JsonKey(name: 'homework')  Homework? homework, @JsonKey(name: 'has_material')  bool? hasMaterial,  MyGroupsItem? myGroup)?  $default,) {final _that = this;
 switch (_that) {
 case _HomeworkListGroup() when $default != null:
-return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial);case _:
+return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,_that.id,_that.score,_that.checked,_that.checkedAt,_that.deadlineLessonNumber,_that.studentId,_that.materialDeleted,_that.groupId,_that.homework,_that.hasMaterial,_that.myGroup);case _:
   return null;
 
 }
@@ -264,7 +277,7 @@ return $default(_that.createdAt,_that.updatedAt,_that.createdBy,_that.updatedBy,
 @JsonSerializable()
 
 class _HomeworkListGroup with DiagnosticableTreeMixin implements HomeworkListGroup {
-  const _HomeworkListGroup({@JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, @JsonKey(name: 'created_by') this.createdBy, @JsonKey(name: 'updated_by') this.updatedBy, @JsonKey(name: 'id') this.id, @JsonKey(name: 'score') this.score, @JsonKey(name: 'checked') this.checked, @JsonKey(name: 'checked_at') this.checkedAt, @JsonKey(name: 'deadline_lesson_number') this.deadlineLessonNumber, @JsonKey(name: 'student_id') this.studentId, @JsonKey(name: 'material_deleted') this.materialDeleted, @JsonKey(name: 'group_id') this.groupId, @JsonKey(name: 'homework') this.homework, @JsonKey(name: 'has_material') this.hasMaterial});
+  const _HomeworkListGroup({@JsonKey(name: 'created_at') this.createdAt, @JsonKey(name: 'updated_at') this.updatedAt, @JsonKey(name: 'created_by') this.createdBy, @JsonKey(name: 'updated_by') this.updatedBy, @JsonKey(name: 'id') this.id, @JsonKey(name: 'score') this.score, @JsonKey(name: 'checked') this.checked, @JsonKey(name: 'checked_at') this.checkedAt, @JsonKey(name: 'deadline_lesson_number') this.deadlineLessonNumber, @JsonKey(name: 'student_id') this.studentId, @JsonKey(name: 'material_deleted') this.materialDeleted, @JsonKey(name: 'group_id') this.groupId, @JsonKey(name: 'homework') this.homework, @JsonKey(name: 'has_material') this.hasMaterial, this.myGroup});
   factory _HomeworkListGroup.fromJson(Map<String, dynamic> json) => _$HomeworkListGroupFromJson(json);
 
 @override@JsonKey(name: 'created_at') final  String? createdAt;
@@ -281,6 +294,7 @@ class _HomeworkListGroup with DiagnosticableTreeMixin implements HomeworkListGro
 @override@JsonKey(name: 'group_id') final  int? groupId;
 @override@JsonKey(name: 'homework') final  Homework? homework;
 @override@JsonKey(name: 'has_material') final  bool? hasMaterial;
+@override final  MyGroupsItem? myGroup;
 
 /// Create a copy of HomeworkListGroup
 /// with the given fields replaced by the non-null parameter values.
@@ -296,21 +310,21 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'HomeworkListGroup'))
-    ..add(DiagnosticsProperty('createdAt', createdAt))..add(DiagnosticsProperty('updatedAt', updatedAt))..add(DiagnosticsProperty('createdBy', createdBy))..add(DiagnosticsProperty('updatedBy', updatedBy))..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('checked', checked))..add(DiagnosticsProperty('checkedAt', checkedAt))..add(DiagnosticsProperty('deadlineLessonNumber', deadlineLessonNumber))..add(DiagnosticsProperty('studentId', studentId))..add(DiagnosticsProperty('materialDeleted', materialDeleted))..add(DiagnosticsProperty('groupId', groupId))..add(DiagnosticsProperty('homework', homework))..add(DiagnosticsProperty('hasMaterial', hasMaterial));
+    ..add(DiagnosticsProperty('createdAt', createdAt))..add(DiagnosticsProperty('updatedAt', updatedAt))..add(DiagnosticsProperty('createdBy', createdBy))..add(DiagnosticsProperty('updatedBy', updatedBy))..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('checked', checked))..add(DiagnosticsProperty('checkedAt', checkedAt))..add(DiagnosticsProperty('deadlineLessonNumber', deadlineLessonNumber))..add(DiagnosticsProperty('studentId', studentId))..add(DiagnosticsProperty('materialDeleted', materialDeleted))..add(DiagnosticsProperty('groupId', groupId))..add(DiagnosticsProperty('homework', homework))..add(DiagnosticsProperty('hasMaterial', hasMaterial))..add(DiagnosticsProperty('myGroup', myGroup));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeworkListGroup&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.updatedBy, updatedBy) || other.updatedBy == updatedBy)&&(identical(other.id, id) || other.id == id)&&(identical(other.score, score) || other.score == score)&&(identical(other.checked, checked) || other.checked == checked)&&(identical(other.checkedAt, checkedAt) || other.checkedAt == checkedAt)&&(identical(other.deadlineLessonNumber, deadlineLessonNumber) || other.deadlineLessonNumber == deadlineLessonNumber)&&(identical(other.studentId, studentId) || other.studentId == studentId)&&(identical(other.materialDeleted, materialDeleted) || other.materialDeleted == materialDeleted)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.homework, homework) || other.homework == homework)&&(identical(other.hasMaterial, hasMaterial) || other.hasMaterial == hasMaterial));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HomeworkListGroup&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy)&&(identical(other.updatedBy, updatedBy) || other.updatedBy == updatedBy)&&(identical(other.id, id) || other.id == id)&&(identical(other.score, score) || other.score == score)&&(identical(other.checked, checked) || other.checked == checked)&&(identical(other.checkedAt, checkedAt) || other.checkedAt == checkedAt)&&(identical(other.deadlineLessonNumber, deadlineLessonNumber) || other.deadlineLessonNumber == deadlineLessonNumber)&&(identical(other.studentId, studentId) || other.studentId == studentId)&&(identical(other.materialDeleted, materialDeleted) || other.materialDeleted == materialDeleted)&&(identical(other.groupId, groupId) || other.groupId == groupId)&&(identical(other.homework, homework) || other.homework == homework)&&(identical(other.hasMaterial, hasMaterial) || other.hasMaterial == hasMaterial)&&(identical(other.myGroup, myGroup) || other.myGroup == myGroup));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,createdAt,updatedAt,createdBy,updatedBy,id,score,checked,checkedAt,deadlineLessonNumber,studentId,materialDeleted,groupId,homework,hasMaterial);
+int get hashCode => Object.hash(runtimeType,createdAt,updatedAt,createdBy,updatedBy,id,score,checked,checkedAt,deadlineLessonNumber,studentId,materialDeleted,groupId,homework,hasMaterial,myGroup);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'HomeworkListGroup(createdAt: $createdAt, updatedAt: $updatedAt, createdBy: $createdBy, updatedBy: $updatedBy, id: $id, score: $score, checked: $checked, checkedAt: $checkedAt, deadlineLessonNumber: $deadlineLessonNumber, studentId: $studentId, materialDeleted: $materialDeleted, groupId: $groupId, homework: $homework, hasMaterial: $hasMaterial)';
+  return 'HomeworkListGroup(createdAt: $createdAt, updatedAt: $updatedAt, createdBy: $createdBy, updatedBy: $updatedBy, id: $id, score: $score, checked: $checked, checkedAt: $checkedAt, deadlineLessonNumber: $deadlineLessonNumber, studentId: $studentId, materialDeleted: $materialDeleted, groupId: $groupId, homework: $homework, hasMaterial: $hasMaterial, myGroup: $myGroup)';
 }
 
 
@@ -321,11 +335,11 @@ abstract mixin class _$HomeworkListGroupCopyWith<$Res> implements $HomeworkListG
   factory _$HomeworkListGroupCopyWith(_HomeworkListGroup value, $Res Function(_HomeworkListGroup) _then) = __$HomeworkListGroupCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by') UserIdDefault? createdBy,@JsonKey(name: 'updated_by') UserIdDefault? updatedBy,@JsonKey(name: 'id') int? id,@JsonKey(name: 'score') int? score,@JsonKey(name: 'checked') bool? checked,@JsonKey(name: 'checked_at') String? checkedAt,@JsonKey(name: 'deadline_lesson_number') int? deadlineLessonNumber,@JsonKey(name: 'student_id') int? studentId,@JsonKey(name: 'material_deleted') bool? materialDeleted,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'homework') Homework? homework,@JsonKey(name: 'has_material') bool? hasMaterial
+@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by') UserIdDefault? createdBy,@JsonKey(name: 'updated_by') UserIdDefault? updatedBy,@JsonKey(name: 'id') int? id,@JsonKey(name: 'score') int? score,@JsonKey(name: 'checked') bool? checked,@JsonKey(name: 'checked_at') String? checkedAt,@JsonKey(name: 'deadline_lesson_number') int? deadlineLessonNumber,@JsonKey(name: 'student_id') int? studentId,@JsonKey(name: 'material_deleted') bool? materialDeleted,@JsonKey(name: 'group_id') int? groupId,@JsonKey(name: 'homework') Homework? homework,@JsonKey(name: 'has_material') bool? hasMaterial, MyGroupsItem? myGroup
 });
 
 
-@override $UserIdDefaultCopyWith<$Res>? get createdBy;@override $UserIdDefaultCopyWith<$Res>? get updatedBy;@override $HomeworkCopyWith<$Res>? get homework;
+@override $UserIdDefaultCopyWith<$Res>? get createdBy;@override $UserIdDefaultCopyWith<$Res>? get updatedBy;@override $HomeworkCopyWith<$Res>? get homework;@override $MyGroupsItemCopyWith<$Res>? get myGroup;
 
 }
 /// @nodoc
@@ -338,7 +352,7 @@ class __$HomeworkListGroupCopyWithImpl<$Res>
 
 /// Create a copy of HomeworkListGroup
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? createdAt = freezed,Object? updatedAt = freezed,Object? createdBy = freezed,Object? updatedBy = freezed,Object? id = freezed,Object? score = freezed,Object? checked = freezed,Object? checkedAt = freezed,Object? deadlineLessonNumber = freezed,Object? studentId = freezed,Object? materialDeleted = freezed,Object? groupId = freezed,Object? homework = freezed,Object? hasMaterial = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? createdAt = freezed,Object? updatedAt = freezed,Object? createdBy = freezed,Object? updatedBy = freezed,Object? id = freezed,Object? score = freezed,Object? checked = freezed,Object? checkedAt = freezed,Object? deadlineLessonNumber = freezed,Object? studentId = freezed,Object? materialDeleted = freezed,Object? groupId = freezed,Object? homework = freezed,Object? hasMaterial = freezed,Object? myGroup = freezed,}) {
   return _then(_HomeworkListGroup(
 createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -354,7 +368,8 @@ as int?,materialDeleted: freezed == materialDeleted ? _self.materialDeleted : ma
 as bool?,groupId: freezed == groupId ? _self.groupId : groupId // ignore: cast_nullable_to_non_nullable
 as int?,homework: freezed == homework ? _self.homework : homework // ignore: cast_nullable_to_non_nullable
 as Homework?,hasMaterial: freezed == hasMaterial ? _self.hasMaterial : hasMaterial // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,myGroup: freezed == myGroup ? _self.myGroup : myGroup // ignore: cast_nullable_to_non_nullable
+as MyGroupsItem?,
   ));
 }
 
@@ -393,6 +408,18 @@ $HomeworkCopyWith<$Res>? get homework {
 
   return $HomeworkCopyWith<$Res>(_self.homework!, (value) {
     return _then(_self.copyWith(homework: value));
+  });
+}/// Create a copy of HomeworkListGroup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$MyGroupsItemCopyWith<$Res>? get myGroup {
+    if (_self.myGroup == null) {
+    return null;
+  }
+
+  return $MyGroupsItemCopyWith<$Res>(_self.myGroup!, (value) {
+    return _then(_self.copyWith(myGroup: value));
   });
 }
 }

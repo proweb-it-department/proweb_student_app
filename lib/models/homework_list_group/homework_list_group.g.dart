@@ -28,6 +28,9 @@ _HomeworkListGroup _$HomeworkListGroupFromJson(Map<String, dynamic> json) =>
           ? null
           : Homework.fromJson(json['homework'] as Map<String, dynamic>),
       hasMaterial: json['has_material'] as bool?,
+      myGroup: json['myGroup'] == null
+          ? null
+          : MyGroupsItem.fromJson(json['myGroup'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$HomeworkListGroupToJson(_HomeworkListGroup instance) =>
@@ -46,6 +49,7 @@ Map<String, dynamic> _$HomeworkListGroupToJson(_HomeworkListGroup instance) =>
       'group_id': instance.groupId,
       'homework': instance.homework,
       'has_material': instance.hasMaterial,
+      'myGroup': instance.myGroup,
     };
 
 _Homework _$HomeworkFromJson(Map<String, dynamic> json) =>

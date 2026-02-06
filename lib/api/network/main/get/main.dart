@@ -51,6 +51,7 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
@@ -168,11 +169,7 @@ class GetResponsesMain {
   }) async {
     String path =
         '/api/v1/learning-process/group-lessons/?group_id=$groupId&type=$type';
-    final response = await sl<MainFetch>().get(
-      path: path,
-      cache: true,
-      duration: Duration(days: 2),
-    );
+    final response = await sl<MainFetch>().get(path: path, cache: false);
     List<ScheduledLessonModels>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<ScheduledLessonModels>.fromJson(
         r,
@@ -301,6 +298,26 @@ class GetResponsesMain {
   }) async {
     String path =
         '/api/v1/learning-process/students/homeworks/?group_id=$groupId&limit=$limit&offset=$offset';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<HomeworkListGroup>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<HomeworkListGroup>.fromJson(
+        r,
+        (data) => HomeworkListGroup.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<HomeworkListGroup>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<ResponseLazeList<HomeworkListGroup>?> homeworkListStudentIds({
+    required List<int> studentIds,
+  }) async {
+    String path =
+        '/api/v1/learning-process/students/homeworks/?student_id_list=${studentIds.join('&student_id_list=')}&limit=1000&offset=0';
     final response = await sl<MainFetch>().get(path: path);
     ResponseLazeList<HomeworkListGroup>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<HomeworkListGroup>.fromJson(
@@ -804,7 +821,7 @@ class GetResponsesMain {
   }) async {
     String path =
         '/api/v1/coworking/students/visits/my-visits/?limit=$limit&offset=$offset';
-    final response = await sl<MainFetch>().get(path: path, cache: true);
+    final response = await sl<MainFetch>().get(path: path);
     ResponseLazeList<CoworkingListReserve>? data = response.fold((l) => null, (
       r,
     ) {

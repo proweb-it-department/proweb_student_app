@@ -9,6 +9,7 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/video_model/video_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 part 'lesson_video_event.dart';
 part 'lesson_video_state.dart';
@@ -31,22 +32,24 @@ class LessonVideoBloc extends Bloc<LessonVideoEvent, LessonVideoState> {
         GroupLessonInfo? data = await main.currentLesson(lessonId: lessonId);
         if (data == null) return emit(LessonVideoState.error());
         var videos = data.groupLesson?.videos;
-        if (videos == null) return emit(LessonVideoState.error());
         if (data.groupLesson != null) {
           data = data.copyWith(
             groupLesson: data.groupLesson!.copyWith(id: lessonId),
           );
         }
+        TalkerLogger().log(123);
         final List<String> slugs = [];
-        for (var element in videos) {
-          final videoKey = element.videoKey;
-          if (videoKey != null) {
-            slugs.add(videoKey);
+        if (videos != null) {
+          for (var element in videos) {
+            final videoKey = element.videoKey;
+            if (videoKey != null) {
+              slugs.add(videoKey);
+            }
           }
         }
-        if (slugs.isEmpty) return emit(LessonVideoState.error());
+
         final videosData = await video.videos(slags: slugs);
-        if (videosData.isEmpty) return emit(LessonVideoState.error());
+
         final lesson = data.copyWith(
           groupLesson: data.groupLesson!.copyWith(
             videos: data.groupLesson!.videos!.map((e) {
