@@ -351,6 +351,14 @@ class AppRouter extends RootStackRouter {
       customRouteBuilder: <T>(context, child, page) {
         return PredictiveBackRouteCustom(child: child, settings: page);
       },
+      path: '/poll/:nps_id/relation/:relation_id',
+      page: NpsRoute.page,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
       path: '/group/:id/homeworks/:relationId',
       page: HomeworkRouteRoute.page,
       guards: [_AuthGuard()],

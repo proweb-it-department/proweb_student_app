@@ -28,6 +28,7 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_purchases/my_purchases.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
+import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/models/product_module_access.dart';
 import 'package:proweb_student_app/models/products/products.dart';
@@ -51,7 +52,6 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
@@ -307,6 +307,27 @@ class GetResponsesMain {
       return response.whenOrNull(
         lazylist: (count, list) {
           return ResponseLazeList<HomeworkListGroup>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<ResponseLazeList<NpsPoll>?> npsPollActive({
+    required int limit,
+    required int offset,
+  }) async {
+    String path =
+        '/api/v1/poll/student-poll-student/?completed=no&limit=$limit&offset=$offset';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<NpsPoll>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<NpsPoll>.fromJson(
+        r,
+        (data) => NpsPoll.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<NpsPoll>(count: count, list: list);
         },
       );
     });

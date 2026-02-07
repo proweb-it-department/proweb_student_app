@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/auth/auth_bloc.dart';
+import 'package:proweb_student_app/bloc/nps_poll/nps_poll_bloc.dart';
 import 'package:proweb_student_app/interface/components/anamated_logo_features/anamated_logo.dart';
 import 'package:proweb_student_app/interface/pages/app_screen_widget.dart';
 import 'package:proweb_student_app/interface/pages/auth/auth_screen/auth_screen.dart';
@@ -27,7 +28,10 @@ class AppScreen extends StatelessWidget {
               return AuthScreen(key: ValueKey('login'));
             },
             app: () {
-              return AppScreenWidget(key: ValueKey('app'));
+              return BlocProvider(
+                create: (context) => NpsPollBloc()..add(NpsPollEvent.started()),
+                child: AppScreenWidget(key: ValueKey('app')),
+              );
             },
           ),
         );
