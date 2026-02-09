@@ -36,6 +36,11 @@ class PostResponsesMain {
     return data;
   }
 
+  Future<void> sendPollAnswer(String form) async {
+    String path = '/api/v1/poll/student-poll-answer/create-answers/';
+    await sl<MainFetch>().postString(path: path, form: form);
+  }
+
   Future<HomeworkMaterials?> solvedMaterial(FormData form) async {
     String path =
         '/api/v1/learning-process/students/homeworks/solved-material/create/';

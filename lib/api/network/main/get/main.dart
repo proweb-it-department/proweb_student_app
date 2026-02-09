@@ -30,6 +30,7 @@ import 'package:proweb_student_app/models/my_purchases_service/my_purchases_serv
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
+import 'package:proweb_student_app/models/poll_detail/poll_detail.dart';
 import 'package:proweb_student_app/models/product_module_access.dart';
 import 'package:proweb_student_app/models/products/products.dart';
 import 'package:proweb_student_app/models/products_modules/products_modules.dart';
@@ -383,6 +384,27 @@ class GetResponsesMain {
       final response = ApiResponse<HomeworkGroup>.fromJson(
         r,
         (data) => HomeworkGroup.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        results: (results) {
+          return results;
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<PollDetail?> pollDetail({required int pollId}) async {
+    String path = '/api/v1/poll/$pollId/';
+    final response = await sl<MainFetch>().get(
+      path: path,
+      cache: true,
+      duration: Duration(days: 2),
+    );
+    PollDetail? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<PollDetail>.fromJson(
+        r,
+        (data) => PollDetail.fromJson(data as Map<String, dynamic>),
       );
       return response.whenOrNull(
         results: (results) {

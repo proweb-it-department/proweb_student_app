@@ -14,7 +14,6 @@ import 'package:proweb_student_app/interface/components/nav_bar/nav_bar.dart';
 import 'package:proweb_student_app/interface/components/pro_bottom_sheet/pro_bottom_sheet.dart';
 import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class AppScreenWidget extends StatelessWidget {
   const AppScreenWidget({super.key});
@@ -39,7 +38,7 @@ class AppScreenWidget extends StatelessWidget {
                 final hasItems = (nps.list.isNotEmpty);
                 if (!hasItems) return;
                 context.read<AutoBottomSheetProvider>().scheduleOpen(
-                  delay: const Duration(seconds: 10),
+                  delay: const Duration(seconds: 1),
                 );
               },
               orElse: () {},
@@ -159,7 +158,6 @@ class _AutoSheetOpener extends StatelessWidget {
               body: BottomSheetNps(nps: data),
             );
             if (context.mounted && nps != null && nps) {
-              TalkerLogger().log(data);
               final npsId = data.poll?.id;
               final relationId = data.id;
               if (npsId == null || relationId == null) return;

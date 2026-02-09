@@ -185,6 +185,22 @@ enum ProductType {
   extra,
 }
 
+enum NpsPollQuestionsType {
+  @JsonValue('range')
+  range,
+  @JsonValue('text')
+  text,
+}
+
+enum NpsPollStatus {
+  @JsonValue('draft')
+  draft,
+  @JsonValue('active')
+  active,
+  @JsonValue('archive')
+  archive,
+}
+
 enum ProductSaleType {
   @JsonValue('money')
   money,
