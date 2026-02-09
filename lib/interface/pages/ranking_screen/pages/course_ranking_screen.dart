@@ -17,28 +17,41 @@ class CourseRankingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CourseListBloc(),
-      child: CoursesView(language: context.locale.languageCode),
+      child: CoursesView(
+        key: ValueKey('RankingCourses'),
+        language: context.locale.languageCode,
+        onTap: (id) {
+          if (id == null) return;
+          context.router.push(CourseRankingViewRoute(id: id));
+        },
+      ),
     );
   }
 }
 
 class CoursesView extends StatelessWidget {
   final String language;
-  const CoursesView({super.key, required this.language});
+  final Function(int? id) onTap;
+  const CoursesView({super.key, required this.language, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    Theme.of(context).extension<CustomColors>();
+    final customColors = Theme.of(context).extension<CustomColors>();
     return BlocBuilder<CourseListBloc, CourseListState>(
       bloc: context.read<CourseListBloc>()
         ..add(CourseListEvent.started(language: context.locale.languageCode)),
       builder: (context, state) {
         return Column(
-          spacing: 10,
+          spacing: 0,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: 3,
+              ),
               child: SegementLangs(language: language),
             ),
             state.when(
@@ -50,30 +63,53 @@ class CoursesView extends StatelessWidget {
               },
               complited: (courses) {
                 return Expanded(
-                  child: GridView.builder(
-                    itemCount: courses.length,
-                    padding: EdgeInsets.only(left: 10, right: 10, bottom: 110),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 3 / 4,
+                  child: Stack(
+                    children: [
+                      GridView.builder(
+                        itemCount: courses.length,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 110,
+                          top: 15,
                         ),
-                    itemBuilder: (context, index) {
-                      final course = courses.elementAt(index);
-                      final id = course.id;
-                      return CourseCard(
-                        course: course,
-                        onTap: id != null
-                            ? () {
-                                context.router.push(
-                                  CourseRankingViewRoute(id: id),
-                                );
-                              }
-                            : null,
-                      );
-                    },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: 3 / 4,
+                            ),
+                        itemBuilder: (context, index) {
+                          final course = courses.elementAt(index);
+                          final id = course.id;
+                          return CourseCard(
+                            course: course,
+                            onTap: () => onTap(id),
+                          );
+                        },
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 27,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: AlignmentGeometry.topCenter,
+                              end: AlignmentGeometry.bottomCenter,
+                              colors: [
+                                (customColors?.primaryBg ?? Colors.transparent)
+                                    .withAlpha(255),
+                                (customColors?.primaryBg ?? Colors.transparent)
+                                    .withAlpha(0),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },

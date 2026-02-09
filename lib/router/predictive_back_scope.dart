@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/physics.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class PredictiveBackScope extends StatefulWidget {
   final Widget child;
@@ -41,9 +40,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   bool _dragging = false;
   bool _haptic = false;
 
-  // защита от двойного pop
-  bool _popping = false;
-
   @override
   void initState() {
     super.initState();
@@ -62,18 +58,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-
-  /// true если закрыли клавиатуру и нужно НЕ выходить со страницы
-  bool _closeKeyboardIfOpen() {
-    final keyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-
-    if (keyboardOpen) {
-      FocusManager.instance.primaryFocus?.unfocus();
-      return true; // мы закрыли клавиатуру и НЕ выходим со страницы
-    }
-
-    return false; // клавиатуры нет — можно выходить
   }
 
   /// Обновление при свайпе
@@ -112,93 +96,77 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   /// Программный pop (кнопка назад)
   Future<void> pop() async {
     final simulation = SpringSimulation(_spring, _controller.value, 1.0, 0);
-    await _controller.animateWith(simulation);
-    widget.onPop();
+    _controller.animateWith(simulation).then((_) => widget.onPop());
   }
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return PopScope(
-      // всегда перехватываем back сами: сначала закрыть клавиатуру, потом попнуть
-      canPop: false,
-      onPopInvokedWithResult: (didPop, result) async {
-        final keyboard = _closeKeyboardIfOpen();
-        TalkerLogger().log(keyboard);
-        if (keyboard) return;
-
-        if (_popping) return;
-        _popping = true;
-        await pop();
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).unfocus();
       },
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (_, _) {
+          final t = _controller.value;
 
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          FocusScope.of(context).unfocus();
+          final stackOpacity = t < 0.9
+              ? 1.0
+              : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
+          final scale = computeScale(t);
+          return Opacity(
+            opacity: stackOpacity,
+            child: Stack(
+              children: [
+                IgnorePointer(
+                  child: Container(
+                    color: Colors.black.withAlpha(
+                      (255 * (0.8 * (1 - t)).clamp(0.2, 0.8)).round(),
+                    ),
+                  ),
+                ),
+
+                Transform.translate(
+                  offset: Offset(width * 0.1 * t, 0),
+                  child: Transform.scale(
+                    scale: scale,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(t < 0.01 ? 0 : 40),
+                      child: widget.child,
+                    ),
+                  ),
+                ),
+
+                // edge swipe
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: _edgeWidth,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onHorizontalDragStart: (_) {
+                      _dragging = true;
+                      FocusScope.of(context).unfocus();
+                    },
+                    onHorizontalDragUpdate: (d) {
+                      if (_dragging) _update(d.delta.dx, width);
+                    },
+                    onHorizontalDragEnd: (d) {
+                      if (_dragging) _end(d.velocity.pixelsPerSecond.dx);
+                    },
+                    onHorizontalDragCancel: () {
+                      if (_dragging) _end(0);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          );
         },
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (_, _) {
-            final t = _controller.value;
-
-            final stackOpacity = t < 0.9
-                ? 1.0
-                : (1 - (t - 0.9) / 0.1).clamp(0.0, 1.0);
-            final scale = computeScale(t);
-
-            return Opacity(
-              opacity: stackOpacity,
-              child: Stack(
-                children: [
-                  IgnorePointer(
-                    child: Container(
-                      color: Colors.black.withAlpha(
-                        (255 * (0.8 * (1 - t)).clamp(0.2, 0.8)).round(),
-                      ),
-                    ),
-                  ),
-
-                  Transform.translate(
-                    offset: Offset(width * 0.1 * t, 0),
-                    child: Transform.scale(
-                      scale: scale,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(t < 0.01 ? 0 : 40),
-                        child: widget.child,
-                      ),
-                    ),
-                  ),
-
-                  // edge swipe
-                  Positioned(
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: _edgeWidth,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onHorizontalDragStart: (_) {
-                        _dragging = true;
-                        FocusScope.of(context).unfocus();
-                      },
-                      onHorizontalDragUpdate: (d) {
-                        if (_dragging) _update(d.delta.dx, width);
-                      },
-                      onHorizontalDragEnd: (d) {
-                        if (_dragging) _end(d.velocity.pixelsPerSecond.dx);
-                      },
-                      onHorizontalDragCancel: () {
-                        if (_dragging) _end(0);
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
       ),
     );
   }

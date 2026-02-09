@@ -51,7 +51,7 @@ class AppScreenWidget extends StatelessWidget {
               FeedbackRoute(),
               RankingRoute(),
               ShopRoute(),
-              // ProwebRoute(),
+              ProwebRoute(),
             ],
             transitionBuilder: (context, child, animation) => child,
             builder: (context, child) {

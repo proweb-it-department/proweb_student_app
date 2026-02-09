@@ -94,11 +94,29 @@ class AppRouter extends RootStackRouter {
           children: [],
         ),
 
-        // AutoRoute(
-        //   path: 'PROWEB',
-        //   page: ProwebRoute.page,
-        //   guards: [_AuthGuard()],
-        // ),
+        AutoRoute(
+          path: 'proweb',
+          page: ProwebRoute.page,
+          guards: [_AuthGuard()],
+          children: [
+            AutoRoute(
+              path: 'course',
+              page: ProwebCourseRoute.page,
+              guards: [_AuthGuard()],
+              initial: true,
+            ),
+            AutoRoute(
+              path: 'branch',
+              page: ProwebBranchRoute.page,
+              guards: [_AuthGuard()],
+            ),
+            AutoRoute(
+              path: 'master-class',
+              page: ProwebMasterClassRoute.page,
+              guards: [_AuthGuard()],
+            ),
+          ],
+        ),
       ],
     ),
     CustomRoute(
