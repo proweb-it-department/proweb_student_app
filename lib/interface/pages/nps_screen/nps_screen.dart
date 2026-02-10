@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:auto_route/annotations.dart';
-import 'package:dio/dio.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,6 @@ import 'package:proweb_student_app/models/poll_answer/poll_answer.dart';
 import 'package:proweb_student_app/models/poll_detail/poll_detail.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class NpsScreen extends StatelessWidget {
@@ -76,12 +74,15 @@ class PollDetailSend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (send == false) {
-      return Md3CirculeIndicator();
-    }
-    return Center(
-      child: NoData(text: 'Спасибо что прошли опрос.', icon: Icons.celebration),
-    );
+    return switch (send) {
+      true => Center(
+        child: NoData(
+          text: 'Спасибо что прошли опрос.',
+          icon: Icons.celebration,
+        ),
+      ),
+      false => Md3CirculeIndicator(),
+    };
   }
 }
 

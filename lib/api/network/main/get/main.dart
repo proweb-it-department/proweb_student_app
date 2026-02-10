@@ -104,6 +104,27 @@ class GetResponsesMain {
     return data;
   }
 
+  Future<CourseModel?> courseDetail({required int courseId}) async {
+    String path = '/api/v1/courses/$courseId/';
+    final response = await sl<MainFetch>().get(
+      path: path,
+      cache: true,
+      duration: Duration(days: 2),
+    );
+    CourseModel? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<CourseModel>.fromJson(
+        r,
+        (data) => CourseModel.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        results: (results) {
+          return results;
+        },
+      );
+    });
+    return data;
+  }
+
   Future<List<GroupLessonInfo>?> lessons({
     required int groupId,
     String type = 'main',

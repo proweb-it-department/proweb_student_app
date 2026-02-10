@@ -22,7 +22,7 @@ class CourseRankingScreen extends StatelessWidget {
         language: context.locale.languageCode,
         onTap: (id) {
           if (id == null) return;
-          context.router.push(CourseRankingViewRoute(id: id));
+          context.router.navigatePath('/courses/$id/ranking');
         },
       ),
     );

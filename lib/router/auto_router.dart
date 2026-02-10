@@ -511,17 +511,35 @@ class AppRouter extends RootStackRouter {
       customRouteBuilder: <T>(context, child, page) {
         return PredictiveBackRouteCustom(child: child, settings: page);
       },
-      path: '/ranking/course/:id',
-      page: CourseRankingViewRoute.page,
+      page: StoryRoute.page,
+      fullscreenDialog: true,
       guards: [_AuthGuard()],
     ),
     CustomRoute(
       customRouteBuilder: <T>(context, child, page) {
         return PredictiveBackRouteCustom(child: child, settings: page);
       },
-      page: StoryRoute.page,
-      fullscreenDialog: true,
+      path: '/courses/:id',
+      page: CourseAboutRoute.page,
       guards: [_AuthGuard()],
+      children: [
+        AutoRoute(
+          path: 'about',
+          page: CourseMainRouteRoute.page,
+          initial: true,
+          guards: [_AuthGuard()],
+        ),
+        AutoRoute(
+          path: 'modules',
+          page: CourseModulesRoute.page,
+          guards: [_AuthGuard()],
+        ),
+        AutoRoute(
+          path: 'ranking',
+          page: CourseRankingViewRoute.page,
+          guards: [_AuthGuard()],
+        ),
+      ],
     ),
     AutoRoute(path: '/auth', page: AuthRoute.page),
   ];
