@@ -50,7 +50,7 @@ class CoursesView extends StatelessWidget {
                 top: 10,
                 left: 10,
                 right: 10,
-                bottom: 3,
+                bottom: 10,
               ),
               child: SegementLangs(language: language),
             ),
@@ -63,9 +63,16 @@ class CoursesView extends StatelessWidget {
               },
               complited: (courses) {
                 return Expanded(
-                  child: Stack(
-                    children: [
-                      GridView.builder(
+                  child: ClipRRect(
+                    borderRadius: BorderRadiusGeometry.only(
+                      topLeft: Radius.circular(22),
+                      topRight: Radius.circular(22),
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: customColors?.containerColor,
+                      ),
+                      child: GridView.builder(
                         itemCount: courses.length,
                         padding: EdgeInsets.only(
                           left: 10,
@@ -89,27 +96,7 @@ class CoursesView extends StatelessWidget {
                           );
                         },
                       ),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 27,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: AlignmentGeometry.topCenter,
-                              end: AlignmentGeometry.bottomCenter,
-                              colors: [
-                                (customColors?.primaryBg ?? Colors.transparent)
-                                    .withAlpha(255),
-                                (customColors?.primaryBg ?? Colors.transparent)
-                                    .withAlpha(0),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 );
               },

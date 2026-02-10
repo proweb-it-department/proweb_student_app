@@ -87,12 +87,61 @@ class CourseDetailBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final category = course.categories;
     return CustomScrollView(
       slivers: [
         CourseAppBar(course: course, color: color, colorText: colorText),
+        if (category != null && category.isNotEmpty == true)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SizedBox(
+                width: double.infinity,
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runAlignment: WrapAlignment.center,
+                  alignment: WrapAlignment.center,
+                  spacing: 5,
+                  children: category.map((e) {
+                    final colorHex = e.color ?? '#ffffff';
+                    final categoryColor = HexColor(colorHex);
+                    final brightness = ThemeData.estimateBrightnessForColor(
+                      categoryColor,
+                    );
+                    final Color colorText = brightness == Brightness.dark
+                        ? Colors.white
+                        : Colors.black;
+                    return IntrinsicWidth(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: categoryColor,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          e.name ?? '- - -',
+                          style: TextStyle(color: colorText),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),
         SliverToBoxAdapter(
           child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(vertical: 40, horizontal: 16),
+            padding: EdgeInsetsGeometry.only(
+              top: 10,
+              left: 16,
+              right: 16,
+              bottom: 40,
+            ),
             child: Text(
               sl<LocalData>().removeHtmlTags(course.description ?? '- - -'),
               style: TextStyle(fontSize: 18, color: colorText),

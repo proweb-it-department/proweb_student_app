@@ -41,22 +41,23 @@ class CourseAboutContent extends StatelessWidget {
             CourseDetailError() => ScafoldBase(
               child: Center(child: ErrorLoad()),
             ),
-            CourseDetailComplited() => AutoTabsRouter.tabBar(
-              routes: [
-                CourseMainRouteRoute(),
-                CourseModulesRoute(),
-                CourseRankingViewRoute(),
-              ],
-              builder: (context, child, tabController) {
-                return ChangeNotifierProvider.value(
-                  value: tabController,
-                  child: TabBarPopScope(
-                    mainPage: CourseMainRouteRoute(),
-                    child: child,
-                  ),
-                );
-              },
-            ),
+            CourseDetailComplited(course: final course) =>
+              AutoTabsRouter.tabBar(
+                routes: [
+                  CourseMainRouteRoute(),
+                  CourseModulesRoute(id: course.defaultVersion?.id ?? 0),
+                  CourseRankingViewRoute(),
+                ],
+                builder: (context, child, tabController) {
+                  return ChangeNotifierProvider.value(
+                    value: tabController,
+                    child: TabBarPopScope(
+                      mainPage: CourseMainRouteRoute(),
+                      child: child,
+                    ),
+                  );
+                },
+              ),
           },
         );
       },

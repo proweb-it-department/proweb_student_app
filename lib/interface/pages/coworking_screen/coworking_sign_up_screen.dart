@@ -3,23 +3,28 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+import 'package:map_launcher/map_launcher.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/coworking_list_reserve/coworking_list_reserve_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
+import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
 import 'package:proweb_student_app/interface/components/course_avatar/course_avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/premium_container/premium_container.dart';
+import 'package:proweb_student_app/interface/components/pro_bottom_sheet/pro_bottom_sheet.dart';
 import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_reserve_feature/dialogs/dialog_seats_select.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
 import 'package:proweb_student_app/models/seat_item/seat_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class CoworkingSignUpScreen extends StatelessWidget {
@@ -327,13 +332,17 @@ class CoworkingSignUpBody extends StatelessWidget {
                 data.seat?.cabinet?.branch?.latitude != null &&
                     data.seat?.cabinet?.branch?.longitude != null
                 ? IconButton(
-                    onPressed: () {
-                      try {
-                        MapsLauncher.launchCoordinates(
-                          double.parse(data.seat!.cabinet!.branch!.latitude!),
-                          double.parse(data.seat!.cabinet!.branch!.longitude!),
-                        );
-                      } catch (_) {}
+                    onPressed: () async {
+                      showBottomSheetMapApps(
+                        context,
+                        title: data.seat?.cabinet?.branch?.name ?? '- - -',
+                        latitude: double.parse(
+                          data.seat!.cabinet!.branch!.latitude!,
+                        ),
+                        longitude: double.parse(
+                          data.seat!.cabinet!.branch!.longitude!,
+                        ),
+                      );
                     },
                     icon: Icon(Icons.location_on),
                   )
@@ -675,4 +684,91 @@ class _EditedReserveCoworkingDialogState
       ),
     );
   }
+}
+
+Future<void> showBottomSheetMapApps(
+  BuildContext context, {
+  required String title,
+  required double latitude,
+  required double longitude,
+}) async {
+  try {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    final chosen = await showProBottomSheet<AvailableMap>(
+      context: context,
+      useSafeArea: false,
+      fullScreenMax: 1,
+      title: 'Открыть в карте',
+      body: FutureBuilder(
+        future: (() => MapLauncher.installedMaps)(),
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState != ConnectionState.done) {
+            return Row(children: [Md3CirculeIndicator(center: false)]);
+          }
+          final maps = asyncSnapshot.data;
+          if (maps == null) {
+            return ErrorLoad();
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsetsGeometry.only(left: 10),
+                  child: Text(
+                    'Открыть на карте',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
+                SizedBox(height: 15),
+                ...maps.map((m) {
+                  final index = maps.indexWhere(
+                    (element) => element.mapName == m.mapName,
+                  );
+                  return ListTileBuilder(
+                    isStart: index == 0,
+                    isEnd: index == (maps.length - 1),
+                    builder: (shape, contentPadding, isThreeLine) {
+                      return Padding(
+                        padding: EdgeInsetsGeometry.only(bottom: 2),
+                        child: ListTile(
+                          shape: shape,
+                          contentPadding: contentPadding,
+                          tileColor: customColors?.containerColor,
+                          leading: ClipRRect(
+                            borderRadius: BorderRadiusGeometry.circular(30),
+                            child: SvgPicture.asset(
+                              m.icon,
+                              height: 28,
+                              width: 28,
+                            ),
+                          ),
+                          title: Text(m.mapName),
+                          trailing: GoPage(
+                            color: customColors?.primaryBg,
+                            padding: EdgeInsets.all(5),
+                            child: Icon(Icons.open_in_new, size: 16),
+                          ),
+                          onTap: () => Navigator.of(context).pop(m),
+                        ),
+                      );
+                    },
+                  );
+                }),
+                const SizedBox(height: 8),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    if (chosen == null) return;
+
+    await chosen.showMarker(coords: Coords(latitude, longitude), title: title);
+  } catch (_) {}
 }

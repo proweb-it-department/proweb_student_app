@@ -426,49 +426,48 @@ class CourseMainRouteRouteArgs {
 /// generated route for
 /// [_i8.CourseModulesScreen]
 class CourseModulesRoute extends _i76.PageRouteInfo<CourseModulesRouteArgs> {
-  CourseModulesRoute({_i77.Key? key, List<_i76.PageRouteInfo>? children})
-    : super(
-        CourseModulesRoute.name,
-        args: CourseModulesRouteArgs(key: key),
-        initialChildren: children,
-      );
+  CourseModulesRoute({
+    _i77.Key? key,
+    required int id,
+    List<_i76.PageRouteInfo>? children,
+  }) : super(
+         CourseModulesRoute.name,
+         args: CourseModulesRouteArgs(key: key, id: id),
+         initialChildren: children,
+       );
 
   static const String name = 'CourseModulesRoute';
 
   static _i76.PageInfo page = _i76.PageInfo(
     name,
     builder: (data) {
-      final pathParams = data.inheritedPathParams;
-      final args = data.argsAs<CourseModulesRouteArgs>(
-        orElse: () => CourseModulesRouteArgs(),
-      );
-      return _i8.CourseModulesScreen(
-        key: args.key,
-        id: pathParams.getInt('id'),
-      );
+      final args = data.argsAs<CourseModulesRouteArgs>();
+      return _i8.CourseModulesScreen(key: args.key, id: args.id);
     },
   );
 }
 
 class CourseModulesRouteArgs {
-  const CourseModulesRouteArgs({this.key});
+  const CourseModulesRouteArgs({this.key, required this.id});
 
   final _i77.Key? key;
 
+  final int id;
+
   @override
   String toString() {
-    return 'CourseModulesRouteArgs{key: $key}';
+    return 'CourseModulesRouteArgs{key: $key, id: $id}';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     if (other is! CourseModulesRouteArgs) return false;
-    return key == other.key;
+    return key == other.key && id == other.id;
   }
 
   @override
-  int get hashCode => key.hashCode;
+  int get hashCode => key.hashCode ^ id.hashCode;
 }
 
 /// generated route for
