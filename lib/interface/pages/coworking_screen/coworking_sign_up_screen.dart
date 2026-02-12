@@ -24,7 +24,6 @@ import 'package:proweb_student_app/models/seat_item/seat_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class CoworkingSignUpScreen extends StatelessWidget {
@@ -698,6 +697,7 @@ Future<void> showBottomSheetMapApps(
       context: context,
       useSafeArea: false,
       fullScreenMax: 1,
+
       title: 'Открыть в карте',
       body: FutureBuilder(
         future: (() => MapLauncher.installedMaps)(),
@@ -750,7 +750,7 @@ Future<void> showBottomSheetMapApps(
                           title: Text(m.mapName),
                           trailing: GoPage(
                             color: customColors?.primaryBg,
-                            padding: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(8),
                             child: Icon(Icons.open_in_new, size: 16),
                           ),
                           onTap: () => Navigator.of(context).pop(m),

@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:proweb_student_app/interface/components/md3_circule_indicator/md
 import 'package:proweb_student_app/models/course_model/course_model.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class CourseMainPageScreen extends StatelessWidget {
@@ -54,11 +56,15 @@ class CourseScafold extends StatelessWidget {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final colorString = course.color;
-    final Color color =
+    TalkerLogger().log(customColors?.brightness);
+    Color color =
         (colorString == null
             ? customColors?.primaryBg
             : HexColor(colorString)) ??
         Colors.black;
+    color = color.normalizeForTheme(
+      brightness: customColors?.brightness ?? Brightness.dark,
+    );
     final brightness = ThemeData.estimateBrightnessForColor(color);
     final Color colorText = brightness == Brightness.dark
         ? Colors.white
@@ -283,5 +289,51 @@ class CourseAppBar extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+extension ThemeAwareColor on Color {
+  Color normalizeForTheme({
+    required Brightness brightness,
+    double darkBase = 0.55,
+    double darkExtra = 0.75,
+    double lightBase = 0.08,
+    double lightExtra = 0.08,
+    double darkTargetMaxL = 0.75,
+    double lightTargetMinL = 0.08,
+  }) {
+    final hsl = HSLColor.fromColor(this);
+    final l = hsl.lightness;
+    final s = hsl.saturation;
+
+    double clamp01(double v) => v.clamp(0.0, 1.0);
+
+    if (brightness == Brightness.dark) {
+      final lightProblem = clamp01(
+        (l - darkTargetMaxL) / (1.0 - darkTargetMaxL),
+      );
+      final neonProblem = clamp01((s - 0.60) / 0.40);
+
+      final k = clamp01(0.75 * lightProblem + 0.25 * neonProblem);
+
+      final amount = clamp01(darkBase + darkExtra * k);
+
+      final newL = clamp01(l * (1.0 - amount));
+
+      final newS = clamp01(s * (1.0 - 0.20 * k));
+
+      return hsl.withLightness(newL).withSaturation(newS).toColor();
+    } else {
+      final darkProblem = clamp01((lightTargetMinL - l) / lightTargetMinL);
+      final k = darkProblem;
+
+      final amount = clamp01(lightBase + lightExtra * k);
+
+      final newL = clamp01(l + (1.0 - l) * amount);
+
+      final newS = clamp01(s + 0.08 * k);
+
+      return hsl.withLightness(newL).withSaturation(newS).toColor();
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/course_version/course_version_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
+import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/models/course_version_modal/course_version_model.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -54,17 +55,12 @@ class CourseModules extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
-    return ListView(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 2,
       children: [
-        Divider(
-          endIndent: 0,
-          height: 1,
-          indent: 0,
-          thickness: 0,
-          color: customColors?.borderColors,
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           child: Text(
@@ -73,24 +69,26 @@ class CourseModules extends StatelessWidget {
           ),
         ),
         ...List.generate(modules.length, (index) {
-          final item = modules[index];
-          if (item.description != null && item.name != null) {
-            return Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: index < (modules.length - 1)
-                      ? BorderSide(
-                          color:
-                              customColors?.borderColors ?? Colors.transparent,
-                        )
-                      : BorderSide.none,
+          final item = modules.elementAt(index);
+          return ListTileBuilder(
+            isStart: index == 0,
+            isEnd: index == (modules.length - 1),
+            builder: (shape, contentPadding, isThreeLine) {
+              return ExpansionTile(
+                shape: shape,
+                collapsedShape: shape,
+                leading: CircleAvatar(
+                  backgroundColor: customColors?.primaryBg,
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(color: customColors?.primaryTextColor),
+                  ),
                 ),
-              ),
-              child: ExpansionTile(
                 title: Text(item.name!),
+                expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                backgroundColor: customColors?.containerColor,
+                collapsedBackgroundColor: customColors?.containerColor,
                 children: [
-                  Divider(height: 1, indent: 0, endIndent: 0, thickness: 0),
                   Padding(
                     padding: EdgeInsets.all(10),
                     child: Text(
@@ -98,11 +96,9 @@ class CourseModules extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            );
-          } else {
-            return SizedBox();
-          }
+              );
+            },
+          );
         }),
       ],
     );

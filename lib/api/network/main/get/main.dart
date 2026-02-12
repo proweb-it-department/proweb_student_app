@@ -19,6 +19,7 @@ import 'package:proweb_student_app/models/holiday/holiday.dart';
 import 'package:proweb_student_app/models/homework_group/homework_group.dart';
 import 'package:proweb_student_app/models/homework_list_group/homework_list_group.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
+import 'package:proweb_student_app/models/master_class/master_class.dart';
 import 'package:proweb_student_app/models/material_homepage_group/material_homepage_group.dart';
 import 'package:proweb_student_app/models/material_list_group/material_list_group.dart';
 import 'package:proweb_student_app/models/material_module_item/material_module_item.dart';
@@ -28,6 +29,7 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_purchases/my_purchases.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
+import 'package:proweb_student_app/models/my_reserv_master_class/my_reserv_master_class.dart';
 import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/models/poll_detail/poll_detail.dart';
@@ -1321,7 +1323,7 @@ class GetResponsesMain {
     int limit,
   ) async {
     String path =
-        '/api/v1/packages/purchased/my-purchases/?offset=$offset&$limit';
+        '/api/v1/packages/purchased/my-purchases/?offset=$offset&limit=$limit';
     final response = await sl<MainFetch>().get(path: path);
     ResponseLazeList<MyPurchasesTarif>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<MyPurchasesTarif>.fromJson(
@@ -1334,6 +1336,87 @@ class GetResponsesMain {
         },
       );
     });
+    return data;
+  }
+
+  Future<ResponseLazeList<MasterClass>?> masterClass(
+    MasterClassStatus status,
+    int offset,
+  ) async {
+    String path =
+        '/api/v1/master-classes/?offset=$offset&limit=100&status=${status.name}';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MasterClass>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MasterClass>.fromJson(
+        r,
+        (data) => MasterClass.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<MasterClass>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<MyReservMasterClass?> myRecervMasterClass(int id) async {
+    String path = '/api/v1/master-classes/reservations/my/?master_class_id=$id';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MyReservMasterClass>? data = response.fold((l) => null, (
+      r,
+    ) {
+      final response = ApiResponse<MyReservMasterClass>.fromJson(
+        r,
+        (data) => MyReservMasterClass.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<MyReservMasterClass>(
+            count: count,
+            list: list,
+          );
+        },
+      );
+    });
+    MyReservMasterClass? mc = data?.list.firstOrNull;
+    return mc;
+  }
+
+  Future<MasterClass?> currentMasterClass(int id) async {
+    String path = '/api/v1/master-classes/$id/';
+    final response = await sl<MainFetch>().get(path: path);
+    MasterClass? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MasterClass>.fromJson(
+        r,
+        (data) => MasterClass.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        results: (data) {
+          return data;
+        },
+      );
+    });
+    final spicers = data?.speakers;
+    if (spicers != null) {
+      final userIds = spicers
+          .map((e) => e.userId)
+          .whereType<int>()
+          .toSet()
+          .toList();
+      if (userIds.isNotEmpty) {
+        await sl<UserList>().findAllUser(userIds: userIds);
+        data = data?.copyWith(
+          speakers: spicers.map((e) {
+            final id = e.userId;
+            if (id != null) {
+              return e.copyWith(user: sl<UserList>().find(id: id));
+            }
+            return e;
+          }).toList(),
+        );
+      }
+    }
     return data;
   }
 

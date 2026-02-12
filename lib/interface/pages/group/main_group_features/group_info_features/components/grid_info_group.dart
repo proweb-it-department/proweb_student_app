@@ -85,7 +85,7 @@ class GridInfoGroup extends StatelessWidget {
               color: customColor!.warningFill,
               icon: Icons.calendar_month,
               title: group.days!
-                  .map((e) => 'global_data.day_$e'.tr())
+                  .map((e) => 'global_data.day_${e == 0 ? 7 : e}'.tr())
                   .join(' - '),
               subtitle: 'group.gr_learn_days'.tr(),
             ),

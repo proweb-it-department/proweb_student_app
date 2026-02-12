@@ -201,6 +201,17 @@ enum NpsPollStatus {
   archive,
 }
 
+enum MasterClassStatus {
+  @JsonValue('draft')
+  draft,
+  @JsonValue('active')
+  active,
+  @JsonValue('archive')
+  archive,
+  @JsonValue('completed')
+  completed,
+}
+
 enum ProductSaleType {
   @JsonValue('money')
   money,
