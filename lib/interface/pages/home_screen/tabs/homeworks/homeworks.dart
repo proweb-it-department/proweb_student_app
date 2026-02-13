@@ -5,11 +5,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
 import 'package:proweb_student_app/bloc/home_homework/home_homework_bloc.dart';
+import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_item/homework_info_item.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/home_homework_screen.dart';
+import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -19,28 +21,39 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 import 'package:proweb_student_app/utils/ts_map.dart';
 
 class HomeworkProvider extends StatelessWidget {
-  final MyGroupsItem group;
-  const HomeworkProvider({super.key, required this.group});
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
+  const HomeworkProvider({super.key, this.group, this.groupDetail});
 
   @override
   Widget build(BuildContext context) {
+    int? groupId;
+    if (group != null) {
+      groupId = group?.group?.id;
+    } else if (groupDetail != null) {
+      groupId = groupDetail?.id;
+    }
+    if (group == null && groupDetail == null) {
+      return ErrorLoad();
+    }
+    if (groupId == null) {
+      return ErrorLoad();
+    }
+
     return BlocProvider(
       create: (context) => HomeHomeworkBloc()
         ..add(
-          HomeHomeworkEvent.started(
-            groupId: group.group!.id!,
-            limit: 50,
-            offset: 0,
-          ),
+          HomeHomeworkEvent.started(groupId: groupId!, limit: 50, offset: 0),
         ),
-      child: HomeworkViewData(group: group),
+      child: HomeworkViewData(group: group, groupDetail: groupDetail),
     );
   }
 }
 
 class HomeworkViewData extends StatelessWidget {
-  final MyGroupsItem group;
-  const HomeworkViewData({super.key, required this.group});
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
+  const HomeworkViewData({super.key, this.group, this.groupDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,12 @@ class HomeworkViewData extends StatelessWidget {
             homeworks: final homeworks,
             load: final load,
           ) =>
-            ListHomeworks(data: homeworks, group: group, load: load),
+            ListHomeworks(
+              data: homeworks,
+              group: group,
+              groupDetail: groupDetail,
+              load: load,
+            ),
         };
       },
     );
@@ -60,14 +78,16 @@ class HomeworkViewData extends StatelessWidget {
 }
 
 class ListHomeworks extends StatefulWidget {
-  final MyGroupsItem group;
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
   final bool load;
   final DataHomeHomework data;
   const ListHomeworks({
     super.key,
     required this.data,
-    required this.group,
+    this.group,
     required this.load,
+    this.groupDetail,
   });
 
   @override
@@ -103,9 +123,16 @@ class _ListHomeworksState extends State<ListHomeworks> {
         (value, element) => value + element.length,
       );
       if (length < count && (load == false || load == null)) {
+        int? groupId;
+        if (widget.group != null) {
+          groupId = widget.group?.group?.id;
+        } else if (widget.groupDetail != null) {
+          groupId = widget.groupDetail?.id;
+        }
+        if (groupId == null) return;
         data.add(
           HomeHomeworkEvent.started(
-            groupId: widget.group.group!.id!,
+            groupId: groupId,
             limit: 50,
             offset: length,
           ),
@@ -123,6 +150,12 @@ class _ListHomeworksState extends State<ListHomeworks> {
   @override
   Widget build(BuildContext context) {
     final List<String> month = widget.data.map.keys.toList();
+    String? groupColor;
+    if (widget.group?.group != null) {
+      groupColor = widget.group?.group?.course?.color;
+    } else if (widget.groupDetail != null) {
+      groupColor = widget.groupDetail?.course?.color;
+    }
     if (month.isEmpty && widget.load == false) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -132,9 +165,7 @@ class _ListHomeworksState extends State<ListHomeworks> {
             text:
                 'Преподаватель еще не назначил ни одного домашнего задания Вам.',
             icon: Icons.assignment,
-            color: widget.group.group?.course?.color != null
-                ? HexColor(widget.group.group!.course!.color!)
-                : null,
+            color: groupColor != null ? HexColor(groupColor) : null,
             shape: PathSvgShape.circle,
           ),
         ),
@@ -154,6 +185,7 @@ class _ListHomeworksState extends State<ListHomeworks> {
             month: e,
             data: widget.data.map,
             group: widget.group,
+            groupDetail: widget.groupDetail,
           ),
 
         if (widget.load)
@@ -167,25 +199,39 @@ class _ListHomeworksState extends State<ListHomeworks> {
 }
 
 class ItemMonthHomework extends StatelessWidget {
-  final MyGroupsItem group;
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
   final String month;
   final TsMap<String, List<HomeworkStudentRelationGroup>> data;
   const ItemMonthHomework({
     super.key,
     required this.month,
     required this.data,
-    required this.group,
+    this.group,
+    this.groupDetail,
   });
 
   @override
   Widget build(BuildContext context) {
+    String? groupColor;
+    if (group?.group != null) {
+      groupColor = group?.group?.course?.color;
+    } else if (groupDetail != null) {
+      groupColor = groupDetail?.course?.color;
+    }
     final date = '$month-01';
     final list = data.get(month);
-    final courseColor = HexColor(group.group?.course?.color ?? '#ffffff');
+    final courseColor = HexColor(groupColor ?? '#ffffff');
     final colorImg = ThemeData.estimateBrightnessForColor(courseColor);
     final customColors = Theme.of(context).extension<CustomColors>();
     if (list == null) {
       return SizedBox();
+    }
+    int? groupId;
+    if (group != null) {
+      groupId = group?.group?.id;
+    } else if (groupDetail != null) {
+      groupId = groupDetail?.id;
     }
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 10, bottom: 10),
@@ -260,7 +306,7 @@ class ItemMonthHomework extends StatelessWidget {
                               context.router.push(
                                 HomeworkRouteRoute(
                                   relationId: e.id ?? 0,
-                                  groupId: group.group?.id ?? 0,
+                                  groupId: groupId ?? 0,
                                 ),
                               );
                             },
@@ -287,10 +333,7 @@ class ItemMonthHomework extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            trailing: TrailingWork(
-                              item: e,
-                              color: group.group?.course?.color,
-                            ),
+                            trailing: TrailingWork(item: e, color: groupColor),
                           ),
                         );
                       },

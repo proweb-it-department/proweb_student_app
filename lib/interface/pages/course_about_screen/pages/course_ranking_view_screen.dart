@@ -3,7 +3,6 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/pages/ranking_screen/pages/all_ranking_screen.dart';
 
 @RoutePage()

@@ -5,11 +5,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
 import 'package:proweb_student_app/bloc/home_material/home_material_bloc.dart';
+import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_item/homework_info_item.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/home_homework_screen.dart';
+import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/material_homepage_group/material_homepage_group.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
@@ -19,28 +21,38 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 import 'package:proweb_student_app/utils/ts_map.dart';
 
 class MaterialsProvider extends StatelessWidget {
-  final MyGroupsItem group;
-  const MaterialsProvider({super.key, required this.group});
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
+  const MaterialsProvider({super.key, required this.group, this.groupDetail});
 
   @override
   Widget build(BuildContext context) {
+    int? groupId;
+    if (group != null) {
+      groupId = group?.group?.id;
+    } else if (groupDetail != null) {
+      groupId = groupDetail?.id;
+    }
+    if (group == null && groupDetail == null) {
+      return ErrorLoad();
+    }
+    if (groupId == null) {
+      return ErrorLoad();
+    }
     return BlocProvider(
       create: (context) => HomeMaterialBloc()
         ..add(
-          HomeMaterialEvent.started(
-            groupId: group.group!.id!,
-            limit: 50,
-            offset: 0,
-          ),
+          HomeMaterialEvent.started(groupId: groupId!, limit: 50, offset: 0),
         ),
-      child: MaterialViewData(group: group),
+      child: MaterialViewData(group: group, groupDetail: groupDetail),
     );
   }
 }
 
 class MaterialViewData extends StatelessWidget {
-  final MyGroupsItem group;
-  const MaterialViewData({super.key, required this.group});
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
+  const MaterialViewData({super.key, this.group, this.groupDetail});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +64,12 @@ class MaterialViewData extends StatelessWidget {
             materials: final materials,
             load: final load,
           ) =>
-            ListMaterial(data: materials, group: group, load: load),
+            ListMaterial(
+              data: materials,
+              group: group,
+              groupDetail: groupDetail,
+              load: load,
+            ),
         };
       },
     );
@@ -60,14 +77,16 @@ class MaterialViewData extends StatelessWidget {
 }
 
 class ListMaterial extends StatefulWidget {
-  final MyGroupsItem group;
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
   final bool load;
   final DataHomeMaterial data;
   const ListMaterial({
     super.key,
     required this.data,
-    required this.group,
+    this.group,
     required this.load,
+    this.groupDetail,
   });
 
   @override
@@ -103,9 +122,16 @@ class _ListMaterialState extends State<ListMaterial> {
         (value, element) => value + element.length,
       );
       if (length < count && (load == false || load == null)) {
+        int? groupId;
+        if (widget.group != null) {
+          groupId = widget.group?.group?.id;
+        } else if (widget.groupDetail != null) {
+          groupId = widget.groupDetail?.id;
+        }
+        if (groupId == null) return;
         data.add(
           HomeMaterialEvent.started(
-            groupId: widget.group.group!.id!,
+            groupId: groupId,
             limit: 50,
             offset: length,
           ),
@@ -123,6 +149,12 @@ class _ListMaterialState extends State<ListMaterial> {
   @override
   Widget build(BuildContext context) {
     final List<String> month = widget.data.map.keys.toList();
+    String? groupColor;
+    if (widget.group?.group != null) {
+      groupColor = widget.group?.group?.course?.color;
+    } else if (widget.groupDetail != null) {
+      groupColor = widget.groupDetail?.course?.color;
+    }
     if (month.isEmpty && widget.load == false) {
       return SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -131,9 +163,7 @@ class _ListMaterialState extends State<ListMaterial> {
           child: NoData(
             text: 'Преподаватель еще не назначил ни одного материала Вам.',
             icon: Icons.description,
-            color: widget.group.group?.course?.color != null
-                ? HexColor(widget.group.group!.course!.color!)
-                : null,
+            color: groupColor != null ? HexColor(groupColor) : null,
             shape: PathSvgShape.fan,
           ),
         ),
@@ -153,6 +183,7 @@ class _ListMaterialState extends State<ListMaterial> {
             month: e,
             data: widget.data.map,
             group: widget.group,
+            groupDetail: widget.groupDetail,
           ),
 
         if (widget.load)
@@ -166,25 +197,39 @@ class _ListMaterialState extends State<ListMaterial> {
 }
 
 class ItemMonthMaterial extends StatelessWidget {
-  final MyGroupsItem group;
+  final MyGroupsItem? group;
+  final GroupDetail? groupDetail;
   final String month;
   final TsMap<String, List<MaterialHomepageGroup>> data;
   const ItemMonthMaterial({
     super.key,
     required this.month,
     required this.data,
-    required this.group,
+    this.group,
+    this.groupDetail,
   });
 
   @override
   Widget build(BuildContext context) {
     final date = '$month-01';
     final list = data.get(month);
-    final courseColor = HexColor(group.group?.course?.color ?? '#ffffff');
+    String? groupColor;
+    if (group?.group != null) {
+      groupColor = group?.group?.course?.color;
+    } else if (groupDetail != null) {
+      groupColor = groupDetail?.course?.color;
+    }
+    final courseColor = HexColor(groupColor ?? '#ffffff');
     final colorImg = ThemeData.estimateBrightnessForColor(courseColor);
     final customColors = Theme.of(context).extension<CustomColors>();
     if (list == null) {
       return SizedBox();
+    }
+    int? groupId;
+    if (group != null) {
+      groupId = group?.group?.id;
+    } else if (groupDetail != null) {
+      groupId = groupDetail?.id;
     }
     return Padding(
       padding: EdgeInsets.only(left: 20, right: 10, bottom: 10),
@@ -259,7 +304,7 @@ class ItemMonthMaterial extends StatelessWidget {
                               context.router.push(
                                 MaterialViewRoute(
                                   relationId: e.material?.id ?? 0,
-                                  groupId: group.group?.id ?? 0,
+                                  groupId: groupId ?? 0,
                                 ),
                               );
                             },
@@ -286,9 +331,7 @@ class ItemMonthMaterial extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            trailing: TrailingWork(
-                              color: group.group?.course?.color,
-                            ),
+                            trailing: TrailingWork(color: groupColor),
                           ),
                         );
                       },

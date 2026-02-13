@@ -11,6 +11,7 @@ import 'package:proweb_student_app/interface/components/md3_circule_indicator/md
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/homework_info_body/homework_info_body.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/material_info_body/material_info_body.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/homework_info_features/test_info_body/test_info_body.dart';
+import 'package:proweb_student_app/interface/pages/home_screen/tabs/home_homework_screen.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
@@ -18,7 +19,7 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
-class HomeworkGroupInfoScreen extends StatelessWidget {
+class HomeworkGroupInfoScreen extends StatefulWidget {
   final int groupId;
 
   const HomeworkGroupInfoScreen({
@@ -27,18 +28,57 @@ class HomeworkGroupInfoScreen extends StatelessWidget {
   });
 
   @override
+  State<HomeworkGroupInfoScreen> createState() =>
+      _HomeworkGroupInfoScreenState();
+}
+
+class _HomeworkGroupInfoScreenState extends State<HomeworkGroupInfoScreen> {
+  final notifier = ScrollEndNotifier();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      _loadMoreItems();
+    }
+  }
+
+  Future<void> _loadMoreItems() async {
+    notifier.notifyScrollEnd();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final groupDetail = context.read<GroupDetailBloc>();
-
+    final customColors = Theme.of(context).extension<CustomColors>();
+    final bottom = MediaQuery.of(context).viewPadding.bottom;
     return groupDetail.state.when(
       initial: () => Center(child: Md3CirculeIndicator()),
       loadGroupDetail: () => Center(child: Md3CirculeIndicator()),
       errorGroupDetail: () => Center(child: ErrorLoad()),
       complited: (group, groupUser) {
-        return HomeworkInfoFeatures(
-          groupId: groupId,
-          group: group,
-          groupUser: groupUser,
+        return ScrollEventInherited(
+          notifier: notifier,
+          child: Container(
+            decoration: BoxDecoration(
+              color: customColors?.containerColor,
+              borderRadius: BorderRadiusGeometry.only(
+                topLeft: Radius.circular(22),
+                topRight: Radius.circular(22),
+              ),
+            ),
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: bottom + 10),
+              controller: _scrollController,
+              child: ViewCourseHomework(groupDetail: group),
+            ),
+          ),
         );
       },
     );

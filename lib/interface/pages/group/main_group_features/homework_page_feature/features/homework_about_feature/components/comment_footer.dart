@@ -61,7 +61,7 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
     final customColors = Theme.of(context).extension<CustomColors>();
     final bottomPadding = MediaQuery.of(context).viewPadding.bottom;
     final border = OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(!_showLeading ? 10 : 30),
       borderSide: BorderSide(width: 2, color: Colors.transparent),
     );
     return AnimatedContainer(
@@ -163,7 +163,31 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
                       });
                     },
                     autofocus: false,
+                    style: TextStyle(fontSize: 14),
+                    contextMenuBuilder: (context, editableTextState) {
+                      final items = editableTextState.contextMenuButtonItems;
+
+                      return AdaptiveTextSelectionToolbar(
+                        anchors: editableTextState.contextMenuAnchors,
+                        // Можно завернуть children в свой Material/Container
+                        children: items.map((item) {
+                          return _StyledMenuButton(
+                            label: item.label ?? '- - -',
+                            onPressed: () {
+                              item.onPressed?.call();
+                              editableTextState.hideToolbar();
+                            },
+                          );
+                        }).toList(),
+                      );
+                    },
                     decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 6,
+                        bottom: 6,
+                      ),
                       border: border,
                       errorBorder: border,
                       enabledBorder: border,
@@ -224,7 +248,7 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
                                         key++;
                                       }
                                     : null,
-                                icon: Icon(Icons.send, size: 18),
+                                icon: Icon(Icons.send, size: 16),
                               )
                             : IconButton(
                                 key: ValueKey('icon'),
@@ -252,7 +276,7 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
                                           }
                                         }
                                       },
-                                icon: Icon(Icons.image),
+                                icon: Icon(Icons.image, size: 16),
                               )
                       : Padding(
                           padding: EdgeInsets.only(left: 5, right: 5),
@@ -262,6 +286,41 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StyledMenuButton extends StatelessWidget {
+  final String label;
+  final VoidCallback onPressed;
+
+  const _StyledMenuButton({required this.label, required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      child: Material(
+        color: cs.surfaceContainerHighest, // фон кнопки
+        borderRadius: BorderRadius.circular(10),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(10),
+          onTap: onPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: cs.onSurface,
+              ),
+            ),
+          ),
         ),
       ),
     );

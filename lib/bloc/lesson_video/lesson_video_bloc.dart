@@ -9,7 +9,6 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/video_model/video_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 part 'lesson_video_event.dart';
 part 'lesson_video_state.dart';
@@ -37,7 +36,6 @@ class LessonVideoBloc extends Bloc<LessonVideoEvent, LessonVideoState> {
             groupLesson: data.groupLesson!.copyWith(id: lessonId),
           );
         }
-        TalkerLogger().log(123);
         final List<String> slugs = [];
         if (videos != null) {
           for (var element in videos) {

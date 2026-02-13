@@ -37,7 +37,7 @@ class ViewItemFeadbackScreen extends StatelessWidget {
           systemNavBarStyle: FlexSystemNavBarStyle.transparent,
         ),
         child: Scaffold(
-          appBar: MainAppBar(),
+          appBar: MainAppBar(isBorder: false),
           body: ViewItemFeadbackBody(id: id),
         ),
       ),
@@ -126,7 +126,6 @@ class _TicketContentState extends State<TicketContent> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     for (var uuid in wsEvents) {
       sl<Channel>().connect.unsubscribe(uuid: uuid);
     }
@@ -146,66 +145,61 @@ class _TicketContentState extends State<TicketContent> {
 
     return Column(
       children: [
-        Container(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.of(context).size.height * 0.5,
-          ),
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
-          decoration: BoxDecoration(
-            color: customColors?.containerColor,
-            border: Border(
-              top: BorderSide(
-                color: customColors?.borderColor ?? Colors.transparent,
-              ),
-              bottom: BorderSide(
-                color: customColors?.borderColor ?? Colors.transparent,
-              ),
+        Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.5,
             ),
-          ),
-          child: ListTile(
-            horizontalTitleGap: 8,
-            tileColor: customColors?.primaryBg,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              color: customColors?.containerColor,
+              borderRadius: BorderRadius.circular(22),
             ),
-            minVerticalPadding: 8,
-            isThreeLine: false,
-            leading: widget.ticket.responsibleUser?.user != null
-                ? Avatar(user: widget.ticket.responsibleUser!.user)
-                : CircleAvatar(
-                    backgroundColor: customColors?.primaryBg,
-                    child: Icon(
-                      Icons.person,
-                      color: customColors?.primaryTextColor,
+            child: ListTile(
+              horizontalTitleGap: 8,
+              tileColor: customColors?.primaryBg,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              minVerticalPadding: 8,
+              isThreeLine: false,
+              leading: widget.ticket.responsibleUser?.user != null
+                  ? Avatar(user: widget.ticket.responsibleUser!.user)
+                  : CircleAvatar(
+                      backgroundColor: customColors?.primaryBg,
+                      child: Icon(
+                        Icons.person,
+                        color: customColors?.primaryTextColor,
+                      ),
                     ),
-                  ),
-            title: Text(
-              widget.ticket.responsibleUser?.user != null
-                  ? sl<LocalData>().nameUser(
-                      widget.ticket.responsibleUser!.user,
-                    )
-                  : 'feedback.no_responsible_user'.tr(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+              title: Text(
+                widget.ticket.responsibleUser?.user != null
+                    ? sl<LocalData>().nameUser(
+                        widget.ticket.responsibleUser!.user,
+                      )
+                    : 'feedback.no_responsible_user'.tr(),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Opacity(
+                opacity: 0.7,
+                child: Text('feedback.responsible_user_feedback'.tr()),
+              ),
+              trailing:
+                  offer == null && widget.ticket.status == FeadbackStatus.open
+                  ? widget.loadClosed
+                        ? Md3CirculeIndicator(center: false)
+                        : FilledButton.icon(
+                            onPressed: () {
+                              final bloc = context.read<FeadbackManageBloc>();
+                              bloc.add(FeadbackManageEvent.closeTicket());
+                            },
+                            icon: Icon(Icons.lock),
+                            label: Text('global_data.closed_text'.tr()),
+                          )
+                  : null,
             ),
-            subtitle: Opacity(
-              opacity: 0.7,
-              child: Text('feedback.responsible_user_feedback'.tr()),
-            ),
-            trailing:
-                offer == null && widget.ticket.status == FeadbackStatus.open
-                ? widget.loadClosed
-                      ? Md3CirculeIndicator(center: false)
-                      : FilledButton.icon(
-                          onPressed: () {
-                            final bloc = context.read<FeadbackManageBloc>();
-                            bloc.add(FeadbackManageEvent.closeTicket());
-                          },
-                          icon: Icon(Icons.lock),
-                          label: Text('global_data.closed_text'.tr()),
-                        )
-                : null,
           ),
         ),
         Expanded(child: HomeworkCommentsBody(comments: widget.comments)),

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
 import 'package:proweb_student_app/api/network/main/post/main.dart';

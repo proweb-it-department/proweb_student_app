@@ -4,7 +4,6 @@ import 'package:drift/drift.dart';
 import 'package:proweb_student_app/models/db/db.dart';
 import 'package:proweb_student_app/server/server.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class VideoRepository {
   final db = sl<AppDatabase>();

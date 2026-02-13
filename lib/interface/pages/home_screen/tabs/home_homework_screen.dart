@@ -11,6 +11,7 @@ import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/homeworks/homeworks.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/materials/materials_lists.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/testings/testings.dart';
+import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
@@ -305,7 +306,8 @@ enum HomeworkType {
 
 class ViewCourseHomework extends StatefulWidget {
   final MyGroupsItem? group;
-  const ViewCourseHomework({super.key, this.group});
+  final GroupDetail? groupDetail;
+  const ViewCourseHomework({super.key, this.group, this.groupDetail});
 
   @override
   State<ViewCourseHomework> createState() => _ViewCourseHomeworkState();
@@ -322,9 +324,19 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
-    if (widget.group == null) {
+    if (widget.group == null && widget.groupDetail == null) {
       return NoData(text: 'Группа не выбрана', icon: Icons.group);
     }
+    String? groupIcon;
+    String? groupColor;
+    if (widget.group?.group != null) {
+      groupIcon = widget.group?.group?.course?.icon;
+      groupColor = widget.group?.group?.course?.color;
+    } else if (widget.groupDetail != null) {
+      groupIcon = widget.groupDetail?.course?.icon;
+      groupColor = widget.groupDetail?.course?.color;
+    }
+
     return Ink(
       color: customColors?.primaryBg,
       child: Ink(
@@ -367,10 +379,8 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
                           children: [
                             SizedBox(width: 10),
                             CourseAvatar(
-                              icon: widget.group?.group?.course?.icon ?? '',
-                              color: HexColor(
-                                widget.group?.group?.course?.color ?? '#ffffff',
-                              ),
+                              icon: groupIcon ?? '',
+                              color: HexColor(groupColor ?? '#ffffff'),
                               size: 30,
                               borderRadius: 7,
                             ),
@@ -425,12 +435,7 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
                                                 height: 15,
                                                 color: page == type
                                                     ? HexColor(
-                                                        widget
-                                                                .group
-                                                                ?.group
-                                                                ?.course
-                                                                ?.color ??
-                                                            '#ffffff',
+                                                        groupColor ?? '#ffffff',
                                                       )
                                                     : customColors?.primaryBg,
                                               ),
@@ -479,23 +484,29 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
               ],
             ),
             SizedBox(height: 15),
-            if (widget.group != null && page == HomeworkType.homework)
+            if ((widget.group != null || widget.groupDetail != null) &&
+                page == HomeworkType.homework)
               HomeworkProvider(
-                group: widget.group!,
+                group: widget.group,
+                groupDetail: widget.groupDetail,
                 key: ValueKey(
                   '${page.name}_homework_${widget.group?.group?.id ?? 1}',
                 ),
               )
-            else if (widget.group != null && page == HomeworkType.material)
+            else if ((widget.group != null || widget.groupDetail != null) &&
+                page == HomeworkType.material)
               MaterialsProvider(
-                group: widget.group!,
+                group: widget.group,
+                groupDetail: widget.groupDetail,
                 key: ValueKey(
                   '${page.name}_material_${widget.group?.group?.id ?? 1}',
                 ),
               )
-            else if (widget.group != null && page == HomeworkType.test)
+            else if ((widget.group != null || widget.groupDetail != null) &&
+                page == HomeworkType.test)
               TestingsProvider(
-                group: widget.group!,
+                group: widget.group,
+                groupDetail: widget.groupDetail,
                 key: ValueKey(
                   '${page.name}_testing_${widget.group?.group?.id ?? 1}',
                 ),

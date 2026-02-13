@@ -8,6 +8,7 @@ import 'package:proweb_student_app/api/local_data/local_data.dart';
 import 'package:proweb_student_app/bloc/current_master_class/current_master_class_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/go_page.dart';
+import 'package:proweb_student_app/interface/components/avatar/avatar.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
@@ -17,9 +18,11 @@ import 'package:proweb_student_app/interface/pages/coworking_screen/coworking_si
 import 'package:proweb_student_app/models/master_class/master_class.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/models/my_reserv_master_class/my_reserv_master_class.dart';
+import 'package:proweb_student_app/models/user/user.dart';
 import 'package:proweb_student_app/models/video_model/video_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
+import 'package:proweb_student_app/utils/player_widget/player_widget.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
@@ -139,9 +142,16 @@ class MasterClassView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final top = MediaQuery.paddingOf(context).top;
-
+    final isPremiumOnlyWatch = masterClass.isPremiumOnlyWatch == true;
+    final myGroupsPremium = groups
+        .map((e) => e.hasPackage)
+        .whereType<bool>()
+        .firstWhere((element) => element == true, orElse: () => false);
+    final bool isVideo = video != null;
+    final isPrime = isPremiumOnlyWatch && myGroupsPremium;
+    final access = isVideo && (isPrime || !isPremiumOnlyWatch);
     return DefaultTabController(
-      length: 2,
+      length: access ? 3 : 2,
       child: Scaffold(
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -161,6 +171,7 @@ class MasterClassView extends StatelessWidget {
                     dividerHeight: 0,
                     tabs: [
                       Tab(text: "Описание"),
+                      if (access) Tab(text: "Запись мастер-класса"),
                       Tab(text: "Информация"),
                     ],
                   ),
@@ -168,14 +179,44 @@ class MasterClassView extends StatelessWidget {
               ),
             ];
           },
-
           body: TabBarView(
             children: [
               MasterClassDescription(masterClass: masterClass),
+              if (access)
+                MasterClassVideo(masterClass: masterClass, video: video!),
               MasterClassInforamtion(masterClass: masterClass, video: video),
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MasterClassVideo extends StatelessWidget {
+  final MasterClass masterClass;
+  final VideoModel video;
+  const MasterClassVideo({
+    super.key,
+    required this.masterClass,
+    required this.video,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final customColors = Theme.of(context).extension<CustomColors>();
+    return Container(
+      color: customColors?.containerColor,
+      child: Column(
+        children: [
+          PlayerWidget(
+            playlists: sl<LocalData>().generateUrlVideo(
+              publickPath: video.playlist!,
+              slug: video.slug!,
+            ),
+            preview: video.preview!,
+          ),
+        ],
       ),
     );
   }
@@ -234,6 +275,10 @@ class MasterClassInforamtion extends StatelessWidget {
     final venueCapacity = masterClass.venueCapacity;
     final isPremiumOnlyWatch = masterClass.isPremiumOnlyWatch;
     final isPremiumOnly = masterClass.isPremiumOnly;
+    final speekers = masterClass.speakers
+        ?.where((element) => element.user != null || element.name != null)
+        .toList();
+
     return ClipRRect(
       borderRadius: BorderRadiusGeometry.only(
         topLeft: Radius.circular(22),
@@ -428,6 +473,70 @@ class MasterClassInforamtion extends StatelessWidget {
                 },
               ),
             },
+            if (speekers != null && speekers.isNotEmpty) ...{
+              SizedBox(height: 10),
+              Text('Спикеры', style: TextStyle(fontSize: 18)),
+              SizedBox(height: 5),
+              Column(
+                spacing: 2,
+                children: speekers
+                    .map((e) {
+                      final user = e.user;
+                      final name = e.name;
+                      final index = speekers.indexWhere(
+                        (element) => element.id == e.id,
+                      );
+                      if (user != null) {
+                        return ListTileBuilder(
+                          isStart: index == 0,
+                          isEnd: (speekers.length - 1) == index,
+                          builder: (shape, contentPadding, isThreeLine) {
+                            return ListTile(
+                              shape: shape,
+                              contentPadding: contentPadding,
+                              tileColor: customColors?.primaryBg,
+                              leading: Avatar(user: user),
+                              title: Text(
+                                sl<LocalData>().nameUser(user),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      } else if (name != null) {
+                        return ListTileBuilder(
+                          isStart: index == 0,
+                          isEnd: (speekers.length - 1) == index,
+                          builder: (shape, contentPadding, isThreeLine) {
+                            return ListTile(
+                              shape: shape,
+                              contentPadding: contentPadding,
+                              tileColor: customColors?.primaryBg,
+                              leading: Avatar(
+                                user: User(
+                                  id: 0,
+                                  firstName: name,
+                                  lastName: name,
+                                ),
+                              ),
+                              title: Text(
+                                name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      }
+                      return SizedBox();
+                    })
+                    .where((element) {
+                      return element.runtimeType == ListTileBuilder;
+                    })
+                    .toList(),
+              ),
+            },
           ],
         ),
       ),
@@ -586,27 +695,30 @@ class _TabBarHeaderDelegate extends SliverPersistentHeaderDelegate {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SizedBox(height: topPadding),
-          Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 5),
-            child: Row(
-              spacing: 10,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(Icons.arrow_back),
-                      ),
-                      tabBar,
-                    ],
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: EdgeInsetsGeometry.symmetric(horizontal: 5),
+              child: Row(
+                spacing: 10,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(Icons.arrow_back),
+                        ),
+                        Expanded(child: tabBar),
+                      ],
+                    ),
                   ),
-                ),
-                actions ?? SizedBox(),
-              ],
+                  actions ?? SizedBox(),
+                ],
+              ),
             ),
           ),
         ],

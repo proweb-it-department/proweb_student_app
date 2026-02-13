@@ -9,7 +9,6 @@ import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/models/scheduled_lesson_models/scheduled_lesson_models.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 part 'scheduled_student_event.dart';
 part 'scheduled_student_state.dart';
