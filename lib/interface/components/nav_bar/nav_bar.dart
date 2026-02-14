@@ -629,8 +629,8 @@ class ExtraMenu extends StatelessWidget {
                     children: [
                       Icon(
                         tabsRouter.activeIndex == 3
-                            ? Icons.emoji_events
-                            : Icons.emoji_events_outlined,
+                            ? Icons.support_agent
+                            : Icons.support_agent_outlined,
                         size: 22,
                         color: activeTextColor(
                           tabsRouter.activeIndex == 3,
@@ -638,7 +638,7 @@ class ExtraMenu extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'menu.rating'.tr(),
+                        'Сервис-центр',
                         style: TextStyle(
                           fontSize: 12,
                           color: activeTextColor(
@@ -672,8 +672,8 @@ class ExtraMenu extends StatelessWidget {
                     children: [
                       Icon(
                         tabsRouter.activeIndex == 4
-                            ? Icons.shopping_cart
-                            : Icons.shopping_cart_outlined,
+                            ? Icons.emoji_events
+                            : Icons.emoji_events_outlined,
                         size: 22,
                         color: activeTextColor(
                           tabsRouter.activeIndex == 4,
@@ -681,7 +681,7 @@ class ExtraMenu extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'menu.shop'.tr(),
+                        'menu.rating'.tr(),
                         style: TextStyle(
                           fontSize: 12,
                           color: activeTextColor(
@@ -715,11 +715,54 @@ class ExtraMenu extends StatelessWidget {
                     children: [
                       Icon(
                         tabsRouter.activeIndex == 5
+                            ? Icons.shopping_cart
+                            : Icons.shopping_cart_outlined,
+                        size: 22,
+                        color: activeTextColor(
+                          tabsRouter.activeIndex == 5,
+                          customTheme,
+                        ),
+                      ),
+                      Text(
+                        'menu.shop'.tr(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: activeTextColor(
+                            tabsRouter.activeIndex == 5,
+                            customTheme,
+                          ),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(10),
+            child: Material(
+              color: activeColor(tabsRouter.activeIndex == 6, customTheme),
+              child: InkWell(
+                onTap: () {
+                  tabsRouter.setActiveIndex(6);
+                },
+                child: Padding(
+                  padding: padding,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        tabsRouter.activeIndex == 6
                             ? Icons.local_parking
                             : Icons.local_parking_outlined,
                         size: 22,
                         color: activeTextColor(
-                          tabsRouter.activeIndex == 5,
+                          tabsRouter.activeIndex == 6,
                           customTheme,
                         ),
                       ),
@@ -728,7 +771,7 @@ class ExtraMenu extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 12,
                           color: activeTextColor(
-                            tabsRouter.activeIndex == 5,
+                            tabsRouter.activeIndex == 6,
                             customTheme,
                           ),
                         ),

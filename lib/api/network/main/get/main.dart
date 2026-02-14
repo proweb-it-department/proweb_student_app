@@ -1360,6 +1360,24 @@ class GetResponsesMain {
     return data;
   }
 
+  Future<ResponseLazeList<MasterClass>?> serviceCenter(int offset) async {
+    String path =
+        '/api/v1/tech-support/student-student-pc/?offset=$offset&&limit=50';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MasterClass>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MasterClass>.fromJson(
+        r,
+        (data) => MasterClass.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<MasterClass>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
   Future<MyReservMasterClass?> myRecervMasterClass(int id) async {
     String path = '/api/v1/master-classes/reservations/my/?master_class_id=$id';
     final response = await sl<MainFetch>().get(path: path);

@@ -59,6 +59,11 @@ class AppRouter extends RootStackRouter {
           guards: [_AuthGuard()],
         ),
         AutoRoute(
+          path: 'feedback',
+          page: ServiceCenterRoute.page,
+          guards: [_AuthGuard()],
+        ),
+        AutoRoute(
           path: 'rating',
           page: RankingRoute.page,
           guards: [_AuthGuard()],

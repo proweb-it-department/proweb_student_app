@@ -49,6 +49,7 @@ class AppScreenWidget extends StatelessWidget {
               HomeRoute(),
               CoworkingRoute(),
               FeedbackRoute(),
+              ServiceCenterRoute(),
               RankingRoute(),
               ShopRoute(),
               ProwebRoute(),
