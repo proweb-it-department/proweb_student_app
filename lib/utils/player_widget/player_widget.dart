@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:better_player_plus/better_player_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/player_widget/video_controlls.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
@@ -15,54 +16,136 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 class PlayerWidget extends StatefulWidget {
   final String playlists;
   final String? preview;
+
   const PlayerWidget({super.key, required this.playlists, this.preview});
 
   @override
   State<PlayerWidget> createState() => _PlayerWidgetState();
 }
 
-class _PlayerWidgetState extends State<PlayerWidget>
-    with AutoRouteAware, SingleTickerProviderStateMixin {
-  final Player player = Player();
-  late final controller = VideoController(
-    player,
+class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
+  // iOS player (media_kit)
+  final Player _iosPlayer = Player();
+  late final VideoController _iosVideoController = VideoController(
+    _iosPlayer,
     configuration: const VideoControllerConfiguration(
       enableHardwareAcceleration: true,
     ),
   );
-  List<BetterPlayerDataSource> dataSourceList = [];
-  BetterPlayerController? _controller;
+
+  // Android player (better_player)
+  BetterPlayerController? _androidController;
+  final ValueNotifier<bool> _androidFullscreenVN = ValueNotifier(false);
+
+  bool _subscribedToRouteObserver = false;
+
+  bool get _isIOS => Platform.isIOS;
+  bool get _isAndroid => Platform.isAndroid;
+
+  bool get _isInBuildPhase {
+    final phase = SchedulerBinding.instance.schedulerPhase;
+    return phase == SchedulerPhase.transientCallbacks ||
+        phase == SchedulerPhase.midFrameMicrotasks ||
+        phase == SchedulerPhase.persistentCallbacks;
+  }
+
+  void _runSafelyAfterBuild(VoidCallback action) {
+    if (_isInBuildPhase) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        action();
+      });
+      return;
+    }
+    action();
+  }
+
+  void _setAndroidFullscreenState(
+    bool isFullscreen, {
+    bool deferIfBuilding = true,
+  }) {
+    if (!_isAndroid) return;
+
+    void apply() {
+      if (_androidFullscreenVN.value != isFullscreen) {
+        _androidFullscreenVN.value = isFullscreen;
+      }
+    }
+
+    if (deferIfBuilding) {
+      _runSafelyAfterBuild(apply);
+    } else {
+      apply();
+    }
+  }
+
+  void _setAndroidSystemUiMode(
+    bool isFullscreen, {
+    bool deferIfBuilding = true,
+  }) {
+    if (!_isAndroid) return;
+
+    void apply() {
+      if (isFullscreen) {
+        // Скрываем статус-бар и navigation bar.
+        // Они будут вызываться системным свайпом.
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+      } else {
+        // Возвращаем системные бары в обычный режим приложения.
+        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+      }
+    }
+
+    if (deferIfBuilding) {
+      _runSafelyAfterBuild(apply);
+    } else {
+      apply();
+    }
+  }
+
+  void _applyAndroidFullscreen(
+    bool isFullscreen, {
+    bool deferIfBuilding = true,
+  }) {
+    _setAndroidFullscreenState(isFullscreen, deferIfBuilding: deferIfBuilding);
+    _setAndroidSystemUiMode(isFullscreen, deferIfBuilding: deferIfBuilding);
+  }
 
   @override
   void initState() {
     super.initState();
+    _initPlayers();
+  }
 
-    if (Platform.isIOS) {
-      Media media = Media(widget.playlists);
-      player.open(media, play: false);
-    } else if (Platform.isAndroid) {
-      BetterPlayerDataSource dataSource = BetterPlayerDataSource(
-        BetterPlayerDataSourceType.network,
-        widget.playlists,
-        useAsmsSubtitles: false,
-        subtitles: [],
-        liveStream: false,
-        videoFormat: BetterPlayerVideoFormat.hls,
-        videoExtension: '.m3u8',
-        headers: {"User-Agent": "BetterPlayer"},
-      );
+  @override
+  void didUpdateWidget(covariant PlayerWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-      _controller = BetterPlayerController(
+    if (oldWidget.playlists != widget.playlists) {
+      _updateDataSource(widget.playlists);
+    }
+  }
+
+  void _initPlayers() {
+    if (_isIOS) {
+      _iosPlayer.open(Media(widget.playlists), play: false);
+      return;
+    }
+
+    if (_isAndroid) {
+      final dataSource = _buildAndroidDataSource(widget.playlists);
+      _androidController = BetterPlayerController(
         BetterPlayerConfiguration(
-          controlsConfiguration: BetterPlayerControlsConfiguration(
+          controlsConfiguration: const BetterPlayerControlsConfiguration(
             showControls: false,
           ),
           fit: BoxFit.contain,
+          placeholder: _buildPlaceholder(),
+          placeholderOnTop: true,
           routePageBuilder:
               (context, animation, secondaryAnimation, controllerProvider) {
-                SystemChrome.setEnabledSystemUIMode(
-                  SystemUiMode.immersiveSticky,
-                );
+                // Fullscreen route: скрываем системные бары.
+                _applyAndroidFullscreen(true);
                 return AnimatedBuilder(
                   animation: animation,
                   builder: (context, child) {
@@ -82,72 +165,142 @@ class _PlayerWidgetState extends State<PlayerWidget>
                   },
                 );
               },
-          eventListener: (p0) {
-            if (p0.betterPlayerEventType ==
-                BetterPlayerEventType.changedPlayerVisibility) {
-              SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+          eventListener: (event) {
+            switch (event.betterPlayerEventType) {
+              case BetterPlayerEventType.openFullscreen:
+                _applyAndroidFullscreen(true, deferIfBuilding: false);
+                break;
+              case BetterPlayerEventType.hideFullscreen:
+                _applyAndroidFullscreen(false, deferIfBuilding: false);
+                break;
+              case BetterPlayerEventType.changedPlayerVisibility:
+                // Фолбэк для некоторых устройств/версий плеера.
+                if (!_androidFullscreenVN.value) {
+                  _setAndroidSystemUiMode(false, deferIfBuilding: false);
+                }
+                break;
+              default:
+                break;
             }
           },
-          placeholder: Container(
-            decoration: BoxDecoration(
-              color: Colors.black,
-              image: widget.preview != null
-                  ? DecorationImage(
-                      image: CachedNetworkImageProvider(widget.preview!),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
-            ),
-            child: Center(
-              child: CircularProgressIndicator(color: Colors.white),
-            ),
-          ),
-          placeholderOnTop: true,
         ),
         betterPlayerDataSource: dataSource,
       );
     }
   }
 
+  BetterPlayerDataSource _buildAndroidDataSource(String url) {
+    return BetterPlayerDataSource(
+      BetterPlayerDataSourceType.network,
+      url,
+      useAsmsSubtitles: false,
+      subtitles: const [],
+      liveStream: false,
+      videoFormat: BetterPlayerVideoFormat.hls,
+      videoExtension: '.m3u8',
+      headers: const {'User-Agent': 'BetterPlayer'},
+    );
+  }
+
+  Widget _buildPlaceholder() {
+    // В fullscreen не показываем preview как фон, чтобы не было "мигания"/некрасивой подложки.
+    return ValueListenableBuilder<bool>(
+      valueListenable: _androidFullscreenVN,
+      builder: (context, isFullscreen, _) {
+        final showPreview = !isFullscreen && widget.preview != null;
+
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.black,
+            image: showPreview
+                ? DecorationImage(
+                    image: CachedNetworkImageProvider(widget.preview!),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
+          child: Center(
+            child: isFullscreen
+                ? const SizedBox.shrink()
+                : const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2.4,
+                    ),
+                  ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _updateDataSource(String url) async {
+    if (_isIOS) {
+      await _iosPlayer.open(Media(url), play: false);
+      return;
+    }
+
+    if (_isAndroid && _androidController != null) {
+      await _androidController!.setupDataSource(_buildAndroidDataSource(url));
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    sl<AutoRouteObserver>().subscribe(this, context.routeData);
+    if (!_subscribedToRouteObserver) {
+      sl<AutoRouteObserver>().subscribe(this, context.routeData);
+      _subscribedToRouteObserver = true;
+    }
   }
 
   @override
   void didPushNext() {
-    if (player.state.playing) {
-      player.pause();
+    // Pause when current route is covered by next route.
+    if (_isIOS && _iosPlayer.state.playing) {
+      _iosPlayer.pause();
+    }
+
+    if (_isAndroid && (_androidController?.isPlaying() ?? false)) {
+      _androidController?.pause();
     }
   }
 
   @override
   void dispose() {
-    player.dispose();
+    if (_subscribedToRouteObserver) {
+      sl<AutoRouteObserver>().unsubscribe(this);
+    }
+
+    _applyAndroidFullscreen(false, deferIfBuilding: false);
+    _androidController?.dispose(forceDispose: true);
+    _androidFullscreenVN.dispose();
+    _iosPlayer.dispose();
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
-    final maxHeight = MediaQuery.of(context).size.height * 0.5;
-    final width = MediaQuery.of(context).size.width;
-    final aspectrationHeight = width * (9 / 16);
+    final screenSize = MediaQuery.sizeOf(context);
+    final maxHeight = screenSize.height * 0.5;
+    final aspectHeight = screenSize.width * (9 / 16);
+
     return Container(
       color: customColors?.primaryBlack,
       width: double.infinity,
       alignment: Alignment.center,
       constraints: BoxConstraints(
-        maxHeight: maxHeight > aspectrationHeight
-            ? aspectrationHeight
-            : maxHeight,
+        maxHeight: maxHeight > aspectHeight ? aspectHeight : maxHeight,
       ),
       child: AspectRatio(
         aspectRatio: 16 / 9,
         child: VideoPlayerPlatform(
-          iosController: controller,
-          androidController: _controller,
+          iosController: _iosVideoController,
+          androidController: _androidController,
         ),
       ),
     );
@@ -157,6 +310,7 @@ class _PlayerWidgetState extends State<PlayerWidget>
 class VideoPlayerPlatform extends StatelessWidget {
   final BetterPlayerController? androidController;
   final VideoController iosController;
+
   const VideoPlayerPlatform({
     super.key,
     this.androidController,
@@ -168,18 +322,19 @@ class VideoPlayerPlatform extends StatelessWidget {
     if (Platform.isIOS) {
       return Video(
         controller: iosController,
-        controls: (state) {
-          return myMaterialVideoControls(state);
-        },
+        controls: myMaterialVideoControls,
       );
-    } else if (Platform.isAndroid && androidController != null) {
+    }
+
+    if (Platform.isAndroid && androidController != null) {
       return MyVideoControllers(
         player: BetterPlayer(controller: androidController!),
         controller: androidController!,
         isFullScreen: false,
       );
     }
-    return const SizedBox();
+
+    return const SizedBox.shrink();
   }
 }
 
@@ -201,108 +356,141 @@ class MyVideoControllers extends StatefulWidget {
 
 class _MyVideoControllersState extends State<MyVideoControllers>
     with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> _heightAnimation;
+  static const Duration _controlsAutoHideDelay = Duration(seconds: 3);
+  static const Duration _fadeDuration = Duration(milliseconds: 300);
+
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 100),
+  );
+
+  late final Animation<double> _heightAnimation = Tween<double>(
+    begin: 6,
+    end: 8,
+  ).animate(_animationController);
+
+  Timer? _hideTimer;
+
   double _currentPosition = 0.0;
   double _videoDuration = 0.0;
   bool _showControls = true;
   bool _isPlay = false;
-  Timer? _hideTimer;
+
+  bool _isDraggingProgress = false;
+
+  int _lastPositionSeconds = -1;
+  int _lastDurationSeconds = -1;
+
+  late final void Function(BetterPlayerEvent) _eventsListener;
+
   @override
   void initState() {
     super.initState();
-    if (widget.controller.isPlaying() == true) {
-      if (!mounted) return;
-      setState(() {
-        _isPlay = true;
-      });
-    } else if (widget.controller.isPlaying() == false) {
-      if (!mounted) return;
-      setState(() {
-        _isPlay = false;
-      });
-    }
-    widget.controller.addEventsListener((event) {
-      if (event.betterPlayerEventType == BetterPlayerEventType.progress) {
-        if (!mounted) return;
-        setState(() {
-          _currentPosition =
-              (event.parameters?["progress"] as Duration?)?.inSeconds
-                  .toDouble() ??
-              0;
-          _videoDuration =
-              (event.parameters?["duration"] as Duration?)?.inSeconds
-                  .toDouble() ??
-              0;
-        });
-      }
-      if (event.betterPlayerEventType == BetterPlayerEventType.initialized) {
-        if (!mounted) return;
-        if (event.parameters?["progress"] is Duration &&
-            event.parameters?["duration"] is Duration) {
-          setState(() {
-            _currentPosition =
-                (event.parameters?["progress"] as Duration?)?.inSeconds
-                    .toDouble() ??
-                0;
-            _videoDuration =
-                (event.parameters?["duration"] as Duration?)?.inSeconds
-                    .toDouble() ??
-                0;
-          });
-        }
-      }
-      if (event.betterPlayerEventType == BetterPlayerEventType.play) {
-        if (!mounted) return;
-        setState(() {
-          _isPlay = true;
-        });
-      } else if (event.betterPlayerEventType == BetterPlayerEventType.pause) {
-        if (!mounted) return;
-        setState(() {
-          _isPlay = false;
-        });
-      }
-      if (event.betterPlayerEventType == BetterPlayerEventType.openFullscreen) {
-        _startHideTimer();
-      } else if (event.betterPlayerEventType ==
-          BetterPlayerEventType.hideFullscreen) {
-        _startHideTimer();
-      }
-    });
 
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 100),
-    );
-    _heightAnimation = Tween<double>(
-      begin: 6,
-      end: 8,
-    ).animate(_animationController);
+    _isPlay = widget.controller.isPlaying() == true;
+
+    _eventsListener = _onPlayerEvent;
+    widget.controller.addEventsListener(_eventsListener);
+
+    _startHideTimer();
   }
 
-  _changeCurrentPosition(double position) {
+  @override
+  void dispose() {
+    _hideTimer?.cancel();
+    _animationController.dispose();
+
+    // Important to prevent listener accumulation.
+    widget.controller.removeEventsListener(_eventsListener);
+
+    super.dispose();
+  }
+
+  void _onPlayerEvent(BetterPlayerEvent event) {
     if (!mounted) return;
+
+    switch (event.betterPlayerEventType) {
+      case BetterPlayerEventType.progress:
+      case BetterPlayerEventType.initialized:
+        _updateProgressFromEvent(event);
+        break;
+
+      case BetterPlayerEventType.play:
+        if (!_isPlay) {
+          setState(() => _isPlay = true);
+        }
+        _startHideTimer();
+        break;
+
+      case BetterPlayerEventType.pause:
+        if (_isPlay) {
+          setState(() => _isPlay = false);
+        }
+        _showControlsIfNeeded();
+        break;
+
+      case BetterPlayerEventType.finished:
+        _showControlsIfNeeded();
+        break;
+
+      case BetterPlayerEventType.openFullscreen:
+      case BetterPlayerEventType.hideFullscreen:
+        _startHideTimer();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  void _updateProgressFromEvent(BetterPlayerEvent event) {
+    if (_isDraggingProgress) return;
+
+    final progress =
+        (event.parameters?['progress'] as Duration?)?.inSeconds ??
+        _currentPosition.toInt();
+    final duration =
+        (event.parameters?['duration'] as Duration?)?.inSeconds ??
+        _videoDuration.toInt();
+
+    // Skip redundant rebuilds when values are unchanged.
+    if (progress == _lastPositionSeconds && duration == _lastDurationSeconds) {
+      return;
+    }
+
+    _lastPositionSeconds = progress;
+    _lastDurationSeconds = duration;
+
     setState(() {
-      _currentPosition = position;
+      _currentPosition = progress.toDouble();
+      _videoDuration = duration.toDouble();
     });
+  }
+
+  void _showControlsIfNeeded() {
+    if (!_showControls) {
+      setState(() => _showControls = true);
+    }
   }
 
   void _toggleControls() {
-    if (!mounted) return;
     setState(() {
       _showControls = !_showControls;
     });
+
     if (_showControls) {
       _startHideTimer();
+    } else {
+      _hideTimer?.cancel();
     }
   }
 
   void _startHideTimer() {
     _hideTimer?.cancel();
-    _hideTimer = Timer(Duration(seconds: 3), () {
-      if (widget.controller.isPlaying() == true) {
-        if (!mounted) return;
+
+    _hideTimer = Timer(_controlsAutoHideDelay, () {
+      if (!mounted) return;
+      if (widget.controller.isPlaying() == true && _showControls) {
         setState(() {
           _showControls = false;
         });
@@ -310,292 +498,320 @@ class _MyVideoControllersState extends State<MyVideoControllers>
     });
   }
 
+  double _clampSeconds(double seconds) {
+    if (_videoDuration <= 0) return 0;
+    return seconds.clamp(0.0, _videoDuration);
+  }
+
+  Future<void> _seekAbsolute(double seconds) async {
+    final clamped = _clampSeconds(seconds);
+    await widget.controller.seekTo(Duration(seconds: clamped.round()));
+
+    if (!mounted) return;
+    setState(() {
+      _currentPosition = clamped;
+    });
+  }
+
+  Future<void> _seekRelative(int deltaSeconds) async {
+    final target = _clampSeconds(_currentPosition + deltaSeconds);
+    await _seekAbsolute(target);
+    _startHideTimer();
+  }
+
+  void _onProgressDragStart() {
+    _isDraggingProgress = true;
+    _animationController.forward(from: 0.0);
+    _startHideTimer();
+  }
+
+  void _onProgressDragUpdate(double positionSeconds) {
+    setState(() {
+      _currentPosition = _clampSeconds(positionSeconds);
+    });
+  }
+
+  Future<void> _onProgressDragEnd() async {
+    _isDraggingProgress = false;
+    _animationController.reverse(from: 1.0);
+    await _seekAbsolute(_currentPosition);
+  }
+
+  String _readableTime(double seconds) {
+    final totalSeconds = seconds.round();
+    final duration = Duration(seconds: totalSeconds);
+
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60);
+    final secs = duration.inSeconds.remainder(60);
+
+    String two(int value) => value.toString().padLeft(2, '0');
+
+    if (hours > 0) {
+      return '${two(hours)}:${two(minutes)}:${two(secs)}';
+    }
+    return '${two(minutes)}:${two(secs)}';
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _toggleControls,
-      child: Stack(
-        children: [
-          widget.player,
-          AnimatedOpacity(
-            opacity: _showControls ? 1.0 : 0.0,
-            duration: Duration(milliseconds: 300),
-            child: Container(color: Colors.black.withAlpha(150)),
-          ),
-          Positioned(
-            bottom: 0,
-            top: 0,
-            left: 0,
-            width: MediaQuery.of(context).size.width * 0.4,
-            child: ClipRRect(
-              child: GestureDetector(
-                child: InkWell(
-                  onTap: _toggleControls,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onDoubleTap: () {
-                    final newPosition = _currentPosition.toInt();
-                    widget.controller.seekTo(
-                      Duration(
-                        seconds:
-                            _currentPosition.toInt() -
-                            (newPosition < 10 ? newPosition : 10),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+
+        return GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: _toggleControls,
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              widget.player,
+
+              // Dark backdrop when controls are visible.
+              IgnorePointer(
+                ignoring: true,
+                child: AnimatedOpacity(
+                  opacity: _showControls ? 1.0 : 0.0,
+                  duration: _fadeDuration,
+                  child: Container(color: Colors.black.withAlpha(150)),
+                ),
+              ),
+
+              // Double-tap seek zones (left / right)
+              _SeekZone(
+                alignment: Alignment.centerLeft,
+                width: width * 0.4,
+                onTap: _toggleControls,
+                onDoubleTap: () => _seekRelative(-10),
+              ),
+              _SeekZone(
+                alignment: Alignment.centerRight,
+                width: width * 0.4,
+                onTap: _toggleControls,
+                onDoubleTap: () => _seekRelative(10),
+              ),
+
+              if (_showControls) ...[
+                Positioned(
+                  bottom: widget.isFullScreen ? 50 : 0,
+                  left: 0,
+                  right: 0,
+                  child: _ProgressGestureBar(
+                    width: width,
+                    durationSeconds: _videoDuration,
+                    onSeekStart: _onProgressDragStart,
+                    onSeekUpdate: _onProgressDragUpdate,
+                    onSeekEnd: _onProgressDragEnd,
+                    child: SizedBox(
+                      height: 50,
+                      child: Align(
+                        alignment: widget.isFullScreen
+                            ? Alignment.center
+                            : Alignment.bottomCenter,
+                        child: _videoDuration > 0
+                            ? AnimatedBuilder(
+                                animation: _heightAnimation,
+                                builder: (context, child) {
+                                  return RepaintBoundary(
+                                    child: CustomPaint(
+                                      size: Size(width, _heightAnimation.value),
+                                      painter: VideoProgressPainter(
+                                        _currentPosition,
+                                        _videoDuration,
+                                        _heightAnimation.value,
+                                        true,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            : LinearProgressIndicator(
+                                color: Colors.white,
+                                backgroundColor: Colors.grey.shade700,
+                                minHeight: _heightAnimation.value,
+                              ),
                       ),
-                    );
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height,
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            top: 0,
-            right: 0,
-            width: MediaQuery.of(context).size.width * 0.4,
-            child: ClipRRect(
-              child: GestureDetector(
-                child: InkWell(
-                  onTap: _toggleControls,
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onDoubleTap: () {
-                    widget.controller.seekTo(
-                      Duration(seconds: _currentPosition.toInt() + 10),
-                    );
-                  },
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    height: MediaQuery.of(context).size.height,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          if (_showControls) ...[
-            Positioned(
-              bottom: !widget.isFullScreen ? 0 : 50,
-              left: 0,
-              right: 0,
-              child: GestureDetector(
-                onHorizontalDragUpdate: (details) {
-                  _animationController.forward(from: 8);
-                  _startHideTimer();
-                  double newPosition =
-                      (details.localPosition.dx /
-                          MediaQuery.of(context).size.width) *
-                      _videoDuration;
-                  newPosition = newPosition.clamp(0.0, _videoDuration);
-                  _changeCurrentPosition(newPosition);
-                  widget.controller.seekTo(
-                    Duration(seconds: newPosition.toInt()),
-                  );
-                },
-                onHorizontalDragEnd: (details) {
-                  _animationController.reverse(from: 6);
-                },
-                onTapDown: (details) {
-                  _animationController.forward(from: 8);
-                  _startHideTimer();
-                  double newPosition =
-                      (details.localPosition.dx /
-                          MediaQuery.of(context).size.width) *
-                      _videoDuration;
-                  newPosition = newPosition.clamp(0.0, _videoDuration);
-                  _changeCurrentPosition(newPosition);
-                  widget.controller.seekTo(
-                    Duration(seconds: newPosition.toInt()),
-                  );
-                },
-                child: Container(
-                  height: 50,
-                  color: Colors.transparent,
-                  alignment: widget.isFullScreen
-                      ? Alignment.center
-                      : Alignment.bottomCenter,
-                  child: _videoDuration > 0
-                      ? AnimatedBuilder(
-                          animation: _heightAnimation,
-                          builder: (context, child) {
-                            return CustomPaint(
-                              size: Size(
-                                MediaQuery.of(context).size.width,
-                                _heightAnimation.value,
-                              ),
-                              painter: VideoProgressPainter(
-                                _currentPosition,
-                                _videoDuration,
-                                _heightAnimation.value,
-                                true,
-                              ),
-                            );
-                          },
-                        )
-                      : LinearProgressIndicator(
-                          color: Colors.white,
-                          backgroundColor: Colors.grey.shade700,
-                          minHeight: _heightAnimation.value,
-                        ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: !widget.isFullScreen ? 40 : 20,
-              left: 10,
-              right: 10,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                spacing: 5,
-                children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    spacing: 5,
+                Positioned(
+                  bottom: widget.isFullScreen ? 20 : 40,
+                  left: 10,
+                  right: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          _startHideTimer();
-                          _isPlay
-                              ? widget.controller.pause()
-                              : widget.controller.play();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 2,
-                          ),
-                          child: Icon(
-                            _isPlay ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                        ),
-                      ),
-                      if (widget.isFullScreen) ...[
-                        GestureDetector(
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              final newPosition = _currentPosition.toInt();
-                              widget.controller.seekTo(
-                                Duration(
-                                  seconds:
-                                      _currentPosition.toInt() -
-                                      (newPosition < 10 ? newPosition : 10),
-                                ),
-                              );
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                            ),
+                            onPressed: () {
+                              _startHideTimer();
+                              if (_isPlay) {
+                                widget.controller.pause();
+                              } else {
+                                widget.controller.play();
+                              }
                             },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 2,
+                            splashRadius: 20,
+                            icon: Icon(
+                              _isPlay ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ),
+                          if (widget.isFullScreen) ...[
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.transparent,
                               ),
-                              child: Icon(
+                              onPressed: () => _seekRelative(-10),
+                              splashRadius: 20,
+                              icon: const Icon(
                                 Icons.replay_10,
                                 color: Colors.white,
                                 size: 25,
                               ),
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          child: InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              widget.controller.seekTo(
-                                Duration(
-                                  seconds: _currentPosition.toInt() + 10,
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 2,
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.transparent,
                               ),
-                              child: Icon(
+                              onPressed: () => _seekRelative(10),
+                              splashRadius: 20,
+                              icon: const Icon(
                                 Icons.forward_10,
                                 color: Colors.white,
                                 size: 25,
                               ),
                             ),
+                          ],
+                          Text(
+                            '${_readableTime(_currentPosition)}/${_readableTime(_videoDuration)}',
+                            style: const TextStyle(color: Colors.white),
                           ),
+                        ],
+                      ),
+                      IconButton(
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.transparent,
                         ),
-                      ],
-                      Text(
-                        '${readableTime(_currentPosition)}/${readableTime(_videoDuration)}',
-                        style: TextStyle(color: Colors.white),
+                        onPressed: () {
+                          _startHideTimer();
+                          widget.controller.toggleFullScreen();
+                        },
+                        splashRadius: 20,
+                        icon: Icon(
+                          widget.isFullScreen
+                              ? Icons.fullscreen_exit
+                              : Icons.fullscreen,
+                          color: Colors.white,
+                          size: 25,
+                        ),
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      _startHideTimer();
-                      widget.controller.toggleFullScreen();
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 2,
-                      ),
-                      child: Icon(
-                        widget.isFullScreen
-                            ? Icons.fullscreen_exit
-                            : Icons.fullscreen,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ] else
-            Positioned(
-              bottom: 0,
-              child: _videoDuration > 0
-                  ? CustomPaint(
-                      size: Size(MediaQuery.of(context).size.width, 3),
-                      painter: VideoProgressPainter(
-                        _currentPosition,
-                        _videoDuration,
-                        3,
-                        false,
-                      ),
-                    )
-                  : SizedBox(),
-            ),
-        ],
+                ),
+              ] else
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: _videoDuration > 0
+                      ? RepaintBoundary(
+                          child: CustomPaint(
+                            size: Size(width, 3),
+                            painter: VideoProgressPainter(
+                              _currentPosition,
+                              _videoDuration,
+                              3,
+                              false,
+                            ),
+                          ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SeekZone extends StatelessWidget {
+  final Alignment alignment;
+  final double width;
+  final VoidCallback onTap;
+  final VoidCallback onDoubleTap;
+
+  const _SeekZone({
+    required this.alignment,
+    required this.width,
+    required this.onTap,
+    required this.onDoubleTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: alignment,
+      child: SizedBox(
+        width: width,
+        height: double.infinity,
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: onTap,
+          onDoubleTap: onDoubleTap,
+        ),
       ),
     );
   }
+}
 
-  String readableTime(double seconds) {
-    if (seconds < 60) return '00:${_nulNumber(seconds)}';
+class _ProgressGestureBar extends StatelessWidget {
+  final double width;
+  final double durationSeconds;
+  final VoidCallback onSeekStart;
+  final ValueChanged<double> onSeekUpdate;
+  final Future<void> Function() onSeekEnd;
+  final Widget child;
 
-    int minutes = seconds ~/ 60;
-    int remainingSeconds = seconds.round() % 60;
+  const _ProgressGestureBar({
+    required this.width,
+    required this.durationSeconds,
+    required this.onSeekStart,
+    required this.onSeekUpdate,
+    required this.onSeekEnd,
+    required this.child,
+  });
 
-    if (minutes < 60) {
-      return remainingSeconds > 0
-          ? '${_nulNumber(minutes.toDouble())}:${_nulNumber(remainingSeconds.toDouble())}'
-          : '${_nulNumber(minutes.toDouble())}:00';
-    }
-
-    int hours = minutes ~/ 60;
-    minutes %= 60;
-
-    return (minutes > 0 || remainingSeconds > 0)
-        ? '${_nulNumber(hours.toDouble())}:${_nulNumber(minutes.toDouble())}:${_nulNumber(remainingSeconds.toDouble())}'
-        : '${_nulNumber(hours.toDouble())}:00:00';
+  double _positionFromDx(double dx) {
+    if (durationSeconds <= 0 || width <= 0) return 0;
+    return (dx / width).clamp(0.0, 1.0) * durationSeconds;
   }
 
-  String _nulNumber(double number) {
-    return number < 10 ? '0${number.toInt()}' : '${number.toInt()}';
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onHorizontalDragStart: (_) => onSeekStart(),
+      onHorizontalDragUpdate: (details) {
+        onSeekUpdate(_positionFromDx(details.localPosition.dx));
+      },
+      onHorizontalDragEnd: (_) {
+        onSeekEnd();
+      },
+      onTapDown: (details) async {
+        onSeekStart();
+        onSeekUpdate(_positionFromDx(details.localPosition.dx));
+        await onSeekEnd();
+      },
+      child: child,
+    );
   }
 }
 
@@ -603,74 +819,69 @@ class VideoProgressPainter extends CustomPainter {
   final double progress;
   final double total;
   final double height;
-  final bool isCircule;
+  final bool isCircle;
 
-  VideoProgressPainter(this.progress, this.total, this.height, this.isCircule);
+  VideoProgressPainter(this.progress, this.total, this.height, this.isCircle);
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint backgroundPaint = Paint()
+    final backgroundPaint = Paint()
       ..color = Colors.grey.shade700
       ..strokeCap = StrokeCap.round
       ..strokeWidth = height;
 
-    Paint progressPaint = Paint()
-      ..color = isCircule ? Colors.white : Colors.white.withAlpha(100)
+    final progressPaint = Paint()
+      ..color = isCircle ? Colors.white : Colors.white.withAlpha(100)
       ..strokeCap = StrokeCap.round
       ..strokeWidth = height;
 
-    Paint progressShadowPaint = Paint()
+    final progressShadowPaint = Paint()
       ..color = Colors.black.withAlpha(100)
       ..strokeCap = StrokeCap.round
       ..strokeWidth = height + 4
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 4);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
 
-    Paint circlePaint = Paint()
-      ..color = isCircule ? Colors.white : Colors.white.withAlpha(100)
+    final circlePaint = Paint()
+      ..color = isCircle ? Colors.white : Colors.white.withAlpha(100)
       ..style = PaintingStyle.fill;
 
-    Paint circleShadowPaint = Paint()
+    final circleShadowPaint = Paint()
       ..color = Colors.black.withAlpha(100)
       ..style = PaintingStyle.fill
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 6);
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 6);
 
+    final safeTotal = total <= 0 ? 1.0 : total;
+    final safeProgress = progress.clamp(0.0, safeTotal);
+
+    final progressWidth = (safeProgress / safeTotal) * size.width;
     final heightCircle = height * 1.1;
-    double progressWidth = (progress / total) * size.width;
-    double circleX = progressWidth < heightCircle
-        ? heightCircle
-        : progressWidth;
+    final circleX = progressWidth.clamp(heightCircle, size.width);
 
-    canvas.drawLine(
-      Offset(0, size.height / 2),
-      Offset(size.width, size.height / 2),
-      backgroundPaint,
-    );
+    final y = size.height / 2;
 
+    canvas.drawLine(Offset(0, y), Offset(size.width, y), backgroundPaint);
     canvas.drawLine(
-      Offset(0, size.height / 2),
-      Offset(progressWidth, size.height / 2),
+      Offset(0, y),
+      Offset(progressWidth, y),
       progressShadowPaint,
     );
+    canvas.drawLine(Offset(0, y), Offset(progressWidth, y), progressPaint);
 
-    canvas.drawLine(
-      Offset(0, size.height / 2),
-      Offset(progressWidth, size.height / 2),
-      progressPaint,
-    );
-    if (isCircule) {
+    if (isCircle) {
       canvas.drawCircle(
-        Offset(circleX, size.height / 2),
+        Offset(circleX, y),
         heightCircle * 1.2,
         circleShadowPaint,
       );
-      canvas.drawCircle(
-        Offset(circleX, size.height / 2),
-        heightCircle,
-        circlePaint,
-      );
+      canvas.drawCircle(Offset(circleX, y), heightCircle, circlePaint);
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant VideoProgressPainter oldDelegate) {
+    return oldDelegate.progress != progress ||
+        oldDelegate.total != total ||
+        oldDelegate.height != height ||
+        oldDelegate.isCircle != isCircle;
+  }
 }

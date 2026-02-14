@@ -332,8 +332,8 @@ class MaterialVideoControlsTheme extends InheritedWidget {
 
   @override
   bool updateShouldNotify(MaterialVideoControlsTheme oldWidget) =>
-      identical(normal, oldWidget.normal) &&
-      identical(fullscreen, oldWidget.fullscreen);
+      !identical(normal, oldWidget.normal) ||
+      !identical(fullscreen, oldWidget.fullscreen);
 }
 
 class _MaterialVideoControls extends StatefulWidget {
@@ -357,6 +357,8 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   Timer? _volumeTimer;
   // The default event stream in package:volume_controller is buggy.
   bool _volumeInterceptEventStream = false;
+  StreamSubscription<double>? _brightnessSubscription;
+  void Function(double)? _volumeListener;
 
   Offset _dragInitialDelta =
       Offset.zero; // Initial position for horizontal drag
@@ -449,6 +451,22 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
     for (final subscription in subscriptions) {
       subscription.cancel();
     }
+
+    _timer?.cancel();
+    _brightnessTimer?.cancel();
+    _volumeTimer?.cancel();
+    _timerSeekBackwardButton?.cancel();
+    _timerSeekForwardButton?.cancel();
+    _brightnessSubscription?.cancel();
+    _seekBarDeltaValueNotifier.dispose();
+
+    // --------------------------------------------------
+    // package:volume_controller
+    try {
+      VolumeController.instance.removeListener();
+    } catch (_) {}
+    // --------------------------------------------------
+
     // --------------------------------------------------
     // package:screen_brightness
     Future.microtask(() async {
@@ -457,8 +475,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
       } catch (_) {}
     });
     // --------------------------------------------------
-    _timerSeekBackwardButton?.cancel();
-    _timerSeekForwardButton?.cancel();
+
     super.dispose();
   }
 
@@ -597,7 +614,12 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
   }
 
   void _handlePointerDown(PointerDownEvent event) {
-    if (!(_isInCenterSegment(event.position.dx))) {
+    final renderObject = context.findRenderObject();
+    final localX = renderObject is RenderBox
+        ? renderObject.globalToLocal(event.position).dx
+        : event.localPosition.dx;
+
+    if (!_isInCenterSegment(localX)) {
       return;
     }
 
@@ -621,13 +643,14 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
       try {
         VolumeController.instance.showSystemUI = false;
         _volumeValue = await VolumeController.instance.getVolume();
-        VolumeController.instance.addListener((value) {
+        _volumeListener = (value) {
           if (mounted && !_volumeInterceptEventStream) {
             setState(() {
               _volumeValue = value;
             });
           }
-        });
+        };
+        VolumeController.instance.addListener(_volumeListener!);
       } catch (_) {}
     });
     // --------------------------------------------------
@@ -636,13 +659,14 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
     Future.microtask(() async {
       try {
         _brightnessValue = await ScreenBrightness().current;
-        ScreenBrightness().onCurrentBrightnessChanged.listen((value) {
-          if (mounted) {
-            setState(() {
-              _brightnessValue = value;
+        _brightnessSubscription = ScreenBrightness().onCurrentBrightnessChanged
+            .listen((value) {
+              if (mounted) {
+                setState(() {
+                  _brightnessValue = value;
+                });
+              }
             });
-          }
-        });
       } catch (_) {}
     });
     // --------------------------------------------------
@@ -1070,7 +1094,7 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
                   child:
                       _theme(context).brightnessIndicatorBuilder?.call(
                         context,
-                        _volumeValue,
+                        _brightnessValue,
                       ) ??
                       Container(
                         alignment: Alignment.center,
@@ -1342,8 +1366,13 @@ class _MaterialVideoControlsState extends State<_MaterialVideoControls> {
     );
   }
 
-  double widgetWidth(BuildContext context) =>
-      (context.findRenderObject() as RenderBox).paintBounds.width;
+  double widgetWidth(BuildContext context) {
+    final renderObject = context.findRenderObject();
+    if (renderObject is RenderBox) {
+      return renderObject.size.width;
+    }
+    return MediaQuery.sizeOf(context).width;
+  }
 }
 
 // SEEK BAR
@@ -1908,6 +1937,12 @@ class _BackwardSeekIndicatorState extends State<_BackwardSeekIndicator> {
     });
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   void increment() {
     timer?.cancel();
     timer = Timer(const Duration(milliseconds: 400), () {
@@ -1989,6 +2024,12 @@ class _ForwardSeekIndicatorState extends State<_ForwardSeekIndicator> {
     timer = Timer(const Duration(milliseconds: 400), () {
       widget.onSubmitted.call(value);
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   void increment() {
