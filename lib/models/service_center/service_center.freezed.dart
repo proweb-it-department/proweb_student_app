@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ServiceCenter implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'branch_name') String? get branchName;@JsonKey(name: 'student') Student? get student;@JsonKey(name: 'student_pc_services') List<StudentPcServices>? get studentPcServices;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by_id') int? get createdById;@JsonKey(name: 'updated_by_id') int? get updatedById;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'status') String? get status;@JsonKey(name: 'branch_id') int? get branchId;@JsonKey(name: 'responsible_user_id') int? get responsibleUserId; User? get user;@JsonKey(name: 'received_at') String? get receivedAt;@JsonKey(name: 'returned_at') String? get returnedAt;
+@JsonKey(name: 'branch_name') String? get branchName;@JsonKey(name: 'student') Student? get student;@JsonKey(name: 'student_pc_services') List<StudentPcServices>? get studentPcServices;@JsonKey(name: 'created_at') String? get createdAt;@JsonKey(name: 'updated_at') String? get updatedAt;@JsonKey(name: 'created_by_id') int? get createdById;@JsonKey(name: 'updated_by_id') int? get updatedById;@JsonKey(name: 'id') int? get id;@JsonKey(name: 'status') ServiceCenterStatus? get status;@JsonKey(name: 'branch_id') int? get branchId;@JsonKey(name: 'responsible_user_id') int? get responsibleUserId; User? get user;@JsonKey(name: 'received_at') String? get receivedAt;@JsonKey(name: 'returned_at') String? get returnedAt;
 /// Create a copy of ServiceCenter
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $ServiceCenterCopyWith<$Res>  {
   factory $ServiceCenterCopyWith(ServiceCenter value, $Res Function(ServiceCenter) _then) = _$ServiceCenterCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'branch_name') String? branchName,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'student_pc_services') List<StudentPcServices>? studentPcServices,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'id') int? id,@JsonKey(name: 'status') String? status,@JsonKey(name: 'branch_id') int? branchId,@JsonKey(name: 'responsible_user_id') int? responsibleUserId, User? user,@JsonKey(name: 'received_at') String? receivedAt,@JsonKey(name: 'returned_at') String? returnedAt
+@JsonKey(name: 'branch_name') String? branchName,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'student_pc_services') List<StudentPcServices>? studentPcServices,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'id') int? id,@JsonKey(name: 'status') ServiceCenterStatus? status,@JsonKey(name: 'branch_id') int? branchId,@JsonKey(name: 'responsible_user_id') int? responsibleUserId, User? user,@JsonKey(name: 'received_at') String? receivedAt,@JsonKey(name: 'returned_at') String? returnedAt
 });
 
 
@@ -82,7 +82,7 @@ as String?,createdById: freezed == createdById ? _self.createdById : createdById
 as int?,updatedById: freezed == updatedById ? _self.updatedById : updatedById // ignore: cast_nullable_to_non_nullable
 as int?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String?,branchId: freezed == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
+as ServiceCenterStatus?,branchId: freezed == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int?,responsibleUserId: freezed == responsibleUserId ? _self.responsibleUserId : responsibleUserId // ignore: cast_nullable_to_non_nullable
 as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,receivedAt: freezed == receivedAt ? _self.receivedAt : receivedAt // ignore: cast_nullable_to_non_nullable
@@ -196,7 +196,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  ServiceCenterStatus? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ServiceCenter() when $default != null:
 return $default(_that.branchName,_that.student,_that.studentPcServices,_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.id,_that.status,_that.branchId,_that.responsibleUserId,_that.user,_that.receivedAt,_that.returnedAt);case _:
@@ -217,7 +217,7 @@ return $default(_that.branchName,_that.student,_that.studentPcServices,_that.cre
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  ServiceCenterStatus? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ServiceCenter():
 return $default(_that.branchName,_that.student,_that.studentPcServices,_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.id,_that.status,_that.branchId,_that.responsibleUserId,_that.user,_that.receivedAt,_that.returnedAt);case _:
@@ -237,7 +237,7 @@ return $default(_that.branchName,_that.student,_that.studentPcServices,_that.cre
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  String? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'branch_name')  String? branchName, @JsonKey(name: 'student')  Student? student, @JsonKey(name: 'student_pc_services')  List<StudentPcServices>? studentPcServices, @JsonKey(name: 'created_at')  String? createdAt, @JsonKey(name: 'updated_at')  String? updatedAt, @JsonKey(name: 'created_by_id')  int? createdById, @JsonKey(name: 'updated_by_id')  int? updatedById, @JsonKey(name: 'id')  int? id, @JsonKey(name: 'status')  ServiceCenterStatus? status, @JsonKey(name: 'branch_id')  int? branchId, @JsonKey(name: 'responsible_user_id')  int? responsibleUserId,  User? user, @JsonKey(name: 'received_at')  String? receivedAt, @JsonKey(name: 'returned_at')  String? returnedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ServiceCenter() when $default != null:
 return $default(_that.branchName,_that.student,_that.studentPcServices,_that.createdAt,_that.updatedAt,_that.createdById,_that.updatedById,_that.id,_that.status,_that.branchId,_that.responsibleUserId,_that.user,_that.receivedAt,_that.returnedAt);case _:
@@ -271,7 +271,7 @@ class _ServiceCenter with DiagnosticableTreeMixin implements ServiceCenter {
 @override@JsonKey(name: 'created_by_id') final  int? createdById;
 @override@JsonKey(name: 'updated_by_id') final  int? updatedById;
 @override@JsonKey(name: 'id') final  int? id;
-@override@JsonKey(name: 'status') final  String? status;
+@override@JsonKey(name: 'status') final  ServiceCenterStatus? status;
 @override@JsonKey(name: 'branch_id') final  int? branchId;
 @override@JsonKey(name: 'responsible_user_id') final  int? responsibleUserId;
 @override final  User? user;
@@ -317,7 +317,7 @@ abstract mixin class _$ServiceCenterCopyWith<$Res> implements $ServiceCenterCopy
   factory _$ServiceCenterCopyWith(_ServiceCenter value, $Res Function(_ServiceCenter) _then) = __$ServiceCenterCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'branch_name') String? branchName,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'student_pc_services') List<StudentPcServices>? studentPcServices,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'id') int? id,@JsonKey(name: 'status') String? status,@JsonKey(name: 'branch_id') int? branchId,@JsonKey(name: 'responsible_user_id') int? responsibleUserId, User? user,@JsonKey(name: 'received_at') String? receivedAt,@JsonKey(name: 'returned_at') String? returnedAt
+@JsonKey(name: 'branch_name') String? branchName,@JsonKey(name: 'student') Student? student,@JsonKey(name: 'student_pc_services') List<StudentPcServices>? studentPcServices,@JsonKey(name: 'created_at') String? createdAt,@JsonKey(name: 'updated_at') String? updatedAt,@JsonKey(name: 'created_by_id') int? createdById,@JsonKey(name: 'updated_by_id') int? updatedById,@JsonKey(name: 'id') int? id,@JsonKey(name: 'status') ServiceCenterStatus? status,@JsonKey(name: 'branch_id') int? branchId,@JsonKey(name: 'responsible_user_id') int? responsibleUserId, User? user,@JsonKey(name: 'received_at') String? receivedAt,@JsonKey(name: 'returned_at') String? returnedAt
 });
 
 
@@ -345,7 +345,7 @@ as String?,createdById: freezed == createdById ? _self.createdById : createdById
 as int?,updatedById: freezed == updatedById ? _self.updatedById : updatedById // ignore: cast_nullable_to_non_nullable
 as int?,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String?,branchId: freezed == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
+as ServiceCenterStatus?,branchId: freezed == branchId ? _self.branchId : branchId // ignore: cast_nullable_to_non_nullable
 as int?,responsibleUserId: freezed == responsibleUserId ? _self.responsibleUserId : responsibleUserId // ignore: cast_nullable_to_non_nullable
 as int?,user: freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as User?,receivedAt: freezed == receivedAt ? _self.receivedAt : receivedAt // ignore: cast_nullable_to_non_nullable

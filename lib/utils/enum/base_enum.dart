@@ -212,6 +212,17 @@ enum MasterClassStatus {
   completed,
 }
 
+enum ServiceCenterStatus {
+  @JsonValue('received')
+  received,
+  @JsonValue('servicing')
+  servicing,
+  @JsonValue('ready')
+  ready,
+  @JsonValue('returned')
+  returned,
+}
+
 enum ProductSaleType {
   @JsonValue('money')
   money,

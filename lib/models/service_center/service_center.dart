@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:proweb_student_app/models/user/user.dart';
+import 'package:proweb_student_app/utils/enum/base_enum.dart';
 part 'service_center.freezed.dart';
 part 'service_center.g.dart';
 
@@ -16,7 +17,7 @@ abstract class ServiceCenter with _$ServiceCenter {
     @JsonKey(name: 'created_by_id') int? createdById,
     @JsonKey(name: 'updated_by_id') int? updatedById,
     @JsonKey(name: 'id') int? id,
-    @JsonKey(name: 'status') String? status,
+    @JsonKey(name: 'status') ServiceCenterStatus? status,
     @JsonKey(name: 'branch_id') int? branchId,
     @JsonKey(name: 'responsible_user_id') int? responsibleUserId,
     User? user,

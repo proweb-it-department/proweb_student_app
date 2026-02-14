@@ -41,6 +41,7 @@ import 'package:proweb_student_app/models/response_model/response_model.dart';
 import 'package:proweb_student_app/models/room/room.dart';
 import 'package:proweb_student_app/models/scheduled_lesson_models/scheduled_lesson_models.dart';
 import 'package:proweb_student_app/models/seat_item/seat_item.dart';
+import 'package:proweb_student_app/models/service_center/service_center.dart';
 import 'package:proweb_student_app/models/servise_for_sale/servise_for_sale.dart';
 import 'package:proweb_student_app/models/story_groups_for_student/story_groups_for_student.dart';
 import 'package:proweb_student_app/models/tarif_model/tarif_model.dart';
@@ -1360,21 +1361,34 @@ class GetResponsesMain {
     return data;
   }
 
-  Future<ResponseLazeList<MasterClass>?> serviceCenter(int offset) async {
-    String path =
-        '/api/v1/tech-support/student-student-pc/?offset=$offset&&limit=50';
+  Future<ResponseLazeList<ServiceCenter>?> serviceCenter(int offset) async {
+    var path = '/api/v1/tech-support/student-student-pc/?offset=$offset';
     final response = await sl<MainFetch>().get(path: path);
-    ResponseLazeList<MasterClass>? data = response.fold((l) => null, (r) {
-      final response = ApiResponse<MasterClass>.fromJson(
+    ResponseLazeList<ServiceCenter>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<ServiceCenter>.fromJson(
         r,
-        (data) => MasterClass.fromJson(data as Map<String, dynamic>),
+        (data) => ServiceCenter.fromJson(data as Map<String, dynamic>),
       );
       return response.whenOrNull(
         lazylist: (count, list) {
-          return ResponseLazeList<MasterClass>(count: count, list: list);
+          return ResponseLazeList<ServiceCenter>(count: count, list: list);
         },
       );
     });
+    if (data != null) {
+      List<ServiceCenter> services = [...data.list];
+      final userIds = services
+          .map((e) => e.responsibleUserId)
+          .whereType<int>()
+          .toList();
+      if (userIds.isNotEmpty) {
+        await sl<UserList>().findAllUser(userIds: userIds);
+        services = services.map((e) {
+          return e.copyWith(user: sl<UserList>().find(id: e.responsibleUserId));
+        }).toList();
+        data = ResponseLazeList(count: data.count, list: services);
+      }
+    }
     return data;
   }
 

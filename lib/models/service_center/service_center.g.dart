@@ -20,7 +20,7 @@ _ServiceCenter _$ServiceCenterFromJson(Map<String, dynamic> json) =>
       createdById: (json['created_by_id'] as num?)?.toInt(),
       updatedById: (json['updated_by_id'] as num?)?.toInt(),
       id: (json['id'] as num?)?.toInt(),
-      status: json['status'] as String?,
+      status: $enumDecodeNullable(_$ServiceCenterStatusEnumMap, json['status']),
       branchId: (json['branch_id'] as num?)?.toInt(),
       responsibleUserId: (json['responsible_user_id'] as num?)?.toInt(),
       user: json['user'] == null
@@ -40,13 +40,20 @@ Map<String, dynamic> _$ServiceCenterToJson(_ServiceCenter instance) =>
       'created_by_id': instance.createdById,
       'updated_by_id': instance.updatedById,
       'id': instance.id,
-      'status': instance.status,
+      'status': _$ServiceCenterStatusEnumMap[instance.status],
       'branch_id': instance.branchId,
       'responsible_user_id': instance.responsibleUserId,
       'user': instance.user,
       'received_at': instance.receivedAt,
       'returned_at': instance.returnedAt,
     };
+
+const _$ServiceCenterStatusEnumMap = {
+  ServiceCenterStatus.received: 'received',
+  ServiceCenterStatus.servicing: 'servicing',
+  ServiceCenterStatus.ready: 'ready',
+  ServiceCenterStatus.returned: 'returned',
+};
 
 _Student _$StudentFromJson(Map<String, dynamic> json) => _Student(
   group: json['group'] == null
