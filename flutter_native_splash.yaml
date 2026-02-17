@@ -1,12 +1,11 @@
 flutter_native_splash:
-  color: "#ffffff"        # светлая тема
-  color_dark: "#1c1c1c"   # тёмная тема
+  color: "#ffffff"
+  color_dark: "#1c1c1c"
 
   android: true
   ios: true
   web: false
 
-  # Android 12+ нужно настраивать отдельно
   android_12:
     color: "#ffffff"
     color_dark: "#1c1c1c"

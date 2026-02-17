@@ -352,7 +352,7 @@
     "Video_List": "Список видео",
     "Modules": "Модули",
     "group_id": "Группа #{group_id}",
-    "lesson": "not_value"
+    "lesson": "Урок"
   },
   "transactions_balance": {
     "payment_for_a_lesson": "Оплата за урок",
@@ -558,24 +558,24 @@
     "Install_Mail": "Установить почту"
   },
   "top_up_balance": {
-    "There_are_no_available_payment_methods": "not_value",
-    "Top_up_your_balance": "not_value",
+    "There_are_no_available_payment_methods": "Доступных способов оплаты нет.",
+    "Top_up_your_balance": "Пополнить баланс",
     "Pay_off_the_debt": "Погасить задолженность",
     "service": "услуга {percent}%",
     "Enter_the_amount": "Введите сумму",
     "Payment_method": "Способ оплаты",
     "The_amount_of_the_deposit": "Сумма пополнения",
-    "To_be_paid": "not_value",
+    "To_be_paid": "К оплате",
     "Proceed_to_payment": "Прейти к оплате",
-    "The_minimum_deposit_amount_is_1_000_soums": "not_value"
+    "The_minimum_deposit_amount_is_1_000_soums": "Минимальная сумма пополнения - 1 000 сум.\\nВведите сумму для продолжения."
   },
   "nps": {
-    "Only_5_minutes_to_complete": "not_value",
-    "Complete_the_survey": "not_value"
+    "Only_5_minutes_to_complete": "Всего 5 минут на прохождения",
+    "Complete_the_survey": "Пройти опрос"
   },
   "course": {
     "Course_modules": "Модули курса",
     "About_the_course": "О курсе",
-    "Course_rating": "not_value"
+    "Course_rating": "Рейтинг курса"
   }
 }
