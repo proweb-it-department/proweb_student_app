@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -42,7 +43,7 @@ class CourseModulesScafold extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Модули курса'),
+          title: Text('course.Course_modules'.tr()),
           bottom: TabBar(
             controller: tabController,
             isScrollable: true,
@@ -51,9 +52,9 @@ class CourseModulesScafold extends StatelessWidget {
             dragStartBehavior: DragStartBehavior.down,
             dividerColor: Colors.transparent,
             tabs: [
-              Tab(text: 'О курсе'),
-              Tab(text: 'Модули курса'),
-              Tab(text: 'Рейтинг курса'),
+              Tab(text: 'course.About_the_course'.tr()),
+              Tab(text: 'course.Course_modules'.tr()),
+              Tab(text: 'course.Course_rating'.tr()),
             ],
           ),
         ),

@@ -169,7 +169,6 @@ class _HomeworkCommentFooterState extends State<HomeworkCommentFooter> {
 
                       return AdaptiveTextSelectionToolbar(
                         anchors: editableTextState.contextMenuAnchors,
-                        // Можно завернуть children в свой Material/Container
                         children: items.map((item) {
                           return _StyledMenuButton(
                             label: item.label ?? '- - -',
@@ -305,7 +304,7 @@ class _StyledMenuButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
       child: Material(
-        color: cs.surfaceContainerHighest, // фон кнопки
+        color: cs.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),

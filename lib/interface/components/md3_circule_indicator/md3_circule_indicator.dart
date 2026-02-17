@@ -78,7 +78,6 @@ class _Md3CirculeIndicatorState extends State<Md3CirculeIndicator>
           });
         }
 
-        // 👇 запускаем bounce-эффект
         _scaleController.forward(from: 0);
       }
     });

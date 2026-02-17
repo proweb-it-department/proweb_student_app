@@ -85,7 +85,6 @@ class _ProAdaptiveBottomSheet extends StatefulWidget {
 class _ProAdaptiveBottomSheetState extends State<_ProAdaptiveBottomSheet> {
   final ValueNotifier<double> _extent = ValueNotifier<double>(0.5);
 
-  // измеренная высота контента (body)
   double? _bodyHeightPx;
 
   @override
@@ -119,10 +118,8 @@ class _ProAdaptiveBottomSheetState extends State<_ProAdaptiveBottomSheet> {
     final initV = clamp(initialSize);
     final maxV = maxSize;
 
-    // Если диапазона нет — snap вообще нельзя
     if ((maxV - minV).abs() <= eps) return null;
 
-    // Собираем точки, но убираем дубликаты по eps
     final points = <double>[minV, initV, maxV];
     points.sort();
 
@@ -133,10 +130,8 @@ class _ProAdaptiveBottomSheetState extends State<_ProAdaptiveBottomSheet> {
       }
     }
 
-    // snapSizes должны быть минимум из 2 элементов и строго возрастающими
     if (unique.length < 2) return null;
 
-    // Если вдруг остались равные — ещё раз страховка
     for (var i = 1; i < unique.length; i++) {
       if (!(unique[i] > unique[i - 1] + eps)) return null;
     }

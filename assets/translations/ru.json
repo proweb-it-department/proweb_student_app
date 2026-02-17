@@ -47,7 +47,8 @@
     "rating": "Рейтинг",
     "messenger": "Messenger",
     "shop": "Магазин",
-    "proweb": "PROWEB"
+    "proweb": "PROWEB",
+    "Service_center": "Сервис-центр"
   },
   "profile_dialog": {
     "balance": "Баланс",
@@ -128,7 +129,8 @@
     "date_month_4_from": "Апрель",
     "date_month_3_from": "Март",
     "date_month_2_from": "Февраль",
-    "date_month_1_from": "Январь"
+    "date_month_1_from": "Январь",
+    "Open_in_the_map": "Открыть на карте"
   },
   "home": {
     "tab_edu": "Обучение",
@@ -345,7 +347,12 @@
     "There_are_no_modules_in_the_product": "Модулей в продукте нет",
     "No_exclusive_products_downloaded": "Нет скаченных эксклюзивных продуктов",
     "There_are_no_downloaded_videos_in_the_lesson": "Нет скаченных видео в уроке",
-    "No_downloaded_videos_in_groups": "Нет скаченных видео в группах"
+    "No_downloaded_videos_in_groups": "Нет скаченных видео в группах",
+    "Materials": "Материалы",
+    "Video_List": "Список видео",
+    "Modules": "Модули",
+    "group_id": "Группа #{group_id}",
+    "lesson": "not_value"
   },
   "transactions_balance": {
     "payment_for_a_lesson": "Оплата за урок",
@@ -518,5 +525,57 @@
   },
   "errors_account": {
     "email_exists": "Данная почта уже привязана"
+  },
+  "profile": {
+    "Telegram_Binding": "Привязка Telegram",
+    "loaded": "Загрузка...",
+    "Linked": "Привязано: {count}",
+    "Account_is_not_linked": "not_value",
+    "Login_email": "Почта для входа",
+    "The_mail_is_not_linked": "Почта не привязана",
+    "Memory_usage": "not_value",
+    "My_active_sessions": "not_value",
+    "Public_offer": "not_value",
+    "The_offer_is_unavailable": "not_value",
+    "Active_sessions": "Активные сессии",
+    "session_page_description": "На данной странице представлен полный список всех активных сессий, которые в настоящий момент подключены к вашему учетной записи. Вы имеете возможность управлять доступом к вашему аккаунту, отозвав разрешение на использование любого из подключенных устройств. Это позволит вам обеспечить безопасность вашей учетной записи и контролировать, какие устройства имеют доступ к вашим данным.",
+    "Current_session": "Текущая сессия",
+    "IP_address": "not_value",
+    "Geo_position": "Гео позиция",
+    "Device_type": "Тип устройства",
+    "Entry_date": "Дата входа",
+    "Recent_actions": "Последние действия",
+    "Close_access": "Закрыть доступ",
+    "Change_your_profile": "Изменить профиль",
+    "Your_name": "Ваше имя",
+    "Date_of_birth": "Дата рождения",
+    "Not_specified": "Не задано",
+    "profile_edit_description": "Изменение Ф.И.О. самостоятельно недоступно в целях обеспечения достоверности персональных данных. Если вы обнаружили ошибку в указанных данных, пожалуйста, обратитесь к вашему администратору либо создайте обращение через форму обратной связи - администрация PROWEB обязательно поможет вам в решении данного вопроса.",
+    "Linking_mail": "not_value",
+    "code_write": "На указанный адрес электронной почты отправлено письмо с кодом подтверждения. Введите код ниже для завершения привязки.",
+    "email_description": "Привязка электронной почты к вашему аккаунту обеспечивает альтернативный способ входа в платформу. Вы сможете авторизоваться не только по номеру телефона, но и по адресу электронной почты.",
+    "email": "Почта",
+    "Install_Mail": "not_value"
+  },
+  "top_up_balance": {
+    "There_are_no_available_payment_methods": "not_value",
+    "Top_up_your_balance": "not_value",
+    "Pay_off_the_debt": "Погасить задолженность",
+    "service": "услуга {percent}%",
+    "Enter_the_amount": "Введите сумму",
+    "Payment_method": "Способ оплаты",
+    "The_amount_of_the_deposit": "Сумма пополнения",
+    "To_be_paid": "not_value",
+    "Proceed_to_payment": "Прейти к оплате",
+    "The_minimum_deposit_amount_is_1_000_soums": "not_value"
+  },
+  "nps": {
+    "Only_5_minutes_to_complete": "not_value",
+    "Complete_the_survey": "not_value"
+  },
+  "course": {
+    "Course_modules": "Модули курса",
+    "About_the_course": "О курсе",
+    "Course_rating": "not_value"
   }
 }

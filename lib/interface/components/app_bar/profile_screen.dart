@@ -215,7 +215,7 @@ class ProfileBody extends StatelessWidget {
                                 leading: IconAvatar(
                                   icon: Icons.send_time_extension_rounded,
                                 ),
-                                title: Text('Привязка Telegram'),
+                                title: Text('profile.Telegram_Binding'.tr()),
                                 trailing: data == null
                                     ? Md3CirculeIndicator(
                                         size: 25,
@@ -231,11 +231,17 @@ class ProfileBody extends StatelessWidget {
                                       ),
 
                                 subtitle: data == null
-                                    ? Text('Загрузка...')
+                                    ? Text('profile.loaded'.tr())
                                     : Text(
                                         data.isNotEmpty
-                                            ? 'Привязано: ${data.length}'
-                                            : 'Не привязан аккаунт',
+                                            ? 'profile.Linked'.tr(
+                                                namedArgs: {
+                                                  "count": data.length
+                                                      .toString(),
+                                                },
+                                              )
+                                            : 'profile.Account_is_not_linked'
+                                                  .tr(),
                                       ),
                               );
                             },
@@ -256,7 +262,7 @@ class ProfileBody extends StatelessWidget {
                                 leading: IconAvatar(
                                   icon: Icons.alternate_email_rounded,
                                 ),
-                                title: Text('Почта для входа'),
+                                title: Text('profile.Login_email'.tr()),
                                 trailing: profile == null
                                     ? Md3CirculeIndicator(
                                         size: 25,
@@ -272,9 +278,11 @@ class ProfileBody extends StatelessWidget {
                                       ),
 
                                 subtitle: profile == null
-                                    ? Text('Загрузка...')
+                                    ? Text('profile.loaded'.tr())
                                     : profile.email == null
-                                    ? Text('Почта не привязана')
+                                    ? Text(
+                                        'profile.The_mail_is_not_linked'.tr(),
+                                      )
                                     : Text('${profile.email}'),
                               );
                             },
@@ -352,7 +360,7 @@ class ProfileBody extends StatelessWidget {
                           context.router.navigate(SavedDataRoute());
                         },
                         leading: IconAvatar(icon: Icons.data_usage),
-                        title: Text('Использование памяти'),
+                        title: Text('profile.Memory_usage'.tr()),
                         trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
@@ -392,7 +400,7 @@ class ProfileBody extends StatelessWidget {
                           context.router.navigate(MyActiveSessionsRoute());
                         },
                         leading: IconAvatar(icon: Icons.phonelink),
-                        title: Text('Мои активные сессии'),
+                        title: Text('profile.My_active_sessions'.tr()),
                         trailing: GoPage(
                           decoration: BoxDecoration(
                             color: customColor?.primaryBg,
@@ -420,7 +428,7 @@ class ProfileBody extends StatelessWidget {
                               tileColor: customColor?.containerColor,
                               onTap: null,
                               leading: IconAvatar(icon: Icons.article_outlined),
-                              title: Text('Публичная оферта'),
+                              title: Text('profile.Public_offer'.tr()),
                               trailing: Md3CirculeIndicator(
                                 size: 25,
                                 center: false,
@@ -435,7 +443,7 @@ class ProfileBody extends StatelessWidget {
                               tileColor: customColor?.containerColor,
                               onTap: null,
                               leading: IconAvatar(icon: Icons.article_outlined),
-                              title: Text('Публичная оферта'),
+                              title: Text('profile.Public_offer'.tr()),
                               trailing: Md3CirculeIndicator(
                                 size: 25,
                                 center: false,
@@ -459,19 +467,20 @@ class ProfileBody extends StatelessWidget {
 
                                 if (url == null) {
                                   Fluttertoast.showToast(
-                                    msg: 'Оферта не доступна',
+                                    msg: 'profile.The_offer_is_unavailable'
+                                        .tr(),
                                   );
                                   return;
                                 }
                                 context.router.navigate(
                                   PdfViewRoute(
-                                    title: 'Публичная оферта',
+                                    title: 'profile.Public_offer'.tr(),
                                     url: url,
                                   ),
                                 );
                               },
                               leading: IconAvatar(icon: Icons.article_outlined),
-                              title: Text('Публичная оферта'),
+                              title: Text('profile.Public_offer'.tr()),
                               trailing: GoPage(
                                 decoration: BoxDecoration(
                                   color: customColor?.primaryBg,

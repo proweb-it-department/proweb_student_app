@@ -41,7 +41,7 @@ class DownloadsGroupVideosScreen extends StatelessWidget {
                 color: customColor?.primaryTextColor,
               ),
             ),
-            title: Text('Урок'),
+            title: Text('downloads.lesson'.tr()),
           ),
           body: DownloadsGroupVideosBody(),
         ),

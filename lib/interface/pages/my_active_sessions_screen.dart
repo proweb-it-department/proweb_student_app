@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,7 @@ class MyActiveSessionsScreen extends StatelessWidget {
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: Scaffold(
-        appBar: AppBar(title: Text('Активные сессии')),
+        appBar: AppBar(title: Text('profile.Active_sessions'.tr())),
         body: MyActiveSessionsBody(),
       ),
     );
@@ -71,9 +72,7 @@ class MyActiveSessionsList extends StatelessWidget {
       padding: EdgeInsets.all(10),
       child: Column(
         children: [
-          Text(
-            'На данной странице представлен полный список всех активных сессий, которые в настоящий момент подключены к вашему учетной записи. Вы имеете возможность управлять доступом к вашему аккаунту, отозвав разрешение на использование любого из подключенных устройств. Это позволит вам обеспечить безопасность вашей учетной записи и контролировать, какие устройства имеют доступ к вашим данным.',
-          ),
+          Text('profile.session_page_description'.tr()),
           SizedBox(height: 15),
           if (load)
             Md3CirculeIndicator(center: false)
@@ -179,7 +178,9 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
         return ExpansionTile(
           leading: icon,
           title: Text(widget.session.deviceName),
-          subtitle: widget.currentSession ? Text('Текущая сессия') : null,
+          subtitle: widget.currentSession
+              ? Text('profile.Current_session'.tr())
+              : null,
           backgroundColor: customColor?.containerColor,
           collapsedBackgroundColor: customColor?.containerColor,
           controller: controller,
@@ -230,7 +231,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                           shape: shape,
                           tileColor: customColor?.primaryBg,
                           leading: IconAvatar(icon: Icons.dns),
-                          title: Text('IP адрес'),
+                          title: Text('profile.IP_address'.tr()),
                           subtitle: Text(widget.session.ipAddr ?? '- - -'),
                         );
                       },
@@ -243,7 +244,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                           shape: shape,
                           tileColor: customColor?.primaryBg,
                           leading: IconAvatar(icon: Icons.flag),
-                          title: Text('Гео позиция'),
+                          title: Text('profile.Geo_position'.tr()),
                           subtitle: Text(widget.session.location ?? '- - -'),
                         );
                       },
@@ -256,7 +257,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                           shape: shape,
                           tileColor: customColor?.primaryBg,
                           leading: IconAvatar(icon: Icons.devices_rounded),
-                          title: Text('Тип устройства'),
+                          title: Text('profile.Device_type'.tr()),
                           subtitle: Text(widget.session.deviceType),
                         );
                       },
@@ -269,7 +270,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                           shape: shape,
                           tileColor: customColor?.primaryBg,
                           leading: IconAvatar(icon: Icons.login),
-                          title: Text('Дата входа'),
+                          title: Text('profile.Entry_date'.tr()),
                           subtitle: Text(
                             '${sl<LocalData>().getDateString(date: DateTime.parse(widget.session.createdAt)).replaceAll(',', '')} ${DateTime.parse(widget.session.createdAt).toLocal().hour.toString().padLeft(2, '0')}:${DateTime.parse(widget.session.createdAt).toLocal().minute.toString().padLeft(2, '0')}',
                           ),
@@ -285,7 +286,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                             shape: shape,
                             tileColor: customColor?.primaryBg,
                             leading: IconAvatar(icon: Icons.today_outlined),
-                            title: Text('Последние действия'),
+                            title: Text('profile.Recent_actions'.tr()),
                             subtitle: Text(
                               '${sl<LocalData>().getDateString(date: DateTime.parse(widget.session.updatedAt!)).replaceAll(',', '')} ${DateTime.parse(widget.session.updatedAt!).toLocal().hour.toString().padLeft(2, '0')}:${DateTime.parse(widget.session.updatedAt!).toLocal().minute.toString().padLeft(2, '0')}',
                             ),
@@ -314,7 +315,7 @@ class _MyActiveSessionsItemState extends State<MyActiveSessionsItem> {
                           color: customColor?.primaryTextColor,
                         ),
                         label: Text(
-                          'Закрыть доступ',
+                          'profile.Close_access'.tr(),
                           style: TextStyle(
                             color: customColor?.primaryTextColor,
                           ),

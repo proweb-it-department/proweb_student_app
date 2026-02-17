@@ -387,7 +387,7 @@ class _ScoreFadeShowState extends State<ScoreFadeShow>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300), // плавность перехода
+      duration: const Duration(milliseconds: 300),
     );
 
     _fadeAnim = Tween<double>(
@@ -397,7 +397,6 @@ class _ScoreFadeShowState extends State<ScoreFadeShow>
 
     _controller.forward();
 
-    // каждые 800 мс переключаем активный item
     _timer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       setState(() {
         _currentIndex = (_currentIndex + 1) % 5;

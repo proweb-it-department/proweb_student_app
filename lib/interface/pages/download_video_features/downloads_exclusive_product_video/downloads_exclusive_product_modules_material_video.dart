@@ -64,7 +64,7 @@ class DownloadsExclusiveProductModulesMaterialVideoScafold
             ),
             icon: Icon(Icons.arrow_back, color: customColors?.primaryTextColor),
           ),
-          title: Text('Материалы'),
+          title: Text('downloads.Materials'.tr()),
         ),
         body: const DownloadsExclusiveProductModulesMaterialVideoBody(),
       ),

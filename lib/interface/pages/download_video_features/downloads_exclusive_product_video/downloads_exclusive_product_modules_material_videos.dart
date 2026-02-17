@@ -48,7 +48,7 @@ class DownloadsExclusiveProductModulesMaterialVideosScreen
                 color: customColors?.primaryTextColor,
               ),
             ),
-            title: Text('Список видео'),
+            title: Text('downloads.Video_List'.tr()),
           ),
           body: DownloadsGroupVideosBody(),
         ),

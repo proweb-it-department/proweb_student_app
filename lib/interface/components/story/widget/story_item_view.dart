@@ -142,7 +142,6 @@ class _StoryItemViewState extends State<StoryItemView> {
             return;
           }
 
-          // вернуть сторис
           if (widget.storyModel.stories[index].story.storyItemType ==
               StoryItemType.custom) {
             controller.playCustomWidget();

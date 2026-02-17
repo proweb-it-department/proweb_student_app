@@ -53,7 +53,11 @@ class DownloadsGroupLessonVideoScreen extends StatelessWidget {
                 color: customColor?.primaryTextColor,
               ),
             ),
-            title: Text('Группа #$groupId'),
+            title: Text(
+              'downloads.group_id'.tr(
+                namedArgs: {'group_id': groupId.toString()},
+              ),
+            ),
           ),
           body: DownloadsGroupLessonVideoBody(
             blockLessonCount: blockLessonCount,

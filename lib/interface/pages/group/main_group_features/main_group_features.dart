@@ -211,7 +211,7 @@ class GroupBalanceLeave extends StatelessWidget {
                   ),
                   icon: Icon(Icons.payment_rounded),
                   label: Text(
-                    'Пополнить баланс',
+                    'top_up_balance.Top_up_your_balance'.tr(),
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
@@ -264,7 +264,7 @@ class GroupBalanceGraduate extends StatelessWidget {
                   ),
                   icon: Icon(Icons.payment_rounded),
                   label: Text(
-                    'Пополнить баланс',
+                    'top_up_balance.Top_up_your_balance'.tr(),
                     style: TextStyle(color: Colors.black),
                   ),
                 ),

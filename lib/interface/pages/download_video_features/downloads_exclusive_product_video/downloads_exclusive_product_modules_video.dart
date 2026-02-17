@@ -58,7 +58,7 @@ class DownloadsExclusiveProductModulesVideoScafold extends StatelessWidget {
             ),
             icon: Icon(Icons.arrow_back, color: customColors?.primaryTextColor),
           ),
-          title: Text('Модули'),
+          title: Text('downloads.Modules'.tr()),
         ),
         body: DownloadsExclusiveProductModulesVideo(),
       ),

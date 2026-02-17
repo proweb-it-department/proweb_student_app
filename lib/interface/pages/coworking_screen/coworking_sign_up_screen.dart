@@ -698,7 +698,7 @@ Future<void> showBottomSheetMapApps(
       useSafeArea: false,
       fullScreenMax: 1,
 
-      title: 'Открыть в карте',
+      title: 'global_data.Open_in_the_map'.tr(),
       body: FutureBuilder(
         future: (() => MapLauncher.installedMaps)(),
         builder: (context, asyncSnapshot) {
@@ -720,7 +720,7 @@ Future<void> showBottomSheetMapApps(
                 Padding(
                   padding: EdgeInsetsGeometry.only(left: 10),
                   child: Text(
-                    'Открыть на карте',
+                    'global_data.Open_in_the_map'.tr(),
                     style: TextStyle(fontSize: 22),
                   ),
                 ),

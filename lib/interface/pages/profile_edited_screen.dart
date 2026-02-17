@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:crop_your_image/crop_your_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class ProfileEditedScreen extends StatelessWidget {
         create: (context) =>
             FeadbackListBloc()..add(FeadbackListEvent.started(offset: 0)),
         child: Scaffold(
-          appBar: AppBar(title: Text('Изменить профиль')),
+          appBar: AppBar(title: Text('profile.Change_your_profile'.tr())),
           body: ProfileEditedBody(),
         ),
       ),
@@ -176,7 +177,7 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                       profile: profile,
                       backgroundColor: customColor?.primaryBg,
                     ),
-                    title: Text('Ваше имя'),
+                    title: Text('profile.Your_name'.tr()),
                     subtitle: Text(sl<LocalData>().nameMyProfile(profile)),
                   );
                 },
@@ -194,10 +195,10 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                     contentPadding: contentPadding,
                     tileColor: customColor?.containerColor,
                     leading: IconAvatar(icon: Icons.cake, size: 40),
-                    title: Text('Дата рождения'),
+                    title: Text('profile.Date_of_birth'.tr()),
                     subtitle: Text(
                       profile.dateOfBirth == null
-                          ? 'Не задано'
+                          ? 'profile.Not_specified'.tr()
                           : sl<LocalData>().getDateString(
                               date: DateTime.parse(profile.dateOfBirth!),
                             ),
@@ -426,9 +427,7 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
               width: double.infinity,
               child: Opacity(
                 opacity: 0.7,
-                child: Text(
-                  'Изменение Ф.И.О. самостоятельно недоступно в целях обеспечения достоверности персональных данных. Если вы обнаружили ошибку в указанных данных, пожалуйста, обратитесь к вашему администратору либо создайте обращение через форму обратной связи - администрация PROWEB обязательно поможет вам в решении данного вопроса.',
-                ),
+                child: Text('profile.profile_edit_description'.tr()),
               ),
             ),
             SizedBox(height: 10),
@@ -443,7 +442,7 @@ class _ProfileEditedBodyState extends State<ProfileEditedBody> {
                   );
                 },
                 label: Text(
-                  'Создать обращение',
+                  'feedback.create_a_request'.tr(),
                   style: TextStyle(color: customColor?.primaryTextColor),
                 ),
                 icon: Icon(Icons.add),

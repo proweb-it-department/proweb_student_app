@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,7 +21,7 @@ class EmailScreen extends StatelessWidget {
         systemNavBarStyle: FlexSystemNavBarStyle.transparent,
       ),
       child: Scaffold(
-        appBar: AppBar(title: Text('Привязка почты')),
+        appBar: AppBar(title: Text('profile.Linking_mail'.tr())),
         body: EmailContent(),
       ),
     );
@@ -90,9 +91,7 @@ class _EmailBodyState extends State<EmailBody> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'На указанный адрес электронной почты отправлено письмо с кодом подтверждения. Введите код ниже для завершения привязки.',
-          ),
+          Text('profile.code_write'.tr()),
           SizedBox(height: 15),
           PinFieldAutoFill(
             enableInteractiveSelection: true,
@@ -133,13 +132,11 @@ class _EmailBodyState extends State<EmailBody> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Привязка электронной почты к вашему аккаунту обеспечивает альтернативный способ входа в платформу. Вы сможете авторизоваться не только по номеру телефона, но и по адресу электронной почты.',
-        ),
+        Text('profile.email_description'.tr()),
         SizedBox(height: 15),
         TextField(
           controller: _controller,
-          decoration: InputDecoration(labelText: 'Почта'),
+          decoration: InputDecoration(labelText: 'profile.email'.tr()),
           autofocus: true,
           onChanged: (value) {
             setState(() {
@@ -169,7 +166,7 @@ class _EmailBodyState extends State<EmailBody> {
             ),
           ),
           label: Text(
-            'Установить почту',
+            'profile.Install_Mail'.tr(),
             style: TextStyle(
               color: customColors?.primaryTextColor.withAlpha(
                 valid ? 255 : 100,

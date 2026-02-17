@@ -568,7 +568,7 @@ class MainMenu extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                'Закрыть',
+                                'global_data.closed_text'.tr(),
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: activeTextColor(
@@ -638,7 +638,7 @@ class ExtraMenu extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Сервис-центр',
+                        'menu.Service_center'.tr(),
                         style: TextStyle(
                           fontSize: 12,
                           color: activeTextColor(

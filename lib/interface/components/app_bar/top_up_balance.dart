@@ -116,7 +116,9 @@ class _TopUpBalanceState extends State<TopUpBalance> {
         error = ErrorLoad();
       }
       if (paymentsProviders == null && paymentsProvidersLoad == false) {
-        error = ErrorLoad(text: 'Доступных способов оплаты нет.');
+        error = ErrorLoad(
+          text: 'top_up_balance.There_are_no_available_payment_methods'.tr(),
+        );
       } else if (paymentsProviders == null && paymentsProvidersLoad) {
         error = Md3CirculeIndicator();
       }
@@ -134,7 +136,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                 icon: Icon(Icons.close),
               ),
             ],
-            title: Text('Пополнить баланс'),
+            title: Text('top_up_balance.Top_up_your_balance'.tr()),
           ),
           body: Center(child: error),
         ),
@@ -155,7 +157,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
               icon: Icon(Icons.close),
             ),
           ],
-          title: Text('Пополнить баланс'),
+          title: Text('top_up_balance.Top_up_your_balance'.tr()),
         ),
         body: SingleChildScrollView(
           padding: EdgeInsets.all(10),
@@ -189,7 +191,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                     contentPadding: contentPadding,
                     tileColor: customColors?.containerColor,
                     leading: IconAvatar(icon: Icons.wallet, size: 40),
-                    title: Text('Баланс'),
+                    title: Text('profile_dialog.balance'.tr()),
                     subtitle: Text(
                       'global_data.sum'.tr(
                         namedArgs: {
@@ -233,7 +235,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   ),
                   icon: Icon(Icons.wallet),
                   label: Text(
-                    'Погасить задолженность',
+                    'top_up_balance.Pay_off_the_debt'.tr(),
                     style: TextStyle(color: customColors?.warningFill),
                   ),
                 ),
@@ -274,7 +276,13 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                           value: provider,
                           controlAffinity: ListTileControlAffinity.trailing,
                           title: Text(payment.name ?? '- - -'),
-                          subtitle: Text('услуга ${payment.percent}%'),
+                          subtitle: Text(
+                            'top_up_balance.service'.tr(
+                              namedArgs: {
+                                'persent': (payment.percent ?? 0).toString(),
+                              },
+                            ),
+                          ),
                           secondary: payment.icon != null
                               ? CachedNetworkImage(
                                   imageUrl: payment.icon!,
@@ -299,7 +307,9 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   });
                 },
                 inputFormatters: [AmountInputFormatter(maxAmount: 99_999_999)],
-                decoration: const InputDecoration(labelText: 'Введите сумму'),
+                decoration: InputDecoration(
+                  labelText: 'top_up_balance.Enter_the_amount'.tr(),
+                ),
               ),
               SizedBox(height: 10),
 
@@ -309,7 +319,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   spacing: 10,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Способ оплаты'),
+                    Text('top_up_balance.Payment_method'.tr()),
                     Row(
                       spacing: 5,
                       mainAxisSize: MainAxisSize.min,
@@ -329,7 +339,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   spacing: 10,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Сумма пополнения'),
+                    Text('top_up_balance.The_amount_of_the_deposit'.tr()),
                     Text(
                       'global_data.sum'.tr(
                         namedArgs: {
@@ -345,7 +355,13 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   spacing: 10,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('услуга ${providerModel?.percent}%'),
+                    Text(
+                      'top_up_balance.service'.tr(
+                        namedArgs: {
+                          'persent': (providerModel?.percent ?? 0).toString(),
+                        },
+                      ),
+                    ),
                     Text(
                       'global_data.sum'.tr(
                         namedArgs: {
@@ -366,7 +382,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                   spacing: 10,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('К оплате'),
+                    Text('top_up_balance.To_be_paid'.tr()),
                     Text(
                       'global_data.sum'.tr(
                         namedArgs: {
@@ -428,7 +444,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                       ),
                     ),
                     label: Text(
-                      'Прейти к оплате',
+                      'top_up_balance.Proceed_to_payment'.tr(),
                       style: TextStyle(color: customColors?.primaryTextColor),
                     ),
                     icon: Icon(Icons.wallet),
@@ -438,7 +454,8 @@ class _TopUpBalanceState extends State<TopUpBalance> {
               } else
                 Center(
                   child: Text(
-                    'Минимальная сумма пополнения - 1 000 сум.\nВведите сумму для продолжения.',
+                    'top_up_balance.The_minimum_deposit_amount_is_1_000_soums'
+                        .tr(),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -476,7 +493,6 @@ class AmountInputFormatter extends TextInputFormatter {
       return oldValue;
     }
 
-    // Форматирование с пробелами
     final buffer = StringBuffer();
     for (int i = 0; i < digits.length; i++) {
       final reverseIndex = digits.length - i;

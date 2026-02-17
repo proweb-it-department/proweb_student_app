@@ -210,7 +210,7 @@ class BottomSheetNps extends StatelessWidget {
               spacing: 10,
               children: [
                 Icon(Icons.timer_sharp),
-                Text('Всего 5 минут на прохождения'),
+                Text('nps.Only_5_minutes_to_complete'.tr()),
               ],
             ),
           ),
@@ -234,7 +234,7 @@ class BottomSheetNps extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      'Пройти опрос',
+                      'nps.Complete_the_survey'.tr(),
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 16,
