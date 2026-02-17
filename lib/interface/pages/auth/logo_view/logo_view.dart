@@ -10,16 +10,16 @@ class LogoAuthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LocalizationService serviceLocal = sl<LocalizationService>();
-    final list = serviceLocal.loadloadCachedLangList();
     final customColor = Theme.of(context).extension<CustomColors>();
-
+    final lang = serviceLocal.loadloadCachedLangList();
+    final langList = lang?.languages;
     return Center(
       child: Stack(
         alignment: Alignment.centerLeft,
         children: [
           Positioned(
             right: 0,
-            child: list.length > 1
+            child: langList != null && langList.length > 1
                 ? DropdownButton(
                     icon: Icon(Icons.keyboard_arrow_down),
                     onChanged: (value) {
@@ -32,17 +32,25 @@ class LogoAuthView extends StatelessWidget {
                     underline: SizedBox(),
                     isDense: true,
                     value: context.locale.toString(),
-                    items: List.generate(list.length, (index) {
+                    items: List.generate(langList.length, (index) {
                       return DropdownMenuItem<String>(
-                        value: list[index].shortName,
-                        child: Text(list[index].name ?? '', style: TextStyle(color: customColor?.primaryTextColor)),
+                        value: langList[index].code,
+                        child: Text(
+                          langList[index].name ?? '',
+                          style: TextStyle(
+                            color: customColor?.primaryTextColor,
+                          ),
+                        ),
                       );
                     }),
                   )
                 : SizedBox(),
           ),
           Center(
-            child: Text('PROWEB', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+            child: Text(
+              'PROWEB',
+              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            ),
           ),
         ],
       ),

@@ -306,11 +306,13 @@ extension ServiceCenterStatePatterns on ServiceCenterState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServiceCenterInitial value)?  initial,TResult Function( ServiceCenterComplited value)?  complited,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( ServiceCenterInitial value)?  initial,TResult Function( ServiceCenterError value)?  error,TResult Function( ServiceCenterNotFound value)?  notFound,TResult Function( ServiceCenterComplited value)?  complited,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case ServiceCenterInitial() when initial != null:
-return initial(_that);case ServiceCenterComplited() when complited != null:
+return initial(_that);case ServiceCenterError() when error != null:
+return error(_that);case ServiceCenterNotFound() when notFound != null:
+return notFound(_that);case ServiceCenterComplited() when complited != null:
 return complited(_that);case _:
   return orElse();
 
@@ -329,11 +331,13 @@ return complited(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServiceCenterInitial value)  initial,required TResult Function( ServiceCenterComplited value)  complited,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( ServiceCenterInitial value)  initial,required TResult Function( ServiceCenterError value)  error,required TResult Function( ServiceCenterNotFound value)  notFound,required TResult Function( ServiceCenterComplited value)  complited,}){
 final _that = this;
 switch (_that) {
 case ServiceCenterInitial():
-return initial(_that);case ServiceCenterComplited():
+return initial(_that);case ServiceCenterError():
+return error(_that);case ServiceCenterNotFound():
+return notFound(_that);case ServiceCenterComplited():
 return complited(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
@@ -348,11 +352,13 @@ return complited(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServiceCenterInitial value)?  initial,TResult? Function( ServiceCenterComplited value)?  complited,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( ServiceCenterInitial value)?  initial,TResult? Function( ServiceCenterError value)?  error,TResult? Function( ServiceCenterNotFound value)?  notFound,TResult? Function( ServiceCenterComplited value)?  complited,}){
 final _that = this;
 switch (_that) {
 case ServiceCenterInitial() when initial != null:
-return initial(_that);case ServiceCenterComplited() when complited != null:
+return initial(_that);case ServiceCenterError() when error != null:
+return error(_that);case ServiceCenterNotFound() when notFound != null:
+return notFound(_that);case ServiceCenterComplited() when complited != null:
 return complited(_that);case _:
   return null;
 
@@ -370,11 +376,13 @@ return complited(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function( ResponseLazeList<ServiceCenter> data)?  complited,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  error,TResult Function()?  notFound,TResult Function( List<ServiceCenter> list)?  complited,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case ServiceCenterInitial() when initial != null:
-return initial();case ServiceCenterComplited() when complited != null:
-return complited(_that.data);case _:
+return initial();case ServiceCenterError() when error != null:
+return error();case ServiceCenterNotFound() when notFound != null:
+return notFound();case ServiceCenterComplited() when complited != null:
+return complited(_that.list);case _:
   return orElse();
 
 }
@@ -392,11 +400,13 @@ return complited(_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function( ResponseLazeList<ServiceCenter> data)  complited,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  error,required TResult Function()  notFound,required TResult Function( List<ServiceCenter> list)  complited,}) {final _that = this;
 switch (_that) {
 case ServiceCenterInitial():
-return initial();case ServiceCenterComplited():
-return complited(_that.data);}
+return initial();case ServiceCenterError():
+return error();case ServiceCenterNotFound():
+return notFound();case ServiceCenterComplited():
+return complited(_that.list);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -410,11 +420,13 @@ return complited(_that.data);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function( ResponseLazeList<ServiceCenter> data)?  complited,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  error,TResult? Function()?  notFound,TResult? Function( List<ServiceCenter> list)?  complited,}) {final _that = this;
 switch (_that) {
 case ServiceCenterInitial() when initial != null:
-return initial();case ServiceCenterComplited() when complited != null:
-return complited(_that.data);case _:
+return initial();case ServiceCenterError() when error != null:
+return error();case ServiceCenterNotFound() when notFound != null:
+return notFound();case ServiceCenterComplited() when complited != null:
+return complited(_that.list);case _:
   return null;
 
 }
@@ -457,11 +469,81 @@ String toString() {
 /// @nodoc
 
 
-class ServiceCenterComplited implements ServiceCenterState {
-  const ServiceCenterComplited({required this.data});
+class ServiceCenterError implements ServiceCenterState {
+  const ServiceCenterError();
   
 
- final  ResponseLazeList<ServiceCenter> data;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceCenterError);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ServiceCenterState.error()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ServiceCenterNotFound implements ServiceCenterState {
+  const ServiceCenterNotFound();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceCenterNotFound);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'ServiceCenterState.notFound()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ServiceCenterComplited implements ServiceCenterState {
+  const ServiceCenterComplited({required final  List<ServiceCenter> list}): _list = list;
+  
+
+ final  List<ServiceCenter> _list;
+ List<ServiceCenter> get list {
+  if (_list is EqualUnmodifiableListView) return _list;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_list);
+}
+
 
 /// Create a copy of ServiceCenterState
 /// with the given fields replaced by the non-null parameter values.
@@ -473,16 +555,16 @@ $ServiceCenterComplitedCopyWith<ServiceCenterComplited> get copyWith => _$Servic
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceCenterComplited&&(identical(other.data, data) || other.data == data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceCenterComplited&&const DeepCollectionEquality().equals(other._list, _list));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,data);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_list));
 
 @override
 String toString() {
-  return 'ServiceCenterState.complited(data: $data)';
+  return 'ServiceCenterState.complited(list: $list)';
 }
 
 
@@ -493,7 +575,7 @@ abstract mixin class $ServiceCenterComplitedCopyWith<$Res> implements $ServiceCe
   factory $ServiceCenterComplitedCopyWith(ServiceCenterComplited value, $Res Function(ServiceCenterComplited) _then) = _$ServiceCenterComplitedCopyWithImpl;
 @useResult
 $Res call({
- ResponseLazeList<ServiceCenter> data
+ List<ServiceCenter> list
 });
 
 
@@ -510,10 +592,10 @@ class _$ServiceCenterComplitedCopyWithImpl<$Res>
 
 /// Create a copy of ServiceCenterState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? list = null,}) {
   return _then(ServiceCenterComplited(
-data: null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as ResponseLazeList<ServiceCenter>,
+list: null == list ? _self._list : list // ignore: cast_nullable_to_non_nullable
+as List<ServiceCenter>,
   ));
 }
 

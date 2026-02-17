@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/api/language/language.dart';
+import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/icon_avatar.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -38,7 +39,7 @@ class _LanguageSettingsState extends State<LanguageSettings> {
   Widget build(BuildContext context) {
     CustomColors? customColor = Theme.of(context).extension<CustomColors>();
     final LocalizationService serviceLocal = sl<LocalizationService>();
-    final list = serviceLocal.loadloadCachedLangList();
+    final langs = serviceLocal.loadloadCachedLangList();
     return ExpansionTile(
       title: Text('profile_dialog.language'.tr()),
       leading: IconAvatar(icon: Icons.translate),
@@ -80,34 +81,39 @@ class _LanguageSettingsState extends State<LanguageSettings> {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 2),
-              Material(
-                color: Colors.transparent,
-                child: Column(
-                  spacing: 2,
-                  children: List.generate(list.length, (index) {
-                    final indexLocal = list.elementAt(index);
-                    return ListTileBuilder(
-                      isStart: false,
-                      isEnd: index == (list.length - 1),
-                      builder: (shape, contentPadding, isThreeLine) {
-                        return ListTile(
-                          shape: shape,
-                          contentPadding: contentPadding,
-                          tileColor: customColor?.containerColor,
-                          onTap: () {
-                            context.setLocale(Locale(indexLocal.shortName!));
-                          },
-                          leading:
-                              context.locale.toString() == indexLocal.shortName
-                              ? Icon(Icons.check)
-                              : null,
-                          title: Text(indexLocal.name!),
-                        );
-                      },
-                    );
-                  }),
+              if (langs == null)
+                ErrorLoad()
+              else
+                Material(
+                  color: Colors.transparent,
+                  child: Column(
+                    spacing: 2,
+                    children: List.generate((langs.languages?.length ?? 0), (
+                      index,
+                    ) {
+                      final indexLocal = langs.languages!.elementAt(index);
+                      return ListTileBuilder(
+                        isStart: false,
+                        isEnd: index == ((langs.languages?.length ?? 0) - 1),
+                        builder: (shape, contentPadding, isThreeLine) {
+                          return ListTile(
+                            shape: shape,
+                            contentPadding: contentPadding,
+                            tileColor: customColor?.containerColor,
+                            onTap: () {
+                              context.setLocale(Locale(indexLocal.code!));
+                            },
+                            leading:
+                                context.locale.toString() == indexLocal.code
+                                ? Icon(Icons.check)
+                                : null,
+                            title: Text(indexLocal.name!),
+                          );
+                        },
+                      );
+                    }),
+                  ),
                 ),
-              ),
             ],
           ),
         ),

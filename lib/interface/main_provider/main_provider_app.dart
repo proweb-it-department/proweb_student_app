@@ -34,12 +34,13 @@ class MainProviderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Locale> locales = [];
-    sl<LocalizationService>().loadloadCachedLangList().forEach((element) {
-      if (element.shortName != null) {
-        locales.add(Locale(element.shortName!));
-      }
-    });
+    final localeData = sl<LocalizationService>().loadloadCachedLangList();
+    List<Locale> locales =
+        (localeData?.languages?.map((e) {
+          return Locale(e.code!);
+        }).toList()) ??
+        [];
+    if (localeData != null) {}
     if (locales.isEmpty) {
       locales.add(Locale('ru'));
     }

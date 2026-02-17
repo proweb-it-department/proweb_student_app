@@ -8,16 +8,27 @@ part of 'lang_pro_list_item.dart';
 
 _LangProListItem _$LangProListItemFromJson(Map<String, dynamic> json) =>
     _LangProListItem(
-      name: json['name'] as String?,
-      shortName: json['short_name'] as String?,
-      version: (json['version'] as num?)?.toInt(),
-      isActive: json['is_active'] as bool?,
+      currentVersion: (json['current_version'] as num?)?.toInt(),
+      languages: (json['languages'] as List<dynamic>?)
+          ?.map((e) => Languages.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$LangProListItemToJson(_LangProListItem instance) =>
     <String, dynamic>{
+      'current_version': instance.currentVersion,
+      'languages': instance.languages,
+    };
+
+_Languages _$LanguagesFromJson(Map<String, dynamic> json) => _Languages(
+  jsonFile: json['json_file'] as String?,
+  code: json['code'] as String?,
+  name: json['name'] as String?,
+);
+
+Map<String, dynamic> _$LanguagesToJson(_Languages instance) =>
+    <String, dynamic>{
+      'json_file': instance.jsonFile,
+      'code': instance.code,
       'name': instance.name,
-      'short_name': instance.shortName,
-      'version': instance.version,
-      'is_active': instance.isActive,
     };
