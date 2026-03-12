@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +44,7 @@ class SavedDataScreen extends StatelessWidget {
               icon: Icon(Icons.arrow_back),
             ),
             surfaceTintColor: customColors?.additionalTwo,
-            title: Text('Память'),
+            title: Text('downloads.memory'.tr()),
           ),
           body: BodySavedData(),
         ),
@@ -142,7 +143,10 @@ class SizedData extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('Занято', style: GoogleFonts.openSans(fontSize: 18)),
+                    Text(
+                      'downloads.occupied'.tr(),
+                      style: GoogleFonts.openSans(fontSize: 18),
+                    ),
                     SizedBox(width: 5),
                     Text(
                       totalDownloadNumber,
@@ -155,7 +159,10 @@ class SizedData extends StatelessWidget {
                     ),
                   ],
                 ),
-                Text('Всего $total', style: GoogleFonts.openSans(fontSize: 18)),
+                Text(
+                  'downloads.total_count'.tr(namedArgs: {'total': total}),
+                  style: GoogleFonts.openSans(fontSize: 18),
+                ),
               ],
             ),
             SizedBox(height: 30),
@@ -203,17 +210,18 @@ class SizedData extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Удалить все видео'),
+                                title: Text('downloads.delete_all_videos'.tr()),
                                 titleTextStyle: TextStyle(fontSize: 25),
                                 content: Text(
-                                  'Вы уверены что хотите удалить все видео скаченные в приложение с устройства?\nПосле удаления восстановить их будет не возможно.',
+                                  'downloads.confirm_delete_all_downloaded_videos'
+                                      .tr(),
                                 ),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Отмена'),
+                                    child: Text('global_data.cansel_btn'.tr()),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -224,7 +232,7 @@ class SizedData extends StatelessWidget {
                                           .withAlpha(50),
                                     ),
                                     child: Text(
-                                      'Удалить',
+                                      'global_data.delete_btn'.tr(),
                                       style: TextStyle(
                                         color: customColors?.errorFill,
                                       ),
@@ -244,7 +252,10 @@ class SizedData extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     spacing: 10,
                     children: [
-                      Text('Видео', style: TextStyle(fontSize: 18)),
+                      Text(
+                        'downloads.video'.tr(),
+                        style: TextStyle(fontSize: 18),
+                      ),
                       Opacity(
                         opacity: 0.7,
                         child: Text(
@@ -288,17 +299,18 @@ class SizedData extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Удалить все файлы'),
+                                title: Text('downloads.delete_all_files'.tr()),
                                 titleTextStyle: TextStyle(fontSize: 25),
                                 content: Text(
-                                  'Вы уверены что хотите удалить все файлы скаченные в приложение с устройства?\nПосле удаления восстановить их будет не возможно.',
+                                  'downloads.confirm_delete_all_downloaded_files'
+                                      .tr(),
                                 ),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child: Text('Отмена'),
+                                    child: Text('global_data.cansel_btn'.tr()),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -309,7 +321,7 @@ class SizedData extends StatelessWidget {
                                           .withAlpha(50),
                                     ),
                                     child: Text(
-                                      'Удалить',
+                                      'global_data.delete_btn'.tr(),
                                       style: TextStyle(
                                         color: customColors?.errorFill,
                                       ),
@@ -329,7 +341,10 @@ class SizedData extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     spacing: 10,
                     children: [
-                      Text('Скаченые файлы', style: TextStyle(fontSize: 18)),
+                      Text(
+                        'downloads.downloaded_files'.tr(),
+                        style: TextStyle(fontSize: 18),
+                      ),
                       Opacity(
                         opacity: 0.7,
                         child: Text(
@@ -365,7 +380,10 @@ class SizedData extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     spacing: 10,
                     children: [
-                      Text('Доп. данные', style: TextStyle(fontSize: 18)),
+                      Text(
+                        'downloads.additional_data'.tr(),
+                        style: TextStyle(fontSize: 18),
+                      ),
                       Opacity(
                         opacity: 0.7,
                         child: Text(
@@ -395,17 +413,18 @@ class SizedData extends StatelessWidget {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Удалить всё'),
+                        title: Text('downloads.delete_all'.tr()),
                         titleTextStyle: TextStyle(fontSize: 25),
                         content: Text(
-                          'Вы уверены что хотите удалить все файлы и видео скаченные в приложение с устройства?\nПосле удаления восстановить их будет не возможно.',
+                          'downloads.confirm_delete_all_downloaded_content'
+                              .tr(),
                         ),
                         actions: [
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text('Отмена'),
+                            child: Text('global_data.cansel_btn'.tr()),
                           ),
                           TextButton(
                             onPressed: () {
@@ -416,7 +435,7 @@ class SizedData extends StatelessWidget {
                                   .withAlpha(50),
                             ),
                             child: Text(
-                              'Удалить',
+                              'global_data.delete_btn'.tr(),
                               style: TextStyle(color: customColors?.errorFill),
                             ),
                           ),
@@ -429,7 +448,7 @@ class SizedData extends StatelessWidget {
                   }
                 },
                 label: Text(
-                  'Удалить всё',
+                  'downloads.delete_all'.tr(),
                   style: TextStyle(color: customColors?.primaryTextColor),
                 ),
                 icon: Icon(Icons.delete),

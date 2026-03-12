@@ -147,15 +147,30 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
     if (videoAccessLastDate != null) {
       if (accessToVideo == true) {
         if (isGraduated) {
-          videoText =
-              'Доступ к записям уроков истекает ${sl<LocalData>().getDateString(date: DateTime.parse(videoAccessLastDate))} года. Оформите услугу продления, чтобы продолжить просмотр.';
+          videoText = 'home.lesson_recordings_access_expires_on'.tr(
+            namedArgs: {
+              'date': sl<LocalData>().getDateString(
+                date: DateTime.parse(videoAccessLastDate),
+              ),
+            },
+          );
         } else if (isLeave || isTransfer) {
-          videoText =
-              'Доступ к записям уроков истекает ${sl<LocalData>().getDateString(date: DateTime.parse(videoAccessLastDate))} года. ';
+          videoText = 'home.lesson_recordings_access_expires_on_date'.tr(
+            namedArgs: {
+              'date': sl<LocalData>().getDateString(
+                date: DateTime.parse(videoAccessLastDate),
+              ),
+            },
+          );
         }
       } else {
-        videoText =
-            'Доступ к видео закрылся ${sl<LocalData>().getDateString(date: DateTime.parse(videoAccessLastDate))} года.';
+        videoText = 'home.video_access_closed_on_date'.tr(
+          namedArgs: {
+            'date': sl<LocalData>().getDateString(
+              date: DateTime.parse(videoAccessLastDate),
+            ),
+          },
+        );
       }
     }
     bool isDuty = false;
@@ -333,17 +348,19 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                                     Expanded(
                                       child: Text(
                                         block
-                                            ? 'Доступ закрыт'
+                                            ? 'home.access_denied'.tr()
                                             : isLeave
                                             ? videoAccessLastDate == null
-                                                  ? 'Обучение остановлено'
+                                                  ? 'home.training_suspended'
+                                                        .tr()
                                                   : videoText
                                             : isTransfer
-                                            ? 'Вы перевелись'
+                                            ? 'home.student_transferred'.tr()
                                             : isGraduated
                                             ? graduated == null
                                                   ? videoAccessLastDate == null
-                                                        ? 'Вы выпустились'
+                                                        ? 'home.student_graduated'
+                                                              .tr()
                                                         : videoText
                                                   : videoAccessLastDate == null
                                                   ? sl<LocalData>()
@@ -358,7 +375,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                                             ? '${sl<LocalData>().getDateString(date: DateTime.parse(lesson!.datetime!).toLocal())}, '
                                                   '${DateTime.parse(lesson.datetime!).toLocal().hour.toString().padLeft(2, '0')}:'
                                                   '${DateTime.parse(lesson.datetime!).toLocal().minute.toString().padLeft(2, '0')}'
-                                            : 'В процессе обучения',
+                                            : 'home.training_in_progress'.tr(),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -371,8 +388,6 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                         ],
                       ),
                     ),
-
-                    /// ПРАВАЯ КНОПКА — фиксированный размер
                     const SizedBox(width: 5),
                     if (!(isDuty && (isLeave || isTransfer || isGraduated)))
                       GoPage(
@@ -416,14 +431,14 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                   ),
                   Text(
                     block
-                        ? 'Доступ закрыт'
+                        ? 'home.access_denied'.tr()
                         : isLeave
-                        ? 'Обучение остановлено'
+                        ? 'home.training_suspended'.tr()
                         : isTransfer
-                        ? 'Вы перевелись'
+                        ? 'home.student_transferred'.tr()
                         : isGraduated
-                        ? 'Вы выпустились'
-                        : 'В процессе обучения',
+                        ? 'home.student_graduated'.tr()
+                        : 'home.training_in_progress'.tr(),
                     style: TextStyle(
                       color: customColors?.primaryBg,
                       fontSize: 12,
@@ -458,7 +473,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                     children: [
                       Icon(Icons.lock_outline, color: Colors.white, size: 40),
                       Text(
-                        'Доступ к группе закрыт. Погасите задолженность, чтобы восстановить доступ.',
+                        'home.group_access_blocked_due_to_debt'.tr(),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
@@ -477,7 +492,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                         ),
                         icon: Icon(Icons.payment_rounded),
                         label: Text(
-                          'Пополнить баланс',
+                          'top_up_balance.Top_up_your_balance'.tr(),
                           style: TextStyle(color: Colors.black),
                         ),
                       ),

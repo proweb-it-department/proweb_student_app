@@ -136,7 +136,28 @@
     "tab_edu": "Trening",
     "tab_balance": "Баланс",
     "try_again_main_msg": "Ещё раз для выхода",
-    "You_don't_have_any_transition_groups": "У Вас нет групп для перехода!"
+    "You_don't_have_any_transition_groups": "У Вас нет групп для перехода!",
+    "homework": "Домашние задания",
+    "materials": "Материалы",
+    "testings": "Тестирование",
+    "no_homework_assigned_yet": "Преподаватель еще не назначил ни одного домашнего задания Вам.",
+    "no_materials_assigned_yet": "Преподаватель еще не назначил ни одного материала Вам.",
+    "no_tests_assigned_yet": "Преподаватель еще не назначил ни одного тестирования Вам.",
+    "lesson_recordings_access_expires_on": "Доступ к записям уроков истекает {date} года. Оформите услугу продления, чтобы продолжить просмотр.",
+    "lesson_recordings_access_expires_on_date": "Доступ к записям уроков истекает {date} года. ",
+    "video_access_closed_on_date": "Доступ к видео закрылся {date} года.",
+    "access_denied": "Доступ закрыт",
+    "training_suspended": "Обучение остановлено",
+    "student_transferred": "Вы перевелись",
+    "student_graduated": "not_value",
+    "training_in_progress": "not_value",
+    "group_access_blocked_due_to_debt": "Доступ к группе закрыт. Погасите задолженность, чтобы восстановить доступ.",
+    "my_schedule": "Моё расписание",
+    "coworking_check_in_success": "Вы пришли в коворкинг",
+    "coworking_check_out_success": "Вы покинули коворкинг",
+    "coworking_no_show": "Не пришли в коворкинг",
+    "coworking_booking": "Запись в коворкинг",
+    "lesson_number_label": "{lesson_number} урок"
   },
   "education": {
     "status_active": "Ожидает старта",
@@ -214,7 +235,8 @@
     "Access_to_the_lesson_is_closed": "Доступ к уроку закрыт!",
     "Access_to_the_video_has_been_closed": "Доступ к видео был закрыт! Свяжитесь с администрацией для уточнения возможности продления доступа.",
     "SELECT_GROUP": "ВЫБРАТЬ ГРУППУ",
-    "group_tab_ranking": "Рейтинг группы"
+    "group_tab_ranking": "Рейтинг группы",
+    "The_group_is_not_selected": "Группа не выбрана"
   },
   "video": {
     "notification_downloaded": "Скачивание:",
@@ -320,7 +342,16 @@
     "average_rating": "Средняя оценка",
     "not_passed_work": "Не сдано",
     "under_inspection_work": "На проверке",
-    "verified_work": "Проверено"
+    "verified_work": "Проверено",
+    "link": "Ссылки",
+    "file": "Файлы",
+    "homework_deadline_until_lesson_number_progress": "Срок выполнения домашнего задания - до окончания {deadlineLessonNumber}-го урока. С начала обучения пройдено {lastLessonNumber} уроков.",
+    "homework_attempts_exhausted_no_retake": "Вы истратили все свои попытки для сдачи работы. Пересдать работу больше нельзя!",
+    "not_group_student_submission_denied": "Вы не являетесь учеником данной группы и сдать работу не можете.",
+    "graduated_submission_not_allowed": "Вы уже выпустились и сдать работу не возможно.",
+    "submission_deadline_expired_no_retake": "Срок сдачи работы истёк. Повторная сдача теперь невозможна.",
+    "not_group_member_submission_denied": "Вы не являетесь учеником данной группы и сдать работу не можете.",
+    "tasks": "Задания"
   },
   "downloads": {
     "down_tab_videos": "Видео",
@@ -348,6 +379,7 @@
     "No_exclusive_products_downloaded": "Нет скаченных эксклюзивных продуктов",
     "There_are_no_downloaded_videos_in_the_lesson": "Нет скаченных видео в уроке",
     "No_downloaded_videos_in_groups": "Нет скаченных видео в группах",
+    "downloads_title": "Загрузки",
     "Materials": "Материалы",
     "Video_List": "Список видео",
     "Modules": "Модули",
@@ -567,15 +599,44 @@
     "The_amount_of_the_deposit": "Сумма пополнения",
     "To_be_paid": "К оплате",
     "Proceed_to_payment": "Прейти к оплате",
-    "The_minimum_deposit_amount_is_1_000_soums": "Минимальная сумма пополнения - 1 000 сум.\\nВведите сумму для продолжения."
+    "The_minimum_deposit_amount_is_1_000_soums": "Минимальная сумма пополнения - 1 000 сум.\\nВведите сумму для продолжения.",
+    "My_balance": "Мой баланс",
+    "no_active_groups_with_assignments": "У Вас нет активных групп в которых Вам назначили задания."
   },
   "nps": {
     "Only_5_minutes_to_complete": "Всего 5 минут на прохождения",
-    "Complete_the_survey": "Пройти опрос"
+    "Complete_the_survey": "Пройти опрос",
+    "survey_progress": "Прохождения опроса",
+    "survey_thank_you": "Спасибо за прохождение опроса",
+    "send_answer": "Отправить ответы",
+    "survey_participation_thank_you_check_answers": "Спасибо за участие! Ваши ответы помогают нам улучшать качество услуг. Пожалуйста, проверьте ответы перед отправкой.",
+    "select_option_that_fits_you": "Выберете один из вариантов ниже что подходит именно для Вас.",
+    "enter_your_answer_below": "Введите ваш ответ в поле ниже.",
+    "enter_answer": "Введите ответ",
+    "document_load_failed": "Не удалось загрузить документ"
   },
   "course": {
     "Course_modules": "Модули курса",
     "About_the_course": "О курсе",
     "Course_rating": "Рейтинг курса"
+  },
+  "master_class": {
+    "description": "Описание",
+    "masterclass_recording": "not_value",
+    "info": "Информация",
+    "event_date_time": "Дата и время проведения",
+    "branch": "Филиал",
+    "room": "Кабинет",
+    "capacity": "Вместительность",
+    "map_mark": "Место проведения",
+    "masterclass_premium_required": "Просмотр данного мастер доступно только с тарифом PREMIUM",
+    "tarif": "ТАРИФ",
+    "masterclass_booking_premium_only": "Запись на данный мастер класс можно только если вы обучаетесь  с PREMIUM тарифом.",
+    "masterclass_booking_available": "Запись на мастер-класс доступна",
+    "spekers": "Спикеры",
+    "upcoming": "Предстоящий",
+    "archived": "Архивирован",
+    "completed": "Завершённый",
+    "preparation": "Подготовка"
   }
 }

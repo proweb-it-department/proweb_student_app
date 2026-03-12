@@ -47,7 +47,7 @@ class MyScheduleWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                'Моё расписание',
+                'home.my_schedule'.tr(),
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ],
@@ -715,12 +715,12 @@ class MyScheduleVisitItem extends StatelessWidget {
                 ),
                 title: Text(
                   status == StatusCoworkingReserve.came
-                      ? 'Вы пришли в коворкинг'
+                      ? 'home.coworking_check_in_success'.tr()
                       : status == StatusCoworkingReserve.gone
-                      ? 'Вы ушли из коворкинга'
+                      ? 'home.coworking_check_out_success'.tr()
                       : status == StatusCoworkingReserve.notCome
-                      ? 'Не пришли в коворкинг'
-                      : 'Запись в коворкинг',
+                      ? 'home.coworking_no_show'.tr()
+                      : 'home.coworking_booking'.tr(),
                   style: TextStyle(color: colorStatus),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -895,7 +895,11 @@ class MyScheduleLessonItem extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    '${lesson.lessonNumber} урок',
+                    'home.lesson_number_label'.tr(
+                      namedArgs: {
+                        'lesson_number': lesson.lessonNumber.toString(),
+                      },
+                    ),
                     style: TextStyle(
                       color: HexColor(group.group!.course!.color!),
                     ),

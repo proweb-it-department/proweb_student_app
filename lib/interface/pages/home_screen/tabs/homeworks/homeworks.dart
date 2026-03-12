@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -162,8 +163,7 @@ class _ListHomeworksState extends State<ListHomeworks> {
         child: Padding(
           padding: EdgeInsetsGeometry.symmetric(horizontal: 10),
           child: NoData(
-            text:
-                'Преподаватель еще не назначил ни одного домашнего задания Вам.',
+            text: 'home.no_homework_assigned_yet'.tr(),
             icon: Icons.assignment,
             color: groupColor != null ? HexColor(groupColor) : null,
             shape: PathSvgShape.circle,

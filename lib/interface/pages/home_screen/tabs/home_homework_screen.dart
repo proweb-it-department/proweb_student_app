@@ -136,7 +136,7 @@ class _ListForGroupState extends State<ListForGroup> {
 
     if (groupsList.isEmpty) {
       return NoData(
-        text: 'У Вас нет активных групп в которых Вам назначили задания',
+        text: 'top_up_balance.no_active_groups_with_assignments'.tr(),
         icon: Icons.group_off_outlined,
       );
     }
@@ -325,7 +325,10 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     if (widget.group == null && widget.groupDetail == null) {
-      return NoData(text: 'Группа не выбрана', icon: Icons.group);
+      return NoData(
+        text: 'group.The_group_is_not_selected'.tr(),
+        icon: Icons.group,
+      );
     }
     String? groupIcon;
     String? groupColor;
@@ -442,11 +445,11 @@ class _ViewCourseHomeworkState extends State<ViewCourseHomework> {
                                             ),
                                             Text(
                                               type == HomeworkType.homework
-                                                  ? 'Домашние задания'
+                                                  ? 'home.homework'.tr()
                                                   : HomeworkType.material ==
                                                         type
-                                                  ? 'Материалы'
-                                                  : "Тестирование",
+                                                  ? 'home.materials'.tr()
+                                                  : "home.testings".tr(),
                                             ),
                                           ],
                                         ),

@@ -87,11 +87,8 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
 
     void apply() {
       if (isFullscreen) {
-        // Скрываем статус-бар и navigation bar.
-        // Они будут вызываться системным свайпом.
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       } else {
-        // Возвращаем системные бары в обычный режим приложения.
         SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
       }
     }
@@ -144,7 +141,6 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
           placeholderOnTop: true,
           routePageBuilder:
               (context, animation, secondaryAnimation, controllerProvider) {
-                // Fullscreen route: скрываем системные бары.
                 _applyAndroidFullscreen(true);
                 return AnimatedBuilder(
                   animation: animation,
@@ -174,7 +170,6 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
                 _applyAndroidFullscreen(false, deferIfBuilding: false);
                 break;
               case BetterPlayerEventType.changedPlayerVisibility:
-                // Фолбэк для некоторых устройств/версий плеера.
                 if (!_androidFullscreenVN.value) {
                   _setAndroidSystemUiMode(false, deferIfBuilding: false);
                 }
@@ -203,7 +198,6 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
   }
 
   Widget _buildPlaceholder() {
-    // В fullscreen не показываем preview как фон, чтобы не было "мигания"/некрасивой подложки.
     return ValueListenableBuilder<bool>(
       valueListenable: _androidFullscreenVN,
       builder: (context, isFullscreen, _) {

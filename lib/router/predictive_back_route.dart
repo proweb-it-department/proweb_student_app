@@ -8,7 +8,7 @@ class PredictiveBackRouteCustom<T> extends PageRoute<T> {
   PredictiveBackRouteCustom({required this.child, super.settings});
 
   @override
-  bool get opaque => false; // 🔥 обязательно
+  bool get opaque => false;
 
   @override
   bool get barrierDismissible => false;

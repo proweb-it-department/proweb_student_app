@@ -1,5 +1,6 @@
 import 'package:auto_route/annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -170,9 +171,10 @@ class MasterClassView extends StatelessWidget {
                     dragStartBehavior: DragStartBehavior.down,
                     dividerHeight: 0,
                     tabs: [
-                      Tab(text: "Описание"),
-                      if (access) Tab(text: "Запись мастер-класса"),
-                      Tab(text: "Информация"),
+                      Tab(text: "master_class.description".tr()),
+                      if (access)
+                        Tab(text: "master_class.masterclass_recording".tr()),
+                      Tab(text: "master_class.info".tr()),
                     ],
                   ),
                 ),
@@ -301,7 +303,7 @@ class MasterClassInforamtion extends StatelessWidget {
                   tileColor: customColors?.primaryBg,
                   title: Opacity(
                     opacity: 0.7,
-                    child: Text('Дата и время проведения'),
+                    child: Text('master_class.event_date_time'.tr()),
                   ),
                   subtitle: Text('$dateString, $hour:$minute'),
                 );
@@ -330,7 +332,10 @@ class MasterClassInforamtion extends StatelessWidget {
                     },
                     leading: IconAvatar(icon: Icons.home_work_rounded),
                     tileColor: customColors?.primaryBg,
-                    title: Opacity(opacity: 0.7, child: Text('Филиал')),
+                    title: Opacity(
+                      opacity: 0.7,
+                      child: Text('master_class.branch'.tr()),
+                    ),
                     subtitle: Text(room.branch?.name ?? '- - -'),
                     trailing: GoPage(
                       color: customColors?.containerColor,
@@ -351,7 +356,10 @@ class MasterClassInforamtion extends StatelessWidget {
 
                     leading: IconAvatar(icon: Icons.door_back_door_outlined),
                     tileColor: customColors?.primaryBg,
-                    title: Opacity(opacity: 0.7, child: Text('Кабинет')),
+                    title: Opacity(
+                      opacity: 0.7,
+                      child: Text('master_class.room'.tr()),
+                    ),
                     subtitle: Text(room.name ?? '- - -'),
                   );
                 },
@@ -369,7 +377,7 @@ class MasterClassInforamtion extends StatelessWidget {
                     tileColor: customColors?.primaryBg,
                     title: Opacity(
                       opacity: 0.7,
-                      child: Text('Вместительность'),
+                      child: Text('master_class.capacity'.tr()),
                     ),
                     subtitle: Text('${room.capacity ?? 0}'),
                   );
@@ -387,7 +395,7 @@ class MasterClassInforamtion extends StatelessWidget {
                     tileColor: customColors?.primaryBg,
                     title: Opacity(
                       opacity: 0.7,
-                      child: Text('Место проведения'),
+                      child: Text('master_class.map_mark'.tr()),
                     ),
                     subtitle: Text(venueName),
                   );
@@ -406,7 +414,7 @@ class MasterClassInforamtion extends StatelessWidget {
                     tileColor: customColors?.primaryBg,
                     title: Opacity(
                       opacity: 0.7,
-                      child: Text('Вместительность'),
+                      child: Text('master_class.capacity'.tr()),
                     ),
                     subtitle: Text('${venueCapacity ?? 0}'),
                   );
@@ -427,7 +435,7 @@ class MasterClassInforamtion extends StatelessWidget {
                     title: Opacity(
                       opacity: 0.7,
                       child: Text(
-                        'Просмотр данного мастер достпно только с тарифом PREMIUM',
+                        'master_class.masterclass_premium_required'.tr(),
                       ),
                     ),
                   );
@@ -443,12 +451,12 @@ class MasterClassInforamtion extends StatelessWidget {
                   return ListTile(
                     shape: shape,
                     contentPadding: contentPadding,
-                    leading: PremiumContainer(text: 'ТАРИФ'),
+                    leading: PremiumContainer(text: 'master_class.tarif'.tr()),
                     tileColor: customColors?.primaryBg,
                     title: Opacity(
                       opacity: 0.7,
                       child: Text(
-                        'Запись на данный мастер класс можно только если вы обучаетесь  с PREMIUM тарифом',
+                        'master_class.masterclass_booking_premium_only'.tr(),
                       ),
                     ),
                   );
@@ -467,7 +475,9 @@ class MasterClassInforamtion extends StatelessWidget {
                     tileColor: customColors?.primaryBg,
                     title: Opacity(
                       opacity: 0.7,
-                      child: Text('Запись доступна на данный мастер класс'),
+                      child: Text(
+                        'master_class.masterclass_booking_available'.tr(),
+                      ),
                     ),
                   );
                 },
@@ -475,7 +485,7 @@ class MasterClassInforamtion extends StatelessWidget {
             },
             if (speekers != null && speekers.isNotEmpty) ...{
               SizedBox(height: 10),
-              Text('Спикеры', style: TextStyle(fontSize: 18)),
+              Text('master_class.spekers'.tr(), style: TextStyle(fontSize: 18)),
               SizedBox(height: 5),
               Column(
                 spacing: 2,
@@ -612,7 +622,7 @@ class HeaderMasterClass extends StatelessWidget {
                   minTileHeight: 30,
                   title: Opacity(
                     opacity: 0.7,
-                    child: Text('Дата и время проведения'),
+                    child: Text('master_class.event_date_time'.tr()),
                   ),
                   subtitle: Text('$dateString, $hour:$minute'),
 
@@ -636,16 +646,16 @@ class TralinkMasterClassStatus extends StatelessWidget {
     final status = masterClass.status;
     if (status == null) return SizedBox();
     Color color = Colors.yellow.shade700;
-    String text = 'Предстоящий';
+    String text = 'master_class.upcoming'.tr();
     if (status == MasterClassStatus.archive) {
       color = Colors.red;
-      text = 'Архивирован';
+      text = 'master_class.archived'.tr();
     } else if (status == MasterClassStatus.completed) {
       color = Colors.green;
-      text = 'Завершенный';
+      text = 'master_class.completed'.tr();
     } else if (status == MasterClassStatus.draft) {
       color = Colors.grey;
-      text = 'Подготовка';
+      text = 'master_class.preparation'.tr();
     }
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),

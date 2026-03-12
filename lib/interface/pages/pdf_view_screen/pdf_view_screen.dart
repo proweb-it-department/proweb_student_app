@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
@@ -31,7 +32,7 @@ class PdfViewScreen extends StatelessWidget {
             }
 
             if (snapshot.hasError || !snapshot.hasData) {
-              return const Center(child: Text('Не удалось загрузить документ'));
+              return Center(child: Text('nps.document_load_failed'.tr()));
             }
 
             return SfPdfViewer.memory(snapshot.data!);

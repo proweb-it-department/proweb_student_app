@@ -585,7 +585,6 @@ class _DraggableModalWithAppBarState extends State<DraggableModalWithAppBar> {
                     ),
                   ),
 
-                  /// Кастомный AppBar
                   AnimatedSlide(
                     duration: const Duration(milliseconds: 250),
                     curve: Curves.easeInOut,

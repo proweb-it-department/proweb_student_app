@@ -31,7 +31,7 @@ class HomeBalanceScreen extends StatelessWidget {
       ),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Мой баланс'),
+          title: Text('top_up_balance.My_balance'.tr()),
           centerTitle: true,
           surfaceTintColor: customColors?.additionalTwo,
         ),

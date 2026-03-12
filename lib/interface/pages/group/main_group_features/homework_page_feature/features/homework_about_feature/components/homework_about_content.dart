@@ -526,7 +526,7 @@ class _AttachedLinksState extends State<AttachedLinks> {
                                 : customColors?.primaryBg,
                           ),
                           child: Text(
-                            'Ссылки',
+                            'group_homework.link'.tr(),
                             style: TextStyle(
                               color: _currentIndex == 0
                                   ? customColors?.primaryBg
@@ -577,7 +577,7 @@ class _AttachedLinksState extends State<AttachedLinks> {
                                 : customColors?.primaryBg,
                           ),
                           child: Text(
-                            'Файлы',
+                            'group_homework.file'.tr(),
                             style: TextStyle(
                               color: _currentIndex == 1
                                   ? customColors?.primaryBg
@@ -695,7 +695,13 @@ class InfoDedlineWork extends StatelessWidget {
                 child: Icon(Icons.alarm, color: customColors?.warningFill),
               ),
               title: Text(
-                'Срок выполнения домашнего задания - до окончания $deadlineLessonNumber-го урока. С начала обучения пройдено $lastLessonNumber уроков.',
+                'group_homework.homework_deadline_until_lesson_number_progress'
+                    .tr(
+                      namedArgs: {
+                        'deadlineLessonNumber': '$deadlineLessonNumber',
+                        'lastLessonNumber': '$lastLessonNumber',
+                      },
+                    ),
                 style: TextStyle(
                   color: customColors?.warningFill.withAlpha(150),
                 ),
@@ -725,7 +731,7 @@ class InfoDedlineWork extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Вы истратили все свои попытки для сдачи работы. Пересдать работу больше нельзя!',
+                'group_homework.homework_attempts_exhausted_no_retake'.tr(),
                 style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
               ),
             ),
@@ -752,8 +758,8 @@ class InfoDedlineWork extends StatelessWidget {
               title: Text(
                 (groupUser.status == StudentStatus.leave ||
                         groupUser.status == StudentStatus.transfer)
-                    ? 'Вы не являетесь учеником данной группы и сдать работу не можете.'
-                    : 'Вы уже выпустелись и сдать работу не возможно.',
+                    ? 'group_homework.not_group_student_submission_denied'.tr()
+                    : 'group_homework.graduated_submission_not_allowed'.tr(),
                 style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
               ),
             ),
@@ -778,7 +784,7 @@ class InfoDedlineWork extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Срок сдачи работы истёк. Повторная сдача теперь невозможна.',
+                'group_homework.submission_deadline_expired_no_retake'.tr(),
                 style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
               ),
             ),
@@ -807,8 +813,8 @@ class InfoDedlineWork extends StatelessWidget {
             title: Text(
               (groupUser.status == StudentStatus.leave ||
                       groupUser.status == StudentStatus.transfer)
-                  ? 'Вы не являетесь учеником данной группы и сдать работу не можете.'
-                  : 'Вы уже выпустелись и сдать работу не возможно.',
+                  ? 'group_homework.not_group_member_submission_denied'.tr()
+                  : 'group_homework.graduated_submission_not_allowed'.tr(),
               style: TextStyle(color: customColors?.errorFill.withAlpha(150)),
             ),
           ),

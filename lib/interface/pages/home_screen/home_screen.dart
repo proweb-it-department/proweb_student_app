@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: (value) {},
                 tabs: [
                   Tab(text: 'home.tab_edu'.tr()),
-                  Tab(text: 'Задания'),
+                  Tab(text: 'group_homework.tasks'.tr()),
                 ],
               ),
             ),

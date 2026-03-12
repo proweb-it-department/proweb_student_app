@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
@@ -137,7 +138,7 @@ class _SegementStatusMCState extends State<SegementStatusMC> {
         ButtonSegment<MasterClassStatus>(
           value: MasterClassStatus.active,
           label: Text(
-            'Предстоящие',
+            'master_class.upcoming_plural'.tr(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: customColors?.primaryTextColor),
@@ -146,7 +147,7 @@ class _SegementStatusMCState extends State<SegementStatusMC> {
         ButtonSegment<MasterClassStatus>(
           value: MasterClassStatus.completed,
           label: Text(
-            'Прошедшие',
+            'master_class.past_events'.tr(),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(color: customColors?.primaryTextColor),
@@ -173,8 +174,8 @@ class MasterClassListState extends StatelessWidget {
     return switch (list.isNotEmpty) {
       false => NoData(
         text: status == MasterClassStatus.active
-            ? 'Предстоящих мастер классов нет'
-            : 'Завершенных мастер классов нет',
+            ? 'master_class.no_upcoming_masterclasses'.tr()
+            : 'master_class.no_completed_masterclasses'.tr(),
         icon: Icons.group_sharp,
         color: customColors?.primaryBg,
       ),

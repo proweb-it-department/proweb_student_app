@@ -91,7 +91,6 @@ class ProductBodyState extends State<ProductBody> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final customColors = Theme.of(context).extension<CustomColors>();
-    // Если тема изменилась или схема ещё не загружена — перезапускаем
     if ((_lastBrightness != customColors?.brightness || _scheme == null) &&
         customColors?.brightness != null) {
       _lastBrightness = customColors!.brightness;

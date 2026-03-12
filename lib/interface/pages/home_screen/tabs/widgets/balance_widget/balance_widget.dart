@@ -217,7 +217,8 @@ class BalanceWidgetInPage extends StatelessWidget {
                                                     );
                                                   },
                                                   label: Text(
-                                                    'Пополнить баланс',
+                                                    'top_up_balance.Top_up_your_balance'
+                                                        .tr(),
                                                     style: TextStyle(
                                                       color: customColors
                                                           ?.primaryTextColor,

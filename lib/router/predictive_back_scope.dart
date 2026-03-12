@@ -14,7 +14,6 @@ class PredictiveBackScope extends StatefulWidget {
     required this.onPop,
   });
 
-  /// Получение state для программного pop (кнопка назад)
   static _PredictiveBackScopeState? of(BuildContext context) {
     return context.findAncestorStateOfType<_PredictiveBackScopeState>();
   }
@@ -43,7 +42,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
   @override
   void initState() {
     super.initState();
-    // стартуем с открытой страницы
     _controller = AnimationController(vsync: this, value: 1.0);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _controller.animateTo(
@@ -60,7 +58,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     super.dispose();
   }
 
-  /// Обновление при свайпе
   void _update(double dx, double width) {
     _controller.value = (_controller.value + dx / width).clamp(0.0, 1.0);
     if (_controller.value > _commitThreshold && _haptic == false) {
@@ -71,7 +68,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     }
   }
 
-  /// Завершение свайпа (или velocity)
   void _end(double velocity) {
     final shouldPop =
         _controller.value > _commitThreshold || velocity > _velocityThreshold;
@@ -93,7 +89,6 @@ class _PredictiveBackScopeState extends State<PredictiveBackScope>
     _dragging = false;
   }
 
-  /// Программный pop (кнопка назад)
   Future<void> pop() async {
     final simulation = SpringSimulation(_spring, _controller.value, 1.0, 0);
     _controller.animateWith(simulation).then((_) => widget.onPop());

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:auto_route/annotations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +39,7 @@ class NpsScreen extends StatelessWidget {
           systemNavBarStyle: FlexSystemNavBarStyle.transparent,
         ),
         child: Scaffold(
-          appBar: AppBar(title: Text('Прохождения опроса')),
+          appBar: AppBar(title: Text('nps.survey_progress'.tr())),
           body: NpsBody(relationId: relationId),
         ),
       ),
@@ -77,7 +78,7 @@ class PollDetailSend extends StatelessWidget {
     return switch (send) {
       true => Center(
         child: NoData(
-          text: 'Спасибо что прошли опрос.',
+          text: 'nps.survey_thank_you'.tr(),
           icon: Icons.celebration,
         ),
       ),
@@ -308,7 +309,7 @@ class _PollDetailQuestionsState extends State<PollDetailQuestions> {
             ),
           ),
           label: Text(
-            'Отправить ответы',
+            'nps.send_answer'.tr(),
             style: TextStyle(
               color: customColors?.primaryTextColor.withAlpha(
                 isDisabled ? 150 : 255,
@@ -319,7 +320,7 @@ class _PollDetailQuestionsState extends State<PollDetailQuestions> {
         if (isDisabled == false) ...{
           SizedBox(height: 10),
           Text(
-            'Спасибо за участие! Ваши ответы помогают нам улучшать качество услуг. Пожалуйста, проверьте ответы перед отправкой.',
+            'nps.survey_participation_thank_you_check_answers'.tr(),
             style: TextStyle(
               fontSize: 14,
               color: customColors?.primaryTextColor.withAlpha(180),
@@ -394,9 +395,7 @@ class PollQuestionRange extends StatelessWidget {
               padding: EdgeInsetsGeometry.only(left: 10),
               child: Opacity(
                 opacity: 0.6,
-                child: Text(
-                  'Выберете один из вариантов ниже что подходит именно для Вас.',
-                ),
+                child: Text('nps.select_option_that_fits_you'.tr()),
               ),
             ),
             SizedBox(height: 15),
@@ -508,7 +507,7 @@ class PollQuestionText extends StatelessWidget {
             padding: EdgeInsetsGeometry.only(left: 10),
             child: Opacity(
               opacity: 0.6,
-              child: Text('Введите ваш ответ в поле ниже.'),
+              child: Text('nps.enter_your_answer_below'.tr()),
             ),
           ),
           SizedBox(height: 15),
@@ -520,7 +519,7 @@ class PollQuestionText extends StatelessWidget {
             maxLines: 10,
             keyboardType: TextInputType.multiline,
             decoration: InputDecoration(
-              hintText: 'Введите ответ',
+              hintText: 'nps.enter_answer'.tr(),
               hintStyle: TextStyle(
                 color: customColors?.primaryTextColor.withAlpha(100),
               ),

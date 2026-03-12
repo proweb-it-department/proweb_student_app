@@ -50,7 +50,7 @@ class DownloadScreen extends StatelessWidget {
                     color: customColor?.primaryTextColor,
                   ),
                 ),
-                title: Text('Загрузки'),
+                title: Text('downloads.downloads_title'.tr()),
                 bottom: TabBar(
                   controller: tabController,
                   isScrollable: true,
