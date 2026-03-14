@@ -30,7 +30,7 @@ class SessionsLimitedList extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: ListView(
+      child: Column(
         children: [
           LogoAuthView(),
           SizedBox(height: 15),

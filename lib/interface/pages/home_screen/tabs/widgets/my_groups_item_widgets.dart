@@ -220,6 +220,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.max,
               children: [
                 IntrinsicHeight(
@@ -242,17 +243,31 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                           ? MainAxisAlignment.start
                           : MainAxisAlignment.spaceBetween,
                       children: [
-                        Material(
-                          color: Colors.transparent,
-                          child: CourseAvatar(
-                            icon: widget.myGroup.group!.course!.icon!,
-                            color: HexColor(
-                              widget.myGroup.group!.course!.color!,
+                        Row(
+                          spacing: 10,
+                          children: [
+                            Material(
+                              color: Colors.transparent,
+                              child: CourseAvatar(
+                                icon: widget.myGroup.group!.course!.icon!,
+                                color: HexColor(
+                                  widget.myGroup.group!.course!.color!,
+                                ),
+                                borderRadius: 70,
+                                padding: 10,
+                                size: 50,
+                              ),
                             ),
-                            borderRadius: 70,
-                            padding: 10,
-                            size: 50,
-                          ),
+                            Text('#${widget.myGroup.group!.id.toString()}', style: TextStyle(
+                              color: customColors?.primaryTextColor,
+                              shadows: [Shadow(
+                                color: Colors.black,
+                                blurRadius: 2
+                              )],
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),)
+                          ],
                         ),
                         SizedBox(width: 5),
                         if (block == false &&
@@ -296,19 +311,7 @@ class _MyGroupsItemWidgetsState extends State<MyGroupsItemWidgets> {
                   ),
                 ),
                 // SizedBox(height: 3),
-                Opacity(
-                  opacity: 0.7,
-                  child: Text(
-                    'education.group_id'.tr(
-                      namedArgs: {'id': widget.myGroup.group!.id.toString()},
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: customColors?.primaryTextColor,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
+                
                 SizedBox(height: 5),
                 Row(
                   children: [

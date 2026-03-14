@@ -94,6 +94,7 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^32.1.25
   shimmer_animation: ^2.1.0
   flutter_native_splash: 2.4.7
+  live_activities: ^2.4.7
   
 
 dev_dependencies:

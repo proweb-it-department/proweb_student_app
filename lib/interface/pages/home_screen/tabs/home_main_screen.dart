@@ -40,7 +40,7 @@ class HomeMainTab extends StatelessWidget {
         child: Material(
           color: customColors?.containerColor,
           child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
+            physics: ClampingScrollPhysics(),
             children: [
               Material(
                 color: customColors?.primaryBg,

@@ -45,7 +45,7 @@ class BottomNavBar extends StatelessWidget {
         child: AnimatedContainer(
           curve: Curves.easeInOut,
           duration: Duration(milliseconds: 300),
-          height: navBar.isOpen ? MediaQuery.of(context).size.height : 92,
+          height: navBar.isOpen ? MediaQuery.of(context).size.height : 92 + pb,
           padding: EdgeInsets.only(
             top: 10,
             bottom: 2 + (pb > 10 ? pb : 10),

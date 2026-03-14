@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:live_activities/live_activities.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
@@ -17,6 +18,10 @@ import 'package:proweb_student_app/utils/gi/injection_container.dart';
 
 class DownloadManager {
   FlutterLocalNotificationsPlugin? _notificationsPlugin;
+  final liveActivities = LiveActivities();
+
+  final Map<String, String> _downloadActivities = {};
+
   final List<String> slugs = [];
   String? stopedSlugs;
   final String baseDir = '/playlists';
@@ -34,8 +39,23 @@ class DownloadManager {
 
   final Set<String> _stopping = {};
 
-  void initNotifi(FlutterLocalNotificationsPlugin? notifi) {
+  Future<void> initNotifi(FlutterLocalNotificationsPlugin? notifi) async {
     _notificationsPlugin = notifi;
+    await initLiveActivities();
+  }
+
+  Future<void> initLiveActivities() async {
+    if (!Platform.isIOS) return;
+
+    final supported = await liveActivities.areActivitiesSupported();
+    if (!supported) return;
+
+    await liveActivities.init(
+      appGroupId: 'group.com.example.prowebStudentApp',
+      urlScheme: 'prowebstudentapp',
+    );
+
+    await liveActivities.endAllActivities();
   }
 
   Future<void> init(DownloadVideoBloc contextBloc) async {
@@ -348,6 +368,7 @@ class DownloadManager {
       }
       _activeIds.remove(data.slug);
       _stopping.remove(data.slug);
+      endDownloadActivity('video-$id');
     }
   }
 
@@ -432,19 +453,24 @@ class DownloadManager {
               ? FilePathAndroidBitmap(previewUrl)
               : null,
         );
-    final DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
-
+    startDownloadActivity(
+      id: 'video-$id',
+      progress: 0,
+      title: '${'video.notification_downloaded'.tr()} ${title ?? ''}',
+    );
     final notificationDetails = NotificationDetails(
       android: androidDetails,
-      iOS: iosDetails,
+      iOS: null,
     );
-    await _notificationsPlugin?.show(
-      id,
-      '${'video.notification_downloaded'.tr()} ${title ?? ''}',
-      'video.notification_pedding'.tr(),
+    if (!Platform.isIOS) {
+      await _notificationsPlugin?.show(
+        id,
+        '${'video.notification_downloaded'.tr()} ${title ?? ''}',
+        'video.notification_pedding'.tr(),
 
-      notificationDetails,
-    );
+        notificationDetails,
+      );
+    }
   }
 
   Future<void> _updateNotification(
@@ -474,25 +500,104 @@ class DownloadManager {
       largeIcon: previewUrl != null ? FilePathAndroidBitmap(previewUrl) : null,
     );
     final iosDetails = DarwinNotificationDetails(
-      presentAlert: true,
+      presentAlert: false,
       presentSound: false,
       presentBadge: false,
-      attachments: previewUrl != null
-          ? [DarwinNotificationAttachment(previewUrl)]
-          : null,
+
       subtitle: '${'video.notification_progress'.tr()} $progress%',
       threadIdentifier: 'download_video',
     );
-    final notificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
+    final notificationDetails = NotificationDetails(android: androidDetails);
+    updateDownloadActivity(
+      id: 'video-$id',
+      title: '${'video.notification_downloaded'.tr()} ${title ?? ''}',
+      progress: progress,
     );
-    await _notificationsPlugin?.show(
-      id,
-      '${'video.notification_downloaded'.tr()} ${title ?? ''}',
-      '${'video.notification_progress'.tr()} $progress%',
-      notificationDetails,
-    );
+    if (!Platform.isIOS) {
+      await _notificationsPlugin?.show(
+        id,
+        '${'video.notification_downloaded'.tr()} ${title ?? ''}',
+        '${'video.notification_progress'.tr()} $progress%',
+        notificationDetails,
+      );
+    }
+  }
+
+  Future<String?> startDownloadActivity({
+    required String id,
+    required String title,
+    required int progress,
+  }) async {
+    if (!Platform.isIOS) return null;
+
+    final supported = await liveActivities.areActivitiesSupported();
+    final enabled = await liveActivities.areActivitiesEnabled();
+
+    if (!supported || !enabled) {
+      print(
+        'Live Activities unavailable: supported=$supported enabled=$enabled',
+      );
+      return null;
+    }
+
+    final data = <String, dynamic>{
+      'title': title.toString(),
+      'progress': progress.clamp(0, 100),
+    };
+
+    try {
+      final activityId = await liveActivities.createActivity(
+        'download-$id',
+        data,
+        iOSEnableRemoteUpdates: false,
+      );
+
+      if (activityId != null) {
+        _downloadActivities[id] = activityId;
+      }
+      return activityId;
+    } catch (e, st) {
+      print('startDownloadActivity error: $e');
+      print(st);
+      return null;
+    }
+  }
+
+  Future<void> updateDownloadActivity({
+    required String id,
+    required String title,
+    required int progress,
+  }) async {
+    if (!Platform.isIOS) return;
+
+    final activityId = _downloadActivities[id];
+    if (activityId == null) return;
+
+    try {
+            await liveActivities.updateActivity(activityId, <String, dynamic>{
+        'title': title.toString(),
+        'progress': progress.clamp(0, 100),
+      });
+    } catch (e, st) {
+      print('updateDownloadActivity error: $e');
+      print(st);
+    }
+  }
+
+  Future<void> endDownloadActivity(String id) async {
+    if (!Platform.isIOS) return;
+
+    final activityId = _downloadActivities[id];
+    if (activityId == null) return;
+
+    try {
+      await liveActivities.endActivity(activityId);
+    } catch (e, st) {
+      print('endDownloadActivity error: $e');
+      print(st);
+    } finally {
+      _downloadActivities.remove(id);
+    }
   }
 
   Future<void> _stopedNotification({required int id}) async {
@@ -516,13 +621,16 @@ class DownloadManager {
       android: androidDetails,
       iOS: iosDetails,
     );
-
-    await _notificationsPlugin?.show(
-      id,
-      'video.notification_downloaded_stoped'.tr(),
-      'video.notification_downloaded_stoped'.tr(),
-      notificationDetails,
-    );
+    if (Platform.isAndroid) {
+      await _notificationsPlugin?.show(
+        id,
+        'video.notification_downloaded_stoped'.tr(),
+        'video.notification_downloaded_stoped'.tr(),
+        notificationDetails,
+      );
+    } else {
+      endDownloadActivity('video-$id');
+    }
   }
 
   Future<void> _completeNotification({required int id}) async {
