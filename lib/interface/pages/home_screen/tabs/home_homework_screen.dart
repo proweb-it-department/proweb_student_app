@@ -147,6 +147,7 @@ class _ListForGroupState extends State<ListForGroup> {
         notifier: notifier,
         child: ListView(
           controller: _scrollController,
+          physics: ClampingScrollPhysics(),
           children: [
             Ink(color: customColors?.primaryBg, child: SizedBox(height: 10)),
             Ink(

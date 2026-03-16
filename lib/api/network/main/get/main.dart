@@ -30,6 +30,7 @@ import 'package:proweb_student_app/models/my_purchases/my_purchases.dart';
 import 'package:proweb_student_app/models/my_purchases_service/my_purchases_service.dart';
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/my_reserv_master_class/my_reserv_master_class.dart';
+import 'package:proweb_student_app/models/my_statistic/my_statistic.dart';
 import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/models/poll_detail/poll_detail.dart';
@@ -1463,6 +1464,20 @@ class GetResponsesMain {
       final response = ApiResponse<Products>.fromJson(
         r,
         (data) => Products.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(results: (results) => results);
+    });
+    return data;
+  }
+
+  Future<MyStatistic?> myStatistic(int? groupId) async {
+    String path =
+        '/api/v1/groups/students/my-statistic/${groupId != null ? '?group_id=$groupId' : ''}';
+    final response = await sl<MainFetch>().get(path: path);
+    MyStatistic? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MyStatistic>.fromJson(
+        r,
+        (data) => MyStatistic.fromJson(data as Map<String, dynamic>),
       );
       return response.whenOrNull(results: (results) => results);
     });

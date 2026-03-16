@@ -38,7 +38,7 @@ import 'injection_container.config.dart';
 final sl = GetIt.instance;
 final cashDB = CacheDatabase();
 @InjectableInit()
-Future<void> configureDependencies() async => sl.init();
+Future<void> configureDependencies() => sl.init();
 
 @module
 abstract class AppModule {

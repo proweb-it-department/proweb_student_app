@@ -3,11 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
+import 'package:proweb_student_app/bloc/my_statistic/my_statistic_bloc.dart';
 import 'package:proweb_student_app/bloc/scheduled_student/scheduled_student_bloc.dart';
 import 'package:proweb_student_app/bloc/story_groups/story_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/home_groups_widget.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_schedule_widget.dart';
+import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_statistcs_widget.dart';
 
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/story_groups_view.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -29,9 +31,11 @@ class HomeMainTab extends StatelessWidget {
         onRefresh: () async {
           final blocstory = context.read<StoryGroupsBloc>();
           final blocgroups = context.read<MyGroupsBloc>();
+          final blocStat = context.read<MyStatisticBloc>();
           blocstory.add(
             StoryGroupsEvent.started(languageCode: context.locale.languageCode),
           );
+          blocStat.add(MyStatisticEvent.started());
           await blocstory.stream.first;
           blocgroups.add(MyGroupsEvent.started());
           await blocgroups.stream.first;
@@ -46,8 +50,13 @@ class HomeMainTab extends StatelessWidget {
                 color: customColors?.primaryBg,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [StoryGroupsView(), SizedBox(height: 20)],
+                  children: [StoryGroupsView(), SizedBox(height: 10)],
                 ),
+              ),
+              MyStatistcsWidget(),
+              Material(
+                color: customColors?.primaryBg,
+                child: SizedBox(height: 10),
               ),
               HomeGroupsWidget(),
               SizedBox(height: 20),
