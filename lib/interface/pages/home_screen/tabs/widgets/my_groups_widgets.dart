@@ -138,6 +138,8 @@ class _MyGroupsWidgetsState extends State<MyGroupsWidgets> {
                   _currentIndex = value;
                 });
               },
+              pageSnapping: false,
+              allowImplicitScrolling: true,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return Padding(

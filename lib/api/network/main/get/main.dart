@@ -10,6 +10,7 @@ import 'package:proweb_student_app/models/course_model/course_model.dart';
 import 'package:proweb_student_app/models/course_version_modal/course_version_model.dart';
 import 'package:proweb_student_app/models/coworking_info/coworking_info.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
+import 'package:proweb_student_app/models/cups/cups.dart';
 import 'package:proweb_student_app/models/feadbacks_page_item/feadbacks_page_item.dart';
 import 'package:proweb_student_app/models/global_comment/global_comment.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
@@ -57,6 +58,7 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
@@ -637,6 +639,26 @@ class GetResponsesMain {
             count: count,
             list: list,
           );
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<ResponseLazeList<Cups>?> cups(int? userId) async {
+    userId ??= sl<LocalData>().profile?.id;
+    if (userId == null) return null;
+    String path = '/api/v1/achievements/categories/users/$userId/';
+    final response = await sl<MainFetch>().get(path: path);
+    TalkerLogger().log(response);
+    ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<Cups>.fromJson(
+        r,
+        (data) => Cups.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<Cups>(count: count, list: list);
         },
       );
     });

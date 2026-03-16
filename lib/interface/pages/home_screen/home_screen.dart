@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proweb_student_app/bloc/cups/cups_bloc.dart';
 import 'package:proweb_student_app/bloc/my_statistic/my_statistic_bloc.dart';
 import 'package:proweb_student_app/interface/components/app_bar/app_bar.dart';
 import 'package:proweb_student_app/interface/components/tab_bar_pop_scope/tab_bar_pop_scope.dart';
@@ -18,9 +19,16 @@ class HomeScreen extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [HomeMainRoute(), HomeHomeworkRoute()],
       builder: (context, child, controller) {
-        return BlocProvider(
-          create: (context) =>
-              MyStatisticBloc()..add(MyStatisticEvent.started()),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  MyStatisticBloc()..add(MyStatisticEvent.started()),
+            ),
+            BlocProvider(
+              create: (context) => CupsBloc()..add(CupsEvent.started()),
+            ),
+          ],
           child: TabBarPopScope(
             mainPage: HomeMainRoute(),
             child: Scaffold(

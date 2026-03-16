@@ -51,7 +51,7 @@ class _LessonsListState extends State<LessonsList> {
     super.initState();
   }
 
-  changePage(int number) {
+  void changePage(int number) {
     setState(() {
       currentLesson = number;
     });

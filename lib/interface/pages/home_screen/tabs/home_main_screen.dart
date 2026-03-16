@@ -2,12 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:proweb_student_app/bloc/cups/cups_bloc.dart';
 import 'package:proweb_student_app/bloc/my_groups/my_groups_bloc.dart';
 import 'package:proweb_student_app/bloc/my_statistic/my_statistic_bloc.dart';
 import 'package:proweb_student_app/bloc/scheduled_student/scheduled_student_bloc.dart';
 import 'package:proweb_student_app/bloc/story_groups/story_groups_bloc.dart';
 import 'package:proweb_student_app/interface/components/md3_refresh_indicator/md3_refresh_indicator.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/home_groups_widget.dart';
+import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_cups.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_schedule_widget.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_statistcs_widget.dart';
 
@@ -32,9 +34,11 @@ class HomeMainTab extends StatelessWidget {
           final blocstory = context.read<StoryGroupsBloc>();
           final blocgroups = context.read<MyGroupsBloc>();
           final blocStat = context.read<MyStatisticBloc>();
+          final blocStatCups = context.read<CupsBloc>();
           blocstory.add(
             StoryGroupsEvent.started(languageCode: context.locale.languageCode),
           );
+          blocStatCups.add(CupsEvent.started());
           blocStat.add(MyStatisticEvent.started());
           await blocstory.stream.first;
           blocgroups.add(MyGroupsEvent.started());
@@ -54,6 +58,11 @@ class HomeMainTab extends StatelessWidget {
                 ),
               ),
               MyStatistcsWidget(),
+              Material(
+                color: customColors?.primaryBg,
+                child: SizedBox(height: 10),
+              ),
+              MyCups(),
               Material(
                 color: customColors?.primaryBg,
                 child: SizedBox(height: 10),

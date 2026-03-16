@@ -24,7 +24,7 @@ class MyStatistcsWidget extends StatelessWidget {
         builder: (context, state) {
           return ListView(
             physics: const BouncingScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 0),
             scrollDirection: Axis.horizontal,
             children: [
               MyScoreStatistic(
