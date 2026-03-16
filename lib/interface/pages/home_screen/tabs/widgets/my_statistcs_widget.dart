@@ -27,15 +27,15 @@ class MyStatistcsWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             scrollDirection: Axis.horizontal,
             children: [
-              MyAttendanceStatistic(
-                lessonNotVisitedCount: state.data.lessonNotVisitedCount ?? 0,
-                lessonVisitedCount: state.data.lessonVisitedCount ?? 0,
-              ),
-              gap,
               MyScoreStatistic(
                 studentMiddleRating: state.data.studentMiddleRating ?? '5',
                 homeworkNotSolvedCount: state.data.homeworkNotSolvedCount ?? 0,
                 homeworkSolvedCount: state.data.homeworkSolvedCount ?? 0,
+              ),
+              gap,
+              MyAttendanceStatistic(
+                lessonNotVisitedCount: state.data.lessonNotVisitedCount ?? 0,
+                lessonVisitedCount: state.data.lessonVisitedCount ?? 0,
               ),
               gap,
               MyWatchedStatistic(
@@ -83,177 +83,168 @@ class MyAttendanceStatistic extends StatelessWidget {
     final persent = size - horizontal - horizontal - gap;
     final visitePersent = persent * (visitedPersent / 100);
     final noVisitePersent = persent * (notVisitedPersent / 100);
-    return ClipRRect(
-      borderRadius: BorderRadiusGeometry.only(
-        topLeft: Radius.circular(22),
-        topRight: Radius.circular(0),
-        bottomLeft: Radius.circular(22),
-        bottomRight: Radius.circular(0),
+    return Container(
+      width: 400,
+      padding: EdgeInsets.only(
+        top: 20,
+        left: horizontal,
+        right: horizontal,
+        bottom: 10,
       ),
-      child: Container(
-        width: 400,
-        padding: EdgeInsets.only(
-          top: 20,
-          left: horizontal,
-          right: horizontal,
-          bottom: 10,
-        ),
-        height: double.infinity,
-        decoration: BoxDecoration(color: customColors?.containerColor),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 10,
-          children: [
-            TitleHeader('Посещаемость'),
-            Expanded(
-              child: Row(
-                spacing: 15,
-                children: [
-                  Row(
-                    spacing: gap,
-                    children: [
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                        height: double.infinity,
-                        width: visitePersent,
-                        decoration: BoxDecoration(
-                          color: HexColor('#4971FE'),
-                          borderRadius: BorderRadius.circular(22),
+      height: double.infinity,
+      decoration: BoxDecoration(color: customColors?.containerColor),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 10,
+        children: [
+          TitleHeader('Посещаемость'),
+          Expanded(
+            child: Row(
+              spacing: 15,
+              children: [
+                Row(
+                  spacing: gap,
+                  children: [
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      height: double.infinity,
+                      width: visitePersent,
+                      decoration: BoxDecoration(
+                        color: HexColor('#4971FE'),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: visitePersent <= 50
+                          ? null
+                          : AnimatedFlipCounter(
+                              value: visitedPersent,
+                              fractionDigits: 0,
+                              suffix: "%",
+                              duration: Duration(milliseconds: 500),
+                              textStyle: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
+                              ),
+                            ),
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 200),
+                      curve: Curves.easeInOut,
+                      height: double.infinity,
+                      width: noVisitePersent,
+
+                      child: DiagonalStripesBox(
+                        borderRadius: BorderRadius.circular(22),
+                        color1: customColors?.primaryBg ?? Colors.transparent,
+                        color2:
+                            customColors?.containerColor ?? Colors.transparent,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color:
+                                  customColors?.primaryBg ?? Colors.transparent,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(22),
+                          ),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: noVisitePersent <= 50
+                              ? null
+                              : AnimatedFlipCounter(
+                                  value: notVisitedPersent,
+                                  fractionDigits: 0,
+                                  suffix: "%",
+                                  duration: Duration(milliseconds: 500),
+                                  textStyle: TextStyle(
+                                    fontSize: 25,
+                                    color: customColors?.primaryTextColor,
+                                  ),
+                                ),
                         ),
-                        child: visitePersent <= 50
-                            ? null
-                            : AnimatedFlipCounter(
-                                value: visitedPersent,
-                                fractionDigits: 0,
-                                suffix: "%",
-                                duration: Duration(milliseconds: 500),
-                                textStyle: TextStyle(
-                                  fontSize: 25,
-                                  color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  spacing: 15,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 7,
+                      children: [
+                        Container(
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: HexColor('##4971FE'),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Посещено'),
+                            Text(
+                              '$lessonVisitedCount уроков',
+                              style: TextStyle(
+                                color: customColors?.primaryTextColor.withAlpha(
+                                  150,
                                 ),
                               ),
-                      ),
-                      AnimatedContainer(
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.easeInOut,
-                        height: double.infinity,
-                        width: noVisitePersent,
-
-                        child: DiagonalStripesBox(
-                          borderRadius: BorderRadius.circular(22),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 7,
+                      children: [
+                        DiagonalStripesBox(
+                          borderRadius: BorderRadius.circular(4),
+                          size: 2,
                           color1: customColors?.primaryBg ?? Colors.transparent,
                           color2:
                               customColors?.containerColor ??
                               Colors.transparent,
                           child: Container(
+                            width: 15,
+                            height: 15,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color:
                                     customColors?.primaryBg ??
                                     Colors.transparent,
-                                width: 2,
                               ),
-                              borderRadius: BorderRadius.circular(22),
                             ),
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: noVisitePersent <= 50
-                                ? null
-                                : AnimatedFlipCounter(
-                                    value: notVisitedPersent,
-                                    fractionDigits: 0,
-                                    suffix: "%",
-                                    duration: Duration(milliseconds: 500),
-                                    textStyle: TextStyle(
-                                      fontSize: 25,
-                                      color: customColors?.primaryTextColor,
-                                    ),
-                                  ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    spacing: 15,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 7,
-                        children: [
-                          Container(
-                            width: 15,
-                            height: 15,
-                            decoration: BoxDecoration(
-                              color: HexColor('##4971FE'),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Посещено'),
-                              Text(
-                                '$lessonVisitedCount уроков',
-                                style: TextStyle(
-                                  color: customColors?.primaryTextColor
-                                      .withAlpha(150),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        spacing: 7,
-                        children: [
-                          DiagonalStripesBox(
-                            borderRadius: BorderRadius.circular(4),
-                            size: 2,
-                            color1:
-                                customColors?.primaryBg ?? Colors.transparent,
-                            color2:
-                                customColors?.containerColor ??
-                                Colors.transparent,
-                            child: Container(
-                              width: 15,
-                              height: 15,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color:
-                                      customColors?.primaryBg ??
-                                      Colors.transparent,
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Пропущено'),
+                            Text(
+                              '$lessonNotVisitedCount уроков',
+                              style: TextStyle(
+                                color: customColors?.primaryTextColor.withAlpha(
+                                  150,
                                 ),
                               ),
                             ),
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text('Пропущено'),
-                              Text(
-                                '$lessonNotVisitedCount уроков',
-                                style: TextStyle(
-                                  color: customColors?.primaryTextColor
-                                      .withAlpha(150),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -458,154 +449,164 @@ class MyScoreStatistic extends StatelessWidget {
     final customColors = Theme.of(context).extension<CustomColors>();
     final middle = double.parse(studentMiddleRating).round();
     final persent = middle / 5;
-    return Container(
-      width: 300,
-      padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 10),
-      height: double.infinity,
-      decoration: BoxDecoration(color: customColors?.containerColor),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 10,
-        children: [
-          TitleHeader('Средняя оценка'),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 10,
-            children: [
-              Container(
-                width: 160,
-                height: 160,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: customColors?.primaryBg,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Stack(
-                  children: [
-                    CircularProgressIndicator(
-                      constraints: BoxConstraints(
-                        minHeight: 130,
-                        maxHeight: 130,
-                        maxWidth: 130,
-                        minWidth: 130,
-                      ),
-                      strokeWidth: 10,
-                      year2023: false,
-                      backgroundColor: customColors?.containerColor,
-                      color: HexColor('#4971FE'),
-                      value: persent,
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      child: Center(
-                        child: ScoreIcon(
-                          score: middle,
-                          child: Container(
-                            width: 70,
-                            height: 70,
-                            color: HexColor('#4971FE'),
-                            alignment: Alignment.center,
-                            child: AnimatedFlipCounter(
-                              value: middle,
-                              fractionDigits: 0,
-                              duration: Duration(milliseconds: 500),
-                              textStyle: TextStyle(
-                                fontSize: 40,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Column(
-                spacing: 15,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 7,
+    return ClipRRect(
+      borderRadius: BorderRadiusGeometry.only(
+        topLeft: Radius.circular(22),
+        topRight: Radius.circular(0),
+        bottomLeft: Radius.circular(22),
+        bottomRight: Radius.circular(0),
+      ),
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 10),
+        height: double.infinity,
+        decoration: BoxDecoration(color: customColors?.containerColor),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 10,
+          children: [
+            TitleHeader('Средняя оценка'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 10,
+              children: [
+                Container(
+                  width: 160,
+                  height: 160,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: customColors?.primaryBg,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Stack(
                     children: [
-                      Container(
-                        width: 15,
-                        height: 15,
-                        decoration: BoxDecoration(
-                          color: HexColor('##4971FE'),
-                          borderRadius: BorderRadius.circular(4),
+                      CircularProgressIndicator(
+                        constraints: BoxConstraints(
+                          minHeight: 130,
+                          maxHeight: 130,
+                          maxWidth: 130,
+                          minWidth: 130,
                         ),
+                        strokeWidth: 10,
+                        year2023: false,
+                        backgroundColor: customColors?.containerColor,
+                        color: HexColor('#4971FE'),
+                        value: persent,
                       ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text('$homeworkSolvedCount заданий'),
-                          Text(
-                            'Проверено',
-                            style: TextStyle(
-                              color: customColors?.primaryTextColor.withAlpha(
-                                150,
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: ScoreIcon(
+                            score: middle,
+                            child: Container(
+                              width: 70,
+                              height: 70,
+                              color: HexColor('#4971FE'),
+                              alignment: Alignment.center,
+                              child: AnimatedFlipCounter(
+                                value: middle,
+                                fractionDigits: 0,
+                                duration: Duration(milliseconds: 500),
+                                textStyle: TextStyle(
+                                  fontSize: 40,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 7,
-                    children: [
-                      DiagonalStripesBox(
-                        borderRadius: BorderRadius.circular(4),
-                        size: 2,
-                        color1: customColors?.primaryBg ?? Colors.transparent,
-                        color2:
-                            customColors?.containerColor ?? Colors.transparent,
-                        child: Container(
+                ),
+                Column(
+                  spacing: 15,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 7,
+                      children: [
+                        Container(
                           width: 15,
                           height: 15,
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              color:
-                                  customColors?.primaryBg ?? Colors.transparent,
-                            ),
+                            color: HexColor('##4971FE'),
+                            borderRadius: BorderRadius.circular(4),
                           ),
                         ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('$homeworkNotSolvedCount заданий'),
-                          Text(
-                            'Не проверено',
-                            style: TextStyle(
-                              color: customColors?.primaryTextColor.withAlpha(
-                                150,
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('$homeworkSolvedCount заданий'),
+                            Text(
+                              'Проверено',
+                              style: TextStyle(
+                                color: customColors?.primaryTextColor.withAlpha(
+                                  150,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 7,
+                      children: [
+                        DiagonalStripesBox(
+                          borderRadius: BorderRadius.circular(4),
+                          size: 2,
+                          color1: customColors?.primaryBg ?? Colors.transparent,
+                          color2:
+                              customColors?.containerColor ??
+                              Colors.transparent,
+                          child: Container(
+                            width: 15,
+                            height: 15,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color:
+                                    customColors?.primaryBg ??
+                                    Colors.transparent,
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('$homeworkNotSolvedCount заданий'),
+                            Text(
+                              'Не проверено',
+                              style: TextStyle(
+                                color: customColors?.primaryTextColor.withAlpha(
+                                  150,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
