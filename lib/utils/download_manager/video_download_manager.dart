@@ -499,14 +499,6 @@ class DownloadManager {
       ongoing: true,
       largeIcon: previewUrl != null ? FilePathAndroidBitmap(previewUrl) : null,
     );
-    final iosDetails = DarwinNotificationDetails(
-      presentAlert: false,
-      presentSound: false,
-      presentBadge: false,
-
-      subtitle: '${'video.notification_progress'.tr()} $progress%',
-      threadIdentifier: 'download_video',
-    );
     final notificationDetails = NotificationDetails(android: androidDetails);
     updateDownloadActivity(
       id: 'video-$id',
