@@ -157,16 +157,16 @@ class DioHTTP {
 }
 
 class GlobalPath {
-  // static final String auth = 'http://192.168.1.210:8000';
-  // static final String main = 'http://192.168.1.210:8010';
-  // static final String video = 'http://192.168.1.210:8030';
-  // static final String chat = 'http://192.168.1.210:8020';
-  // static final String chatWss = 'ws://192.168.1.210:8020/ws/main/';
-  static final String auth = 'https://auth.proweb.uz';
-  static final String main = 'https://main.proweb.uz';
-  static final String video = 'https://video.proweb.uz';
-  static final String chat = 'https://chat.proweb.uz';
-  static final String chatWss = 'wss://chat.proweb.uz/ws/main/';
+  static final String auth = 'http://192.168.1.210:8000';
+  static final String main = 'http://192.168.1.210:8010';
+  static final String video = 'http://192.168.1.210:8030';
+  static final String chat = 'http://192.168.1.210:8020';
+  static final String chatWss = 'ws://192.168.1.210:8020/ws/main/';
+  // static final String auth = 'https://auth.proweb.uz';
+  // static final String main = 'https://main.proweb.uz';
+  // static final String video = 'https://video.proweb.uz';
+  // static final String chat = 'https://chat.proweb.uz';
+  // static final String chatWss = 'wss://chat.proweb.uz/ws/main/';
   static Future<String> getCachePath() async {
     final dir = await getApplicationDocumentsDirectory();
     final path = '${dir.path}/dio_cache.sqlite';

@@ -41,7 +41,7 @@
 
     <application
         android:usesCleartextTraffic="true"
-        android:label="proweb_student_app"
+        android:label="MY PROWEB"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
 		android:roundIcon="@mipmap/ic_launcher_round"

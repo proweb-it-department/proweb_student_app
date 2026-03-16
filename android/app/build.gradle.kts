@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.proweb_student_app"
+    namespace = "com.prowebmy.uz"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.proweb_student_app"
+        applicationId = "com.prowebmy.uz"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
