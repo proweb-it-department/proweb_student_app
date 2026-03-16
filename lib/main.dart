@@ -27,12 +27,12 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  await sl<LocalizationService>().fetchAndCacheTranslations();
+  sl<LocalizationService>().fetchAndCacheTranslations();
   final notificationsPlugin = await flutterLocalNotification();
 
-  await sl<VideoRepository>().init();
-  await sl<FileRepository>().init();
-  await sl<NotificationManager>().init(notificationsPlugin);
+  sl<VideoRepository>().init();
+  sl<FileRepository>().init();
+  sl<NotificationManager>().init(notificationsPlugin);
   sl<DownloadManager>().initNotifi(notificationsPlugin);
   server();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();

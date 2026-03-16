@@ -627,7 +627,7 @@ class WeekItemDay extends StatelessWidget {
                 ? BorderRadiusGeometry.only(bottomLeft: Radius.circular(22))
                 : BorderRadius.zero,
             child: Container(
-              height: isTask ? 90 : 80,
+              height: isTask ? 100 : 80,
               decoration: BoxDecoration(color: customColors?.containerColor),
               child: SingleChildScrollView(
                 padding: EdgeInsets.all(5),
