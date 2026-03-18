@@ -228,7 +228,11 @@ class LocalData {
     try {
       final file = File(path);
       if (await file.exists()) {
-        await OpenFile.open(path);
+       await OpenFile.open(path, isIOSAppOpen: true);
+      } else {
+        Fluttertoast.showToast(
+        msg: errorMsg ?? 'global_data.error_open_file'.tr(),
+      );
       }
     } catch (e) {
       Fluttertoast.showToast(
@@ -263,8 +267,11 @@ class LocalData {
         }
       }
       if (filesGlob.isNotEmpty) {
+        final box = sl<NavigationService>().context?.findRenderObject() as RenderBox?;
+final origin = box!.localToGlobal(Offset.zero) & box.size;
+
         SharePlus.instance.share(
-          ShareParams(files: filesGlob, text: 'group_homework.share_file'.tr()),
+          ShareParams(files: filesGlob, sharePositionOrigin: origin, text: 'group_homework.share_file'.tr()),
         );
       }
     } catch (e) {

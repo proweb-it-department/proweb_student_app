@@ -58,7 +58,6 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;
@@ -650,7 +649,6 @@ class GetResponsesMain {
     if (userId == null) return null;
     String path = '/api/v1/achievements/categories/users/$userId/';
     final response = await sl<MainFetch>().get(path: path);
-    TalkerLogger().log(response);
     ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<Cups>.fromJson(
         r,

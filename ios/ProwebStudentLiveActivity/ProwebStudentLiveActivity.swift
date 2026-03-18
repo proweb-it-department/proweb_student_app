@@ -16,7 +16,7 @@ extension LiveActivitiesAppAttributes {
     }
 }
 
-private let sharedDefaults = UserDefaults(suiteName: "group.com.example.prowebStudentApp")!
+private let sharedDefaults = UserDefaults(suiteName: "group.com.proweb.mystudent")!
 
 struct ProwebStudentLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {

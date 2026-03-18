@@ -11,7 +11,6 @@ import 'package:proweb_student_app/interface/components/md3_circule_indicator/md
 import 'package:proweb_student_app/models/course_model/course_model.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 @RoutePage()
 class CourseMainPageScreen extends StatelessWidget {
@@ -56,7 +55,6 @@ class CourseScafold extends StatelessWidget {
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>();
     final colorString = course.color;
-    TalkerLogger().log(customColors?.brightness);
     Color color =
         (colorString == null
             ? customColors?.primaryBg
