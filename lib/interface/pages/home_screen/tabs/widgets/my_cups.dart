@@ -7,7 +7,6 @@ import 'package:proweb_student_app/models/cups/cups.dart';
 import 'package:proweb_student_app/utils/svg_clipper/path_svg_shape.dart';
 import 'package:proweb_student_app/utils/svg_clipper/svg_clipper.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 class MyCups extends StatelessWidget {
   const MyCups({super.key});

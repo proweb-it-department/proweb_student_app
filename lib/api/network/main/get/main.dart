@@ -650,7 +650,6 @@ class GetResponsesMain {
     if (userId == null) return null;
     String path = '/api/v1/achievements/categories/users/$userId/';
     final response = await sl<MainFetch>().get(path: path);
-    TalkerLogger().log(response);
     ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<Cups>.fromJson(
         r,
