@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.example.prowebStudentApp</string>
+		<string>group.com.proweb.mystudent</string>
 	</array>
 </dict>
 </plist>

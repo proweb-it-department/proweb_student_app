@@ -58,7 +58,6 @@ import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
 import 'package:proweb_student_app/utils/user_list/user_list.dart';
-import 'package:talker_logger/talker_logger.dart';
 
 typedef MapHomework = TsMap<String, List<HomeworkStudentRelationGroup>>;
 typedef DataHomeHomework = ResponseLazeMap<MapHomework>;

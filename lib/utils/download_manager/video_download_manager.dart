@@ -51,7 +51,7 @@ class DownloadManager {
     if (!supported) return;
 
     await liveActivities.init(
-      appGroupId: 'group.com.example.prowebStudentApp',
+      appGroupId: 'group.com.proweb.mystudent',
       urlScheme: 'prowebstudentapp',
     );
 
