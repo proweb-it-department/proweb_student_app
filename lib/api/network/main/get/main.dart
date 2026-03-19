@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/models/achievements_cup/achievements_cup.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
 import 'package:proweb_student_app/models/branche/branche.dart';
 import 'package:proweb_student_app/models/category_product/category_product.dart';
@@ -648,6 +649,23 @@ class GetResponsesMain {
     userId ??= sl<LocalData>().profile?.id;
     if (userId == null) return null;
     String path = '/api/v1/achievements/categories/users/$userId/';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<Cups>.fromJson(
+        r,
+        (data) => Cups.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, list) {
+          return ResponseLazeList<Cups>(count: count, list: list);
+        },
+      );
+    });
+    return data;
+  }
+
+  Future<ResponseLazeList<AchievementsCup>?> achievements(int cupId) async {
+    String path = '/api/v1/achievements/categories/$cupId/achievements/my/';
     final response = await sl<MainFetch>().get(path: path);
     ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
       final response = ApiResponse<Cups>.fromJson(

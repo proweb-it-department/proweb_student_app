@@ -19,16 +19,9 @@ class HomeScreen extends StatelessWidget {
     return AutoTabsRouter.tabBar(
       routes: [HomeMainRoute(), HomeHomeworkRoute()],
       builder: (context, child, controller) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) =>
-                  MyStatisticBloc()..add(MyStatisticEvent.started()),
-            ),
-            BlocProvider(
-              create: (context) => CupsBloc()..add(CupsEvent.started()),
-            ),
-          ],
+        return BlocProvider(
+          create: (context) =>
+              MyStatisticBloc()..add(MyStatisticEvent.started()),
           child: TabBarPopScope(
             mainPage: HomeMainRoute(),
             child: Scaffold(

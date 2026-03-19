@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/course_version/course_version_bloc.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
+import 'package:proweb_student_app/bloc/my_statistic/my_statistic_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/admin_notification.dart';
@@ -12,6 +13,7 @@ import 'package:proweb_student_app/interface/pages/group/main_group_features/gro
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/group_course_widget.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/group_type_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/main_group_user.dart';
+import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_statistcs_widget.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
@@ -72,8 +74,8 @@ class GroupInfoContent extends StatelessWidget {
         padding: EdgeInsets.only(
           bottom: bottom + 10,
           top: 10,
-          left: 8,
-          right: 8,
+          left: 0,
+          right: 0,
         ),
         children: [
           if (notofication != null)
@@ -88,6 +90,14 @@ class GroupInfoContent extends StatelessWidget {
             ),
           if (group.course?.color != null && group.course?.icon != null)
             SizedBox(height: 12),
+          if (group.id != null)
+            BlocProvider(
+              create: (context) =>
+                  MyStatisticBloc()
+                    ..add(MyStatisticEvent.started(groupId: group.id)),
+              child: MyStatistcsWidget(),
+            ),
+          if (group.id != null) SizedBox(height: 12),
           if (group.mainAdmin?.user != null || group.mainTeacher?.user != null)
             MainGroupUser(admin: group.mainAdmin, teacher: group.mainTeacher),
           if (group.mainAdmin?.user != null || group.mainTeacher?.user != null)

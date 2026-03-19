@@ -88,6 +88,7 @@ class CourseModules extends StatelessWidget {
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 backgroundColor: customColors?.containerColor,
                 collapsedBackgroundColor: customColors?.containerColor,
+                expandedAlignment: Alignment.topLeft,
                 children: [
                   Padding(
                     padding: EdgeInsets.all(10),

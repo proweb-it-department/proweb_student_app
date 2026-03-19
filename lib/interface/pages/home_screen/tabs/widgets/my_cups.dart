@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,12 +43,25 @@ class MyCups extends StatelessWidget {
                   CupsStateLoad() => [],
                   CupsStateComplited(cups: final cups) => cups.list,
                 };
+                bool isAlert = false;
+                if (cups.isNotEmpty) {
+                  for (var element in cups) {
+                    if (element.rewardAvailableForAchievement == true) {
+                      isAlert = true;
+                    }
+                    if (isAlert) break;
+                  }
+                }
                 return Material(
                   borderOnForeground: true,
                   color: Colors.transparent,
                   borderRadius: BorderRadius.circular(16),
                   child: InkWell(
-                    onTap: cups.isEmpty ? null : () {},
+                    onTap: cups.isEmpty
+                        ? null
+                        : () {
+                            context.router.navigatePath('/achievement');
+                          },
                     borderRadius: BorderRadius.circular(16),
                     child: Ink(
                       padding: EdgeInsets.symmetric(horizontal: 9, vertical: 7),
@@ -122,15 +136,39 @@ class MyCups extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            CupsStateComplited(cups: _) => GoPage(
-                              child: Container(
-                                width: 45,
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: customColors?.primaryBg,
+                            CupsStateComplited(cups: _) => Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                GoPage(
+                                  child: Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      color: customColors?.primaryBg,
+                                    ),
+                                    child: Icon(Icons.chevron_right_rounded),
+                                  ),
                                 ),
-                                child: Icon(Icons.chevron_right_rounded),
-                              ),
+                                if (isAlert)
+                                  Positioned(
+                                    top: -3,
+                                    right: -5,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: 22,
+                                      height: 22,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: customColors?.warningFill,
+                                      ),
+                                      child: Icon(
+                                        Icons.check,
+                                        size: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                           },
                         ],

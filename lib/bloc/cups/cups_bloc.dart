@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
+import 'package:proweb_student_app/models/achievements_cup/achievements_cup.dart';
 import 'package:proweb_student_app/models/cups/cups.dart';
 import 'package:proweb_student_app/models/response_laze_list.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -27,8 +28,26 @@ class CupsBloc extends Bloc<CupsEvent, CupsState> {
         );
       }
 
+      achievementsGet(int cupId) async {
+        ResponseLazeList<Cups>? cups = state.whenOrNull(
+          complited: (cups, _, _) => cups,
+        );
+
+        final main = sl<GetResponsesMain>();
+
+        if (cups == null) {
+          emit(CupsState.load());
+          final response = await main.cups(null);
+          cups = ResponseLazeList(
+            count: response?.count ?? 0,
+            list: response?.list ?? [],
+          );
+        }
+      }
+
       await switch (event) {
         _Started(userId: final userId) => started(userId),
+        _Achievements(cupId: final cupId) => achievementsGet(cupId),
       };
     });
   }

@@ -193,6 +193,15 @@ class AppRouter extends RootStackRouter {
       },
     ),
     CustomRoute(
+      path: '/achievement',
+      page: MyCupsRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
+    ),
+    CustomRoute(
       path: '/email',
       page: EmailRoute.page,
       guards: [_AuthGuard()],

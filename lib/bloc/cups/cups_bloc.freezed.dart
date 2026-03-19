@@ -14,61 +14,30 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CupsEvent {
 
- int? get userId;
-/// Create a copy of CupsEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CupsEventCopyWith<CupsEvent> get copyWith => _$CupsEventCopyWithImpl<CupsEvent>(this as CupsEvent, _$identity);
+
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CupsEvent&&(identical(other.userId, userId) || other.userId == userId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CupsEvent);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId);
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'CupsEvent(userId: $userId)';
+  return 'CupsEvent()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $CupsEventCopyWith<$Res>  {
-  factory $CupsEventCopyWith(CupsEvent value, $Res Function(CupsEvent) _then) = _$CupsEventCopyWithImpl;
-@useResult
-$Res call({
- int? userId
-});
-
-
-
-
-}
-/// @nodoc
-class _$CupsEventCopyWithImpl<$Res>
-    implements $CupsEventCopyWith<$Res> {
-  _$CupsEventCopyWithImpl(this._self, this._then);
-
-  final CupsEvent _self;
-  final $Res Function(CupsEvent) _then;
-
-/// Create a copy of CupsEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userId = freezed,}) {
-  return _then(_self.copyWith(
-userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int?,
-  ));
-}
-
+class $CupsEventCopyWith<$Res>  {
+$CupsEventCopyWith(CupsEvent _, $Res Function(CupsEvent) __);
 }
 
 
@@ -86,11 +55,12 @@ extension CupsEventPatterns on CupsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Achievements value)?  cups,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _Achievements() when cups != null:
+return cups(_that);case _:
   return orElse();
 
 }
@@ -108,11 +78,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Achievements value)  cups,}){
 final _that = this;
 switch (_that) {
 case _Started():
-return started(_that);}
+return started(_that);case _Achievements():
+return cups(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -126,11 +97,12 @@ return started(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Achievements value)?  cups,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _Achievements() when cups != null:
+return cups(_that);case _:
   return null;
 
 }
@@ -147,10 +119,11 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,TResult Function( int cupId)?  cups,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that.userId);case _:
+return started(_that.userId);case _Achievements() when cups != null:
+return cups(_that.cupId);case _:
   return orElse();
 
 }
@@ -168,10 +141,11 @@ return started(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,required TResult Function( int cupId)  cups,}) {final _that = this;
 switch (_that) {
 case _Started():
-return started(_that.userId);}
+return started(_that.userId);case _Achievements():
+return cups(_that.cupId);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -185,10 +159,11 @@ return started(_that.userId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,TResult? Function( int cupId)?  cups,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that.userId);case _:
+return started(_that.userId);case _Achievements() when cups != null:
+return cups(_that.cupId);case _:
   return null;
 
 }
@@ -203,11 +178,11 @@ class _Started implements CupsEvent {
   const _Started({this.userId});
   
 
-@override final  int? userId;
+ final  int? userId;
 
 /// Create a copy of CupsEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 _$StartedCopyWith<_Started> get copyWith => __$StartedCopyWithImpl<_Started>(this, _$identity);
 
@@ -233,7 +208,7 @@ String toString() {
 /// @nodoc
 abstract mixin class _$StartedCopyWith<$Res> implements $CupsEventCopyWith<$Res> {
   factory _$StartedCopyWith(_Started value, $Res Function(_Started) _then) = __$StartedCopyWithImpl;
-@override @useResult
+@useResult
 $Res call({
  int? userId
 });
@@ -252,10 +227,76 @@ class __$StartedCopyWithImpl<$Res>
 
 /// Create a copy of CupsEvent
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userId = freezed,}) {
+@pragma('vm:prefer-inline') $Res call({Object? userId = freezed,}) {
   return _then(_Started(
 userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _Achievements implements CupsEvent {
+  const _Achievements({required this.cupId});
+  
+
+ final  int cupId;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AchievementsCopyWith<_Achievements> get copyWith => __$AchievementsCopyWithImpl<_Achievements>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Achievements&&(identical(other.cupId, cupId) || other.cupId == cupId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,cupId);
+
+@override
+String toString() {
+  return 'CupsEvent.cups(cupId: $cupId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AchievementsCopyWith<$Res> implements $CupsEventCopyWith<$Res> {
+  factory _$AchievementsCopyWith(_Achievements value, $Res Function(_Achievements) _then) = __$AchievementsCopyWithImpl;
+@useResult
+$Res call({
+ int cupId
+});
+
+
+
+
+}
+/// @nodoc
+class __$AchievementsCopyWithImpl<$Res>
+    implements _$AchievementsCopyWith<$Res> {
+  __$AchievementsCopyWithImpl(this._self, this._then);
+
+  final _Achievements _self;
+  final $Res Function(_Achievements) _then;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? cupId = null,}) {
+  return _then(_Achievements(
+cupId: null == cupId ? _self.cupId : cupId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -370,11 +411,11 @@ return complited(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  load,TResult Function( ResponseLazeList<Cups> cups)?  complited,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  load,TResult Function( ResponseLazeList<Cups> cups,  ResponseLazeList<AchievementsCup>? achievements,  bool? achievementsLoad)?  complited,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CupsStateLoad() when load != null:
 return load();case CupsStateComplited() when complited != null:
-return complited(_that.cups);case _:
+return complited(_that.cups,_that.achievements,_that.achievementsLoad);case _:
   return orElse();
 
 }
@@ -392,11 +433,11 @@ return complited(_that.cups);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  load,required TResult Function( ResponseLazeList<Cups> cups)  complited,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  load,required TResult Function( ResponseLazeList<Cups> cups,  ResponseLazeList<AchievementsCup>? achievements,  bool? achievementsLoad)  complited,}) {final _that = this;
 switch (_that) {
 case CupsStateLoad():
 return load();case CupsStateComplited():
-return complited(_that.cups);}
+return complited(_that.cups,_that.achievements,_that.achievementsLoad);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -410,11 +451,11 @@ return complited(_that.cups);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  load,TResult? Function( ResponseLazeList<Cups> cups)?  complited,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  load,TResult? Function( ResponseLazeList<Cups> cups,  ResponseLazeList<AchievementsCup>? achievements,  bool? achievementsLoad)?  complited,}) {final _that = this;
 switch (_that) {
 case CupsStateLoad() when load != null:
 return load();case CupsStateComplited() when complited != null:
-return complited(_that.cups);case _:
+return complited(_that.cups,_that.achievements,_that.achievementsLoad);case _:
   return null;
 
 }
@@ -458,10 +499,12 @@ String toString() {
 
 
 class CupsStateComplited implements CupsState {
-  const CupsStateComplited({required this.cups});
+  const CupsStateComplited({required this.cups, this.achievements, this.achievementsLoad});
   
 
  final  ResponseLazeList<Cups> cups;
+ final  ResponseLazeList<AchievementsCup>? achievements;
+ final  bool? achievementsLoad;
 
 /// Create a copy of CupsState
 /// with the given fields replaced by the non-null parameter values.
@@ -473,16 +516,16 @@ $CupsStateComplitedCopyWith<CupsStateComplited> get copyWith => _$CupsStateCompl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CupsStateComplited&&(identical(other.cups, cups) || other.cups == cups));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CupsStateComplited&&(identical(other.cups, cups) || other.cups == cups)&&(identical(other.achievements, achievements) || other.achievements == achievements)&&(identical(other.achievementsLoad, achievementsLoad) || other.achievementsLoad == achievementsLoad));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,cups);
+int get hashCode => Object.hash(runtimeType,cups,achievements,achievementsLoad);
 
 @override
 String toString() {
-  return 'CupsState.complited(cups: $cups)';
+  return 'CupsState.complited(cups: $cups, achievements: $achievements, achievementsLoad: $achievementsLoad)';
 }
 
 
@@ -493,7 +536,7 @@ abstract mixin class $CupsStateComplitedCopyWith<$Res> implements $CupsStateCopy
   factory $CupsStateComplitedCopyWith(CupsStateComplited value, $Res Function(CupsStateComplited) _then) = _$CupsStateComplitedCopyWithImpl;
 @useResult
 $Res call({
- ResponseLazeList<Cups> cups
+ ResponseLazeList<Cups> cups, ResponseLazeList<AchievementsCup>? achievements, bool? achievementsLoad
 });
 
 
@@ -510,10 +553,12 @@ class _$CupsStateComplitedCopyWithImpl<$Res>
 
 /// Create a copy of CupsState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? cups = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? cups = null,Object? achievements = freezed,Object? achievementsLoad = freezed,}) {
   return _then(CupsStateComplited(
 cups: null == cups ? _self.cups : cups // ignore: cast_nullable_to_non_nullable
-as ResponseLazeList<Cups>,
+as ResponseLazeList<Cups>,achievements: freezed == achievements ? _self.achievements : achievements // ignore: cast_nullable_to_non_nullable
+as ResponseLazeList<AchievementsCup>?,achievementsLoad: freezed == achievementsLoad ? _self.achievementsLoad : achievementsLoad // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
