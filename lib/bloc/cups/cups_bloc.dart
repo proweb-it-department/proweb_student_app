@@ -28,26 +28,70 @@ class CupsBloc extends Bloc<CupsEvent, CupsState> {
         );
       }
 
-      achievementsGet(int cupId) async {
+      achievementsGet(int? cupId) async {
         ResponseLazeList<Cups>? cups = state.whenOrNull(
           complited: (cups, _, _) => cups,
         );
-
-        final main = sl<GetResponsesMain>();
-
-        if (cups == null) {
+        if (cupId == null) {
           emit(CupsState.load());
-          final response = await main.cups(null);
-          cups = ResponseLazeList(
-            count: response?.count ?? 0,
-            list: response?.list ?? [],
+        } else {
+          emit(
+            CupsState.complited(
+              cups: cups ?? ResponseLazeList(count: 0, list: []),
+              achievementsLoad: true,
+            ),
           );
         }
+        final main = sl<GetResponsesMain>();
+        if (cupId == null) {
+          cups ??= await main.cups(null);
+          if (cups == null) return;
+          cupId ??= cups.list.firstOrNull?.id;
+        }
+        if (cupId == null) return;
+        final achievements = await main.achievements(cupId);
+        if (achievements == null) return;
+        final achevementsList = [...achievements.list];
+        achevementsList.sort((a, b) {
+          int getCategory(AchievementsCup item) {
+            final users = item.users;
+            final user = (users != null && users.isNotEmpty)
+                ? users.first
+                : null;
+
+            if (user?.isAchieved == true && user?.isRewardReceived != true) {
+              return 0;
+            }
+            if (user?.isRewardReceived == true) return 2;
+            return 1;
+          }
+
+          final aCategory = getCategory(a);
+          final bCategory = getCategory(b);
+
+          final categoryCompare = aCategory.compareTo(bCategory);
+          if (categoryCompare != 0) return categoryCompare;
+
+          return (a.targetCount ?? 0).compareTo(b.targetCount ?? 0);
+        });
+
+        emit(
+          CupsState.complited(
+            cups: ResponseLazeList(
+              count: cups?.count ?? 0,
+              list: [...(cups?.list ?? [])],
+            ),
+            achievements: ResponseLazeList(
+              count: achievements.count,
+              list: [...achevementsList],
+            ),
+          ),
+        );
       }
 
       await switch (event) {
-        _Started(userId: final userId) => started(userId),
-        _Achievements(cupId: final cupId) => achievementsGet(cupId),
+        _Started(userId: final userId) => await started(userId),
+        _Achievements(cupId: final cupId) => await achievementsGet(cupId),
       };
     });
   }

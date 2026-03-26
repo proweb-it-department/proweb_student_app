@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:proweb_student_app/models/cups/cups.dart';
 part 'achievements_cup.freezed.dart';
 part 'achievements_cup.g.dart';
 
@@ -7,8 +8,8 @@ part 'achievements_cup.g.dart';
 abstract class AchievementsCup with _$AchievementsCup {
   const factory AchievementsCup({
     @JsonKey(name: 'id') int? id,
-    @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'description') String? description,
+    @JsonKey(name: 'name') CupName? name,
+    @JsonKey(name: 'description') CupName? description,
     @JsonKey(name: 'icon') String? icon,
     @JsonKey(name: 'target_count') int? targetCount,
     @JsonKey(name: 'is_active') bool? isActive,

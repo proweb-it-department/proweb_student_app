@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AchievementsCup implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'description') String? get description;@JsonKey(name: 'icon') String? get icon;@JsonKey(name: 'target_count') int? get targetCount;@JsonKey(name: 'is_active') bool? get isActive;@JsonKey(name: 'action_type') String? get actionType;@JsonKey(name: 'progress_type') String? get progressType;@JsonKey(name: 'category_id') int? get categoryId;@JsonKey(name: 'coins') int? get coins;@JsonKey(name: 'users') List<AchievementsCupUsers>? get users;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') CupName? get name;@JsonKey(name: 'description') CupName? get description;@JsonKey(name: 'icon') String? get icon;@JsonKey(name: 'target_count') int? get targetCount;@JsonKey(name: 'is_active') bool? get isActive;@JsonKey(name: 'action_type') String? get actionType;@JsonKey(name: 'progress_type') String? get progressType;@JsonKey(name: 'category_id') int? get categoryId;@JsonKey(name: 'coins') int? get coins;@JsonKey(name: 'users') List<AchievementsCupUsers>? get users;
 /// Create a copy of AchievementsCup
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,11 +54,11 @@ abstract mixin class $AchievementsCupCopyWith<$Res>  {
   factory $AchievementsCupCopyWith(AchievementsCup value, $Res Function(AchievementsCup) _then) = _$AchievementsCupCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'target_count') int? targetCount,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'action_type') String? actionType,@JsonKey(name: 'progress_type') String? progressType,@JsonKey(name: 'category_id') int? categoryId,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'users') List<AchievementsCupUsers>? users
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'target_count') int? targetCount,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'action_type') String? actionType,@JsonKey(name: 'progress_type') String? progressType,@JsonKey(name: 'category_id') int? categoryId,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'users') List<AchievementsCupUsers>? users
 });
 
 
-
+$CupNameCopyWith<$Res>? get name;$CupNameCopyWith<$Res>? get description;
 
 }
 /// @nodoc
@@ -75,8 +75,8 @@ class _$AchievementsCupCopyWithImpl<$Res>
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as CupName?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as CupName?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String?,targetCount: freezed == targetCount ? _self.targetCount : targetCount // ignore: cast_nullable_to_non_nullable
 as int?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,31 @@ as int?,users: freezed == users ? _self.users : users // ignore: cast_nullable_t
 as List<AchievementsCupUsers>?,
   ));
 }
+/// Create a copy of AchievementsCup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CupNameCopyWith<$Res>? get name {
+    if (_self.name == null) {
+    return null;
+  }
 
+  return $CupNameCopyWith<$Res>(_self.name!, (value) {
+    return _then(_self.copyWith(name: value));
+  });
+}/// Create a copy of AchievementsCup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CupNameCopyWith<$Res>? get description {
+    if (_self.description == null) {
+    return null;
+  }
+
+  return $CupNameCopyWith<$Res>(_self.description!, (value) {
+    return _then(_self.copyWith(description: value));
+  });
+}
 }
 
 
@@ -169,7 +193,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AchievementsCup() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.targetCount,_that.isActive,_that.actionType,_that.progressType,_that.categoryId,_that.coins,_that.users);case _:
@@ -190,7 +214,7 @@ return $default(_that.id,_that.name,_that.description,_that.icon,_that.targetCou
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)  $default,) {final _that = this;
 switch (_that) {
 case _AchievementsCup():
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.targetCount,_that.isActive,_that.actionType,_that.progressType,_that.categoryId,_that.coins,_that.users);case _:
@@ -210,7 +234,7 @@ return $default(_that.id,_that.name,_that.description,_that.icon,_that.targetCou
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'description')  String? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'target_count')  int? targetCount, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'action_type')  String? actionType, @JsonKey(name: 'progress_type')  String? progressType, @JsonKey(name: 'category_id')  int? categoryId, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'users')  List<AchievementsCupUsers>? users)?  $default,) {final _that = this;
 switch (_that) {
 case _AchievementsCup() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.targetCount,_that.isActive,_that.actionType,_that.progressType,_that.categoryId,_that.coins,_that.users);case _:
@@ -229,8 +253,8 @@ class _AchievementsCup with DiagnosticableTreeMixin implements AchievementsCup {
   factory _AchievementsCup.fromJson(Map<String, dynamic> json) => _$AchievementsCupFromJson(json);
 
 @override@JsonKey(name: 'id') final  int? id;
-@override@JsonKey(name: 'name') final  String? name;
-@override@JsonKey(name: 'description') final  String? description;
+@override@JsonKey(name: 'name') final  CupName? name;
+@override@JsonKey(name: 'description') final  CupName? description;
 @override@JsonKey(name: 'icon') final  String? icon;
 @override@JsonKey(name: 'target_count') final  int? targetCount;
 @override@JsonKey(name: 'is_active') final  bool? isActive;
@@ -287,11 +311,11 @@ abstract mixin class _$AchievementsCupCopyWith<$Res> implements $AchievementsCup
   factory _$AchievementsCupCopyWith(_AchievementsCup value, $Res Function(_AchievementsCup) _then) = __$AchievementsCupCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'description') String? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'target_count') int? targetCount,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'action_type') String? actionType,@JsonKey(name: 'progress_type') String? progressType,@JsonKey(name: 'category_id') int? categoryId,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'users') List<AchievementsCupUsers>? users
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'target_count') int? targetCount,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'action_type') String? actionType,@JsonKey(name: 'progress_type') String? progressType,@JsonKey(name: 'category_id') int? categoryId,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'users') List<AchievementsCupUsers>? users
 });
 
 
-
+@override $CupNameCopyWith<$Res>? get name;@override $CupNameCopyWith<$Res>? get description;
 
 }
 /// @nodoc
@@ -308,8 +332,8 @@ class __$AchievementsCupCopyWithImpl<$Res>
   return _then(_AchievementsCup(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as CupName?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as CupName?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as String?,targetCount: freezed == targetCount ? _self.targetCount : targetCount // ignore: cast_nullable_to_non_nullable
 as int?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool?,actionType: freezed == actionType ? _self.actionType : actionType // ignore: cast_nullable_to_non_nullable
@@ -321,7 +345,31 @@ as List<AchievementsCupUsers>?,
   ));
 }
 
+/// Create a copy of AchievementsCup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CupNameCopyWith<$Res>? get name {
+    if (_self.name == null) {
+    return null;
+  }
 
+  return $CupNameCopyWith<$Res>(_self.name!, (value) {
+    return _then(_self.copyWith(name: value));
+  });
+}/// Create a copy of AchievementsCup
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CupNameCopyWith<$Res>? get description {
+    if (_self.description == null) {
+    return null;
+  }
+
+  return $CupNameCopyWith<$Res>(_self.description!, (value) {
+    return _then(_self.copyWith(description: value));
+  });
+}
 }
 
 

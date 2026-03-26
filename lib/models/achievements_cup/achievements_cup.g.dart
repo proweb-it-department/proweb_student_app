@@ -9,8 +9,12 @@ part of 'achievements_cup.dart';
 _AchievementsCup _$AchievementsCupFromJson(Map<String, dynamic> json) =>
     _AchievementsCup(
       id: (json['id'] as num?)?.toInt(),
-      name: json['name'] as String?,
-      description: json['description'] as String?,
+      name: json['name'] == null
+          ? null
+          : CupName.fromJson(json['name'] as Map<String, dynamic>),
+      description: json['description'] == null
+          ? null
+          : CupName.fromJson(json['description'] as Map<String, dynamic>),
       icon: json['icon'] as String?,
       targetCount: (json['target_count'] as num?)?.toInt(),
       isActive: json['is_active'] as bool?,

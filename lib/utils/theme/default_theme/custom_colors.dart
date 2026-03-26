@@ -76,6 +76,9 @@ class CustomColors extends ThemeExtension<CustomColors> {
   final Color videoBuffer;
   final Color videoBg;
   final Color containerColorOpacity;
+  final Color achievent;
+  final Color achieventActive;
+  final Color achieventContainer;
   final SystemUiOverlayStyle systemOverlayStyle;
   final Brightness brightness;
 
@@ -156,6 +159,9 @@ class CustomColors extends ThemeExtension<CustomColors> {
     required this.containerColorOpacity,
     required this.systemOverlayStyle,
     required this.brightness,
+    required this.achievent,
+    required this.achieventActive,
+    required this.achieventContainer,
   });
 
   @override

@@ -667,14 +667,14 @@ class GetResponsesMain {
   Future<ResponseLazeList<AchievementsCup>?> achievements(int cupId) async {
     String path = '/api/v1/achievements/categories/$cupId/achievements/my/';
     final response = await sl<MainFetch>().get(path: path);
-    ResponseLazeList<Cups>? data = response.fold((l) => null, (r) {
-      final response = ApiResponse<Cups>.fromJson(
+    ResponseLazeList<AchievementsCup>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<AchievementsCup>.fromJson(
         r,
-        (data) => Cups.fromJson(data as Map<String, dynamic>),
+        (data) => AchievementsCup.fromJson(data as Map<String, dynamic>),
       );
       return response.whenOrNull(
         lazylist: (count, list) {
-          return ResponseLazeList<Cups>(count: count, list: list);
+          return ResponseLazeList<AchievementsCup>(count: count, list: list);
         },
       );
     });

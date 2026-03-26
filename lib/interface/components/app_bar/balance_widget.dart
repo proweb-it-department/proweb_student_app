@@ -9,6 +9,7 @@ import 'package:proweb_student_app/bloc/payments_provider/payments_provider_bloc
 import 'package:proweb_student_app/interface/components/app_bar/top_up_balance.dart';
 import 'package:proweb_student_app/interface/components/list_tile_builder.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
+import 'package:proweb_student_app/interface/components/pro_coin_icon/pro_coin_icon.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
 import 'package:proweb_student_app/router/auto_router.gr.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
@@ -469,7 +470,7 @@ class BalanceView extends StatelessWidget {
               tileColor: customColors?.primaryBg,
               onTap: onTap,
               splashColor: customColors?.primaryBgOp,
-              leading: SvgPicture.asset('assets/images/procoin.svg', width: 25),
+              leading: ProCoinIcon(),
               title: Text('PROCOIN'),
               subtitle: Text(
                 NumberFormat(

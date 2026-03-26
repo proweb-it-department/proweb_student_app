@@ -119,7 +119,7 @@ return cups(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,TResult Function( int cupId)?  cups,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,TResult Function( int? cupId)?  cups,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that.userId);case _Achievements() when cups != null:
@@ -141,7 +141,7 @@ return cups(_that.cupId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,required TResult Function( int cupId)  cups,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,required TResult Function( int? cupId)  cups,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started(_that.userId);case _Achievements():
@@ -159,7 +159,7 @@ return cups(_that.cupId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,TResult? Function( int cupId)?  cups,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,TResult? Function( int? cupId)?  cups,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that.userId);case _Achievements() when cups != null:
@@ -241,10 +241,10 @@ as int?,
 
 
 class _Achievements implements CupsEvent {
-  const _Achievements({required this.cupId});
+  const _Achievements({this.cupId});
   
 
- final  int cupId;
+ final  int? cupId;
 
 /// Create a copy of CupsEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -276,7 +276,7 @@ abstract mixin class _$AchievementsCopyWith<$Res> implements $CupsEventCopyWith<
   factory _$AchievementsCopyWith(_Achievements value, $Res Function(_Achievements) _then) = __$AchievementsCopyWithImpl;
 @useResult
 $Res call({
- int cupId
+ int? cupId
 });
 
 
@@ -293,10 +293,10 @@ class __$AchievementsCopyWithImpl<$Res>
 
 /// Create a copy of CupsEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? cupId = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? cupId = freezed,}) {
   return _then(_Achievements(
-cupId: null == cupId ? _self.cupId : cupId // ignore: cast_nullable_to_non_nullable
-as int,
+cupId: freezed == cupId ? _self.cupId : cupId // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
