@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Cups implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') CupName? get name;@JsonKey(name: 'description') CupName? get description;@JsonKey(name: 'icon') String? get icon;@JsonKey(name: 'coins') int? get coins;@JsonKey(name: 'is_active') bool? get isActive;@JsonKey(name: 'reward_available_for_achievement') bool? get rewardAvailableForAchievement;@JsonKey(name: 'users') List<Users>? get users;
+@JsonKey(name: 'id') int? get id;@JsonKey(name: 'name') CupName? get name;@JsonKey(name: 'description') CupName? get description;@JsonKey(name: 'icon') String? get icon;@JsonKey(name: 'coins') int? get coins;@JsonKey(name: 'is_active') bool? get isActive;@JsonKey(name: 'reward_available_for_achievement') bool? get rewardAvailableForAchievement;@JsonKey(name: 'users') List<CupsUsers>? get users;
 /// Create a copy of Cups
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -54,7 +54,7 @@ abstract mixin class $CupsCopyWith<$Res>  {
   factory $CupsCopyWith(Cups value, $Res Function(Cups) _then) = _$CupsCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'reward_available_for_achievement') bool? rewardAvailableForAchievement,@JsonKey(name: 'users') List<Users>? users
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'reward_available_for_achievement') bool? rewardAvailableForAchievement,@JsonKey(name: 'users') List<CupsUsers>? users
 });
 
 
@@ -81,7 +81,7 @@ as String?,coins: freezed == coins ? _self.coins : coins // ignore: cast_nullabl
 as int?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool?,rewardAvailableForAchievement: freezed == rewardAvailableForAchievement ? _self.rewardAvailableForAchievement : rewardAvailableForAchievement // ignore: cast_nullable_to_non_nullable
 as bool?,users: freezed == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
-as List<Users>?,
+as List<CupsUsers>?,
   ));
 }
 /// Create a copy of Cups
@@ -190,7 +190,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<Users>? users)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<CupsUsers>? users)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Cups() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_that.isActive,_that.rewardAvailableForAchievement,_that.users);case _:
@@ -211,7 +211,7 @@ return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<Users>? users)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<CupsUsers>? users)  $default,) {final _that = this;
 switch (_that) {
 case _Cups():
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_that.isActive,_that.rewardAvailableForAchievement,_that.users);case _:
@@ -231,7 +231,7 @@ return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<Users>? users)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'name')  CupName? name, @JsonKey(name: 'description')  CupName? description, @JsonKey(name: 'icon')  String? icon, @JsonKey(name: 'coins')  int? coins, @JsonKey(name: 'is_active')  bool? isActive, @JsonKey(name: 'reward_available_for_achievement')  bool? rewardAvailableForAchievement, @JsonKey(name: 'users')  List<CupsUsers>? users)?  $default,) {final _that = this;
 switch (_that) {
 case _Cups() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_that.isActive,_that.rewardAvailableForAchievement,_that.users);case _:
@@ -246,7 +246,7 @@ return $default(_that.id,_that.name,_that.description,_that.icon,_that.coins,_th
 @JsonSerializable()
 
 class _Cups with DiagnosticableTreeMixin implements Cups {
-  const _Cups({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'description') this.description, @JsonKey(name: 'icon') this.icon, @JsonKey(name: 'coins') this.coins, @JsonKey(name: 'is_active') this.isActive, @JsonKey(name: 'reward_available_for_achievement') this.rewardAvailableForAchievement, @JsonKey(name: 'users') final  List<Users>? users}): _users = users;
+  const _Cups({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'description') this.description, @JsonKey(name: 'icon') this.icon, @JsonKey(name: 'coins') this.coins, @JsonKey(name: 'is_active') this.isActive, @JsonKey(name: 'reward_available_for_achievement') this.rewardAvailableForAchievement, @JsonKey(name: 'users') final  List<CupsUsers>? users}): _users = users;
   factory _Cups.fromJson(Map<String, dynamic> json) => _$CupsFromJson(json);
 
 @override@JsonKey(name: 'id') final  int? id;
@@ -256,8 +256,8 @@ class _Cups with DiagnosticableTreeMixin implements Cups {
 @override@JsonKey(name: 'coins') final  int? coins;
 @override@JsonKey(name: 'is_active') final  bool? isActive;
 @override@JsonKey(name: 'reward_available_for_achievement') final  bool? rewardAvailableForAchievement;
- final  List<Users>? _users;
-@override@JsonKey(name: 'users') List<Users>? get users {
+ final  List<CupsUsers>? _users;
+@override@JsonKey(name: 'users') List<CupsUsers>? get users {
   final value = _users;
   if (value == null) return null;
   if (_users is EqualUnmodifiableListView) return _users;
@@ -305,7 +305,7 @@ abstract mixin class _$CupsCopyWith<$Res> implements $CupsCopyWith<$Res> {
   factory _$CupsCopyWith(_Cups value, $Res Function(_Cups) _then) = __$CupsCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'reward_available_for_achievement') bool? rewardAvailableForAchievement,@JsonKey(name: 'users') List<Users>? users
+@JsonKey(name: 'id') int? id,@JsonKey(name: 'name') CupName? name,@JsonKey(name: 'description') CupName? description,@JsonKey(name: 'icon') String? icon,@JsonKey(name: 'coins') int? coins,@JsonKey(name: 'is_active') bool? isActive,@JsonKey(name: 'reward_available_for_achievement') bool? rewardAvailableForAchievement,@JsonKey(name: 'users') List<CupsUsers>? users
 });
 
 
@@ -332,7 +332,7 @@ as String?,coins: freezed == coins ? _self.coins : coins // ignore: cast_nullabl
 as int?,isActive: freezed == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
 as bool?,rewardAvailableForAchievement: freezed == rewardAvailableForAchievement ? _self.rewardAvailableForAchievement : rewardAvailableForAchievement // ignore: cast_nullable_to_non_nullable
 as bool?,users: freezed == users ? _self._users : users // ignore: cast_nullable_to_non_nullable
-as List<Users>?,
+as List<CupsUsers>?,
   ));
 }
 
@@ -643,28 +643,28 @@ as String?,
 
 
 /// @nodoc
-mixin _$Users implements DiagnosticableTreeMixin {
+mixin _$CupsUsers implements DiagnosticableTreeMixin {
 
 @JsonKey(name: 'id') int? get id;@JsonKey(name: 'user_id') int? get userId;@JsonKey(name: 'is_achieved') bool? get isAchieved;@JsonKey(name: 'achieved_at') String? get achievedAt;@JsonKey(name: 'is_reward_received') bool? get isRewardReceived;@JsonKey(name: 'reward_received_at') String? get rewardReceivedAt;
-/// Create a copy of Users
+/// Create a copy of CupsUsers
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$UsersCopyWith<Users> get copyWith => _$UsersCopyWithImpl<Users>(this as Users, _$identity);
+$CupsUsersCopyWith<CupsUsers> get copyWith => _$CupsUsersCopyWithImpl<CupsUsers>(this as CupsUsers, _$identity);
 
-  /// Serializes this Users to a JSON map.
+  /// Serializes this CupsUsers to a JSON map.
   Map<String, dynamic> toJson();
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'Users'))
+    ..add(DiagnosticsProperty('type', 'CupsUsers'))
     ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('userId', userId))..add(DiagnosticsProperty('isAchieved', isAchieved))..add(DiagnosticsProperty('achievedAt', achievedAt))..add(DiagnosticsProperty('isRewardReceived', isRewardReceived))..add(DiagnosticsProperty('rewardReceivedAt', rewardReceivedAt));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Users&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAchieved, isAchieved) || other.isAchieved == isAchieved)&&(identical(other.achievedAt, achievedAt) || other.achievedAt == achievedAt)&&(identical(other.isRewardReceived, isRewardReceived) || other.isRewardReceived == isRewardReceived)&&(identical(other.rewardReceivedAt, rewardReceivedAt) || other.rewardReceivedAt == rewardReceivedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CupsUsers&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAchieved, isAchieved) || other.isAchieved == isAchieved)&&(identical(other.achievedAt, achievedAt) || other.achievedAt == achievedAt)&&(identical(other.isRewardReceived, isRewardReceived) || other.isRewardReceived == isRewardReceived)&&(identical(other.rewardReceivedAt, rewardReceivedAt) || other.rewardReceivedAt == rewardReceivedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -673,15 +673,15 @@ int get hashCode => Object.hash(runtimeType,id,userId,isAchieved,achievedAt,isRe
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'Users(id: $id, userId: $userId, isAchieved: $isAchieved, achievedAt: $achievedAt, isRewardReceived: $isRewardReceived, rewardReceivedAt: $rewardReceivedAt)';
+  return 'CupsUsers(id: $id, userId: $userId, isAchieved: $isAchieved, achievedAt: $achievedAt, isRewardReceived: $isRewardReceived, rewardReceivedAt: $rewardReceivedAt)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $UsersCopyWith<$Res>  {
-  factory $UsersCopyWith(Users value, $Res Function(Users) _then) = _$UsersCopyWithImpl;
+abstract mixin class $CupsUsersCopyWith<$Res>  {
+  factory $CupsUsersCopyWith(CupsUsers value, $Res Function(CupsUsers) _then) = _$CupsUsersCopyWithImpl;
 @useResult
 $Res call({
 @JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'is_achieved') bool? isAchieved,@JsonKey(name: 'achieved_at') String? achievedAt,@JsonKey(name: 'is_reward_received') bool? isRewardReceived,@JsonKey(name: 'reward_received_at') String? rewardReceivedAt
@@ -692,14 +692,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$UsersCopyWithImpl<$Res>
-    implements $UsersCopyWith<$Res> {
-  _$UsersCopyWithImpl(this._self, this._then);
+class _$CupsUsersCopyWithImpl<$Res>
+    implements $CupsUsersCopyWith<$Res> {
+  _$CupsUsersCopyWithImpl(this._self, this._then);
 
-  final Users _self;
-  final $Res Function(Users) _then;
+  final CupsUsers _self;
+  final $Res Function(CupsUsers) _then;
 
-/// Create a copy of Users
+/// Create a copy of CupsUsers
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? userId = freezed,Object? isAchieved = freezed,Object? achievedAt = freezed,Object? isRewardReceived = freezed,Object? rewardReceivedAt = freezed,}) {
   return _then(_self.copyWith(
@@ -716,8 +716,8 @@ as String?,
 }
 
 
-/// Adds pattern-matching-related methods to [Users].
-extension UsersPatterns on Users {
+/// Adds pattern-matching-related methods to [CupsUsers].
+extension CupsUsersPatterns on CupsUsers {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -730,10 +730,10 @@ extension UsersPatterns on Users {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Users value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _CupsUsers value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _Users() when $default != null:
+case _CupsUsers() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -752,10 +752,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Users value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _CupsUsers value)  $default,){
 final _that = this;
 switch (_that) {
-case _Users():
+case _CupsUsers():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -773,10 +773,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Users value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _CupsUsers value)?  $default,){
 final _that = this;
 switch (_that) {
-case _Users() when $default != null:
+case _CupsUsers() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -796,7 +796,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'is_achieved')  bool? isAchieved, @JsonKey(name: 'achieved_at')  String? achievedAt, @JsonKey(name: 'is_reward_received')  bool? isRewardReceived, @JsonKey(name: 'reward_received_at')  String? rewardReceivedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _Users() when $default != null:
+case _CupsUsers() when $default != null:
 return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.isRewardReceived,_that.rewardReceivedAt);case _:
   return orElse();
 
@@ -817,7 +817,7 @@ return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.is
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'is_achieved')  bool? isAchieved, @JsonKey(name: 'achieved_at')  String? achievedAt, @JsonKey(name: 'is_reward_received')  bool? isRewardReceived, @JsonKey(name: 'reward_received_at')  String? rewardReceivedAt)  $default,) {final _that = this;
 switch (_that) {
-case _Users():
+case _CupsUsers():
 return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.isRewardReceived,_that.rewardReceivedAt);case _:
   throw StateError('Unexpected subclass');
 
@@ -837,7 +837,7 @@ return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.is
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  int? id, @JsonKey(name: 'user_id')  int? userId, @JsonKey(name: 'is_achieved')  bool? isAchieved, @JsonKey(name: 'achieved_at')  String? achievedAt, @JsonKey(name: 'is_reward_received')  bool? isRewardReceived, @JsonKey(name: 'reward_received_at')  String? rewardReceivedAt)?  $default,) {final _that = this;
 switch (_that) {
-case _Users() when $default != null:
+case _CupsUsers() when $default != null:
 return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.isRewardReceived,_that.rewardReceivedAt);case _:
   return null;
 
@@ -849,9 +849,9 @@ return $default(_that.id,_that.userId,_that.isAchieved,_that.achievedAt,_that.is
 /// @nodoc
 @JsonSerializable()
 
-class _Users with DiagnosticableTreeMixin implements Users {
-  const _Users({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user_id') this.userId, @JsonKey(name: 'is_achieved') this.isAchieved, @JsonKey(name: 'achieved_at') this.achievedAt, @JsonKey(name: 'is_reward_received') this.isRewardReceived, @JsonKey(name: 'reward_received_at') this.rewardReceivedAt});
-  factory _Users.fromJson(Map<String, dynamic> json) => _$UsersFromJson(json);
+class _CupsUsers with DiagnosticableTreeMixin implements CupsUsers {
+  const _CupsUsers({@JsonKey(name: 'id') this.id, @JsonKey(name: 'user_id') this.userId, @JsonKey(name: 'is_achieved') this.isAchieved, @JsonKey(name: 'achieved_at') this.achievedAt, @JsonKey(name: 'is_reward_received') this.isRewardReceived, @JsonKey(name: 'reward_received_at') this.rewardReceivedAt});
+  factory _CupsUsers.fromJson(Map<String, dynamic> json) => _$CupsUsersFromJson(json);
 
 @override@JsonKey(name: 'id') final  int? id;
 @override@JsonKey(name: 'user_id') final  int? userId;
@@ -860,26 +860,26 @@ class _Users with DiagnosticableTreeMixin implements Users {
 @override@JsonKey(name: 'is_reward_received') final  bool? isRewardReceived;
 @override@JsonKey(name: 'reward_received_at') final  String? rewardReceivedAt;
 
-/// Create a copy of Users
+/// Create a copy of CupsUsers
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$UsersCopyWith<_Users> get copyWith => __$UsersCopyWithImpl<_Users>(this, _$identity);
+_$CupsUsersCopyWith<_CupsUsers> get copyWith => __$CupsUsersCopyWithImpl<_CupsUsers>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$UsersToJson(this, );
+  return _$CupsUsersToJson(this, );
 }
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'Users'))
+    ..add(DiagnosticsProperty('type', 'CupsUsers'))
     ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('userId', userId))..add(DiagnosticsProperty('isAchieved', isAchieved))..add(DiagnosticsProperty('achievedAt', achievedAt))..add(DiagnosticsProperty('isRewardReceived', isRewardReceived))..add(DiagnosticsProperty('rewardReceivedAt', rewardReceivedAt));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Users&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAchieved, isAchieved) || other.isAchieved == isAchieved)&&(identical(other.achievedAt, achievedAt) || other.achievedAt == achievedAt)&&(identical(other.isRewardReceived, isRewardReceived) || other.isRewardReceived == isRewardReceived)&&(identical(other.rewardReceivedAt, rewardReceivedAt) || other.rewardReceivedAt == rewardReceivedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CupsUsers&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.isAchieved, isAchieved) || other.isAchieved == isAchieved)&&(identical(other.achievedAt, achievedAt) || other.achievedAt == achievedAt)&&(identical(other.isRewardReceived, isRewardReceived) || other.isRewardReceived == isRewardReceived)&&(identical(other.rewardReceivedAt, rewardReceivedAt) || other.rewardReceivedAt == rewardReceivedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -888,15 +888,15 @@ int get hashCode => Object.hash(runtimeType,id,userId,isAchieved,achievedAt,isRe
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'Users(id: $id, userId: $userId, isAchieved: $isAchieved, achievedAt: $achievedAt, isRewardReceived: $isRewardReceived, rewardReceivedAt: $rewardReceivedAt)';
+  return 'CupsUsers(id: $id, userId: $userId, isAchieved: $isAchieved, achievedAt: $achievedAt, isRewardReceived: $isRewardReceived, rewardReceivedAt: $rewardReceivedAt)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$UsersCopyWith<$Res> implements $UsersCopyWith<$Res> {
-  factory _$UsersCopyWith(_Users value, $Res Function(_Users) _then) = __$UsersCopyWithImpl;
+abstract mixin class _$CupsUsersCopyWith<$Res> implements $CupsUsersCopyWith<$Res> {
+  factory _$CupsUsersCopyWith(_CupsUsers value, $Res Function(_CupsUsers) _then) = __$CupsUsersCopyWithImpl;
 @override @useResult
 $Res call({
 @JsonKey(name: 'id') int? id,@JsonKey(name: 'user_id') int? userId,@JsonKey(name: 'is_achieved') bool? isAchieved,@JsonKey(name: 'achieved_at') String? achievedAt,@JsonKey(name: 'is_reward_received') bool? isRewardReceived,@JsonKey(name: 'reward_received_at') String? rewardReceivedAt
@@ -907,17 +907,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$UsersCopyWithImpl<$Res>
-    implements _$UsersCopyWith<$Res> {
-  __$UsersCopyWithImpl(this._self, this._then);
+class __$CupsUsersCopyWithImpl<$Res>
+    implements _$CupsUsersCopyWith<$Res> {
+  __$CupsUsersCopyWithImpl(this._self, this._then);
 
-  final _Users _self;
-  final $Res Function(_Users) _then;
+  final _CupsUsers _self;
+  final $Res Function(_CupsUsers) _then;
 
-/// Create a copy of Users
+/// Create a copy of CupsUsers
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? userId = freezed,Object? isAchieved = freezed,Object? achievedAt = freezed,Object? isRewardReceived = freezed,Object? rewardReceivedAt = freezed,}) {
-  return _then(_Users(
+  return _then(_CupsUsers(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int?,userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int?,isAchieved: freezed == isAchieved ? _self.isAchieved : isAchieved // ignore: cast_nullable_to_non_nullable

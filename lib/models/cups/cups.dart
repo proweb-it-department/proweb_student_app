@@ -14,7 +14,7 @@ abstract class Cups with _$Cups {
     @JsonKey(name: 'is_active') bool? isActive,
     @JsonKey(name: 'reward_available_for_achievement')
     bool? rewardAvailableForAchievement,
-    @JsonKey(name: 'users') List<Users>? users,
+    @JsonKey(name: 'users') List<CupsUsers>? users,
   }) = _Cups;
 
   factory Cups.fromJson(Map<String, Object?> json) => _$CupsFromJson(json);
@@ -32,15 +32,16 @@ abstract class CupName with _$CupName {
 }
 
 @freezed
-abstract class Users with _$Users {
-  const factory Users({
+abstract class CupsUsers with _$CupsUsers {
+  const factory CupsUsers({
     @JsonKey(name: 'id') int? id,
     @JsonKey(name: 'user_id') int? userId,
     @JsonKey(name: 'is_achieved') bool? isAchieved,
     @JsonKey(name: 'achieved_at') String? achievedAt,
     @JsonKey(name: 'is_reward_received') bool? isRewardReceived,
     @JsonKey(name: 'reward_received_at') String? rewardReceivedAt,
-  }) = _Users;
+  }) = _CupsUsers;
 
-  factory Users.fromJson(Map<String, Object?> json) => _$UsersFromJson(json);
+  factory CupsUsers.fromJson(Map<String, Object?> json) =>
+      _$CupsUsersFromJson(json);
 }

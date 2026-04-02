@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/api/network/video/get/video.dart';
 import 'package:proweb_student_app/models/achievements_cup/achievements_cup.dart';
 import 'package:proweb_student_app/models/balance/balance.dart';
 import 'package:proweb_student_app/models/branche/branche.dart';
@@ -33,6 +34,7 @@ import 'package:proweb_student_app/models/my_purchases_service/my_purchases_serv
 import 'package:proweb_student_app/models/my_purchases_tarif/my_purchases_tarif.dart';
 import 'package:proweb_student_app/models/my_reserv_master_class/my_reserv_master_class.dart';
 import 'package:proweb_student_app/models/my_statistic/my_statistic.dart';
+import 'package:proweb_student_app/models/my_watched_lesson/my_watched_lesson.dart';
 import 'package:proweb_student_app/models/nps_poll/nps_poll.dart';
 import 'package:proweb_student_app/models/payments_provider/payments_provider.dart';
 import 'package:proweb_student_app/models/poll_detail/poll_detail.dart';
@@ -55,6 +57,7 @@ import 'package:proweb_student_app/models/transactions_student/transactions_stud
 import 'package:proweb_student_app/models/user_course_ratings/user_course_ratings.dart';
 import 'package:proweb_student_app/models/user_skill/user_skill.dart';
 import 'package:proweb_student_app/models/user_total_position/user_total_position.dart';
+import 'package:proweb_student_app/models/video_model/video_model.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/ts_map.dart';
@@ -730,6 +733,65 @@ class GetResponsesMain {
         },
       );
     });
+    return data;
+  }
+
+  Future<ResponseLazeList<MyWatchedLesson>?> watchedLesson({
+    required String isWatched,
+    int? groupId,
+    int limit = 15,
+    int offset = 0,
+  }) async {
+    final video = sl<GetResponsesVideo>();
+    String path =
+        '/api/v1/learning-process/lessons/my-watched/?is_watched=$isWatched&limit=$limit&offset=$offset${groupId != null ? '&group_id=$groupId' : ''}';
+    final response = await sl<MainFetch>().get(path: path);
+    ResponseLazeList<MyWatchedLesson>? data = response.fold((l) => null, (r) {
+      final response = ApiResponse<MyWatchedLesson>.fromJson(
+        r,
+        (data) => MyWatchedLesson.fromJson(data as Map<String, dynamic>),
+      );
+      return response.whenOrNull(
+        lazylist: (count, results) =>
+            ResponseLazeList(count: count, list: results),
+      );
+    });
+    if (data != null) {
+      final slugs = data.list
+          .map((e) => (e.groupLesson?.videos?.map((e) => e.videoKey) ?? []))
+          .toList()
+          .expand((e) => e)
+          .toList()
+          .whereType<String>()
+          .toSet()
+          .toList();
+      if (slugs.isNotEmpty) {
+        List<VideoModel> videos = await video.videos(slags: slugs);
+        videos = videos
+            .where((element) => element.status == StatusVideoLoad.complete)
+            .toList();
+        if (videos.isNotEmpty) {
+          final list = data.list.map((relation) {
+            var videosLeson = relation.groupLesson?.videos ?? [];
+            if (videosLeson.isEmpty) return relation;
+            videosLeson = videosLeson.map((key) {
+              final videoKey = key.videoKey;
+              if (videoKey == null) return key;
+              final firstFind = videos.firstWhere(
+                (element) => element.slug == videoKey,
+                orElse: () => VideoModel(),
+              );
+              if (firstFind.id == null) return key;
+              return key.copyWith(video: firstFind);
+            }).toList();
+            return relation.copyWith(
+              groupLesson: relation.groupLesson?.copyWith(videos: videosLeson),
+            );
+          }).toList();
+          data = ResponseLazeList(count: data.count, list: list);
+        }
+      }
+    }
     return data;
   }
 

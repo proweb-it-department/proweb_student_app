@@ -55,12 +55,14 @@ extension CupsEventPatterns on CupsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Achievements value)?  cups,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Achievements value)?  cups,TResult Function( _AchievementsReceiveReward value)?  achievementReceiveReward,TResult Function( _CupReceiveReward value)?  cupReceiveReward,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _Achievements() when cups != null:
-return cups(_that);case _:
+return cups(_that);case _AchievementsReceiveReward() when achievementReceiveReward != null:
+return achievementReceiveReward(_that);case _CupReceiveReward() when cupReceiveReward != null:
+return cupReceiveReward(_that);case _:
   return orElse();
 
 }
@@ -78,12 +80,14 @@ return cups(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Achievements value)  cups,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Achievements value)  cups,required TResult Function( _AchievementsReceiveReward value)  achievementReceiveReward,required TResult Function( _CupReceiveReward value)  cupReceiveReward,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _Achievements():
-return cups(_that);}
+return cups(_that);case _AchievementsReceiveReward():
+return achievementReceiveReward(_that);case _CupReceiveReward():
+return cupReceiveReward(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -97,12 +101,14 @@ return cups(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Achievements value)?  cups,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Achievements value)?  cups,TResult? Function( _AchievementsReceiveReward value)?  achievementReceiveReward,TResult? Function( _CupReceiveReward value)?  cupReceiveReward,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _Achievements() when cups != null:
-return cups(_that);case _:
+return cups(_that);case _AchievementsReceiveReward() when achievementReceiveReward != null:
+return achievementReceiveReward(_that);case _CupReceiveReward() when cupReceiveReward != null:
+return cupReceiveReward(_that);case _:
   return null;
 
 }
@@ -119,11 +125,13 @@ return cups(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,TResult Function( int? cupId)?  cups,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int? userId)?  started,TResult Function( int? cupId)?  cups,TResult Function( int achievementId)?  achievementReceiveReward,TResult Function( int cupId)?  cupReceiveReward,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that.userId);case _Achievements() when cups != null:
-return cups(_that.cupId);case _:
+return cups(_that.cupId);case _AchievementsReceiveReward() when achievementReceiveReward != null:
+return achievementReceiveReward(_that.achievementId);case _CupReceiveReward() when cupReceiveReward != null:
+return cupReceiveReward(_that.cupId);case _:
   return orElse();
 
 }
@@ -141,11 +149,13 @@ return cups(_that.cupId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,required TResult Function( int? cupId)  cups,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int? userId)  started,required TResult Function( int? cupId)  cups,required TResult Function( int achievementId)  achievementReceiveReward,required TResult Function( int cupId)  cupReceiveReward,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started(_that.userId);case _Achievements():
-return cups(_that.cupId);}
+return cups(_that.cupId);case _AchievementsReceiveReward():
+return achievementReceiveReward(_that.achievementId);case _CupReceiveReward():
+return cupReceiveReward(_that.cupId);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -159,11 +169,13 @@ return cups(_that.cupId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,TResult? Function( int? cupId)?  cups,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int? userId)?  started,TResult? Function( int? cupId)?  cups,TResult? Function( int achievementId)?  achievementReceiveReward,TResult? Function( int cupId)?  cupReceiveReward,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that.userId);case _Achievements() when cups != null:
-return cups(_that.cupId);case _:
+return cups(_that.cupId);case _AchievementsReceiveReward() when achievementReceiveReward != null:
+return achievementReceiveReward(_that.achievementId);case _CupReceiveReward() when cupReceiveReward != null:
+return cupReceiveReward(_that.cupId);case _:
   return null;
 
 }
@@ -297,6 +309,138 @@ class __$AchievementsCopyWithImpl<$Res>
   return _then(_Achievements(
 cupId: freezed == cupId ? _self.cupId : cupId // ignore: cast_nullable_to_non_nullable
 as int?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _AchievementsReceiveReward implements CupsEvent {
+  const _AchievementsReceiveReward({required this.achievementId});
+  
+
+ final  int achievementId;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AchievementsReceiveRewardCopyWith<_AchievementsReceiveReward> get copyWith => __$AchievementsReceiveRewardCopyWithImpl<_AchievementsReceiveReward>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AchievementsReceiveReward&&(identical(other.achievementId, achievementId) || other.achievementId == achievementId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,achievementId);
+
+@override
+String toString() {
+  return 'CupsEvent.achievementReceiveReward(achievementId: $achievementId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AchievementsReceiveRewardCopyWith<$Res> implements $CupsEventCopyWith<$Res> {
+  factory _$AchievementsReceiveRewardCopyWith(_AchievementsReceiveReward value, $Res Function(_AchievementsReceiveReward) _then) = __$AchievementsReceiveRewardCopyWithImpl;
+@useResult
+$Res call({
+ int achievementId
+});
+
+
+
+
+}
+/// @nodoc
+class __$AchievementsReceiveRewardCopyWithImpl<$Res>
+    implements _$AchievementsReceiveRewardCopyWith<$Res> {
+  __$AchievementsReceiveRewardCopyWithImpl(this._self, this._then);
+
+  final _AchievementsReceiveReward _self;
+  final $Res Function(_AchievementsReceiveReward) _then;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? achievementId = null,}) {
+  return _then(_AchievementsReceiveReward(
+achievementId: null == achievementId ? _self.achievementId : achievementId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _CupReceiveReward implements CupsEvent {
+  const _CupReceiveReward({required this.cupId});
+  
+
+ final  int cupId;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$CupReceiveRewardCopyWith<_CupReceiveReward> get copyWith => __$CupReceiveRewardCopyWithImpl<_CupReceiveReward>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CupReceiveReward&&(identical(other.cupId, cupId) || other.cupId == cupId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,cupId);
+
+@override
+String toString() {
+  return 'CupsEvent.cupReceiveReward(cupId: $cupId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$CupReceiveRewardCopyWith<$Res> implements $CupsEventCopyWith<$Res> {
+  factory _$CupReceiveRewardCopyWith(_CupReceiveReward value, $Res Function(_CupReceiveReward) _then) = __$CupReceiveRewardCopyWithImpl;
+@useResult
+$Res call({
+ int cupId
+});
+
+
+
+
+}
+/// @nodoc
+class __$CupReceiveRewardCopyWithImpl<$Res>
+    implements _$CupReceiveRewardCopyWith<$Res> {
+  __$CupReceiveRewardCopyWithImpl(this._self, this._then);
+
+  final _CupReceiveReward _self;
+  final $Res Function(_CupReceiveReward) _then;
+
+/// Create a copy of CupsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? cupId = null,}) {
+  return _then(_CupReceiveReward(
+cupId: null == cupId ? _self.cupId : cupId // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

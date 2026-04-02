@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:proweb_student_app/api/fetch/abstract_fetch.dart';
+import 'package:proweb_student_app/models/achievements_cup/achievements_cup.dart';
 import 'package:proweb_student_app/models/comment_file/comment_file.dart';
 import 'package:proweb_student_app/models/coworking_list_reserve/coworking_list_reserve.dart';
+import 'package:proweb_student_app/models/cups/cups.dart';
 import 'package:proweb_student_app/models/feadbacks_page_item/feadbacks_page_item.dart';
 import 'package:proweb_student_app/models/global_comment/global_comment.dart';
 import 'package:proweb_student_app/models/homework_student_relation_group/homework_student_relation_group.dart';
@@ -25,6 +27,52 @@ class PostResponsesMain {
         final response = ApiResponse<Actions>.fromJson(
           r,
           (data) => Actions.fromJson(data as Map<String, dynamic>),
+        );
+        return response.whenOrNull(
+          results: (data) {
+            return data;
+          },
+        );
+      },
+    );
+    return data;
+  }
+
+  Future<AchievementsCupUsers?> achievementReceiveReward(
+    int achievementId,
+  ) async {
+    String path = '/api/v1/achievements/$achievementId/receive-reward/';
+    final response = await sl<MainFetch>().post(path: path, form: FormData());
+    final data = response.fold<AchievementsCupUsers?>(
+      (l) {
+        return null;
+      },
+      (r) {
+        final response = ApiResponse<AchievementsCupUsers>.fromJson(
+          r,
+          (data) => AchievementsCupUsers.fromJson(data as Map<String, dynamic>),
+        );
+        return response.whenOrNull(
+          results: (data) {
+            return data;
+          },
+        );
+      },
+    );
+    return data;
+  }
+
+  Future<CupsUsers?> cupReceiveReward(int cupId) async {
+    String path = '/api/v1/achievements/categories/$cupId/receive-reward/';
+    final response = await sl<MainFetch>().post(path: path, form: FormData());
+    final data = response.fold<CupsUsers?>(
+      (l) {
+        return null;
+      },
+      (r) {
+        final response = ApiResponse<CupsUsers>.fromJson(
+          r,
+          (data) => CupsUsers.fromJson(data as Map<String, dynamic>),
         );
         return response.whenOrNull(
           results: (data) {

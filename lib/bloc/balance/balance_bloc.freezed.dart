@@ -55,12 +55,13 @@ extension BalanceEventPatterns on BalanceEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Update value)?  update,TResult Function( _BalanceUpdate value)?  wsupdate,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _Update value)?  update,TResult Function( _UpdateCoins value)?  updateCoint,TResult Function( _BalanceUpdate value)?  wsupdate,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _Update() when update != null:
-return update(_that);case _BalanceUpdate() when wsupdate != null:
+return update(_that);case _UpdateCoins() when updateCoint != null:
+return updateCoint(_that);case _BalanceUpdate() when wsupdate != null:
 return wsupdate(_that);case _:
   return orElse();
 
@@ -79,12 +80,13 @@ return wsupdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Update value)  update,required TResult Function( _BalanceUpdate value)  wsupdate,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _Update value)  update,required TResult Function( _UpdateCoins value)  updateCoint,required TResult Function( _BalanceUpdate value)  wsupdate,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _Update():
-return update(_that);case _BalanceUpdate():
+return update(_that);case _UpdateCoins():
+return updateCoint(_that);case _BalanceUpdate():
 return wsupdate(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -102,12 +104,13 @@ return wsupdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Update value)?  update,TResult? Function( _BalanceUpdate value)?  wsupdate,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _Update value)?  update,TResult? Function( _UpdateCoins value)?  updateCoint,TResult? Function( _BalanceUpdate value)?  wsupdate,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _Update() when update != null:
-return update(_that);case _BalanceUpdate() when wsupdate != null:
+return update(_that);case _UpdateCoins() when updateCoint != null:
+return updateCoint(_that);case _BalanceUpdate() when wsupdate != null:
 return wsupdate(_that);case _:
   return null;
 
@@ -125,11 +128,12 @@ return wsupdate(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  update,TResult Function( dynamic data)?  wsupdate,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  update,TResult Function( String coins)?  updateCoint,TResult Function( dynamic data)?  wsupdate,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _Update() when update != null:
-return update();case _BalanceUpdate() when wsupdate != null:
+return update();case _UpdateCoins() when updateCoint != null:
+return updateCoint(_that.coins);case _BalanceUpdate() when wsupdate != null:
 return wsupdate(_that.data);case _:
   return orElse();
 
@@ -148,11 +152,12 @@ return wsupdate(_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  update,required TResult Function( dynamic data)  wsupdate,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  update,required TResult Function( String coins)  updateCoint,required TResult Function( dynamic data)  wsupdate,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _Update():
-return update();case _BalanceUpdate():
+return update();case _UpdateCoins():
+return updateCoint(_that.coins);case _BalanceUpdate():
 return wsupdate(_that.data);case _:
   throw StateError('Unexpected subclass');
 
@@ -170,11 +175,12 @@ return wsupdate(_that.data);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  update,TResult? Function( dynamic data)?  wsupdate,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  update,TResult? Function( String coins)?  updateCoint,TResult? Function( dynamic data)?  wsupdate,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _Update() when update != null:
-return update();case _BalanceUpdate() when wsupdate != null:
+return update();case _UpdateCoins() when updateCoint != null:
+return updateCoint(_that.coins);case _BalanceUpdate() when wsupdate != null:
 return wsupdate(_that.data);case _:
   return null;
 
@@ -246,6 +252,72 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _UpdateCoins implements BalanceEvent {
+  const _UpdateCoins(this.coins);
+  
+
+ final  String coins;
+
+/// Create a copy of BalanceEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateCoinsCopyWith<_UpdateCoins> get copyWith => __$UpdateCoinsCopyWithImpl<_UpdateCoins>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateCoins&&(identical(other.coins, coins) || other.coins == coins));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,coins);
+
+@override
+String toString() {
+  return 'BalanceEvent.updateCoint(coins: $coins)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdateCoinsCopyWith<$Res> implements $BalanceEventCopyWith<$Res> {
+  factory _$UpdateCoinsCopyWith(_UpdateCoins value, $Res Function(_UpdateCoins) _then) = __$UpdateCoinsCopyWithImpl;
+@useResult
+$Res call({
+ String coins
+});
+
+
+
+
+}
+/// @nodoc
+class __$UpdateCoinsCopyWithImpl<$Res>
+    implements _$UpdateCoinsCopyWith<$Res> {
+  __$UpdateCoinsCopyWithImpl(this._self, this._then);
+
+  final _UpdateCoins _self;
+  final $Res Function(_UpdateCoins) _then;
+
+/// Create a copy of BalanceEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? coins = null,}) {
+  return _then(_UpdateCoins(
+null == coins ? _self.coins : coins // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

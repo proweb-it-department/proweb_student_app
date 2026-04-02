@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:proweb_student_app/api/network/main/get/main.dart';
+import 'package:proweb_student_app/api/network/main/post/main.dart';
 import 'package:proweb_student_app/models/achievements_cup/achievements_cup.dart';
 import 'package:proweb_student_app/models/cups/cups.dart';
 import 'package:proweb_student_app/models/response_laze_list.dart';
@@ -89,9 +90,113 @@ class CupsBloc extends Bloc<CupsEvent, CupsState> {
         );
       }
 
+      achievementsReceiveReward(int achievementId) async {
+        ResponseLazeList<AchievementsCup>? achievements = state.whenOrNull(
+          complited: (_, achievements, _) => achievements,
+        );
+        ResponseLazeList<Cups>? cups = state.whenOrNull(
+          complited: (cups, _, _) => cups,
+        );
+        if (achievements == null) return;
+        if (cups == null) return;
+        AchievementsCup achievementWhere = achievements.list.singleWhere(
+          (element) => element.id == achievementId,
+          orElse: () => AchievementsCup(),
+        );
+        if (achievementWhere.id == null) return;
+        final main = sl<PostResponsesMain>();
+        final response = await main.achievementReceiveReward(achievementId);
+        if (response == null) return;
+        achievementWhere = achievementWhere.copyWith(users: [response]);
+        final cupId = achievementWhere.categoryId;
+        if (cupId == null) return;
+        final list = ([
+          ...achievements.list,
+        ].map((a) => a.id == achievementId ? achievementWhere : a).toList());
+        achievements = ResponseLazeList(count: achievements.count, list: list);
+        final resultsCount = list.fold(0, (a, b) {
+          final isAchived =
+              b.users?.firstOrNull?.isAchieved == true &&
+              b.users?.firstOrNull?.isRewardReceived == false;
+          return (isAchived ? 1 : 0);
+        });
+        final resultsCountCup = list.fold(0, (a, b) {
+          final isAchived = b.users?.firstOrNull?.isRewardReceived == true;
+          return (isAchived ? 1 : 0);
+        });
+        if (resultsCount == 0) {
+          Cups cupWhere = cups.list.singleWhere(
+            (element) => element.id == cupId,
+            orElse: () => Cups(),
+          );
+          if (cupWhere.id != null) {
+            cupWhere = cupWhere.copyWith(rewardAvailableForAchievement: false);
+            final list = ([
+              ...cups.list,
+            ].map((a) => a.id == cupId ? cupWhere : a).toList());
+            cups = ResponseLazeList(count: cups.count, list: [...list]);
+          }
+        }
+        if (resultsCountCup == list.length) {
+          Cups cupWhere = cups.list.singleWhere(
+            (element) => element.id == cupId,
+            orElse: () => Cups(),
+          );
+          if (cupWhere.id != null) {
+            final usersCup = cupWhere.users?.firstOrNull ?? CupsUsers();
+            if (usersCup.isRewardReceived != true) {
+              cupWhere = cupWhere.copyWith(
+                users: [usersCup.copyWith(isAchieved: true)],
+              );
+            }
+            final list = ([
+              ...cups.list,
+            ].map((a) => a.id == cupId ? cupWhere : a).toList());
+            cups = ResponseLazeList(count: cups.count, list: [...list]);
+          }
+        }
+        emit(CupsState.complited(cups: cups, achievements: achievements));
+      }
+
+      cupReceiveReward(int cupId) async {
+        ResponseLazeList<AchievementsCup>? achievements = state.whenOrNull(
+          complited: (_, achievements, _) => achievements,
+        );
+        ResponseLazeList<Cups>? cups = state.whenOrNull(
+          complited: (cups, _, _) => cups,
+        );
+        if (achievements == null) return;
+        if (cups == null) return;
+        Cups cupWhere = cups.list.singleWhere(
+          (element) => element.id == cupId,
+          orElse: () => Cups(),
+        );
+        if (cupWhere.id == null) return;
+        final main = sl<PostResponsesMain>();
+        final response = await main.cupReceiveReward(cupId);
+        if (response == null) return;
+        cupWhere = cupWhere.copyWith(users: [response]);
+        final list = ([
+          ...cups.list,
+        ].map((a) => a.id == cupId ? cupWhere : a).toList());
+        cups = ResponseLazeList(count: cups.count, list: list);
+        emit(
+          CupsState.complited(
+            cups: ResponseLazeList(count: cups.count, list: [...(cups.list)]),
+            achievements: ResponseLazeList(
+              count: achievements.count,
+              list: [...(achievements.list)],
+            ),
+          ),
+        );
+      }
+
       await switch (event) {
         _Started(userId: final userId) => await started(userId),
         _Achievements(cupId: final cupId) => await achievementsGet(cupId),
+        _AchievementsReceiveReward(achievementId: final achievementId) =>
+          await achievementsReceiveReward(achievementId),
+        _CupReceiveReward(cupId: final cupId) => cupReceiveReward(cupId),
       };
     });
   }

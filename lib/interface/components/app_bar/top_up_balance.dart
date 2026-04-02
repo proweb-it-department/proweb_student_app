@@ -279,7 +279,7 @@ class _TopUpBalanceState extends State<TopUpBalance> {
                           subtitle: Text(
                             'top_up_balance.service'.tr(
                               namedArgs: {
-                                'persent': (payment.percent ?? 0).toString(),
+                                'percent': (payment.percent ?? 0).toString(),
                               },
                             ),
                           ),

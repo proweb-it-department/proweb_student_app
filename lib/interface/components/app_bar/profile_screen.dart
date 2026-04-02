@@ -248,7 +248,7 @@ class ProfileBody extends StatelessWidget {
                           ),
                           ListTileBuilder(
                             isStart: false,
-                            isEnd: true,
+                            isEnd: false,
                             builder: (shape, contentPadding, isThreeLine) {
                               return ListTile(
                                 tileColor: customColor?.containerColor,
@@ -284,6 +284,32 @@ class ProfileBody extends StatelessWidget {
                                         'profile.The_mail_is_not_linked'.tr(),
                                       )
                                     : Text('${profile.email}'),
+                              );
+                            },
+                          ),
+                          ListTileBuilder(
+                            isStart: false,
+                            isEnd: true,
+                            builder: (shape, contentPadding, isThreeLine) {
+                              return ListTile(
+                                tileColor: customColor?.containerColor,
+                                shape: shape,
+                                contentPadding: contentPadding,
+                                onTap: data == null
+                                    ? null
+                                    : () {
+                                        context.router.push(MyRewardCupRoute());
+                                      },
+                                leading: IconAvatar(
+                                  icon: Icons.emoji_events_rounded,
+                                ),
+                                title: Text('Мои кубки'),
+                                trailing: GoPage(
+                                  decoration: BoxDecoration(
+                                    color: customColor?.primaryBg,
+                                  ),
+                                  child: Icon(Icons.keyboard_arrow_right),
+                                ),
                               );
                             },
                           ),

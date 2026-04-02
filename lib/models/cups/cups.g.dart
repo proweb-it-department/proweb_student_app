@@ -20,7 +20,7 @@ _Cups _$CupsFromJson(Map<String, dynamic> json) => _Cups(
   rewardAvailableForAchievement:
       json['reward_available_for_achievement'] as bool?,
   users: (json['users'] as List<dynamic>?)
-      ?.map((e) => Users.fromJson(e as Map<String, dynamic>))
+      ?.map((e) => CupsUsers.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 
@@ -43,7 +43,7 @@ Map<String, dynamic> _$CupNameToJson(_CupName instance) => <String, dynamic>{
   'uz': instance.uz,
 };
 
-_Users _$UsersFromJson(Map<String, dynamic> json) => _Users(
+_CupsUsers _$CupsUsersFromJson(Map<String, dynamic> json) => _CupsUsers(
   id: (json['id'] as num?)?.toInt(),
   userId: (json['user_id'] as num?)?.toInt(),
   isAchieved: json['is_achieved'] as bool?,
@@ -52,11 +52,12 @@ _Users _$UsersFromJson(Map<String, dynamic> json) => _Users(
   rewardReceivedAt: json['reward_received_at'] as String?,
 );
 
-Map<String, dynamic> _$UsersToJson(_Users instance) => <String, dynamic>{
-  'id': instance.id,
-  'user_id': instance.userId,
-  'is_achieved': instance.isAchieved,
-  'achieved_at': instance.achievedAt,
-  'is_reward_received': instance.isRewardReceived,
-  'reward_received_at': instance.rewardReceivedAt,
-};
+Map<String, dynamic> _$CupsUsersToJson(_CupsUsers instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'user_id': instance.userId,
+      'is_achieved': instance.isAchieved,
+      'achieved_at': instance.achievedAt,
+      'is_reward_received': instance.isRewardReceived,
+      'reward_received_at': instance.rewardReceivedAt,
+    };

@@ -58,13 +58,29 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
           final stateview = state.whenOrNull(balance: (balance) => balance);
           return emit(
             BalanceState.balance(
-              balance: Balance(mainBalance: stringMainBalance, voucherBalance: stringVoucherBalance, procoin: stateview?.procoin ?? '0'),
+              balance: Balance(
+                mainBalance: stringMainBalance,
+                voucherBalance: stringVoucherBalance,
+                procoin: stateview?.procoin ?? '0',
+              ),
             ),
           );
         }
       }
 
-      await event.when(started: started, wsupdate: wsupdate, update: update);
+      updateCoint(String coins) {
+        final balance = state.whenOrNull(balance: (balance) => balance);
+        if (balance == null) return;
+        final updated = balance.copyWith(procoin: coins);
+        emit(BalanceState.balance(balance: updated));
+      }
+
+      await event.when(
+        started: started,
+        wsupdate: wsupdate,
+        update: update,
+        updateCoint: updateCoint,
+      );
     });
   }
 }

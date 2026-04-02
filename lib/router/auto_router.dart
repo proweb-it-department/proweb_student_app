@@ -211,6 +211,15 @@ class AppRouter extends RootStackRouter {
       },
     ),
     CustomRoute(
+      path: '/my-cups-reward',
+      page: MyRewardCupRoute.page,
+      guards: [_AuthGuard()],
+      children: [],
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
+    ),
+    CustomRoute(
       path: '/my-sessions',
       page: MyActiveSessionsRoute.page,
       guards: [_AuthGuard()],
