@@ -49,6 +49,7 @@ class GridInfoGroup extends StatelessWidget {
       crossAxisCount: 2,
       mainAxisSpacing: 12,
       crossAxisSpacing: 12,
+
       children: [
         if (group.graduatedDate != null)
           StaggeredGridTile.count(

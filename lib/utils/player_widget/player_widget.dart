@@ -16,15 +16,20 @@ import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart'
 class PlayerWidget extends StatefulWidget {
   final String playlists;
   final String? preview;
+  final void Function(int seconds)? onChangeTime;
 
-  const PlayerWidget({super.key, required this.playlists, this.preview});
+  const PlayerWidget({
+    super.key,
+    required this.playlists,
+    this.preview,
+    this.onChangeTime,
+  });
 
   @override
   State<PlayerWidget> createState() => _PlayerWidgetState();
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
-  // iOS player (media_kit)
   final Player _iosPlayer = Player();
   late final VideoController _iosVideoController = VideoController(
     _iosPlayer,
@@ -33,7 +38,6 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
     ),
   );
 
-  // Android player (better_player)
   BetterPlayerController? _androidController;
   final ValueNotifier<bool> _androidFullscreenVN = ValueNotifier(false);
 
@@ -41,6 +45,8 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
 
   bool get _isIOS => Platform.isIOS;
   bool get _isAndroid => Platform.isAndroid;
+  StreamSubscription? _iosPositionSub;
+  int _lastReportedChunkIOS = -1;
 
   bool get _isInBuildPhase {
     final phase = SchedulerBinding.instance.schedulerPhase;
@@ -112,6 +118,17 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
   void initState() {
     super.initState();
     _initPlayers();
+    if (_isIOS && widget.onChangeTime != null) {
+      _iosPositionSub = _iosPlayer.stream.position.listen((position) {
+        final seconds = position.inSeconds;
+        final chunk = seconds ~/ 10;
+
+        if (chunk != _lastReportedChunkIOS) {
+          _lastReportedChunkIOS = chunk;
+          widget.onChangeTime?.call(seconds);
+        }
+      });
+    }
   }
 
   @override
@@ -272,7 +289,7 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
     _androidController?.dispose(forceDispose: true);
     _androidFullscreenVN.dispose();
     _iosPlayer.dispose();
-
+    _iosPositionSub?.cancel();
     super.dispose();
   }
 
@@ -295,6 +312,7 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
         child: VideoPlayerPlatform(
           iosController: _iosVideoController,
           androidController: _androidController,
+          onChangeTime: widget.onChangeTime,
         ),
       ),
     );
@@ -304,11 +322,13 @@ class _PlayerWidgetState extends State<PlayerWidget> with AutoRouteAware {
 class VideoPlayerPlatform extends StatelessWidget {
   final BetterPlayerController? androidController;
   final VideoController iosController;
+  final void Function(int seconds)? onChangeTime;
 
   const VideoPlayerPlatform({
     super.key,
     this.androidController,
     required this.iosController,
+    this.onChangeTime,
   });
 
   @override
@@ -325,6 +345,7 @@ class VideoPlayerPlatform extends StatelessWidget {
         player: BetterPlayer(controller: androidController!),
         controller: androidController!,
         isFullScreen: false,
+        onChangeTime: onChangeTime,
       );
     }
 
@@ -336,12 +357,14 @@ class MyVideoControllers extends StatefulWidget {
   final Widget player;
   final BetterPlayerController controller;
   final bool isFullScreen;
+  final void Function(int seconds)? onChangeTime;
 
   const MyVideoControllers({
     super.key,
     required this.player,
     required this.controller,
     required this.isFullScreen,
+    this.onChangeTime,
   });
 
   @override
@@ -374,6 +397,7 @@ class _MyVideoControllersState extends State<MyVideoControllers>
 
   int _lastPositionSeconds = -1;
   int _lastDurationSeconds = -1;
+  int _lastReportedChunk = -1;
 
   late final void Function(BetterPlayerEvent) _eventsListener;
 
@@ -447,13 +471,19 @@ class _MyVideoControllersState extends State<MyVideoControllers>
         (event.parameters?['duration'] as Duration?)?.inSeconds ??
         _videoDuration.toInt();
 
-    // Skip redundant rebuilds when values are unchanged.
     if (progress == _lastPositionSeconds && duration == _lastDurationSeconds) {
       return;
     }
 
     _lastPositionSeconds = progress;
     _lastDurationSeconds = duration;
+
+    // 🔥 ВОТ ТУТ ЛОГИКА 10 СЕКУНД
+    final chunk = progress ~/ 10;
+    if (chunk != _lastReportedChunk) {
+      _lastReportedChunk = chunk;
+      widget.onChangeTime?.call(progress);
+    }
 
     setState(() {
       _currentPosition = progress.toDouble();

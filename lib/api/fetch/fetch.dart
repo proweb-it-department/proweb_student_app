@@ -244,6 +244,67 @@ class Fetch implements MainFetch, AuthFetch, VideoFetch, ChatFetch {
   }
 
   @override
+  Future<Either<ErrorRequest, Map<String, dynamic>>> patch({
+    required String path,
+    FormData? form,
+    bool checkToken = true,
+    int refreshCount = 0,
+  }) async {
+    try {
+      Options options = Options();
+      if (checkToken) {
+        Either<ErrorRequest, bool> checkRefresh = await _actionRefresh();
+        ErrorRequest? checkRefreshResponse = checkRefresh.fold(
+          (l) => l,
+          (_) => null,
+        );
+        if (checkRefreshResponse != null) return Left(checkRefreshResponse);
+        options.headers = {
+          'Authorization': 'Bearer ${sl<LocalData>().getAccessToken()}',
+        };
+      }
+      final cancelToken = CancelToken();
+      final dio = await _dio.patch(
+        '$main$path',
+        data: form,
+        options: options,
+        cancelToken: cancelToken,
+      );
+
+      final response = dio.data;
+      if (response == null) {
+        return Left(ErrorRequest(server: true));
+      } else {
+        return Right({});
+      }
+    } on DioException catch (e) {
+      refreshCount++;
+      if (e.type == DioExceptionType.connectionTimeout &&
+          refreshCount <= maxRefresh) {
+        return await patch(
+          path: path,
+          form: form,
+          checkToken: checkToken,
+          refreshCount: refreshCount,
+        );
+      } else if (e.type == DioExceptionType.connectionError &&
+          refreshCount <= maxRefresh) {
+        return await patch(
+          path: path,
+          form: form,
+          checkToken: checkToken,
+          refreshCount: refreshCount,
+        );
+      }
+      if (e.response != null) {
+        return Left(ErrorRequest(server: true, response: e.response));
+      } else {
+        return Left(ErrorRequest(server: true));
+      }
+    }
+  }
+
+  @override
   Future<Either<ErrorRequest, Map<String, dynamic>>> postString({
     required String path,
     required String form,

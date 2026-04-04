@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$GroupLessonInfo implements DiagnosticableTreeMixin {
 
-@JsonKey(name: 'group_lesson') GroupLesson? get groupLesson;@JsonKey(name: 'access_to_lesson') bool? get accessToLesson;@JsonKey(name: 'access_to_video') bool? get accessToVideo;@JsonKey(name: 'visited') bool? get visited;@JsonKey(name: 'visited_type') String? get visitedType;@JsonKey(name: 'score') int? get score;@JsonKey(name: 'relation_id') int? get relationId;@JsonKey(name: 'note') String? get note;@JsonKey(name: 'banner') String? get banner;@JsonKey(name: 'status_video') StatusVideoLoad? get statusVideo;
+@JsonKey(name: 'group_lesson') GroupLesson? get groupLesson;@JsonKey(name: 'access_to_lesson') bool? get accessToLesson;@JsonKey(name: 'access_to_video') bool? get accessToVideo;@JsonKey(name: 'visited') bool? get visited;@JsonKey(name: 'visited_type') String? get visitedType;@JsonKey(name: 'score') int? get score;@JsonKey(name: 'relation_id') int? get relationId;@JsonKey(name: 'note') String? get note;@JsonKey(name: 'banner') String? get banner;@JsonKey(name: 'status_video') StatusVideoLoad? get statusVideo;@JsonKey(name: 'is_watched') bool? get isWatched;
 /// Create a copy of GroupLessonInfo
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,21 +29,21 @@ $GroupLessonInfoCopyWith<GroupLessonInfo> get copyWith => _$GroupLessonInfoCopyW
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'GroupLessonInfo'))
-    ..add(DiagnosticsProperty('groupLesson', groupLesson))..add(DiagnosticsProperty('accessToLesson', accessToLesson))..add(DiagnosticsProperty('accessToVideo', accessToVideo))..add(DiagnosticsProperty('visited', visited))..add(DiagnosticsProperty('visitedType', visitedType))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('relationId', relationId))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('banner', banner))..add(DiagnosticsProperty('statusVideo', statusVideo));
+    ..add(DiagnosticsProperty('groupLesson', groupLesson))..add(DiagnosticsProperty('accessToLesson', accessToLesson))..add(DiagnosticsProperty('accessToVideo', accessToVideo))..add(DiagnosticsProperty('visited', visited))..add(DiagnosticsProperty('visitedType', visitedType))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('relationId', relationId))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('banner', banner))..add(DiagnosticsProperty('statusVideo', statusVideo))..add(DiagnosticsProperty('isWatched', isWatched));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupLessonInfo&&(identical(other.groupLesson, groupLesson) || other.groupLesson == groupLesson)&&(identical(other.accessToLesson, accessToLesson) || other.accessToLesson == accessToLesson)&&(identical(other.accessToVideo, accessToVideo) || other.accessToVideo == accessToVideo)&&(identical(other.visited, visited) || other.visited == visited)&&(identical(other.visitedType, visitedType) || other.visitedType == visitedType)&&(identical(other.score, score) || other.score == score)&&(identical(other.relationId, relationId) || other.relationId == relationId)&&(identical(other.note, note) || other.note == note)&&(identical(other.banner, banner) || other.banner == banner)&&(identical(other.statusVideo, statusVideo) || other.statusVideo == statusVideo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupLessonInfo&&(identical(other.groupLesson, groupLesson) || other.groupLesson == groupLesson)&&(identical(other.accessToLesson, accessToLesson) || other.accessToLesson == accessToLesson)&&(identical(other.accessToVideo, accessToVideo) || other.accessToVideo == accessToVideo)&&(identical(other.visited, visited) || other.visited == visited)&&(identical(other.visitedType, visitedType) || other.visitedType == visitedType)&&(identical(other.score, score) || other.score == score)&&(identical(other.relationId, relationId) || other.relationId == relationId)&&(identical(other.note, note) || other.note == note)&&(identical(other.banner, banner) || other.banner == banner)&&(identical(other.statusVideo, statusVideo) || other.statusVideo == statusVideo)&&(identical(other.isWatched, isWatched) || other.isWatched == isWatched));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupLesson,accessToLesson,accessToVideo,visited,visitedType,score,relationId,note,banner,statusVideo);
+int get hashCode => Object.hash(runtimeType,groupLesson,accessToLesson,accessToVideo,visited,visitedType,score,relationId,note,banner,statusVideo,isWatched);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'GroupLessonInfo(groupLesson: $groupLesson, accessToLesson: $accessToLesson, accessToVideo: $accessToVideo, visited: $visited, visitedType: $visitedType, score: $score, relationId: $relationId, note: $note, banner: $banner, statusVideo: $statusVideo)';
+  return 'GroupLessonInfo(groupLesson: $groupLesson, accessToLesson: $accessToLesson, accessToVideo: $accessToVideo, visited: $visited, visitedType: $visitedType, score: $score, relationId: $relationId, note: $note, banner: $banner, statusVideo: $statusVideo, isWatched: $isWatched)';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $GroupLessonInfoCopyWith<$Res>  {
   factory $GroupLessonInfoCopyWith(GroupLessonInfo value, $Res Function(GroupLessonInfo) _then) = _$GroupLessonInfoCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'group_lesson') GroupLesson? groupLesson,@JsonKey(name: 'access_to_lesson') bool? accessToLesson,@JsonKey(name: 'access_to_video') bool? accessToVideo,@JsonKey(name: 'visited') bool? visited,@JsonKey(name: 'visited_type') String? visitedType,@JsonKey(name: 'score') int? score,@JsonKey(name: 'relation_id') int? relationId,@JsonKey(name: 'note') String? note,@JsonKey(name: 'banner') String? banner,@JsonKey(name: 'status_video') StatusVideoLoad? statusVideo
+@JsonKey(name: 'group_lesson') GroupLesson? groupLesson,@JsonKey(name: 'access_to_lesson') bool? accessToLesson,@JsonKey(name: 'access_to_video') bool? accessToVideo,@JsonKey(name: 'visited') bool? visited,@JsonKey(name: 'visited_type') String? visitedType,@JsonKey(name: 'score') int? score,@JsonKey(name: 'relation_id') int? relationId,@JsonKey(name: 'note') String? note,@JsonKey(name: 'banner') String? banner,@JsonKey(name: 'status_video') StatusVideoLoad? statusVideo,@JsonKey(name: 'is_watched') bool? isWatched
 });
 
 
@@ -71,7 +71,7 @@ class _$GroupLessonInfoCopyWithImpl<$Res>
 
 /// Create a copy of GroupLessonInfo
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? groupLesson = freezed,Object? accessToLesson = freezed,Object? accessToVideo = freezed,Object? visited = freezed,Object? visitedType = freezed,Object? score = freezed,Object? relationId = freezed,Object? note = freezed,Object? banner = freezed,Object? statusVideo = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? groupLesson = freezed,Object? accessToLesson = freezed,Object? accessToVideo = freezed,Object? visited = freezed,Object? visitedType = freezed,Object? score = freezed,Object? relationId = freezed,Object? note = freezed,Object? banner = freezed,Object? statusVideo = freezed,Object? isWatched = freezed,}) {
   return _then(_self.copyWith(
 groupLesson: freezed == groupLesson ? _self.groupLesson : groupLesson // ignore: cast_nullable_to_non_nullable
 as GroupLesson?,accessToLesson: freezed == accessToLesson ? _self.accessToLesson : accessToLesson // ignore: cast_nullable_to_non_nullable
@@ -83,7 +83,8 @@ as int?,relationId: freezed == relationId ? _self.relationId : relationId // ign
 as int?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,banner: freezed == banner ? _self.banner : banner // ignore: cast_nullable_to_non_nullable
 as String?,statusVideo: freezed == statusVideo ? _self.statusVideo : statusVideo // ignore: cast_nullable_to_non_nullable
-as StatusVideoLoad?,
+as StatusVideoLoad?,isWatched: freezed == isWatched ? _self.isWatched : isWatched // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 /// Create a copy of GroupLessonInfo
@@ -180,10 +181,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo, @JsonKey(name: 'is_watched')  bool? isWatched)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _GroupLessonInfo() when $default != null:
-return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo);case _:
+return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo,_that.isWatched);case _:
   return orElse();
 
 }
@@ -201,10 +202,10 @@ return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo, @JsonKey(name: 'is_watched')  bool? isWatched)  $default,) {final _that = this;
 switch (_that) {
 case _GroupLessonInfo():
-return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo);case _:
+return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo,_that.isWatched);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -221,10 +222,10 @@ return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'group_lesson')  GroupLesson? groupLesson, @JsonKey(name: 'access_to_lesson')  bool? accessToLesson, @JsonKey(name: 'access_to_video')  bool? accessToVideo, @JsonKey(name: 'visited')  bool? visited, @JsonKey(name: 'visited_type')  String? visitedType, @JsonKey(name: 'score')  int? score, @JsonKey(name: 'relation_id')  int? relationId, @JsonKey(name: 'note')  String? note, @JsonKey(name: 'banner')  String? banner, @JsonKey(name: 'status_video')  StatusVideoLoad? statusVideo, @JsonKey(name: 'is_watched')  bool? isWatched)?  $default,) {final _that = this;
 switch (_that) {
 case _GroupLessonInfo() when $default != null:
-return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo);case _:
+return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that.visited,_that.visitedType,_that.score,_that.relationId,_that.note,_that.banner,_that.statusVideo,_that.isWatched);case _:
   return null;
 
 }
@@ -236,7 +237,7 @@ return $default(_that.groupLesson,_that.accessToLesson,_that.accessToVideo,_that
 @JsonSerializable()
 
 class _GroupLessonInfo with DiagnosticableTreeMixin implements GroupLessonInfo {
-  const _GroupLessonInfo({@JsonKey(name: 'group_lesson') this.groupLesson, @JsonKey(name: 'access_to_lesson') this.accessToLesson, @JsonKey(name: 'access_to_video') this.accessToVideo, @JsonKey(name: 'visited') this.visited, @JsonKey(name: 'visited_type') this.visitedType, @JsonKey(name: 'score') this.score, @JsonKey(name: 'relation_id') this.relationId, @JsonKey(name: 'note') this.note, @JsonKey(name: 'banner') this.banner, @JsonKey(name: 'status_video') this.statusVideo});
+  const _GroupLessonInfo({@JsonKey(name: 'group_lesson') this.groupLesson, @JsonKey(name: 'access_to_lesson') this.accessToLesson, @JsonKey(name: 'access_to_video') this.accessToVideo, @JsonKey(name: 'visited') this.visited, @JsonKey(name: 'visited_type') this.visitedType, @JsonKey(name: 'score') this.score, @JsonKey(name: 'relation_id') this.relationId, @JsonKey(name: 'note') this.note, @JsonKey(name: 'banner') this.banner, @JsonKey(name: 'status_video') this.statusVideo, @JsonKey(name: 'is_watched') this.isWatched});
   factory _GroupLessonInfo.fromJson(Map<String, dynamic> json) => _$GroupLessonInfoFromJson(json);
 
 @override@JsonKey(name: 'group_lesson') final  GroupLesson? groupLesson;
@@ -249,6 +250,7 @@ class _GroupLessonInfo with DiagnosticableTreeMixin implements GroupLessonInfo {
 @override@JsonKey(name: 'note') final  String? note;
 @override@JsonKey(name: 'banner') final  String? banner;
 @override@JsonKey(name: 'status_video') final  StatusVideoLoad? statusVideo;
+@override@JsonKey(name: 'is_watched') final  bool? isWatched;
 
 /// Create a copy of GroupLessonInfo
 /// with the given fields replaced by the non-null parameter values.
@@ -264,21 +266,21 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'GroupLessonInfo'))
-    ..add(DiagnosticsProperty('groupLesson', groupLesson))..add(DiagnosticsProperty('accessToLesson', accessToLesson))..add(DiagnosticsProperty('accessToVideo', accessToVideo))..add(DiagnosticsProperty('visited', visited))..add(DiagnosticsProperty('visitedType', visitedType))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('relationId', relationId))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('banner', banner))..add(DiagnosticsProperty('statusVideo', statusVideo));
+    ..add(DiagnosticsProperty('groupLesson', groupLesson))..add(DiagnosticsProperty('accessToLesson', accessToLesson))..add(DiagnosticsProperty('accessToVideo', accessToVideo))..add(DiagnosticsProperty('visited', visited))..add(DiagnosticsProperty('visitedType', visitedType))..add(DiagnosticsProperty('score', score))..add(DiagnosticsProperty('relationId', relationId))..add(DiagnosticsProperty('note', note))..add(DiagnosticsProperty('banner', banner))..add(DiagnosticsProperty('statusVideo', statusVideo))..add(DiagnosticsProperty('isWatched', isWatched));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupLessonInfo&&(identical(other.groupLesson, groupLesson) || other.groupLesson == groupLesson)&&(identical(other.accessToLesson, accessToLesson) || other.accessToLesson == accessToLesson)&&(identical(other.accessToVideo, accessToVideo) || other.accessToVideo == accessToVideo)&&(identical(other.visited, visited) || other.visited == visited)&&(identical(other.visitedType, visitedType) || other.visitedType == visitedType)&&(identical(other.score, score) || other.score == score)&&(identical(other.relationId, relationId) || other.relationId == relationId)&&(identical(other.note, note) || other.note == note)&&(identical(other.banner, banner) || other.banner == banner)&&(identical(other.statusVideo, statusVideo) || other.statusVideo == statusVideo));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupLessonInfo&&(identical(other.groupLesson, groupLesson) || other.groupLesson == groupLesson)&&(identical(other.accessToLesson, accessToLesson) || other.accessToLesson == accessToLesson)&&(identical(other.accessToVideo, accessToVideo) || other.accessToVideo == accessToVideo)&&(identical(other.visited, visited) || other.visited == visited)&&(identical(other.visitedType, visitedType) || other.visitedType == visitedType)&&(identical(other.score, score) || other.score == score)&&(identical(other.relationId, relationId) || other.relationId == relationId)&&(identical(other.note, note) || other.note == note)&&(identical(other.banner, banner) || other.banner == banner)&&(identical(other.statusVideo, statusVideo) || other.statusVideo == statusVideo)&&(identical(other.isWatched, isWatched) || other.isWatched == isWatched));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,groupLesson,accessToLesson,accessToVideo,visited,visitedType,score,relationId,note,banner,statusVideo);
+int get hashCode => Object.hash(runtimeType,groupLesson,accessToLesson,accessToVideo,visited,visitedType,score,relationId,note,banner,statusVideo,isWatched);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'GroupLessonInfo(groupLesson: $groupLesson, accessToLesson: $accessToLesson, accessToVideo: $accessToVideo, visited: $visited, visitedType: $visitedType, score: $score, relationId: $relationId, note: $note, banner: $banner, statusVideo: $statusVideo)';
+  return 'GroupLessonInfo(groupLesson: $groupLesson, accessToLesson: $accessToLesson, accessToVideo: $accessToVideo, visited: $visited, visitedType: $visitedType, score: $score, relationId: $relationId, note: $note, banner: $banner, statusVideo: $statusVideo, isWatched: $isWatched)';
 }
 
 
@@ -289,7 +291,7 @@ abstract mixin class _$GroupLessonInfoCopyWith<$Res> implements $GroupLessonInfo
   factory _$GroupLessonInfoCopyWith(_GroupLessonInfo value, $Res Function(_GroupLessonInfo) _then) = __$GroupLessonInfoCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'group_lesson') GroupLesson? groupLesson,@JsonKey(name: 'access_to_lesson') bool? accessToLesson,@JsonKey(name: 'access_to_video') bool? accessToVideo,@JsonKey(name: 'visited') bool? visited,@JsonKey(name: 'visited_type') String? visitedType,@JsonKey(name: 'score') int? score,@JsonKey(name: 'relation_id') int? relationId,@JsonKey(name: 'note') String? note,@JsonKey(name: 'banner') String? banner,@JsonKey(name: 'status_video') StatusVideoLoad? statusVideo
+@JsonKey(name: 'group_lesson') GroupLesson? groupLesson,@JsonKey(name: 'access_to_lesson') bool? accessToLesson,@JsonKey(name: 'access_to_video') bool? accessToVideo,@JsonKey(name: 'visited') bool? visited,@JsonKey(name: 'visited_type') String? visitedType,@JsonKey(name: 'score') int? score,@JsonKey(name: 'relation_id') int? relationId,@JsonKey(name: 'note') String? note,@JsonKey(name: 'banner') String? banner,@JsonKey(name: 'status_video') StatusVideoLoad? statusVideo,@JsonKey(name: 'is_watched') bool? isWatched
 });
 
 
@@ -306,7 +308,7 @@ class __$GroupLessonInfoCopyWithImpl<$Res>
 
 /// Create a copy of GroupLessonInfo
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? groupLesson = freezed,Object? accessToLesson = freezed,Object? accessToVideo = freezed,Object? visited = freezed,Object? visitedType = freezed,Object? score = freezed,Object? relationId = freezed,Object? note = freezed,Object? banner = freezed,Object? statusVideo = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? groupLesson = freezed,Object? accessToLesson = freezed,Object? accessToVideo = freezed,Object? visited = freezed,Object? visitedType = freezed,Object? score = freezed,Object? relationId = freezed,Object? note = freezed,Object? banner = freezed,Object? statusVideo = freezed,Object? isWatched = freezed,}) {
   return _then(_GroupLessonInfo(
 groupLesson: freezed == groupLesson ? _self.groupLesson : groupLesson // ignore: cast_nullable_to_non_nullable
 as GroupLesson?,accessToLesson: freezed == accessToLesson ? _self.accessToLesson : accessToLesson // ignore: cast_nullable_to_non_nullable
@@ -318,7 +320,8 @@ as int?,relationId: freezed == relationId ? _self.relationId : relationId // ign
 as int?,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,banner: freezed == banner ? _self.banner : banner // ignore: cast_nullable_to_non_nullable
 as String?,statusVideo: freezed == statusVideo ? _self.statusVideo : statusVideo // ignore: cast_nullable_to_non_nullable
-as StatusVideoLoad?,
+as StatusVideoLoad?,isWatched: freezed == isWatched ? _self.isWatched : isWatched // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

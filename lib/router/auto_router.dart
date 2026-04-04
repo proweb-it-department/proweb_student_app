@@ -544,7 +544,14 @@ class AppRouter extends RootStackRouter {
         return PredictiveBackRouteCustom(child: child, settings: page);
       },
       page: MasterClassRoute.page,
-      fullscreenDialog: true,
+      guards: [_AuthGuard()],
+    ),
+    CustomRoute(
+      path: '/watched-lessons',
+      customRouteBuilder: <T>(context, child, page) {
+        return PredictiveBackRouteCustom(child: child, settings: page);
+      },
+      page: MyWatchedLessonRoute.page,
       guards: [_AuthGuard()],
     ),
     CustomRoute(

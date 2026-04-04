@@ -6,6 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:proweb_student_app/api/network/auth/get/auth.dart';
 import 'package:proweb_student_app/api/network/chat/get/chat.dart';
 import 'package:proweb_student_app/api/network/chat/post/chat.dart';
+import 'package:proweb_student_app/api/network/main/patch/main.dart';
+import 'package:proweb_student_app/api/network/video/post/video.dart';
 import 'package:proweb_student_app/api/repositories/file_repositories/file_repositories.dart';
 import 'package:proweb_student_app/api/repositories/video_group_repositiories/video_group_repositiories.dart';
 import 'package:proweb_student_app/api/repositories/video_product_repositiories/video_product_repositiories.dart';
@@ -123,9 +125,17 @@ abstract class AppModule {
   PostResponsesMain get postResponseMain => PostResponsesMain();
 
   @lazySingleton
+  PatchResponsesMain get patchResponseMain => PatchResponsesMain();
+
+  @lazySingleton
   GetResponsesVideo get getResponseVideo => GetResponsesVideo();
+
+  @lazySingleton
+  PostResponsesVideo get postResponseVideo => PostResponsesVideo();
+
   @lazySingleton
   GetResponsesChat get getResponseChat => GetResponsesChat();
+
   @lazySingleton
   PostResponsesChat get postResponseChat => PostResponsesChat();
 
@@ -179,6 +189,7 @@ class LimitRequest {
   static final int ranking = 50;
   static final int products = 100;
   static final int services = 100;
+  static final int lessonsWatched = 40;
   static final int tarif = 100;
   static final int purchasesTarif = 100;
   static final int purchasesService = 100;

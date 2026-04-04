@@ -18,6 +18,7 @@ abstract class GroupLessonInfo with _$GroupLessonInfo {
     @JsonKey(name: 'note') String? note,
     @JsonKey(name: 'banner') String? banner,
     @JsonKey(name: 'status_video') StatusVideoLoad? statusVideo,
+    @JsonKey(name: 'is_watched') bool? isWatched,
   }) = _GroupLessonInfo;
 
   factory GroupLessonInfo.fromJson(Map<String, Object?> json) =>

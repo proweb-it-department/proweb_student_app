@@ -162,6 +162,7 @@ class _ContentMaterialProductState extends State<ContentMaterialProduct> {
         final size = element.video?.size;
         final duration = element.video?.durations;
         final isDownload = element.video?.isDownload;
+        final id = element.video?.id;
         if (playlist != null && preview != null && slug != null) {
           videosModel.add(
             MiddelwareModelVideo(
@@ -172,6 +173,7 @@ class _ContentMaterialProductState extends State<ContentMaterialProduct> {
               size: size ?? 0,
               duration: duration ?? 0,
               isDownload: isDownload ?? false,
+              id: id ?? 0,
             ),
           );
         }

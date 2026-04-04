@@ -36,50 +36,54 @@ class LessonContent extends StatelessWidget {
         }
       }
     }
-    return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                useSafeArea: true,
-                showDragHandle: true,
-                builder: (context) {
-                  return BottomSheetLesson(
-                    lesson: lesson,
-                    groupUser: groupUser,
-                  );
-                },
-              );
-            },
-            tileColor: customColors?.containerColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            title: Text(
-              sl<LocalData>().blockLesson(
-                lesson: (lesson.groupLesson?.lessonNumber ?? 0).toDouble(),
-                blockLessonCount: groupUser.group?.version?.blockLessonCount
-                    ?.toDouble(),
-                lessonCount: groupUser.group?.version?.lessonCount?.toDouble(),
+    return Material(
+      color: Colors.transparent,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  useSafeArea: true,
+                  showDragHandle: true,
+                  builder: (context) {
+                    return BottomSheetLesson(
+                      lesson: lesson,
+                      groupUser: groupUser,
+                    );
+                  },
+                );
+              },
+              tileColor: customColors?.containerColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
+              title: Text(
+                sl<LocalData>().blockLesson(
+                  lesson: (lesson.groupLesson?.lessonNumber ?? 0).toDouble(),
+                  blockLessonCount: groupUser.group?.version?.blockLessonCount
+                      ?.toDouble(),
+                  lessonCount: groupUser.group?.version?.lessonCount
+                      ?.toDouble(),
+                ),
+              ),
+              subtitle: lesson.groupLesson?.datetime != null
+                  ? Text(
+                      sl<LocalData>().getDateString(
+                        date: DateTime.parse(lesson.groupLesson!.datetime!),
+                      ),
+                    )
+                  : null,
+              trailing: IconDowloaderVideosView(videos: videosModels),
             ),
-            subtitle: lesson.groupLesson?.datetime != null
-                ? Text(
-                    sl<LocalData>().getDateString(
-                      date: DateTime.parse(lesson.groupLesson!.datetime!),
-                    ),
-                  )
-                : null,
-            trailing: IconDowloaderVideosView(videos: videosModels),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

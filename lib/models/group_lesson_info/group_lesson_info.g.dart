@@ -23,6 +23,7 @@ _GroupLessonInfo _$GroupLessonInfoFromJson(Map<String, dynamic> json) =>
         _$StatusVideoLoadEnumMap,
         json['status_video'],
       ),
+      isWatched: json['is_watched'] as bool?,
     );
 
 Map<String, dynamic> _$GroupLessonInfoToJson(_GroupLessonInfo instance) =>
@@ -37,6 +38,7 @@ Map<String, dynamic> _$GroupLessonInfoToJson(_GroupLessonInfo instance) =>
       'note': instance.note,
       'banner': instance.banner,
       'status_video': _$StatusVideoLoadEnumMap[instance.statusVideo],
+      'is_watched': instance.isWatched,
     };
 
 const _$StatusVideoLoadEnumMap = {

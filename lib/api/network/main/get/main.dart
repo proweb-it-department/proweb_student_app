@@ -768,7 +768,7 @@ class GetResponsesMain {
       if (slugs.isNotEmpty) {
         List<VideoModel> videos = await video.videos(slags: slugs);
         videos = videos
-            .where((element) => element.status == StatusVideoLoad.complete)
+            .where((element) => element.status == StatusVideoData.complete)
             .toList();
         if (videos.isNotEmpty) {
           final list = data.list.map((relation) {

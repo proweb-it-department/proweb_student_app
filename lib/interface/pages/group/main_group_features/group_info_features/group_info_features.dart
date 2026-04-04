@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:proweb_student_app/bloc/course_version/course_version_bloc.dart';
 import 'package:proweb_student_app/bloc/group_detail/group_detail_bloc.dart';
 import 'package:proweb_student_app/bloc/my_statistic/my_statistic_bloc.dart';
+import 'package:proweb_student_app/bloc/my_watched_lesson/my_watched_lesson_bloc.dart';
 import 'package:proweb_student_app/interface/components/error_load/error_load.dart';
 import 'package:proweb_student_app/interface/components/md3_circule_indicator/md3_circule_indicator.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/admin_notification.dart';
@@ -14,9 +15,11 @@ import 'package:proweb_student_app/interface/pages/group/main_group_features/gro
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/group_type_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/group_info_features/components/main_group_user.dart';
 import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_statistcs_widget.dart';
+import 'package:proweb_student_app/interface/pages/home_screen/tabs/widgets/my_watched_lesson_widget.dart';
 import 'package:proweb_student_app/models/group_detail/group_detail.dart';
 import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/utils/enum/base_enum.dart';
+import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
 
 @RoutePage()
 class GroupGroupInfoScreen extends StatelessWidget {
@@ -56,6 +59,7 @@ class GroupInfoContent extends StatelessWidget {
     final bottom = MediaQuery.of(context).viewPadding.bottom;
     Notifications? notofication;
     final notifications = groupUser.notifications;
+    final customColors = Theme.of(context).extension<CustomColors>();
     if (notifications != null) {
       if (notifications.isNotEmpty) {
         for (final element in notifications) {
@@ -68,8 +72,11 @@ class GroupInfoContent extends StatelessWidget {
         }
       }
     }
-    return BlocProvider(
-      create: (context) => CourseVersionBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => CourseVersionBloc()),
+        BlocProvider(create: (context) => MyWatchedLessonBloc()),
+      ],
       child: ListView(
         padding: EdgeInsets.only(
           bottom: bottom + 10,
@@ -108,6 +115,12 @@ class GroupInfoContent extends StatelessWidget {
           if (group.cabinet != null) SizedBox(height: 12),
           if (group.type != null || group.format != null)
             GroupTypeData(type: group.type, format: group.format),
+          SizedBox(height: 12),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            decoration: BoxDecoration(color: customColors?.containerColor),
+            child: MyWatchedLessonWidget(groupId: group.id),
+          ),
           if (group.type != null || group.format != null) SizedBox(height: 12),
           if (group.version?.versionId != null)
             CourseVersionGroup(versionId: group.version!.versionId!),

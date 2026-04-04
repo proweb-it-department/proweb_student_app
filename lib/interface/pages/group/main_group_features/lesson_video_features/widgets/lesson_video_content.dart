@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:proweb_student_app/api/local_data/local_data.dart';
+import 'package:proweb_student_app/api/network/main/patch/main.dart';
+import 'package:proweb_student_app/api/network/video/post/video.dart';
 import 'package:proweb_student_app/bloc/lesson_video/lesson_video_bloc.dart';
 import 'package:proweb_student_app/interface/components/no_data/no_data.dart';
 import 'package:proweb_student_app/interface/pages/group/main_group_features/lesson_video_features/widgets/lesson_info.dart';
@@ -12,6 +15,7 @@ import 'package:proweb_student_app/models/my_groups_item/my_groups_item.dart';
 import 'package:proweb_student_app/utils/gi/injection_container.dart';
 import 'package:proweb_student_app/utils/player_widget/player_widget.dart';
 import 'package:proweb_student_app/utils/theme/default_theme/custom_colors.dart';
+import 'package:talker_logger/talker_logger.dart';
 
 class LessonVideoContent extends StatefulWidget {
   final GroupLessonInfo lesson;
@@ -27,15 +31,18 @@ class LessonVideoContent extends StatefulWidget {
 }
 
 class _LessonVideoContentState extends State<LessonVideoContent> {
+  late bool watched;
   String? initPath;
   String? initSlug;
   String? preview;
   int initIndex = 0;
+  int videoId = 0;
   List<MiddelwareModelVideo> videosModel = [];
 
   @override
   void initState() {
     super.initState();
+    watched = widget.lesson.isWatched ?? false;
     final videos = widget.lesson.groupLesson?.videos;
     if (videos != null) {
       for (var element in videos) {
@@ -46,6 +53,7 @@ class _LessonVideoContentState extends State<LessonVideoContent> {
         final size = element.video?.size;
         final duration = element.video?.durations;
         final isDownload = element.video?.isDownload;
+        final id = element.video?.id;
         if (playlist != null && preview != null && slug != null) {
           videosModel.add(
             MiddelwareModelVideo(
@@ -56,6 +64,7 @@ class _LessonVideoContentState extends State<LessonVideoContent> {
               size: size ?? 0,
               duration: duration ?? 0,
               isDownload: isDownload ?? false,
+              id: id ?? 0,
             ),
           );
         }
@@ -73,6 +82,7 @@ class _LessonVideoContentState extends State<LessonVideoContent> {
           initSlug = video.slug;
           initIndex = position;
           preview = video.preview;
+          videoId = video.id;
         });
       }
     }
@@ -97,6 +107,25 @@ class _LessonVideoContentState extends State<LessonVideoContent> {
             publickPath: initPath!,
             slug: initSlug!,
           ),
+          onChangeTime: (seconds) {
+            TalkerLogger().log(seconds);
+            if (watched == false) {
+              final lessonId = widget.lesson.groupLesson?.id;
+              if (lessonId == null) return;
+              sl<PatchResponsesMain>().watchLesson(lessonId);
+              setState(() {
+                watched = true;
+              });
+
+              if (videoId == 0) return;
+              final form = FormData.fromMap({
+                "video_id": videoId,
+                "durations": seconds,
+                "lesson_id": lessonId,
+              });
+              sl<PostResponsesVideo>().watched(form);
+            }
+          },
           preview: preview,
         ),
         Expanded(
@@ -633,6 +662,7 @@ class MiddelwareModelVideo {
   final int duration;
   final int size;
   final bool isDownload;
+  final int id;
 
   MiddelwareModelVideo({
     required this.path,
@@ -642,5 +672,6 @@ class MiddelwareModelVideo {
     required this.duration,
     required this.size,
     required this.isDownload,
+    required this.id,
   });
 }

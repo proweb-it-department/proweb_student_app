@@ -27,6 +27,12 @@ abstract class MainFetch {
     bool checkToken = true,
     int refreshCount = 0,
   });
+  Future<Either<ErrorRequest, Map<String, dynamic>>> patch({
+    required String path,
+    FormData? form,
+    bool checkToken = true,
+    int refreshCount = 0,
+  });
   Future<Either<ErrorRequest, Map<String, dynamic>>> postString({
     required String path,
     required String form,
@@ -55,6 +61,12 @@ abstract class AuthFetch {
   Future<Either<ErrorRequest, Map<String, dynamic>>> post({
     required String path,
     required FormData form,
+    bool checkToken = true,
+    int refreshCount = 0,
+  });
+  Future<Either<ErrorRequest, Map<String, dynamic>>> patch({
+    required String path,
+    FormData? form,
     bool checkToken = true,
     int refreshCount = 0,
   });
@@ -89,6 +101,12 @@ abstract class VideoFetch {
     bool checkToken = true,
     int refreshCount = 0,
   });
+  Future<Either<ErrorRequest, Map<String, dynamic>>> patch({
+    required String path,
+    FormData? form,
+    bool checkToken = true,
+    int refreshCount = 0,
+  });
   Future<Either<ErrorRequest, Map<String, dynamic>>> postString({
     required String path,
     required String form,
@@ -117,6 +135,12 @@ abstract class ChatFetch {
   Future<Either<ErrorRequest, Map<String, dynamic>>> post({
     required String path,
     required FormData form,
+    bool checkToken = true,
+    int refreshCount = 0,
+  });
+  Future<Either<ErrorRequest, Map<String, dynamic>>> patch({
+    required String path,
+    FormData? form,
     bool checkToken = true,
     int refreshCount = 0,
   });
